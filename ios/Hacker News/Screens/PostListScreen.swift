@@ -95,7 +95,6 @@ struct PostListScreen_Previews: PreviewProvider {
       .previewDisplayName("Loading")
       
       withNavigationView {
-        fatalError()
         PostListScreen(appState: loading)
       }
       .colorScheme(.dark)
