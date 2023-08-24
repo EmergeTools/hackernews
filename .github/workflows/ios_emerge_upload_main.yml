@@ -1,0 +1,48 @@
+name: Emerge iOS Upload (Size Analysis)
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    defaults:
+      run:
+        working-directory: ./ios
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Ruby env
+        uses: ruby/setup-ruby@v1.138.0
+        with:
+          ruby-version: 3.2.1
+          bundler-cache: true
+
+      - name: Setup gems
+        run: exec ../.github/scripts/ios/setup.sh
+
+      - name: Decode signing certificate into a file
+        env:
+          CERTIFICATE_BASE64: ${{ secrets.IOS_DIST_SIGNING_KEY_BASE64 }}
+        run: |
+          echo $CERTIFICATE_BASE64 | base64 --decode > signing-cert.p12
+
+      # This version uploads a build to Testflight
+      - name: Build & upload iOS size analysis binary to Emerge Tools
+        run: bundle exec fastlane ios build_upload_testflight
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          ASC_KEY: ${{ secrets.ASC_PRIVATE_KEY }}
+          SIGNING_KEY_PASSWORD: ${{ secrets.IOS_DIST_SIGNING_KEY_PASSWORD }}
+          SIGNING_KEY_FILE_PATH: signing-cert.p12
+          EMERGE_API_TOKEN: ${{ secrets.EMERGE_API_KEY }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
+          PULL_NUMBER: ${{ github.event.pull_request.number }}
+          SCHEME: Release
+          EMERGE_BUILD_TYPE: release
