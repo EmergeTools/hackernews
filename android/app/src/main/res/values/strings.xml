@@ -1,0 +1,59 @@
+<resources>
+  <plurals name="comment_count">
+    <item quantity="zero">No comments</item>
+    <item quantity="one">%d comment</item>
+    <item quantity="other">%d comments</item>
+  </plurals>
+
+  <plurals name="seconds_ago">
+    <item quantity="one">%d second ago</item>
+    <item quantity="other">%d seconds ago</item>
+  </plurals>
+  <plurals name="minutes_ago">
+    <item quantity="one">%d minute ago</item>
+    <item quantity="other">%d minutes ago</item>
+  </plurals>
+
+  <!-- Auth -->
+  <plurals name="hours_ago">
+    <item quantity="one">%d hour ago</item>
+    <item quantity="other">%d hours ago</item>
+  </plurals>
+  <plurals name="days_ago">
+    <item quantity="one">%d day ago</item>
+    <item quantity="other">%d days ago</item>
+  </plurals>
+  <plurals name="weeks_ago">
+    <item quantity="one">%d week ago</item>
+    <item quantity="other">%d weeks ago</item>
+  </plurals>
+  <plurals name="months_ago">
+    <item quantity="one">%d month ago</item>
+    <item quantity="other">%d months ago</item>
+  </plurals>
+
+  <!-- Story -->
+  <plurals name="years_ago">
+    <item quantity="one">%d year ago</item>
+    <item quantity="other">%d years ago</item>
+  </plurals>
+  <string name="app_name">Hacker News</string>
+  <string name="refresh">Refresh</string>
+  <string name="more">More</string>
+
+  <string name="auth_screen_title">Welcome to Hacker News</string>
+
+  <string name="auth_screen_subtitle">Login to browse stories</string>
+
+  <string name="login">Login</string>
+
+  <string name="logout">Logout</string>
+
+  <string name="story_item_date_author">%s by %s</string>
+
+  <string name="content_description_upvote">Upvote</string>
+
+  <string name="content_description_back">Navigate back</string>
+
+  <string name="content_description_comment_button">View comments</string>
+</resources>

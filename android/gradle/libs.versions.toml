@@ -1,0 +1,65 @@
+[versions]
+agp = "8.1.0"
+androidx-core = "1.7.0"
+androidx-test = "1.5.0"
+androidx-test-ext = "1.1.5"
+accompanist = "0.24.1-alpha"
+emerge-gradle-plugin = "2.0.0"
+emerge-perf = "2.0.0-beta01"
+emerge-snapshots = "0.7.2"
+kotlin = "1.8.22"
+ksp = "1.8.22-1.0.11"
+material-compose = "1.1.0"
+navigation-compose = "2.4.1"
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+android-test = { id = "com.android.test", version.ref = "agp" }
+emerge = { id = "com.emergetools.android", version.ref = "emerge-gradle-plugin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+
+[libraries]
+accompanist-navigationanim = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "accompanist" }
+accompanist-webview = { module = "com.google.accompanist:accompanist-webview", version.ref = "accompanist" }
+
+androidx-activity = { module = "androidx.activity:activity-ktx", version = "1.7.2" }
+androidx-annotation = { module = "androidx.annotation:annotation", version = "1.6.0" }
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version = "1.6.1" }
+androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version = "2.1.4" }
+androidx-core = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
+androidx-datastore-preferences = "androidx.datastore:datastore-preferences:1.0.0"
+androidx-fragment = { module = "androidx.fragment:fragment-ktx", version = "1.5.7" }
+androidx-test-core = { module = "androidx.test:core-ktx", version.ref = "androidx-test" }
+androidx-test-ext-junit = { module = "androidx.test.ext:junit-ktx", version.ref = "androidx-test-ext" }
+androidx-test-rules = { module = "androidx.test:rules", version.ref = "androidx-test" }
+androidx-test-runner = { module = "androidx.test:runner", version.ref = "androidx-test" }
+
+compose-activity = "androidx.activity:activity-compose:1.7.2"
+compose-tooling = "androidx.compose.ui:ui-tooling:1.4.3"
+compose-tooling-preview = "androidx.compose.ui:ui-tooling-preview:1.4.3"
+compose-ui-test = "androidx.compose.ui:ui-test-junit4:1.4.3"
+compose-ui-test-manifest = "androidx.compose.ui:ui-test-manifest:1.4.3"
+
+emerge-perf = { module = "com.emergetools.test:performance", version.ref = "emerge-perf" }
+emerge-relax = "com.emergetools.test:relax:0.1.0"
+emerge-snapshots = { module = "com.emergetools.snapshots:snapshots", version.ref = "emerge-snapshots" }
+emerge-snapshots-annotations = { module = "com.emergetools.snapshots:snapshots-annotations", version.ref = "emerge-snapshots" }
+emerge-snapshots-processor = { module = "com.emergetools.snapshots:snapshots-processor", version.ref = "emerge-snapshots" }
+
+junit = "junit:junit:4.13.2"
+
+kotlinx-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1"
+
+material-core = "com.google.android.material:material:1.9.0"
+material-compose-core = { module = "androidx.compose.material:material", version.ref = "material-compose" }
+material-compose-icons = { module = "androidx.compose.material:material-icons-extended", version.ref = "material-compose" }
+
+mavericks-compose = "com.airbnb.android:mavericks-compose:2.7.0"
+
+navigation-compose-core = { module = "androidx.navigation:navigation-compose", version.ref = "navigation-compose" }
+navigation-compose-ktx = { module = "androidx.navigation:navigation-runtime-ktx", version.ref = "navigation-compose" }
+
+retrofit-core = "com.squareup.retrofit2:retrofit:2.9.0"
+retrofit-serialization = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0"
