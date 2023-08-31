@@ -34,12 +34,12 @@ class HNApi {
             let url = URL(string: "https://hacker-news.firebaseio.com/v0/item/\(id).json")!
             let (data, response) = try await URLSession.shared.data(from: url)
             let decoder = JSONDecoder()
-            print("Received response: \(response)")
-            if let str = String(data: data, encoding: .utf8) {
-              print("Data: \(str)")
-            } else {
-              print("No readable data received in response")
-            }
+//            print("Received response: \(response)")
+//            if let str = String(data: data, encoding: .utf8) {
+//              print("Data: \(str)")
+//            } else {
+//              print("No readable data received in response")
+//            }
             let baseItem = try decoder.decode(BaseItem.self, from: data)
             
             switch baseItem.type {

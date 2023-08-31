@@ -18,7 +18,7 @@ struct StoryScreen: View {
         ForEach(storyModel.comments) { (flattenedComment) in
           CommentView(comment: flattenedComment.comment, level: flattenedComment.depth)
         }
-      }
+      }.padding()
     }.onAppear {
       Task {
         await storyModel.fetchComments()
@@ -44,10 +44,10 @@ struct CommentView: View {
     }
     .padding(
       EdgeInsets(
-        top: 5,
+        top: 4,
         leading: min(CGFloat(level * 20), CGFloat(maxIndentationLevel * 20)),
-        bottom: 2,
-        trailing: 2
+        bottom: 4,
+        trailing: 0
       )
     )
   }
