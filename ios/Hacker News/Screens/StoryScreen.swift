@@ -15,8 +15,8 @@ struct StoryScreen: View {
   var body: some View {
     ScrollView {
       LazyVStack {
-        ForEach(storyModel.comments) { comment in
-          CommentView(comment: comment, level: 0)
+        ForEach(storyModel.comments) { (flattenedComment) in
+          CommentView(comment: flattenedComment.comment, level: flattenedComment.depth)
         }
       }
     }.onAppear {
@@ -35,8 +35,12 @@ struct CommentView: View {
   
   var body: some View {
     VStack(alignment: .leading) {
-      Text(comment.by).font(.caption).foregroundColor(.gray)
-      Text(comment.text.htmlToAttributedString()?.string ?? "")
+      if let by = comment.by {
+        Text(by).font(.caption).foregroundColor(.gray)
+      }
+      if let text = comment.text {
+        Text(text.htmlToAttributedString()?.string ?? "")
+      }
     }
     .padding(
       EdgeInsets(
@@ -73,7 +77,7 @@ Engildification. Of which there should be more!
 My soul was also satisfied by the Sleeping At Night post which, along with the recent "Lie Still in Bed" article, makes for very simple options to attempt to fix sleep (discipline) issues
 """,
       parent: nil,
-      replies: nil
+      kids: nil
     )
     Group {
       CommentView(comment: comment, level: 0)

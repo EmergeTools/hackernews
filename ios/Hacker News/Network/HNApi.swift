@@ -57,11 +57,11 @@ class HNApi {
           }
         }
         
-        var items = [HNItem]()
+        var items = [Int : HNItem]()
         for try await result in taskGroup {
-          items.append(result)
+          items[result.id] = result
         }
-        return items
+        return ids.compactMap { items[$0] }
       }
     } catch let error {
       print("Error fetching item details \(error)")
@@ -72,7 +72,7 @@ class HNApi {
 
 protocol HNItem: Codable {
   var id: Int { get }
-  var by: String { get }
+  var by: String? { get }
   var time: Int64 { get }
   var type: ItemType { get }
 }
@@ -83,7 +83,7 @@ enum ItemType: String, Codable {
 
 struct BaseItem: HNItem {
   let id: Int
-  let by: String
+  let by: String?
   let time: Int64
   let type: ItemType
   let deleted: Bool?
@@ -92,7 +92,7 @@ struct BaseItem: HNItem {
 
 struct Story: HNItem {
   let id: Int
-  let by: String
+  let by: String?
   let time: Int64
   let type: ItemType
   let title: String
@@ -132,17 +132,21 @@ struct Story: HNItem {
 
 struct Comment: HNItem, Identifiable {
   let id: Int
-  let by: String
+  let by: String?
   let time: Int64
   let type: ItemType
-  let text: String
+  let text: String?
   let parent: Int?
-  let replies: [Int]?
+  let kids: [Int]?
+  
+  var replies: [Int]? {
+    kids
+  }
 }
 
 struct Job: HNItem {
   let id: Int
-  let by: String
+  let by: String?
   let time: Int64
   let type: ItemType
   let title: String
@@ -151,7 +155,7 @@ struct Job: HNItem {
 
 struct Poll: HNItem {
   let id: Int
-  let by: String
+  let by: String?
   let time: Int64
   let type: ItemType
   let title: String
@@ -163,7 +167,7 @@ struct Poll: HNItem {
 
 struct Pollopt: HNItem {
   let id: Int
-  let by: String
+  let by: String?
   let time: Int64
   let type: ItemType
   let poll: Int
