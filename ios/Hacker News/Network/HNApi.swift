@@ -26,7 +26,7 @@ class HNApi {
     }
   }
   
-  private func fetchItems(ids: [Int]) async -> [HNItem] {
+  func fetchItems(ids: [Int]) async -> [HNItem] {
     do {
       return try await withThrowingTaskGroup(of: HNItem.self) { taskGroup in
         for id in ids {
@@ -71,7 +71,7 @@ class HNApi {
 }
 
 protocol HNItem: Codable {
-  var id: Int64 { get }
+  var id: Int { get }
   var by: String { get }
   var time: Int64 { get }
   var type: ItemType { get }
@@ -82,7 +82,7 @@ enum ItemType: String, Codable {
 }
 
 struct BaseItem: HNItem {
-  let id: Int64
+  let id: Int
   let by: String
   let time: Int64
   let type: ItemType
@@ -91,7 +91,7 @@ struct BaseItem: HNItem {
 }
 
 struct Story: HNItem {
-  let id: Int64
+  let id: Int
   let by: String
   let time: Int64
   let type: ItemType
@@ -100,9 +100,9 @@ struct Story: HNItem {
   let url: String?
   let score: Int
   let descendants: Int
-  let kids: [Int64]?
+  let kids: [Int]?
   
-  var comments: [Int64] {
+  var comments: [Int] {
     return kids ?? []
   }
   
@@ -130,18 +130,18 @@ struct Story: HNItem {
   }
 }
 
-struct Comment: HNItem {
-  let id: Int64
+struct Comment: HNItem, Identifiable {
+  let id: Int
   let by: String
   let time: Int64
   let type: ItemType
   let text: String
-  let parent: Int64?
-  let replies: [Int64]
+  let parent: Int?
+  let replies: [Int]?
 }
 
 struct Job: HNItem {
-  let id: Int64
+  let id: Int
   let by: String
   let time: Int64
   let type: ItemType
@@ -150,23 +150,23 @@ struct Job: HNItem {
 }
 
 struct Poll: HNItem {
-  let id: Int64
+  let id: Int
   let by: String
   let time: Int64
   let type: ItemType
   let title: String
   let score: Int
   let descendants: Int
-  let comments: [Int64]
-  let pollopts: [Int64]
+  let comments: [Int]
+  let pollopts: [Int]
 }
 
 struct Pollopt: HNItem {
-  let id: Int64
+  let id: Int
   let by: String
   let time: Int64
   let type: ItemType
-  let poll: Int64
+  let poll: Int
   let score: Int
   let text: String?
 }

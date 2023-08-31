@@ -46,23 +46,25 @@ struct StoryRow: View {
               .foregroundColor(Color.primary.opacity(0.6))
             
             if story.commentCount > 0 {
-              Button(action: {
-                // TODO: Handle comment click
-              }) {
-                let commentText: String = {
-                  if story.commentCount == 1 {
-                    return "\(story.commentCount) comment"
-                  } else {
-                    return "\(story.commentCount) comments"
-                  }
-                }()
-                Text(commentText)
-                  .font(.caption)
-                  .fontWeight(.medium)
-                  .underline()
-                  .foregroundColor(Color.primary)
+              NavigationLink {
+                StoryScreen(storyModel: StoryViewModel(story: story))
+              } label: {
+                Button(action: {}) {
+                  let commentText: String = {
+                    if story.commentCount == 1 {
+                      return "\(story.commentCount) comment"
+                    } else {
+                      return "\(story.commentCount) comments"
+                    }
+                  }()
+                  Text(commentText)
+                    .font(.caption)
+                    .fontWeight(.medium)
+                    .underline()
+                    .foregroundColor(Color.primary)
+                }
+                .frame(maxWidth: .infinity, alignment: .trailing)
               }
-              .frame(maxWidth: .infinity, alignment: .trailing)
             }
           }
           .padding(.horizontal, 2)

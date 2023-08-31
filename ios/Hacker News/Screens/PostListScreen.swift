@@ -22,10 +22,9 @@ struct PostListScreen: View {
         List(appState.stories, id: \.id) { story in
           if let url = story.makeUrl() {
             NavigationLink(
-              destination: WebView(url: url)
-                .ignoresSafeArea()
-                .navigationTitle(story.title)
-                .navigationBarTitleDisplayMode(.inline)
+              destination: StoryScreen(storyModel: StoryViewModel(story: story))
+//                .ignoresSafeArea()
+//                .navigationBarTitleDisplayMode(.inline)
             ) {
               StoryRow(
                 story: story,
