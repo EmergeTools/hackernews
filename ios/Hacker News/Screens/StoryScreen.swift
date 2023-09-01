@@ -19,14 +19,12 @@ struct StoryScreen: View {
           .progressViewStyle(CircularProgressViewStyle())
           .scaleEffect(2)
       } else {
-        ScrollView {
-          LazyVStack(spacing: 16) {
-            ForEach(storyModel.comments) { (flattenedComment) in
-              CommentView(comment: flattenedComment.comment, level: flattenedComment.depth)
-            }
-          }
-          .padding()
+        List(storyModel.comments, id: \.id) { flattenedComment in
+          CommentView(comment: flattenedComment.comment, level: flattenedComment.depth)
+            .listRowBackground(Color.clear)
+            .listRowSeparator(.hidden)
         }
+        .listStyle(.plain)
         .background(.clear)
       }
     }
