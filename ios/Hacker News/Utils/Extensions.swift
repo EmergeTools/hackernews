@@ -10,15 +10,16 @@ import SwiftUI
 
 extension PreviewProvider {
   static func withNavigationView(@ViewBuilder content: () -> some View) -> some View {
-    NavigationView {
+    NavigationStack {
       ZStack {
         HNColors.background
-          .edgesIgnoringSafeArea(.all)
+          .ignoresSafeArea()
+        
         content()
-          .toolbarColorScheme(.dark, for: .navigationBar)
-          .toolbarBackground(HNColors.orange, for: .navigationBar)
-          .toolbarBackground(.visible, for: .navigationBar)
       }
+      .toolbarColorScheme(.dark, for: .navigationBar)
+      .toolbarBackground(HNColors.orange, for: .navigationBar)
+      .toolbarBackground(.visible, for: .navigationBar)
     }
   }
   
