@@ -24,6 +24,9 @@
 		A42705AB2A4296BA0057E439 /* PostListScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A42705AA2A4296BA0057E439 /* PostListScreen.swift */; };
 		A42705AD2A429D2E0057E439 /* HNApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = A42705AC2A429D2E0057E439 /* HNApi.swift */; };
 		A434C2E02A8E75960002F488 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A434C2DF2A8E75960002F488 /* WebView.swift */; };
+		A44B39B12AA27F4900C443B7 /* Snapshotting in Frameworks */ = {isa = PBXBuildFile; productRef = A44B39B02AA27F4900C443B7 /* Snapshotting */; };
+		A44B39B32AA27F4900C443B7 /* SnapshottingTests in Frameworks */ = {isa = PBXBuildFile; productRef = A44B39B22AA27F4900C443B7 /* SnapshottingTests */; };
+		A44B39B52AA27F5600C443B7 /* PreviewingTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44B39B42AA27F5600C443B7 /* PreviewingTest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +67,7 @@
 		A42705AA2A4296BA0057E439 /* PostListScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListScreen.swift; sourceTree = "<group>"; };
 		A42705AC2A429D2E0057E439 /* HNApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HNApi.swift; sourceTree = "<group>"; };
 		A434C2DF2A8E75960002F488 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
+		A44B39B42AA27F5600C443B7 /* PreviewingTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewingTest.swift; sourceTree = "<group>"; };
 		A45C2C7D2A5DDE25009BC030 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 		A45C2C7E2A5DDE25009BC030 /* Pluginfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Pluginfile; sourceTree = "<group>"; };
 		A45C2C7F2A5DDE25009BC030 /* Appfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Appfile; sourceTree = "<group>"; };
@@ -115,6 +119,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A44B39B32AA27F4900C443B7 /* SnapshottingTests in Frameworks */,
+				A44B39B12AA27F4900C443B7 /* Snapshotting in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -217,6 +223,7 @@
 			children = (
 				A42705972A4293B30057E439 /* Hacker_NewsUITests.swift */,
 				A42705992A4293B30057E439 /* Hacker_NewsUITestsLaunchTests.swift */,
+				A44B39B42AA27F5600C443B7 /* PreviewingTest.swift */,
 			);
 			path = "Hacker NewsUITests";
 			sourceTree = "<group>";
@@ -342,6 +349,10 @@
 				A42705952A4293B30057E439 /* PBXTargetDependency */,
 			);
 			name = "Hacker NewsUITests";
+			packageProductDependencies = (
+				A44B39B02AA27F4900C443B7 /* Snapshotting */,
+				A44B39B22AA27F4900C443B7 /* SnapshottingTests */,
+			);
 			productName = "Hacker NewsUITests";
 			productReference = A42705932A4293B30057E439 /* Hacker NewsUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
@@ -378,6 +389,9 @@
 				Base,
 			);
 			mainGroup = A42705702A4293B10057E439;
+			packageReferences = (
+				A44B39AF2AA27F4900C443B7 /* XCRemoteSwiftPackageReference "SnapshotPreviews-iOS" */,
+			);
 			productRefGroup = A427057A2A4293B10057E439 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -468,6 +482,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A44B39B52AA27F5600C443B7 /* PreviewingTest.swift in Sources */,
 				A42705982A4293B30057E439 /* Hacker_NewsUITests.swift in Sources */,
 				A427059A2A4293B30057E439 /* Hacker_NewsUITestsLaunchTests.swift in Sources */,
 			);
@@ -783,6 +798,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A44B39AF2AA27F4900C443B7 /* XCRemoteSwiftPackageReference "SnapshotPreviews-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/EmergeTools/SnapshotPreviews-iOS";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A44B39B02AA27F4900C443B7 /* Snapshotting */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A44B39AF2AA27F4900C443B7 /* XCRemoteSwiftPackageReference "SnapshotPreviews-iOS" */;
+			productName = Snapshotting;
+		};
+		A44B39B22AA27F4900C443B7 /* SnapshottingTests */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A44B39AF2AA27F4900C443B7 /* XCRemoteSwiftPackageReference "SnapshotPreviews-iOS" */;
+			productName = SnapshottingTests;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A42705712A4293B10057E439 /* Project object */;
 }
