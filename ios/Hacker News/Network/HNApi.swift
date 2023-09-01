@@ -90,7 +90,7 @@ struct BaseItem: HNItem {
   let dead: Bool?
 }
 
-struct Story: HNItem {
+struct Story: HNItem, Codable, Hashable {
   let id: Int64
   let by: String?
   let time: Int64

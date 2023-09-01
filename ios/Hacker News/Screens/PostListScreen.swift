@@ -20,27 +20,21 @@ struct PostListScreen: View {
           .scaleEffect(2)
       } else {
         List(appState.stories, id: \.id) { story in
-          if let url = story.makeUrl() {
-            NavigationLink {
-              let model = StoryViewModel(story: story)
-              StoryScreen(storyModel: model)
-                .background(.clear)
-                .task {
-                  print("Fetching comments")
-                  await model.fetchComments()
-                }
-            } label: {
+          let navigationValue = if story.commentCount == 0 {
+            Hacker_NewsApp.AppNavigation.webLink(url: story.makeUrl()!, title: story.title)
+          } else {
+            Hacker_NewsApp.AppNavigation.storyComments(story: story)
+          }
+          NavigationLink(
+            value: navigationValue,
+            label: {
               StoryRow(
                 story: story,
-                index: appState.stories.firstIndex(where: { $0.id == story.id })!)
+                index: appState.stories.firstIndex(where: { $0.id == story.id })!
+              )
             }
-            .listRowBackground(Color.clear)
-          } else {
-            StoryRow(
-              story: story,
-              index: appState.stories.firstIndex(where: { $0.id == story.id })!)
-            .listRowBackground(Color.clear)
-          }
+          )
+          .listRowBackground(Color.clear)
         }
         .listStyle(.plain)
       }
