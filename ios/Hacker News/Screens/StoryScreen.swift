@@ -55,7 +55,7 @@ struct CommentRow: View {
         Text(by).font(.caption).foregroundColor(.gray)
       }
       if let text = comment.text {
-        Text(text.htmlToAttributedString()?.string ?? "")
+        Text(text)
       }
     }
     .background(.clear)
