@@ -52,7 +52,9 @@ struct StoryRow: View {
               .foregroundColor(Color.primary.opacity(0.6))
             
             if story.commentCount > 0 {
-              Button(action: {}) {
+              Button(action: {
+                // TODO: Handle comment click
+              }) {
                 let commentText: String = {
                   if story.commentCount == 1 {
                     return "\(story.commentCount) comment"
@@ -93,7 +95,7 @@ struct StoryRow_Preview: PreviewProvider {
       kids: [1, 2, 3]
     )
     
-    return Group {
+    Group {
       StoryRow(story: mockStory, index: 0)
         .previewDevice(PreviewDevice(rawValue: "iPhone 14 Pro"))
         .previewDisplayName("iPhone 14 Pro")
