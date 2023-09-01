@@ -14,10 +14,10 @@ struct Hacker_NewsApp: App {
   
   var body: some Scene {
     WindowGroup {
-      NavigationView {
+      NavigationStack {
         ZStack {
           HNColors.background
-            .edgesIgnoringSafeArea(.all)
+            .ignoresSafeArea()
           ContentView(appState: appState)
         }
         .toolbarColorScheme(.dark, for: .navigationBar)
