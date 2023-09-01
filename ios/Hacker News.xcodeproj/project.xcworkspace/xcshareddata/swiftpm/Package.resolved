@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "snapshotpreviews-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/EmergeTools/SnapshotPreviews-iOS",
+      "state" : {
+        "branch" : "main",
+        "revision" : "8f6092bfeec6319f180b99080ce8977380d123b8"
+      }
+    }
+  ],
+  "version" : 2
+}

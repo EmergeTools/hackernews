@@ -17,7 +17,7 @@ class HNApi {
     do {
       let (data, _) = try await URLSession.shared.data(from: url)
       let decoder = JSONDecoder()
-      let storyIds = try decoder.decode([Int].self, from: data)
+      let storyIds = try decoder.decode([Int64].self, from: data)
       let items = await fetchItems(ids: Array(storyIds.prefix(20)))
       return items.compactMap { $0 as? Story }
     } catch {
@@ -26,7 +26,7 @@ class HNApi {
     }
   }
   
-  private func fetchItems(ids: [Int]) async -> [HNItem] {
+  func fetchItems(ids: [Int64]) async -> [HNItem] {
     do {
       return try await withThrowingTaskGroup(of: HNItem.self) { taskGroup in
         for id in ids {
@@ -34,12 +34,12 @@ class HNApi {
             let url = URL(string: "https://hacker-news.firebaseio.com/v0/item/\(id).json")!
             let (data, response) = try await URLSession.shared.data(from: url)
             let decoder = JSONDecoder()
-            print("Received response: \(response)")
-            if let str = String(data: data, encoding: .utf8) {
-              print("Data: \(str)")
-            } else {
-              print("No readable data received in response")
-            }
+//            print("Received response: \(response)")
+//            if let str = String(data: data, encoding: .utf8) {
+//              print("Data: \(str)")
+//            } else {
+//              print("No readable data received in response")
+//            }
             let baseItem = try decoder.decode(BaseItem.self, from: data)
             
             switch baseItem.type {
@@ -57,11 +57,11 @@ class HNApi {
           }
         }
         
-        var items = [HNItem]()
+        var items = [Int64 : HNItem]()
         for try await result in taskGroup {
-          items.append(result)
+          items[result.id] = result
         }
-        return items
+        return ids.compactMap { items[$0] }
       }
     } catch let error {
       print("Error fetching item details \(error)")
@@ -72,7 +72,7 @@ class HNApi {
 
 protocol HNItem: Codable {
   var id: Int64 { get }
-  var by: String { get }
+  var by: String? { get }
   var time: Int64 { get }
   var type: ItemType { get }
 }
@@ -83,16 +83,16 @@ enum ItemType: String, Codable {
 
 struct BaseItem: HNItem {
   let id: Int64
-  let by: String
+  let by: String?
   let time: Int64
   let type: ItemType
   let deleted: Bool?
   let dead: Bool?
 }
 
-struct Story: HNItem {
+struct Story: HNItem, Codable, Hashable {
   let id: Int64
-  let by: String
+  let by: String?
   let time: Int64
   let type: ItemType
   let title: String
@@ -107,7 +107,7 @@ struct Story: HNItem {
   }
   
   var commentCount: Int {
-    return comments.count
+    return descendants
   }
   
   var displayableUrl: String? {
@@ -130,19 +130,23 @@ struct Story: HNItem {
   }
 }
 
-struct Comment: HNItem {
+struct Comment: HNItem, Identifiable {
   let id: Int64
-  let by: String
+  let by: String?
   let time: Int64
   let type: ItemType
-  let text: String
-  let parent: Int64?
-  let replies: [Int64]
+  let text: String?
+  let parent: Int?
+  let kids: [Int64]?
+  
+  var replies: [Int64]? {
+    kids
+  }
 }
 
 struct Job: HNItem {
   let id: Int64
-  let by: String
+  let by: String?
   let time: Int64
   let type: ItemType
   let title: String
@@ -151,7 +155,7 @@ struct Job: HNItem {
 
 struct Poll: HNItem {
   let id: Int64
-  let by: String
+  let by: String?
   let time: Int64
   let type: ItemType
   let title: String
@@ -163,7 +167,7 @@ struct Poll: HNItem {
 
 struct Pollopt: HNItem {
   let id: Int64
-  let by: String
+  let by: String?
   let time: Int64
   let type: ItemType
   let poll: Int64
