@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import SwiftSoup
 
 extension PreviewProvider {
   static func withNavigationView(@ViewBuilder content: () -> some View) -> some View {
@@ -69,14 +70,8 @@ My soul was also satisfied by the Sleeping At Night post which, along with the r
 }
 
 extension String {
-  func htmlToAttributedString() -> NSAttributedString? {
-    guard let data = self.data(using: .utf8) else { return nil }
-    return try? NSAttributedString(
-      data: data,
-      options: [
-        .documentType: NSAttributedString.DocumentType.html,
-        .characterEncoding: String.Encoding.utf8.rawValue
-      ],
-      documentAttributes: nil)
+  func strippingHTML() -> String {
+    guard let doc: Document = try? SwiftSoup.parse(self) else { return "" } // parse html
+    return (try? doc.text()) ?? ""
   }
 }

@@ -54,7 +54,7 @@ struct CommentRow: View {
       if let by = comment.by {
         Text(by).font(.caption).foregroundColor(.gray)
       }
-      if let text = comment.text {
+      if let text = comment.text?.strippingHTML() {
         Text(text)
       }
     }
