@@ -162,7 +162,7 @@ struct Poll: HNItem {
   let score: Int
   let descendants: Int
   let comments: [Int64]
-  let pollopts: [Int]
+  let pollopts: [Int64]
 }
 
 struct Pollopt: HNItem {
@@ -170,7 +170,7 @@ struct Pollopt: HNItem {
   let by: String?
   let time: Int64
   let type: ItemType
-  let poll: Int
+  let poll: Int64
   let score: Int
   let text: String?
 }
