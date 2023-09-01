@@ -72,12 +72,14 @@ struct CommentRow: View {
 
 struct StoryScreen_Preview: PreviewProvider {
   static var previews: some View {
-    let viewModel = StoryViewModel(story: makeFakeStory())
-    viewModel.comments = [
+    let comments = [
+      makeFakeFlattenedComment(),
       makeFakeFlattenedComment(),
       makeFakeFlattenedComment(),
       makeFakeFlattenedComment()
     ]
+    let viewModel = StoryViewModel(story: makeFakeStory(kids: comments.map { $0.comment.id }))
+    viewModel.comments = comments
     viewModel.isLoadingComments = false
     return Group {
       withNavigationView {

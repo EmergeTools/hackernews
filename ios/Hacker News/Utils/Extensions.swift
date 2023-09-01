@@ -29,7 +29,7 @@ extension PreviewProvider {
     }
   }
   
-  static func makeFakeStory(index: Int64 = 0) -> Story {
+  static func makeFakeStory(index: Int64 = 0, descendants: Int = 0, kids: [Int64]? = nil) -> Story {
     return Story(
       id: index,
       by: "dang",
@@ -39,8 +39,8 @@ extension PreviewProvider {
       text: "Test story body \(index)",
       url: "https://emergetools.com",
       score: 100,
-      descendants: 0,
-      kids: nil
+      descendants: descendants,
+      kids: kids
     )
   }
   
