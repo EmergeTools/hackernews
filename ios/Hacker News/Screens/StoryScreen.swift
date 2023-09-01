@@ -34,10 +34,12 @@ struct StoryScreen: View {
     .toolbarBackground(HNColors.orange, for: .navigationBar)
     .toolbarBackground(.visible, for: .navigationBar)
     .toolbar {
-      ToolbarItemGroup(placement: .navigationBarTrailing) {
-        NavigationLink(value: Hacker_NewsApp.AppNavigation.webLink(url: storyModel.story.makeUrl()!, title: storyModel.story.title)) {
-          Image(systemName: "globe")
-            .foregroundColor(.white)
+      if let url = storyModel.story.makeUrl() {
+        ToolbarItemGroup(placement: .navigationBarTrailing) {
+          NavigationLink(value: Hacker_NewsApp.AppNavigation.webLink(url: url, title: storyModel.story.title)) {
+            Image(systemName: "globe")
+              .foregroundColor(.white)
+          }
         }
       }
     }
