@@ -20,13 +20,14 @@ struct StoryScreen: View {
           .scaleEffect(2)
       } else {
         ScrollView {
-          LazyVStack {
+          LazyVStack(spacing: 16) {
             ForEach(storyModel.comments) { (flattenedComment) in
               CommentView(comment: flattenedComment.comment, level: flattenedComment.depth)
             }
           }
           .padding()
         }
+        .background(.clear)
       }
     }
     .navigationTitle(storyModel.story.title)
@@ -62,9 +63,9 @@ struct CommentView: View {
     .background(.clear)
     .padding(
       EdgeInsets(
-        top: 4,
+        top: 0,
         leading: min(CGFloat(level * 20), CGFloat(maxIndentationLevel * 20)),
-        bottom: 4,
+        bottom: 0,
         trailing: 0
       )
     )
@@ -74,10 +75,16 @@ struct CommentView: View {
 struct StoryScreen_Preview: PreviewProvider {
   static var previews: some View {
     let viewModel = StoryViewModel(story: makeFakeStory())
-    viewModel.comments = [makeFakeFlattenedComment(), makeFakeFlattenedComment(), makeFakeFlattenedComment()]
+    viewModel.comments = [
+      makeFakeFlattenedComment(),
+      makeFakeFlattenedComment(),
+      makeFakeFlattenedComment()
+    ]
     viewModel.isLoadingComments = false
     return Group {
-      StoryScreen(storyModel: viewModel)
+      withNavigationView {
+        StoryScreen(storyModel: viewModel)
+      }
     }
   }
 }
