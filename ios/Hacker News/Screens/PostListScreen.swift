@@ -21,11 +21,15 @@ struct PostListScreen: View {
       } else {
         List(appState.stories, id: \.id) { story in
           if let url = story.makeUrl() {
-            NavigationLink(
-              destination: StoryScreen(storyModel: StoryViewModel(story: story))
-//                .ignoresSafeArea()
-//                .navigationBarTitleDisplayMode(.inline)
-            ) {
+            NavigationLink {
+              let model = StoryViewModel(story: story)
+              StoryScreen(storyModel: model)
+                .background(.clear)
+                .task {
+                  print("Fetching comments")
+                  await model.fetchComments()
+                }
+            } label: {
               StoryRow(
                 story: story,
                 index: appState.stories.firstIndex(where: { $0.id == story.id })!)

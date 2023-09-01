@@ -40,7 +40,7 @@ struct StoryRow: View {
               .foregroundColor(Color.primary.opacity(0.6))
           }
           HStack {
-            let dateAndAuthor = "\(story.displayableDate) by \(story.by)"
+            let dateAndAuthor = "\(story.displayableDate) by \(story.by!)"
             Text(dateAndAuthor)
               .font(.caption)
               .foregroundColor(Color.primary.opacity(0.6))

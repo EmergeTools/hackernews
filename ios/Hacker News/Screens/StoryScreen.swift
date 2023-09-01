@@ -13,18 +13,29 @@ struct StoryScreen: View {
   @ObservedObject var storyModel: StoryViewModel
   
   var body: some View {
-    ScrollView {
-      LazyVStack {
-        ForEach(storyModel.comments) { (flattenedComment) in
-          CommentView(comment: flattenedComment.comment, level: flattenedComment.depth)
+    Group {
+      if storyModel.isLoadingComments {
+        ProgressView()
+          .progressViewStyle(CircularProgressViewStyle())
+          .scaleEffect(2)
+      } else {
+        ScrollView {
+          LazyVStack {
+            ForEach(storyModel.comments) { (flattenedComment) in
+              CommentView(comment: flattenedComment.comment, level: flattenedComment.depth)
+            }
+          }
+          .background(.clear)
+          .padding()
         }
-      }.padding()
-    }.onAppear {
-      Task {
-        await storyModel.fetchComments()
       }
     }
+    .background(.clear)
     .navigationTitle(storyModel.story.title)
+    .navigationBarTitleDisplayMode(.inline)
+    .toolbarColorScheme(.dark, for: .navigationBar)
+    .toolbarBackground(HNColors.orange, for: .navigationBar)
+    .toolbarBackground(.visible, for: .navigationBar)
   }
 }
 
@@ -42,6 +53,7 @@ struct CommentView: View {
         Text(text.htmlToAttributedString()?.string ?? "")
       }
     }
+    .background(.clear)
     .padding(
       EdgeInsets(
         top: 4,

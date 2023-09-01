@@ -107,7 +107,7 @@ struct Story: HNItem {
   }
   
   var commentCount: Int {
-    return comments.count
+    return descendants
   }
   
   var displayableUrl: String? {

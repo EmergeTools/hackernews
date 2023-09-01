@@ -12,12 +12,17 @@ struct Hacker_NewsApp: App {
   
   @StateObject var appState = AppViewModel()
   
+  init() {
+    UINavigationBar.appearance().backgroundColor = .clear
+  }
+  
   var body: some Scene {
     WindowGroup {
-      NavigationView {
+      NavigationStack {
         ZStack {
           HNColors.background
-            .edgesIgnoringSafeArea(.all)
+            .ignoresSafeArea()
+          
           ContentView(appState: appState)
         }
         .toolbarColorScheme(.dark, for: .navigationBar)
