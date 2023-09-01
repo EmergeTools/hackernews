@@ -22,7 +22,7 @@ class StoryViewModel: ObservableObject {
     isLoadingComments = true
     
     var commentsToRequest = story.comments
-    var commentsById = [Int : Comment]()
+    var commentsById = [Int64 : Comment]()
     while !commentsToRequest.isEmpty {
       let items = await HNApi().fetchItems(ids: commentsToRequest)
       commentsToRequest.removeAll()
@@ -47,7 +47,7 @@ class StoryViewModel: ObservableObject {
     isLoadingComments = false
   }
   
-  private func flattenComments(ids: [Int], depth: Int = 0, flattened: inout [FlattenedComment], commentsById: inout [Int : Comment]) {
+  private func flattenComments(ids: [Int64], depth: Int = 0, flattened: inout [FlattenedComment], commentsById: inout [Int64 : Comment]) {
     for id in ids {
       if let foundComment = commentsById[id] {
         flattened.append(FlattenedComment(comment: foundComment, depth: depth))
@@ -62,7 +62,7 @@ class StoryViewModel: ObservableObject {
 struct FlattenedComment: Identifiable {
   let comment: Comment
   let depth: Int
-  var id: Int {
+  var id: Int64 {
     comment.id
   }
 }

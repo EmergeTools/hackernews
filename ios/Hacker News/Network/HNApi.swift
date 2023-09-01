@@ -17,7 +17,7 @@ class HNApi {
     do {
       let (data, _) = try await URLSession.shared.data(from: url)
       let decoder = JSONDecoder()
-      let storyIds = try decoder.decode([Int].self, from: data)
+      let storyIds = try decoder.decode([Int64].self, from: data)
       let items = await fetchItems(ids: Array(storyIds.prefix(20)))
       return items.compactMap { $0 as? Story }
     } catch {
@@ -26,7 +26,7 @@ class HNApi {
     }
   }
   
-  func fetchItems(ids: [Int]) async -> [HNItem] {
+  func fetchItems(ids: [Int64]) async -> [HNItem] {
     do {
       return try await withThrowingTaskGroup(of: HNItem.self) { taskGroup in
         for id in ids {
@@ -57,7 +57,7 @@ class HNApi {
           }
         }
         
-        var items = [Int : HNItem]()
+        var items = [Int64 : HNItem]()
         for try await result in taskGroup {
           items[result.id] = result
         }
@@ -71,7 +71,7 @@ class HNApi {
 }
 
 protocol HNItem: Codable {
-  var id: Int { get }
+  var id: Int64 { get }
   var by: String? { get }
   var time: Int64 { get }
   var type: ItemType { get }
@@ -82,7 +82,7 @@ enum ItemType: String, Codable {
 }
 
 struct BaseItem: HNItem {
-  let id: Int
+  let id: Int64
   let by: String?
   let time: Int64
   let type: ItemType
@@ -91,7 +91,7 @@ struct BaseItem: HNItem {
 }
 
 struct Story: HNItem {
-  let id: Int
+  let id: Int64
   let by: String?
   let time: Int64
   let type: ItemType
@@ -100,9 +100,9 @@ struct Story: HNItem {
   let url: String?
   let score: Int
   let descendants: Int
-  let kids: [Int]?
+  let kids: [Int64]?
   
-  var comments: [Int] {
+  var comments: [Int64] {
     return kids ?? []
   }
   
@@ -131,21 +131,21 @@ struct Story: HNItem {
 }
 
 struct Comment: HNItem, Identifiable {
-  let id: Int
+  let id: Int64
   let by: String?
   let time: Int64
   let type: ItemType
   let text: String?
   let parent: Int?
-  let kids: [Int]?
+  let kids: [Int64]?
   
-  var replies: [Int]? {
+  var replies: [Int64]? {
     kids
   }
 }
 
 struct Job: HNItem {
-  let id: Int
+  let id: Int64
   let by: String?
   let time: Int64
   let type: ItemType
@@ -154,19 +154,19 @@ struct Job: HNItem {
 }
 
 struct Poll: HNItem {
-  let id: Int
+  let id: Int64
   let by: String?
   let time: Int64
   let type: ItemType
   let title: String
   let score: Int
   let descendants: Int
-  let comments: [Int]
+  let comments: [Int64]
   let pollopts: [Int]
 }
 
 struct Pollopt: HNItem {
-  let id: Int
+  let id: Int64
   let by: String?
   let time: Int64
   let type: ItemType
