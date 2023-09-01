@@ -22,17 +22,23 @@ extension PreviewProvider {
     }
   }
   
-  static func makeFakeStory() -> Story {
-    Story(
-      id: 1,
+  static func makeFakeStories() -> [Story] {
+    return (0..<20).map { index in
+      makeFakeStory(index: index)
+    }
+  }
+  
+  static func makeFakeStory(index: Int64 = 0) -> Story {
+    return Story(
+      id: index,
       by: "dang",
-      time: Int64(Date.now.timeIntervalSince1970),
+      time: Int64(Date().timeIntervalSince1970) - Int64(index),
       type: .story,
-      title: "Test story",
-      text: "Test text",
-      url: "emergetools.com",
+      title: "Test story \(index)",
+      text: "Test story body \(index)",
+      url: "https://emergetools.com",
       score: 100,
-      descendants: 5,
+      descendants: 0,
       kids: nil
     )
   }

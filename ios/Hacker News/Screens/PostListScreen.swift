@@ -111,21 +111,4 @@ struct PostListScreen_Previews: PreviewProvider {
       .previewDisplayName("No posts, dark mode")
     }
   }
-  
-  static func makeFakeStories() -> [Story] {
-    return (0..<20).map { index in
-      return Story(
-        id: index,
-        by: "dang",
-        time: Int64(Date().timeIntervalSince1970) - Int64(index),
-        type: .story,
-        title: "Test story \(index)",
-        text: "Test story body \(index)",
-        url: nil,
-        score: 100,
-        descendants: 0,
-        kids: nil
-      )
-    }
-  }
 }
