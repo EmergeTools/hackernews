@@ -75,43 +75,23 @@ struct CommentView: View {
 
 struct StoryScreen_Preview: PreviewProvider {
   static var previews: some View {
-    Group {
-      StoryScreen(storyModel: StoryViewModel(story: Story(id: 1, by: "dang", time: Int64(Date.now.timeIntervalSince1970), type: .story, title: "Test story", text: "Test text", url: "emergetools.com", score: 100, descendants: 5, kids: nil)))
+    let viewModel = StoryViewModel(story: makeFakeStory())
+    viewModel.comments = [makeFakeFlattenedComment(), makeFakeFlattenedComment(), makeFakeFlattenedComment()]
+    viewModel.isLoadingComments = false
+    return Group {
+      StoryScreen(storyModel: viewModel)
     }
   }
 }
 
 struct CommentView_Preview: PreviewProvider {
   static var previews: some View {
-    let comment = Comment(
-      id: 1,
-      by: "dang",
-      time: Int64(Date.now.timeIntervalSince1970),
-      type: .comment,
-      text: """
-Totally useless commentary:
-It makes me deeply happy to hear success stories like this for a project that's moving in the correctly opposite direction to that of the rest of the world.
-
-Engildification. Of which there should be more!
-
-My soul was also satisfied by the Sleeping At Night post which, along with the recent "Lie Still in Bed" article, makes for very simple options to attempt to fix sleep (discipline) issues
-""",
-      parent: nil,
-      kids: nil
-    )
     Group {
-      CommentView(comment: comment, level: 0)
-        .previewLayout(.sizeThatFits)
-      CommentView(comment: comment, level: 1)
-        .previewLayout(.sizeThatFits)
-      CommentView(comment: comment, level: 2)
-        .previewLayout(.sizeThatFits)
-      CommentView(comment: comment, level: 3)
-        .previewLayout(.sizeThatFits)
-      CommentView(comment: comment, level: 4)
-        .previewLayout(.sizeThatFits)
-      CommentView(comment: comment, level: 5)
-        .previewLayout(.sizeThatFits)
+      ForEach(0..<6) { index in
+        CommentView(comment: makeFakeComment(), level: index)
+          .previewLayout(.sizeThatFits)
+          .previewDisplayName("Indentation \(index)")
+      }
     }
   }
 }

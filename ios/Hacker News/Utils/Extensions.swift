@@ -21,6 +21,44 @@ extension PreviewProvider {
       }
     }
   }
+  
+  static func makeFakeStory() -> Story {
+    Story(
+      id: 1,
+      by: "dang",
+      time: Int64(Date.now.timeIntervalSince1970),
+      type: .story,
+      title: "Test story",
+      text: "Test text",
+      url: "emergetools.com",
+      score: 100,
+      descendants: 5,
+      kids: nil
+    )
+  }
+  
+  static func makeFakeComment() -> Comment {
+    Comment(
+      id: 1,
+      by: "dang",
+      time: Int64(Date.now.timeIntervalSince1970),
+      type: .comment,
+      text: """
+Totally useless commentary:
+It makes me deeply happy to hear success stories like this for a project that's moving in the correctly opposite direction to that of the rest of the world.
+
+Engildification. Of which there should be more!
+
+My soul was also satisfied by the Sleeping At Night post which, along with the recent "Lie Still in Bed" article, makes for very simple options to attempt to fix sleep (discipline) issues
+""",
+      parent: nil,
+      kids: nil
+    )
+  }
+  
+  static func makeFakeFlattenedComment(comment: Comment = makeFakeComment(), depth: Int = 0) -> FlattenedComment {
+    FlattenedComment(comment: comment, depth: depth)
+  }
 }
 
 extension String {
