@@ -20,11 +20,13 @@ struct PostListScreen: View {
           .scaleEffect(2)
       } else {
         List(appState.stories, id: \.id) { story in
-          let navigationValue = if story.commentCount == 0 {
-            Hacker_NewsApp.AppNavigation.webLink(url: story.makeUrl()!, title: story.title)
-          } else {
-            Hacker_NewsApp.AppNavigation.storyComments(story: story)
-          }
+          let navigationValue: Hacker_NewsApp.AppNavigation = {
+            if story.commentCount == 0 {
+              return Hacker_NewsApp.AppNavigation.webLink(url: story.makeUrl()!, title: story.title)
+            } else {
+              return Hacker_NewsApp.AppNavigation.storyComments(story: story)
+            }
+          }()
           NavigationLink(
             value: navigationValue,
             label: {
