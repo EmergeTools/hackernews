@@ -20,7 +20,7 @@ struct StoryScreen: View {
           .scaleEffect(2)
       } else {
         List(storyModel.comments, id: \.id) { flattenedComment in
-          CommentView(comment: flattenedComment.comment, level: flattenedComment.depth)
+          CommentRow(comment: flattenedComment.comment, level: flattenedComment.depth)
             .listRowBackground(Color.clear)
             .listRowSeparator(.hidden)
         }
@@ -44,7 +44,7 @@ struct StoryScreen: View {
   }
 }
 
-struct CommentView: View {
+struct CommentRow: View {
   let comment: Comment
   let level: Int
   let maxIndentationLevel: Int = 5
@@ -91,7 +91,7 @@ struct CommentView_Preview: PreviewProvider {
   static var previews: some View {
     Group {
       ForEach(0..<6) { index in
-        CommentView(comment: makeFakeComment(), level: index)
+        CommentRow(comment: makeFakeComment(), level: index)
           .previewLayout(.sizeThatFits)
           .previewDisplayName("Indentation \(index)")
       }
