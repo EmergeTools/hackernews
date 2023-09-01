@@ -101,12 +101,12 @@ struct PostListScreen_Previews: PreviewProvider {
       .previewDisplayName("Loading, dark mode")
       
       withNavigationView {
-        ContentView(appState: loggedIn)
+        PostListScreen(appState: loggedIn)
       }
       .previewDisplayName("No posts")
       
       withNavigationView {
-        ContentView(appState: loggedIn)
+        PostListScreen(appState: loggedIn)
       }
       .colorScheme(.dark)
       .previewDisplayName("No posts, dark mode")
