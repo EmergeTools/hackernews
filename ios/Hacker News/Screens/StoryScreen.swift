@@ -36,6 +36,14 @@ struct StoryScreen: View {
     .toolbarColorScheme(.dark, for: .navigationBar)
     .toolbarBackground(HNColors.orange, for: .navigationBar)
     .toolbarBackground(.visible, for: .navigationBar)
+    .toolbar {
+      ToolbarItemGroup(placement: .navigationBarTrailing) {
+        NavigationLink(value: Hacker_NewsApp.AppNavigation.webLink(url: storyModel.story.makeUrl()!, title: storyModel.story.title)) {
+          Image(systemName: "globe")
+            .foregroundColor(.white)
+        }
+      }
+    }
   }
 }
 

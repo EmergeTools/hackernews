@@ -46,7 +46,6 @@ struct Hacker_NewsApp: App {
             StoryScreen(storyModel: model)
               .background(.clear)
               .task {
-                print("Fetching comments")
                 await model.fetchComments()
               }
           }
