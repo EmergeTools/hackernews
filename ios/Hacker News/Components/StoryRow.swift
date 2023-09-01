@@ -89,37 +89,39 @@ struct StoryRow_Preview: PreviewProvider {
       kids: [1, 2, 3]
     )
     
-    StoryRow(story: mockStory, index: 0)
-      .previewDevice(PreviewDevice(rawValue: "iPhone 14 Pro"))
-      .previewDisplayName("iPhone 14 Pro")
-      .previewLayout(.sizeThatFits)
-    
-    StoryRow(story: mockStory, index: 0)
-      .previewDevice(PreviewDevice(rawValue: "iPhone 14 Pro"))
-      .previewDisplayName("iPhone 14 Pro, dark")
-      .previewLayout(.sizeThatFits)
-      .colorScheme(.dark)
-    
-    StoryRow(story: mockStory, index: 0)
-      .previewDevice(PreviewDevice(rawValue: "iPhone SE (3rd generation)"))
-      .previewDisplayName("iPhone SE (3rd generation)")
-      .previewLayout(.sizeThatFits)
-    
-    StoryRow(story: mockStory, index: 0)
-      .previewDevice(PreviewDevice(rawValue: "iPhone SE (3rd generation)"))
-      .previewDisplayName("iPhone SE (3rd generation), dark")
-      .previewLayout(.sizeThatFits)
-      .colorScheme(.dark)
-    
-    StoryRow(story: mockStory, index: 0)
-      .previewDevice(PreviewDevice(rawValue: "iPad Pro (11-inch) (4th generation)"))
-      .previewDisplayName("iPad Pro (11-inch) (4th generation)")
-      .previewLayout(.sizeThatFits)
-    
-    StoryRow(story: mockStory, index: 0)
-      .previewDevice(PreviewDevice(rawValue: "iPad Pro (11-inch) (4th generation)"))
-      .previewDisplayName("iPad Pro (11-inch) (4th generation), dark")
-      .previewLayout(.sizeThatFits)
-      .colorScheme(.dark)
+    return Group {
+      StoryRow(story: mockStory, index: 0)
+        .previewDevice(PreviewDevice(rawValue: "iPhone 14 Pro"))
+        .previewDisplayName("iPhone 14 Pro")
+        .previewLayout(.sizeThatFits)
+      
+      StoryRow(story: mockStory, index: 0)
+        .previewDevice(PreviewDevice(rawValue: "iPhone 14 Pro"))
+        .previewDisplayName("iPhone 14 Pro, dark")
+        .previewLayout(.sizeThatFits)
+        .colorScheme(.dark)
+      
+      StoryRow(story: mockStory, index: 0)
+        .previewDevice(PreviewDevice(rawValue: "iPhone SE (3rd generation)"))
+        .previewDisplayName("iPhone SE (3rd generation)")
+        .previewLayout(.sizeThatFits)
+      
+      StoryRow(story: mockStory, index: 0)
+        .previewDevice(PreviewDevice(rawValue: "iPhone SE (3rd generation)"))
+        .previewDisplayName("iPhone SE (3rd generation), dark")
+        .previewLayout(.sizeThatFits)
+        .colorScheme(.dark)
+      
+      StoryRow(story: mockStory, index: 0)
+        .previewDevice(PreviewDevice(rawValue: "iPad Pro (11-inch) (4th generation)"))
+        .previewDisplayName("iPad Pro (11-inch) (4th generation)")
+        .previewLayout(.sizeThatFits)
+      
+      StoryRow(story: mockStory, index: 0)
+        .previewDevice(PreviewDevice(rawValue: "iPad Pro (11-inch) (4th generation)"))
+        .previewDisplayName("iPad Pro (11-inch) (4th generation), dark")
+        .previewLayout(.sizeThatFits)
+        .colorScheme(.dark)
+    }
   }
 }
