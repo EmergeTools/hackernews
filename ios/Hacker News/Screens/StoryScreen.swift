@@ -25,12 +25,10 @@ struct StoryScreen: View {
               CommentView(comment: flattenedComment.comment, level: flattenedComment.depth)
             }
           }
-          .background(.clear)
           .padding()
         }
       }
     }
-    .background(.clear)
     .navigationTitle(storyModel.story.title)
     .navigationBarTitleDisplayMode(.inline)
     .toolbarColorScheme(.dark, for: .navigationBar)

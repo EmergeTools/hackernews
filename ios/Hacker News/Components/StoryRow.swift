@@ -87,7 +87,7 @@ struct StoryRow_Preview: PreviewProvider {
       text: nil,
       url: "https://emergetools.com",
       score: 100,
-      descendants: 10,
+      descendants: 3,
       kids: [1, 2, 3]
     )
     
