@@ -43,7 +43,7 @@ class StoryViewModel: ObservableObject {
       commentsById: &commentsById
     )
     
-    self.comments = flattenedComments
+    self.comments = flattenedComments.filter { $0.comment.text?.isEmpty == false }
     isLoadingComments = false
   }
   
