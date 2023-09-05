@@ -37,7 +37,7 @@ struct StoryScreen: View {
     .toolbar {
       if let url = storyModel.story.makeUrl() {
         ToolbarItemGroup(placement: .navigationBarTrailing) {
-          NavigationLink(value: Hacker_NewsApp.AppNavigation.webLink(url: url, title: storyModel.story.title)) {
+          NavigationLink(value: AppViewModel.AppNavigation.webLink(url: url, title: storyModel.story.title)) {
             Image(systemName: "globe")
               .foregroundColor(.white)
           }

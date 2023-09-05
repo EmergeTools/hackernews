@@ -10,11 +10,6 @@ import SwiftUI
 @main
 struct Hacker_NewsApp: App {
   
-  enum AppNavigation: Codable, Hashable {
-    case webLink(url: URL, title: String)
-    case storyComments(story: Story)
-  }
-  
   @StateObject private var appState = AppViewModel()
   
   init() {
@@ -24,7 +19,7 @@ struct Hacker_NewsApp: App {
   
   var body: some Scene {
     WindowGroup {
-      NavigationStack {
+      NavigationStack(path: $appState.navigationPath) {
         ZStack {
           HNColors.background
             .ignoresSafeArea()
@@ -34,7 +29,7 @@ struct Hacker_NewsApp: App {
         .toolbarColorScheme(.dark, for: .navigationBar)
         .toolbarBackground(HNColors.orange, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
-        .navigationDestination(for: AppNavigation.self) { appNavigation in
+        .navigationDestination(for: AppViewModel.AppNavigation.self) { appNavigation in
           switch appNavigation {
           case .webLink(let url, let title):
             WebView(url: url)

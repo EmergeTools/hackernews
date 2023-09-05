@@ -21,18 +21,18 @@ struct PostListScreen: View {
           .scaleEffect(2)
       case .loaded(let stories):
         List(stories, id: \.id) { story in
-          let navigationValue: Hacker_NewsApp.AppNavigation = {
-            if story.commentCount == 0 {
-              // TODO(telkins): this is just a quick hack, I think it should check the item type?
-              return Hacker_NewsApp.AppNavigation.webLink(url: story.makeUrl()!, title: story.title)
+          let navigationValue: AppViewModel.AppNavigation = {
+            if let url = story.makeUrl() {
+              return AppViewModel.AppNavigation.webLink(url: url, title: story.title)
             } else {
-              return Hacker_NewsApp.AppNavigation.storyComments(story: story)
+              return AppViewModel.AppNavigation.storyComments(story: story)
             }
           }()
           NavigationLink(
             value: navigationValue,
             label: {
               StoryRow(
+                appState: appState,
                 story: story,
                 index: stories.firstIndex(where: { $0.id == story.id })!
               )

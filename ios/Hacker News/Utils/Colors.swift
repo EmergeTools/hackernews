@@ -10,5 +10,6 @@ import SwiftUI
 
 struct HNColors {
     static let orange = Color("HNOrange")
-    static let background = Color("Background")
+  static let background = Color("Background")
+  static let lightGray = Color("LightGray")
 }
