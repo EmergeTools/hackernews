@@ -39,6 +39,7 @@ struct PostListScreen: View {
           )
           .listRowBackground(Color.clear)
         }
+        .listStyle(.plain)
       }
     }
     .navigationBarTitle("Hacker News")
