@@ -26,9 +26,9 @@ struct StoryScreen: View {
             .listRowSeparator(.hidden)
         }
         .listStyle(.plain)
-        .background(.clear)
       }
     }
+    .background(HNColors.background)
     .navigationTitle(storyModel.story.title)
     .navigationBarTitleDisplayMode(.inline)
     .toolbarColorScheme(.dark, for: .navigationBar)
