@@ -70,7 +70,7 @@ struct StoryRow: View {
                   .foregroundColor(Color.primary)
               }
               .buttonStyle(.borderedProminent)
-              .tint(HNColors.lightGray)
+              .tint(HNColors.commentBackground)
               .frame(maxWidth: .infinity, alignment: .trailing)
             }
           }
