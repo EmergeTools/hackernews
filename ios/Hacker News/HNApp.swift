@@ -12,6 +12,10 @@ struct Hacker_NewsApp: App {
   
   @StateObject var appState = AppViewModel()
   
+  init() {
+    UICollectionView.appearance().backgroundColor = .clear
+  }
+  
   var body: some Scene {
     WindowGroup {
       NavigationStack {
