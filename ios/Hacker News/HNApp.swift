@@ -16,7 +16,6 @@ struct Hacker_NewsApp: App {
   }
   
   @StateObject private var appState = AppViewModel()
-  @State private var path = NavigationPath()
   
   init() {
     UINavigationBar.appearance().backgroundColor = .clear
@@ -25,7 +24,7 @@ struct Hacker_NewsApp: App {
   
   var body: some Scene {
     WindowGroup {
-      NavigationStack(path: $path) {
+      NavigationStack {
         ZStack {
           HNColors.background
             .ignoresSafeArea()
