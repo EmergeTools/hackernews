@@ -14,12 +14,13 @@ struct StoryScreen: View {
   
   var body: some View {
     Group {
-      if storyModel.isLoadingComments {
+      switch storyModel.state {
+      case .notStarted, .loading:
         ProgressView()
           .progressViewStyle(CircularProgressViewStyle())
           .scaleEffect(2)
-      } else {
-        List(storyModel.comments, id: \.id) { flattenedComment in
+      case .loaded(let comments):
+        List(comments, id: \.id) { flattenedComment in
           CommentRow(comment: flattenedComment.comment, level: flattenedComment.depth)
             .listRowBackground(Color.clear)
             .listRowSeparator(.hidden)
@@ -81,8 +82,7 @@ struct StoryScreen_Preview: PreviewProvider {
       makeFakeFlattenedComment()
     ]
     let viewModel = StoryViewModel(story: makeFakeStory(kids: comments.map { $0.comment.id }))
-    viewModel.comments = comments
-    viewModel.isLoadingComments = false
+    viewModel.state = .loaded(comments: comments)
     return Group {
       withNavigationView {
         StoryScreen(storyModel: viewModel)

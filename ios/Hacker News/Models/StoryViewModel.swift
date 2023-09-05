@@ -10,16 +10,21 @@ import Foundation
 @MainActor
 class StoryViewModel: ObservableObject {
   
+  enum StoryState {
+    case notStarted
+    case loading
+    case loaded(comments: [FlattenedComment])
+  }
+  
   @Published var story: Story
-  @Published var comments: [FlattenedComment] = []
-  @Published var isLoadingComments = false
+  @Published var state = StoryState.notStarted
   
   init(story: Story) {
     self.story = story
   }
   
   func fetchComments() async {
-    isLoadingComments = true
+    state = .loading
     
     var commentsToRequest = story.comments
     var commentsById = [Int64 : Comment]()
@@ -43,8 +48,7 @@ class StoryViewModel: ObservableObject {
       commentsById: &commentsById
     )
     
-    self.comments = flattenedComments.filter { $0.comment.text?.isEmpty == false }
-    isLoadingComments = false
+    state = .loaded(comments: flattenedComments)
   }
   
   private func flattenComments(ids: [Int64], depth: Int = 0, flattened: inout [FlattenedComment], commentsById: inout [Int64 : Comment]) {
