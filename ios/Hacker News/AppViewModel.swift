@@ -15,10 +15,14 @@ class AppViewModel: ObservableObject {
     case loggedOut
   }
   
-  @Published var isLoadingPosts = false
-  @Published var stories: [Story] = []
+  enum StoriesListState {
+    case notStarted
+    case loading
+    case loaded(stories: [Story])
+  }
   
   @Published var authState = AuthState.loggedOut
+  @Published var storiesState = StoriesListState.notStarted
   
   private let hnApi = HNApi()
   
@@ -33,9 +37,9 @@ class AppViewModel: ObservableObject {
   }
   
   func fetchPosts() async {
-    isLoadingPosts = true
-    stories = await hnApi.fetchTopStories()
-    isLoadingPosts = false
+    storiesState = .loading
+    let stories = await hnApi.fetchTopStories()
+    storiesState = .loaded(stories: stories)
   }
   
 }

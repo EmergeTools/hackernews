@@ -14,12 +14,13 @@ struct PostListScreen: View {
   
   var body: some View {
     Group {
-      if appState.isLoadingPosts {
+      switch appState.storiesState {
+      case .notStarted, .loading:
         ProgressView()
           .progressViewStyle(CircularProgressViewStyle())
           .scaleEffect(2)
-      } else {
-        List(appState.stories, id: \.id) { story in
+      case .loaded(let stories):
+        List(stories, id: \.id) { story in
           if let url = story.makeUrl() {
             NavigationLink(
               destination: WebView(url: url)
@@ -29,13 +30,13 @@ struct PostListScreen: View {
             ) {
               StoryRow(
                 story: story,
-                index: appState.stories.firstIndex(where: { $0.id == story.id })!)
+                index: stories.firstIndex(where: { $0.id == story.id })!)
             }
             .listRowBackground(Color.clear)
           } else {
             StoryRow(
               story: story,
-              index: appState.stories.firstIndex(where: { $0.id == story.id })!)
+              index: stories.firstIndex(where: { $0.id == story.id })!)
             .listRowBackground(Color.clear)
           }
         }
@@ -68,11 +69,11 @@ struct PostListScreen: View {
 struct PostListScreen_Previews: PreviewProvider {
   static var previews: some View {
     let appState = AppViewModel()
-    appState.stories = makeFakeStories()
+    appState.storiesState = .loaded(stories: makeFakeStories())
     
     let loading = AppViewModel()
     loading.authState = .loggedIn
-    loading.isLoadingPosts = true
+    loading.storiesState = .loading
     
     let loggedIn = AppViewModel()
     loggedIn.authState = .loggedIn
