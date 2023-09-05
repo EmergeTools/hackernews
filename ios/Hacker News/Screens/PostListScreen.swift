@@ -14,12 +14,13 @@ struct PostListScreen: View {
   
   var body: some View {
     Group {
-      if appState.isLoadingPosts {
+      switch appState.storiesState {
+      case .notStarted, .loading:
         ProgressView()
           .progressViewStyle(CircularProgressViewStyle())
           .scaleEffect(2)
-      } else {
-        List(appState.stories, id: \.id) { story in
+      case .loaded(let stories):
+        List(stories, id: \.id) { story in
           let navigationValue: Hacker_NewsApp.AppNavigation = {
             if story.commentCount == 0 {
               return Hacker_NewsApp.AppNavigation.webLink(url: story.makeUrl()!, title: story.title)
@@ -32,14 +33,12 @@ struct PostListScreen: View {
             label: {
               StoryRow(
                 story: story,
-                index: appState.stories.firstIndex(where: { $0.id == story.id })!
+                index: stories.firstIndex(where: { $0.id == story.id })!
               )
             }
           )
           .listRowBackground(Color.clear)
         }
-        .listStyle(.plain)
-        .background(.clear)
       }
     }
     .navigationBarTitle("Hacker News")
@@ -68,11 +67,11 @@ struct PostListScreen: View {
 struct PostListScreen_Previews: PreviewProvider {
   static var previews: some View {
     let appState = AppViewModel()
-    appState.stories = makeFakeStories()
+    appState.storiesState = .loaded(stories: makeFakeStories())
     
     let loading = AppViewModel()
     loading.authState = .loggedIn
-    loading.isLoadingPosts = true
+    loading.storiesState = .loading
     
     let loggedIn = AppViewModel()
     loggedIn.authState = .loggedIn
@@ -110,6 +109,23 @@ struct PostListScreen_Previews: PreviewProvider {
       }
       .colorScheme(.dark)
       .previewDisplayName("No posts, dark mode")
+    }
+  }
+  
+  static func makeFakeStories() -> [Story] {
+    return (0..<20).map { index in
+      return Story(
+        id: index,
+        by: "dang",
+        time: Int64(Date().timeIntervalSince1970) - Int64(index),
+        type: .story,
+        title: "Test story \(index)",
+        text: "Test story body \(index)",
+        url: "https://emergetools.com",
+        score: 100,
+        descendants: 0,
+        kids: nil
+      )
     }
   }
 }

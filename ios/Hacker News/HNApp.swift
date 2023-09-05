@@ -20,6 +20,7 @@ struct Hacker_NewsApp: App {
   
   init() {
     UINavigationBar.appearance().backgroundColor = .clear
+    UICollectionView.appearance().backgroundColor = .clear
   }
   
   var body: some Scene {
