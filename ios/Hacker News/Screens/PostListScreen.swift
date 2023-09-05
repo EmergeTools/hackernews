@@ -23,6 +23,7 @@ struct PostListScreen: View {
         List(stories, id: \.id) { story in
           let navigationValue: Hacker_NewsApp.AppNavigation = {
             if story.commentCount == 0 {
+              // TODO(telkins): this is just a quick hack, I think it should check the item type?
               return Hacker_NewsApp.AppNavigation.webLink(url: story.makeUrl()!, title: story.title)
             } else {
               return Hacker_NewsApp.AppNavigation.storyComments(story: story)
