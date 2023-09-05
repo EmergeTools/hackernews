@@ -125,7 +125,7 @@ struct PostListScreen_Previews: PreviewProvider {
         text: "Test story body \(index)",
         url: "https://emergetools.com",
         score: 100,
-        descendants: 0,
+        descendants: 3,
         kids: nil
       )
     }
