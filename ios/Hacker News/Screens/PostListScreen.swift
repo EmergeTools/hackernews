@@ -21,24 +21,24 @@ struct PostListScreen: View {
           .scaleEffect(2)
       case .loaded(let stories):
         List(stories, id: \.id) { story in
-          if let url = story.makeUrl() {
-            NavigationLink(
-              destination: WebView(url: url)
-                .ignoresSafeArea()
-                .navigationTitle(story.title)
-                .navigationBarTitleDisplayMode(.inline)
-            ) {
-              StoryRow(
-                story: story,
-                index: stories.firstIndex(where: { $0.id == story.id })!)
+          let navigationValue: AppViewModel.AppNavigation = {
+            if let url = story.makeUrl() {
+              return AppViewModel.AppNavigation.webLink(url: url, title: story.title)
+            } else {
+              return AppViewModel.AppNavigation.storyComments(story: story)
             }
-            .listRowBackground(Color.clear)
-          } else {
-            StoryRow(
-              story: story,
-              index: stories.firstIndex(where: { $0.id == story.id })!)
-            .listRowBackground(Color.clear)
-          }
+          }()
+          NavigationLink(
+            value: navigationValue,
+            label: {
+              StoryRow(
+                appState: appState,
+                story: story,
+                index: stories.firstIndex(where: { $0.id == story.id })!
+              )
+            }
+          )
+          .listRowBackground(Color.clear)
         }
         .listStyle(.plain)
       }
@@ -125,7 +125,7 @@ struct PostListScreen_Previews: PreviewProvider {
         text: "Test story body \(index)",
         url: "https://emergetools.com",
         score: 100,
-        descendants: 0,
+        descendants: 3,
         kids: nil
       )
     }
