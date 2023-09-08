@@ -12,6 +12,9 @@ class HNApi {
   init() {}
   
   func fetchTopStories() async -> [Story] {
+    NotificationCenter.default.post(name: Notification.Name(rawValue: "EmergeMetricStarted"), object: nil, userInfo: [
+      "metric": "FETCH_STORIES"
+    ])
     let url = URL(string: "https://hacker-news.firebaseio.com/v0/topstories.json")!
     
     do {
@@ -19,6 +22,10 @@ class HNApi {
       let decoder = JSONDecoder()
       let storyIds = try decoder.decode([Int64].self, from: data)
       let items = await fetchItems(ids: Array(storyIds.prefix(20)))
+
+      NotificationCenter.default.post(name: Notification.Name(rawValue: "EmergeMetricEnded"), object: nil, userInfo: [
+        "metric": "FETCH_STORIES"
+      ])
       return items.compactMap { $0 as? Story }
     } catch {
       print("Error fetching post IDs: \(error)")
