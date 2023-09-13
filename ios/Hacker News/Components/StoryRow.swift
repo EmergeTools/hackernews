@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 
 struct StoryRow: View {
+  @ObservedObject var appState: AppViewModel
   let story: Story
   let index: Int
   
@@ -53,7 +54,7 @@ struct StoryRow: View {
             
             if story.commentCount > 0 {
               Button(action: {
-                // TODO: Handle comment click
+                appState.navigationPath.append(AppViewModel.AppNavigation.storyComments(story: story))
               }) {
                 let commentText: String = {
                   if story.commentCount == 1 {
@@ -68,6 +69,8 @@ struct StoryRow: View {
                   .underline()
                   .foregroundColor(Color.primary)
               }
+              .buttonStyle(.borderedProminent)
+              .tint(HNColors.commentBackground)
               .frame(maxWidth: .infinity, alignment: .trailing)
             }
           }
@@ -94,36 +97,37 @@ struct StoryRow_Preview: PreviewProvider {
       descendants: 3,
       kids: [1, 2, 3]
     )
+    let appState = AppViewModel()
     
     Group {
-      StoryRow(story: mockStory, index: 0)
+      StoryRow(appState: appState, story: mockStory, index: 0)
         .previewDevice(PreviewDevice(rawValue: "iPhone 14 Pro"))
         .previewDisplayName("iPhone 14 Pro")
         .previewLayout(.sizeThatFits)
       
-      StoryRow(story: mockStory, index: 0)
+      StoryRow(appState: appState, story: mockStory, index: 0)
         .previewDevice(PreviewDevice(rawValue: "iPhone 14 Pro"))
         .previewDisplayName("iPhone 14 Pro, dark")
         .previewLayout(.sizeThatFits)
         .colorScheme(.dark)
       
-      StoryRow(story: mockStory, index: 0)
+      StoryRow(appState: appState, story: mockStory, index: 0)
         .previewDevice(PreviewDevice(rawValue: "iPhone SE (3rd generation)"))
         .previewDisplayName("iPhone SE (3rd generation)")
         .previewLayout(.sizeThatFits)
       
-      StoryRow(story: mockStory, index: 0)
+      StoryRow(appState: appState, story: mockStory, index: 0)
         .previewDevice(PreviewDevice(rawValue: "iPhone SE (3rd generation)"))
         .previewDisplayName("iPhone SE (3rd generation), dark")
         .previewLayout(.sizeThatFits)
         .colorScheme(.dark)
       
-      StoryRow(story: mockStory, index: 0)
+      StoryRow(appState: appState, story: mockStory, index: 0)
         .previewDevice(PreviewDevice(rawValue: "iPad Pro (11-inch) (4th generation)"))
         .previewDisplayName("iPad Pro (11-inch) (4th generation)")
         .previewLayout(.sizeThatFits)
       
-      StoryRow(story: mockStory, index: 0)
+      StoryRow(appState: appState, story: mockStory, index: 0)
         .previewDevice(PreviewDevice(rawValue: "iPad Pro (11-inch) (4th generation)"))
         .previewDisplayName("iPad Pro (11-inch) (4th generation), dark")
         .previewLayout(.sizeThatFits)

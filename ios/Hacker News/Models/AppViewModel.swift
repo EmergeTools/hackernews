@@ -6,9 +6,15 @@
 //
 
 import Foundation
+import SwiftUI
 
 @MainActor
 class AppViewModel: ObservableObject {
+  
+  enum AppNavigation: Codable, Hashable {
+    case webLink(url: URL, title: String)
+    case storyComments(story: Story)
+  }
   
   enum AuthState {
     case loggedIn
@@ -23,6 +29,7 @@ class AppViewModel: ObservableObject {
   
   @Published var authState = AuthState.loggedOut
   @Published var storiesState = StoriesListState.notStarted
+  @Published var navigationPath = NavigationPath()
   
   private let hnApi = HNApi()
   
