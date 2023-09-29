@@ -69,6 +69,7 @@ dependencies {
   implementation(libs.accompanist.webview)
   implementation(libs.androidx.appcompat)
   implementation(libs.compose.activity)
+  implementation(libs.compose.tooling)
   implementation(libs.compose.tooling.preview)
   implementation(libs.emerge.snapshots.annotations)
   implementation(libs.androidx.datastore.preferences)
