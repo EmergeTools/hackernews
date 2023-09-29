@@ -8,6 +8,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.emergetools.hackernews.network.models.Comment
 import com.emergetools.hackernews.ui.BuildItem
@@ -36,6 +37,7 @@ fun BuildComment(
  * To generate a snapshot test for this preview, add the snapshot-processor as a ksp dependency.
  */
 @SnapshotTestingPreviews
+@Preview
 @Composable
 fun CommentRow() {
   val mockComment = Comment(
