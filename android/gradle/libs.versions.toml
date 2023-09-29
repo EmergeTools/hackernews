@@ -37,10 +37,10 @@ androidx-test-rules = { module = "androidx.test:rules", version.ref = "androidx-
 androidx-test-runner = { module = "androidx.test:runner", version.ref = "androidx-test" }
 
 compose-activity = "androidx.activity:activity-compose:1.7.2"
-compose-tooling = "androidx.compose.ui:ui-tooling:1.4.3"
-compose-tooling-preview = "androidx.compose.ui:ui-tooling-preview:1.4.3"
-compose-ui-test = "androidx.compose.ui:ui-test-junit4:1.4.3"
-compose-ui-test-manifest = "androidx.compose.ui:ui-test-manifest:1.4.3"
+compose-tooling = "androidx.compose.ui:ui-tooling:1.5.2"
+compose-tooling-preview = "androidx.compose.ui:ui-tooling-preview:1.5.2"
+compose-ui-test = "androidx.compose.ui:ui-test-junit4:1.5.2"
+compose-ui-test-manifest = "androidx.compose.ui:ui-test-manifest:1.5.2"
 
 emerge-perf = { module = "com.emergetools.test:performance", version.ref = "emerge-perf" }
 emerge-relax = "com.emergetools.test:relax:0.1.0"
