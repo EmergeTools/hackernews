@@ -146,7 +146,8 @@ platform :ios do
       pr_number: ENV['PULL_NUMBER'],
       sha: (ENV.has_key?('COMMIT_SHA') && ENV['COMMIT_SHA'].length > 0) ? ENV['COMMIT_SHA'] : ENV['GITHUB_SHA'],
       base_sha: ENV['BASE_SHA'],
-      build_type: ENV['EMERGE_BUILD_TYPE']
+      build_type: ENV['EMERGE_BUILD_TYPE'],
+      config_path: ENV['CONFIG_PATH']
     )
   end
 
@@ -160,7 +161,8 @@ platform :ios do
       pr_number: ENV['PULL_NUMBER'],
       sha: (ENV.has_key?('COMMIT_SHA') && ENV['COMMIT_SHA'].length > 0) ? ENV['COMMIT_SHA'] : ENV['GITHUB_SHA'],
       base_sha: ENV['BASE_SHA'],
-      build_type: ENV['EMERGE_BUILD_TYPE']
+      build_type: ENV['EMERGE_BUILD_TYPE'],
+      config_path: ENV['CONFIG_PATH']
     )
   end
 end

@@ -1,0 +1,7 @@
+version: 1.0
+snapshots:
+  ios:
+    excludedPreviews:
+      - type: exact
+        value: StoryRow_Preview
+

@@ -46,3 +46,4 @@ jobs:
           PULL_NUMBER: ${{ github.event.pull_request.number }}
           SCHEME: Release
           EMERGE_BUILD_TYPE: pull-request
+          CONFIG_PATH: ../emerge_config.yaml

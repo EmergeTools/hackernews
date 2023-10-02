@@ -57,3 +57,4 @@ jobs:
           EMERGE_BUILD_TYPE: snapshot
           BUNDLE_ID: com.emerge.hn.Hacker-News.snapshots
           PROV_PROFILE_NAME: Hacker News Snapshots
+          CONFIG_PATH: ../emerge_config.yaml
