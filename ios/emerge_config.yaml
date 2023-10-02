@@ -3,5 +3,5 @@ snapshots:
   ios:
     excludedPreviews:
       - type: exact
-        value: StoryRow_Preview
+        value: Hacker_News.StoryRow_Preview
 
