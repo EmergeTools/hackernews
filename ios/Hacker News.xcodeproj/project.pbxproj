@@ -105,6 +105,7 @@
 		A47309B52AA7D1F600201376 /* CommentRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRow.swift; sourceTree = "<group>"; };
 		A48C0DE62A9818A50034CC0A /* StoryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryScreen.swift; sourceTree = "<group>"; };
 		A48C0DE92A9819E00034CC0A /* StoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryViewModel.swift; sourceTree = "<group>"; };
+		F4CCECDE2ACCA3B300930672 /* ExportedSymbols */ = {isa = PBXFileReference; lastKnownFileType = text; path = ExportedSymbols; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -206,6 +207,7 @@
 				1DF162012A436E6E001A3F76 /* Utils */,
 				A427057C2A4293B10057E439 /* HNApp.swift */,
 				A427057E2A4293B10057E439 /* ContentView.swift */,
+				F4CCECDE2ACCA3B300930672 /* ExportedSymbols */,
 				A42705802A4293B20057E439 /* Assets.xcassets */,
 				A42705822A4293B20057E439 /* Preview Content */,
 			);
@@ -652,6 +654,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Hacker News/Preview Content\"";
 				DEVELOPMENT_TEAM = 62J2XHNK9T;
 				ENABLE_PREVIEWS = YES;
+				EXPORTED_SYMBOLS_FILE = "./Hacker News/ExportedSymbols";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Hacker-News-Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -686,6 +689,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Hacker News/Preview Content\"";
 				DEVELOPMENT_TEAM = 62J2XHNK9T;
 				ENABLE_PREVIEWS = YES;
+				EXPORTED_SYMBOLS_FILE = "./Hacker News/ExportedSymbols";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Hacker-News-Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
