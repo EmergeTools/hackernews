@@ -5,11 +5,13 @@
 //  Created by Trevor Elkins on 6/20/23.
 //
 
+import Reaper
 import SwiftUI
 
 @main
 struct Hacker_NewsApp: App {
   
+  @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
   @StateObject private var appState = AppViewModel()
   
   init() {
@@ -47,5 +49,15 @@ struct Hacker_NewsApp: App {
         }
       }
     }
+  }
+}
+
+class AppDelegate: NSObject, UIApplicationDelegate {
+  func application(
+    _ application: UIApplication, didFinishLaunchingWithOptions
+    launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool
+  {
+    EMGReaper.sharedInstance().start(withAPIKey: "${REAPER_API_KEY}")
+    return true
   }
 }

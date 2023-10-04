@@ -29,8 +29,11 @@
 		A44B39B52AA27F5600C443B7 /* PreviewingTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44B39B42AA27F5600C443B7 /* PreviewingTest.swift */; };
 		A47309B42AA29D9600201376 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = A47309B32AA29D9600201376 /* SwiftSoup */; };
 		A47309B62AA7D1F600201376 /* CommentRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47309B52AA7D1F600201376 /* CommentRow.swift */; };
+		A485683E2AB27F5300CEF557 /* PreviewGallery in Frameworks */ = {isa = PBXBuildFile; productRef = A485683D2AB27F5300CEF557 /* PreviewGallery */; };
 		A49933942AA28B5900DED8B1 /* StoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48C0DE92A9819E00034CC0A /* StoryViewModel.swift */; };
 		A49933952AA28B6500DED8B1 /* StoryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48C0DE62A9818A50034CC0A /* StoryScreen.swift */; };
+		A4BED5B82ACE0ADF001642B3 /* Reaper.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4BED5B72ACE0ADF001642B3 /* Reaper.xcframework */; };
+		A4BED5B92ACE0ADF001642B3 /* Reaper.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A4BED5B72ACE0ADF001642B3 /* Reaper.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +52,20 @@
 			remoteInfo = "Hacker News";
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A4BED5B62ACE0AC7001642B3 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				A4BED5B92ACE0ADF001642B3 /* Reaper.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		1DF161F92A4346F6001A3F76 /* StoryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryRow.swift; sourceTree = "<group>"; };
@@ -105,6 +122,7 @@
 		A47309B52AA7D1F600201376 /* CommentRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRow.swift; sourceTree = "<group>"; };
 		A48C0DE62A9818A50034CC0A /* StoryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryScreen.swift; sourceTree = "<group>"; };
 		A48C0DE92A9819E00034CC0A /* StoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryViewModel.swift; sourceTree = "<group>"; };
+		A4BED5B72ACE0ADF001642B3 /* Reaper.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Reaper.xcframework; path = Frameworks/Reaper.xcframework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +130,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A485683E2AB27F5300CEF557 /* PreviewGallery in Frameworks */,
+				A4BED5B82ACE0ADF001642B3 /* Reaper.xcframework in Frameworks */,
 				A47309B42AA29D9600201376 /* SwiftSoup in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -182,6 +202,7 @@
 				A427058C2A4293B30057E439 /* Hacker NewsTests */,
 				A42705962A4293B30057E439 /* Hacker NewsUITests */,
 				A427057A2A4293B10057E439 /* Products */,
+				A4BED5AB2ACDFDCF001642B3 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -315,6 +336,14 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		A4BED5AB2ACDFDCF001642B3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A4BED5B72ACE0ADF001642B3 /* Reaper.xcframework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -326,6 +355,7 @@
 				A42705762A4293B10057E439 /* Frameworks */,
 				A42705772A4293B10057E439 /* Resources */,
 				A42705AE2A44C35D0057E439 /* Strip Symbols */,
+				A4BED5B62ACE0AC7001642B3 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -334,6 +364,7 @@
 			name = "Hacker News";
 			packageProductDependencies = (
 				A47309B32AA29D9600201376 /* SwiftSoup */,
+				A485683D2AB27F5300CEF557 /* PreviewGallery */,
 			);
 			productName = "Hacker News";
 			productReference = A42705792A4293B10057E439 /* Hacker News.app */;
@@ -861,6 +892,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A47309B22AA29D9600201376 /* XCRemoteSwiftPackageReference "SwiftSoup" */;
 			productName = SwiftSoup;
+		};
+		A485683D2AB27F5300CEF557 /* PreviewGallery */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A44B39AF2AA27F4900C443B7 /* XCRemoteSwiftPackageReference "SnapshotPreviews-iOS" */;
+			productName = PreviewGallery;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

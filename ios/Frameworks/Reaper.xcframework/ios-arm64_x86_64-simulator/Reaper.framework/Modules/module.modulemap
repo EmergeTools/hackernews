@@ -1,0 +1,6 @@
+framework module Reaper {
+  umbrella header "Reaper.h"
+
+  export *
+  module * { export * }
+}
