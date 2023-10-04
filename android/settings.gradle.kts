@@ -3,6 +3,7 @@ rootProject.name = "HackerNews"
 pluginManagement {
   repositories {
     gradlePluginPortal()
+    mavenLocal()
     mavenCentral()
     google()
   }
@@ -11,6 +12,7 @@ pluginManagement {
 dependencyResolutionManagement {
   repositories {
     google()
+    mavenLocal()
     mavenCentral()
   }
 }
