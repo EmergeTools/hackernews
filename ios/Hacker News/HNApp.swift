@@ -57,7 +57,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     _ application: UIApplication, didFinishLaunchingWithOptions
     launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool
   {
-    EMGReaper.sharedInstance().start(withAPIKey: "${REAPER_API_KEY}")
+    EMGReaper.sharedInstance().start(withAPIKey: "#{REAPER_API_KEY}")
     return true
   }
 }
