@@ -32,6 +32,12 @@ jobs:
         run: |
           echo $CERTIFICATE_BASE64 | base64 --decode > signing-cert.p12
 
+      - name: Insert Reaper key
+        env:
+          REAPER_KEY: ${{ secrets.REAPER_API_KEY }}
+        run: |
+          sed -i '' "s/#{REAPER_API_KEY}/${REAPER_API_KEY}/g" Hacker\ News.xcodeproj/project.pbxproj
+
       - name: Build & upload iOS size analysis binary to Emerge Tools
         run: bundle exec fastlane ios build_upload_emerge
         env:
