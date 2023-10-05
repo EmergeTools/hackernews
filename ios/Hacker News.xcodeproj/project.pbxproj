@@ -29,10 +29,9 @@
 		A47309B62AA7D1F600201376 /* CommentRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47309B52AA7D1F600201376 /* CommentRow.swift */; };
 		A49933942AA28B5900DED8B1 /* StoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48C0DE92A9819E00034CC0A /* StoryViewModel.swift */; };
 		A49933952AA28B6500DED8B1 /* StoryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48C0DE62A9818A50034CC0A /* StoryScreen.swift */; };
-		A4BED5B82ACE0ADF001642B3 /* Reaper.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4BED5B72ACE0ADF001642B3 /* Reaper.xcframework */; };
-		A4BED5B92ACE0ADF001642B3 /* Reaper.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A4BED5B72ACE0ADF001642B3 /* Reaper.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A4BED5BC2ACE178C001642B3 /* SnapshottingTests in Frameworks */ = {isa = PBXBuildFile; productRef = A4BED5BB2ACE178C001642B3 /* SnapshottingTests */; };
 		A4BED5BE2ACE17B3001642B3 /* Snapshotting in Frameworks */ = {isa = PBXBuildFile; productRef = A4BED5BD2ACE17B3001642B3 /* Snapshotting */; };
+		A4BED5BF2ACF2806001642B3 /* Reaper.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4BED5B72ACE0ADF001642B3 /* Reaper.xcframework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,20 +50,6 @@
 			remoteInfo = "Hacker News";
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		A4BED5B62ACE0AC7001642B3 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				A4BED5B92ACE0ADF001642B3 /* Reaper.xcframework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		1DF161F92A4346F6001A3F76 /* StoryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryRow.swift; sourceTree = "<group>"; };
@@ -129,7 +114,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A4BED5B82ACE0ADF001642B3 /* Reaper.xcframework in Frameworks */,
+				A4BED5BF2ACF2806001642B3 /* Reaper.xcframework in Frameworks */,
 				A47309B42AA29D9600201376 /* SwiftSoup in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -353,7 +338,6 @@
 				A42705762A4293B10057E439 /* Frameworks */,
 				A42705772A4293B10057E439 /* Resources */,
 				A42705AE2A44C35D0057E439 /* Strip Symbols */,
-				A4BED5B62ACE0AC7001642B3 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
