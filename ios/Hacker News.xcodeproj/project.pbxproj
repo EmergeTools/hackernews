@@ -24,13 +24,14 @@
 		A42705AB2A4296BA0057E439 /* PostListScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A42705AA2A4296BA0057E439 /* PostListScreen.swift */; };
 		A42705AD2A429D2E0057E439 /* HNApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = A42705AC2A429D2E0057E439 /* HNApi.swift */; };
 		A434C2E02A8E75960002F488 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A434C2DF2A8E75960002F488 /* WebView.swift */; };
-		A44B39B12AA27F4900C443B7 /* Snapshotting in Frameworks */ = {isa = PBXBuildFile; productRef = A44B39B02AA27F4900C443B7 /* Snapshotting */; };
-		A44B39B32AA27F4900C443B7 /* SnapshottingTests in Frameworks */ = {isa = PBXBuildFile; productRef = A44B39B22AA27F4900C443B7 /* SnapshottingTests */; };
 		A44B39B52AA27F5600C443B7 /* PreviewingTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44B39B42AA27F5600C443B7 /* PreviewingTest.swift */; };
 		A47309B42AA29D9600201376 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = A47309B32AA29D9600201376 /* SwiftSoup */; };
 		A47309B62AA7D1F600201376 /* CommentRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47309B52AA7D1F600201376 /* CommentRow.swift */; };
 		A49933942AA28B5900DED8B1 /* StoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48C0DE92A9819E00034CC0A /* StoryViewModel.swift */; };
 		A49933952AA28B6500DED8B1 /* StoryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48C0DE62A9818A50034CC0A /* StoryScreen.swift */; };
+		A4BED5BC2ACE178C001642B3 /* SnapshottingTests in Frameworks */ = {isa = PBXBuildFile; productRef = A4BED5BB2ACE178C001642B3 /* SnapshottingTests */; };
+		A4BED5BE2ACE17B3001642B3 /* Snapshotting in Frameworks */ = {isa = PBXBuildFile; productRef = A4BED5BD2ACE17B3001642B3 /* Snapshotting */; };
+		A4BED5BF2ACF2806001642B3 /* Reaper.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4BED5B72ACE0ADF001642B3 /* Reaper.xcframework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -105,6 +106,7 @@
 		A47309B52AA7D1F600201376 /* CommentRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRow.swift; sourceTree = "<group>"; };
 		A48C0DE62A9818A50034CC0A /* StoryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryScreen.swift; sourceTree = "<group>"; };
 		A48C0DE92A9819E00034CC0A /* StoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryViewModel.swift; sourceTree = "<group>"; };
+		A4BED5B72ACE0ADF001642B3 /* Reaper.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Reaper.xcframework; path = Frameworks/Reaper.xcframework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +114,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A4BED5BF2ACF2806001642B3 /* Reaper.xcframework in Frameworks */,
 				A47309B42AA29D9600201376 /* SwiftSoup in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -127,8 +130,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A44B39B32AA27F4900C443B7 /* SnapshottingTests in Frameworks */,
-				A44B39B12AA27F4900C443B7 /* Snapshotting in Frameworks */,
+				A4BED5BE2ACE17B3001642B3 /* Snapshotting in Frameworks */,
+				A4BED5BC2ACE178C001642B3 /* SnapshottingTests in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -182,6 +185,7 @@
 				A427058C2A4293B30057E439 /* Hacker NewsTests */,
 				A42705962A4293B30057E439 /* Hacker NewsUITests */,
 				A427057A2A4293B10057E439 /* Products */,
+				A4BED5AB2ACDFDCF001642B3 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -315,6 +319,14 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		A4BED5AB2ACDFDCF001642B3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A4BED5B72ACE0ADF001642B3 /* Reaper.xcframework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -372,8 +384,8 @@
 			);
 			name = "Hacker NewsUITests";
 			packageProductDependencies = (
-				A44B39B02AA27F4900C443B7 /* Snapshotting */,
-				A44B39B22AA27F4900C443B7 /* SnapshottingTests */,
+				A4BED5BB2ACE178C001642B3 /* SnapshottingTests */,
+				A4BED5BD2ACE17B3001642B3 /* Snapshotting */,
 			);
 			productName = "Hacker NewsUITests";
 			productReference = A42705932A4293B30057E439 /* Hacker NewsUITests.xctest */;
@@ -412,8 +424,8 @@
 			);
 			mainGroup = A42705702A4293B10057E439;
 			packageReferences = (
-				A44B39AF2AA27F4900C443B7 /* XCRemoteSwiftPackageReference "SnapshotPreviews-iOS" */,
 				A47309B22AA29D9600201376 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
+				A4BED5BA2ACE178C001642B3 /* XCRemoteSwiftPackageReference "SnapshotPreviews-iOS" */,
 			);
 			productRefGroup = A427057A2A4293B10057E439 /* Products */;
 			projectDirPath = "";
@@ -664,6 +676,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = "\"$(PROJECT_DIR)/Frameworks/Reaper.xcframework\"";
 				MARKETING_VERSION = 2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.emerge.hn.Hacker-News";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -698,6 +711,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = "\"$(PROJECT_DIR)/Frameworks/Reaper.xcframework\"";
 				MARKETING_VERSION = 2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.emerge.hn.Hacker-News";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -828,14 +842,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		A44B39AF2AA27F4900C443B7 /* XCRemoteSwiftPackageReference "SnapshotPreviews-iOS" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/EmergeTools/SnapshotPreviews-iOS";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
 		A47309B22AA29D9600201376 /* XCRemoteSwiftPackageReference "SwiftSoup" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/scinfu/SwiftSoup";
@@ -844,23 +850,31 @@
 				minimumVersion = 2.6.1;
 			};
 		};
+		A4BED5BA2ACE178C001642B3 /* XCRemoteSwiftPackageReference "SnapshotPreviews-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/EmergeTools/SnapshotPreviews-iOS";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		A44B39B02AA27F4900C443B7 /* Snapshotting */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = A44B39AF2AA27F4900C443B7 /* XCRemoteSwiftPackageReference "SnapshotPreviews-iOS" */;
-			productName = Snapshotting;
-		};
-		A44B39B22AA27F4900C443B7 /* SnapshottingTests */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = A44B39AF2AA27F4900C443B7 /* XCRemoteSwiftPackageReference "SnapshotPreviews-iOS" */;
-			productName = SnapshottingTests;
-		};
 		A47309B32AA29D9600201376 /* SwiftSoup */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = A47309B22AA29D9600201376 /* XCRemoteSwiftPackageReference "SwiftSoup" */;
 			productName = SwiftSoup;
+		};
+		A4BED5BB2ACE178C001642B3 /* SnapshottingTests */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A4BED5BA2ACE178C001642B3 /* XCRemoteSwiftPackageReference "SnapshotPreviews-iOS" */;
+			productName = SnapshottingTests;
+		};
+		A4BED5BD2ACE17B3001642B3 /* Snapshotting */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A4BED5BA2ACE178C001642B3 /* XCRemoteSwiftPackageReference "SnapshotPreviews-iOS" */;
+			productName = Snapshotting;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
