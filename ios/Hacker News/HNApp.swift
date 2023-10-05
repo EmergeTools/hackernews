@@ -10,22 +10,22 @@ import SwiftUI
 
 @main
 struct Hacker_NewsApp: App {
-  
+
   @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
   @StateObject private var appState = AppViewModel()
-  
+
   init() {
     UINavigationBar.appearance().backgroundColor = .clear
     UICollectionView.appearance().backgroundColor = .clear
   }
-  
+
   var body: some Scene {
     WindowGroup {
       NavigationStack(path: $appState.navigationPath) {
         ZStack {
           HNColors.background
             .ignoresSafeArea()
-          
+
           ContentView(appState: appState)
         }
         .toolbarColorScheme(.dark, for: .navigationBar)
@@ -57,7 +57,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     _ application: UIApplication, didFinishLaunchingWithOptions
     launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool
   {
-    EMGReaper.sharedInstance().start(withAPIKey: "#{REAPER_API_KEY}")
+    EMGReaper.sharedInstance().start(withAPIKey: "f77fb081-cfc2-4d15-acb5-18bad59c9376")
     return true
   }
 }

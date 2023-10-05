@@ -41,12 +41,6 @@ jobs:
         run: |
           sed -i '' "s/${ORIGINAL_BUNDLE}/${NEW_BUNDLE}/g" Hacker\ News.xcodeproj/project.pbxproj
 
-      - name: Insert Reaper key
-        env:
-          REAPER_KEY: ${{ secrets.REAPER_API_KEY }}
-        run: |
-          sed -i '' "s/#{REAPER_API_KEY}/${REAPER_API_KEY}/g" Hacker\ News.xcodeproj/project.pbxproj
-
       - name: Build & upload iOS snapshot binary to Emerge Tools
         run: bundle exec fastlane ios build_upload_emerge
         env:
