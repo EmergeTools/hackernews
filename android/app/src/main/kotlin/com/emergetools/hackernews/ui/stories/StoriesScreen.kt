@@ -146,8 +146,10 @@ data class StoriesState(
 
 class StoriesViewModel(
   initialState: StoriesState,
-  private val api: HNApiService,
 ) : MavericksViewModel<StoriesState>(initialState) {
+
+  private val api: HNApiService
+    get() = HNApi.retrofitService
 
   init {
     fetchTopStories()
@@ -199,17 +201,8 @@ class StoriesViewModel(
     }
   }
 
-  companion object : MavericksViewModelFactory<StoriesViewModel, StoriesState> {
+  companion object {
 
     const val OFFSET = 20
-
-    @JvmStatic
-    override fun create(
-      viewModelContext: ViewModelContext,
-      state: StoriesState,
-    ) = StoriesViewModel(
-      state,
-      HNApi.retrofitService,
-    )
   }
 }
