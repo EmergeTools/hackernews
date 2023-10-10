@@ -34,6 +34,30 @@
       </intent-filter>
     </activity>
 
+    <meta-data
+      android:name="io.sentry.dsn"
+      android:value="https://db2524adf3fee320562f372d15f98098@o497846.ingest.sentry.io/4506028523388928" />
+
+    <meta-data
+      android:name="io.sentry.traces.user-interaction.enable"
+      android:value="true" />
+
+    <meta-data
+      android:name="io.sentry.attach-screenshot"
+      android:value="true" />
+
+    <meta-data
+      android:name="io.sentry.attach-view-hierarchy"
+      android:value="true" />
+
+    <meta-data
+      android:name="io.sentry.traces.sample-rate"
+      android:value="1.0" />
+
+    <meta-data
+      android:name="io.sentry.traces.profiling.sample-rate"
+      android:value="1.0" />
+
     <profileable android:shell="true" />
 
   </application>

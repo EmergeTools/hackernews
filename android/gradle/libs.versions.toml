@@ -20,6 +20,7 @@ emerge = { id = "com.emergetools.android", version.ref = "emerge-gradle-plugin" 
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+sentry = { id = "io.sentry.android.gradle", version = "3.13.0" }
 
 [libraries]
 accompanist-navigationanim = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "accompanist" }
