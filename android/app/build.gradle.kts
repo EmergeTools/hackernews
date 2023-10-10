@@ -44,12 +44,16 @@ android {
     jvmTarget = JavaVersion.VERSION_17.toString()
   }
   composeOptions {
-    kotlinCompilerExtensionVersion = "1.4.8"
+    kotlinCompilerExtensionVersion = libs.versions.compose.compiler.extension.get()
   }
 }
 
 emerge {
   // apiToken is implicitly set from the EMERGE_API_TOKEN environment variable
+
+  performance {
+    projectPath.set(":performance")
+  }
 
   snapshots {
     buildType.set("snapshot")

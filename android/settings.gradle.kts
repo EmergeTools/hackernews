@@ -19,4 +19,7 @@ dependencyResolutionManagement {
 
 enableFeaturePreview("STABLE_CONFIGURATION_CACHE")
 
-include(":app")
+include(
+  ":app",
+  ":performance"
+)
