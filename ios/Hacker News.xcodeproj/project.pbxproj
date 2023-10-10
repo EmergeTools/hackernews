@@ -32,6 +32,9 @@
 		A4BED5BC2ACE178C001642B3 /* SnapshottingTests in Frameworks */ = {isa = PBXBuildFile; productRef = A4BED5BB2ACE178C001642B3 /* SnapshottingTests */; };
 		A4BED5BE2ACE17B3001642B3 /* Snapshotting in Frameworks */ = {isa = PBXBuildFile; productRef = A4BED5BD2ACE17B3001642B3 /* Snapshotting */; };
 		A4BED5BF2ACF2806001642B3 /* Reaper.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4BED5B72ACE0ADF001642B3 /* Reaper.xcframework */; };
+		A4BED5C32AD5E083001642B3 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
+		A4BED5C42AD5E083001642B3 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
+		A9DF68FF511E48048B0A703D /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = 673236B0A4D04137A0D80A76 /* Sentry */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -116,6 +119,7 @@
 			files = (
 				A4BED5BF2ACF2806001642B3 /* Reaper.xcframework in Frameworks */,
 				A47309B42AA29D9600201376 /* SwiftSoup in Frameworks */,
+				A9DF68FF511E48048B0A703D /* Sentry in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -123,6 +127,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A4BED5C32AD5E083001642B3 /* (null) in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -132,6 +137,7 @@
 			files = (
 				A4BED5BE2ACE17B3001642B3 /* Snapshotting in Frameworks */,
 				A4BED5BC2ACE178C001642B3 /* SnapshottingTests in Frameworks */,
+				A4BED5C42AD5E083001642B3 /* (null) in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -338,6 +344,7 @@
 				A42705762A4293B10057E439 /* Frameworks */,
 				A42705772A4293B10057E439 /* Resources */,
 				A42705AE2A44C35D0057E439 /* Strip Symbols */,
+				F52059CED4FD476981550295 /* Upload Debug Symbols to Sentry */,
 			);
 			buildRules = (
 			);
@@ -346,6 +353,7 @@
 			name = "Hacker News";
 			packageProductDependencies = (
 				A47309B32AA29D9600201376 /* SwiftSoup */,
+				673236B0A4D04137A0D80A76 /* Sentry */,
 			);
 			productName = "Hacker News";
 			productReference = A42705792A4293B10057E439 /* Hacker News.app */;
@@ -426,6 +434,7 @@
 			packageReferences = (
 				A47309B22AA29D9600201376 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 				A4BED5BA2ACE178C001642B3 /* XCRemoteSwiftPackageReference "SnapshotPreviews-iOS" */,
+				995A2BEDEF224F7085D3DB13 /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
 			);
 			productRefGroup = A427057A2A4293B10057E439 /* Products */;
 			projectDirPath = "";
@@ -482,6 +491,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "#!/bin/bash\nset -e\n\nif [ \"Release\" = \"${CONFIGURATION}\" ]; then\n  # Path to the app directory\n  APP_DIR_PATH=\"${BUILT_PRODUCTS_DIR}/${EXECUTABLE_FOLDER_PATH}\"\n  # Strip main binary\n  strip -rSTx \"${APP_DIR_PATH}/${EXECUTABLE_NAME}\"\n  # Path to the Frameworks directory\n  APP_FRAMEWORKS_DIR=\"${APP_DIR_PATH}/Frameworks\"\n\n  # Strip symbols from frameworks, if Frameworks/ exists at all\n  # ... as long as the framework is NOT signed by Apple\n  if [ -d \"${APP_FRAMEWORKS_DIR}\" ]\n  then\n    find \"${APP_FRAMEWORKS_DIR}\" -type f -perm +111 -maxdepth 2 -mindepth 2 -exec bash -c 'codesign -v -R=\"anchor apple\" \"{}\" &> /dev/null || (echo \"{}\" && strip -rSTx \"{}\")' \\;\n  fi\nfi\n";
+		};
+		F52059CED4FD476981550295 /* Upload Debug Symbols to Sentry */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
+			);
+			name = "Upload Debug Symbols to Sentry";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# This script is responsable to upload debug symbols and source context for Sentry.\nif which sentry-cli >/dev/null; then\nexport SENTRY_ORG=emerge-tools\nexport SENTRY_PROJECT=hackernews-ios\nERROR=$(sentry-cli debug-files upload --include-sources \"$DWARF_DSYM_FOLDER_PATH\" 2>&1 >/dev/null)\nif [ ! $? -eq 0 ]; then\necho \"warning: sentry-cli - $ERROR\"\nfi\nelse\necho \"warning: sentry-cli not installed, download from https://github.com/getsentry/sentry-cli/releases\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -661,6 +685,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"Hacker News/Preview Content\"";
 				DEVELOPMENT_TEAM = 62J2XHNK9T;
 				ENABLE_PREVIEWS = YES;
@@ -696,6 +721,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"Hacker News/Preview Content\"";
 				DEVELOPMENT_TEAM = 62J2XHNK9T;
 				ENABLE_PREVIEWS = YES;
@@ -842,6 +868,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		995A2BEDEF224F7085D3DB13 /* XCRemoteSwiftPackageReference "sentry-cocoa" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/getsentry/sentry-cocoa/";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.0.0;
+			};
+		};
 		A47309B22AA29D9600201376 /* XCRemoteSwiftPackageReference "SwiftSoup" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/scinfu/SwiftSoup";
@@ -861,6 +895,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		673236B0A4D04137A0D80A76 /* Sentry */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 995A2BEDEF224F7085D3DB13 /* XCRemoteSwiftPackageReference "sentry-cocoa" */;
+			productName = Sentry;
+		};
 		A47309B32AA29D9600201376 /* SwiftSoup */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = A47309B22AA29D9600201376 /* XCRemoteSwiftPackageReference "SwiftSoup" */;
