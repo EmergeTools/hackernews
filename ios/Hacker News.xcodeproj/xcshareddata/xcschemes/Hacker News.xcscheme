@@ -51,6 +51,17 @@
                ReferencedContainer = "container:Hacker News.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "A4BED5D72AD72B8E001642B3"
+               BuildableName = "Emerge Perf Tests.xctest"
+               BlueprintName = "Emerge Perf Tests"
+               ReferencedContainer = "container:Hacker News.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
