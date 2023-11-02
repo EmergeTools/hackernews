@@ -1,6 +1,15 @@
 {
   "pins" : [
     {
+      "identity" : "sentry-cocoa",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/getsentry/sentry-cocoa",
+      "state" : {
+        "revision" : "0a915b93ff3abee1a9752448e47808334d306980",
+        "version" : "8.13.0"
+      }
+    },
+    {
       "identity" : "snapshotpreviews-ios",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/EmergeTools/SnapshotPreviews-iOS",
