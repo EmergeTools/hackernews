@@ -148,6 +148,12 @@ platform :ios do
       base_sha: ENV['BASE_SHA'],
       build_type: ENV['EMERGE_BUILD_TYPE']
     )
+
+    sentry_cli(
+      org_slug: 'emerge-tools',
+      project_slug: 'hackernews-ios',
+      include_sources: true
+    )
   end
 
   desc 'Build and upload to Emerge Tools'
