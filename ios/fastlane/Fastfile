@@ -151,7 +151,7 @@ platform :ios do
 
     sentry_cli(
       org_slug: 'emerge-tools',
-      project_slug: 'autoemerge-ios',
+      project_slug: 'hackernews-ios',
       include_sources: true
     )
   end
