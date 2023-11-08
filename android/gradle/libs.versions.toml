@@ -26,31 +26,21 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 accompanist-navigationanim = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "accompanist" }
 accompanist-webview = { module = "com.google.accompanist:accompanist-webview", version.ref = "accompanist" }
 
-androidx-activity = { module = "androidx.activity:activity-ktx", version = "1.7.2" }
 androidx-activity-compose = {module = "androidx.activity:activity-compose", version = "1.7.2" }
-androidx-annotation = { module = "androidx.annotation:annotation", version = "1.6.0" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version = "1.6.1" }
-androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version = "2.1.4" }
 androidx-core = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
 androidx-datastore-preferences = "androidx.datastore:datastore-preferences:1.0.0"
 androidx-fragment = { module = "androidx.fragment:fragment-ktx", version = "1.5.7" }
 androidx-test-core = { module = "androidx.test:core-ktx", version.ref = "androidx-test" }
 androidx-test-ext-junit = { module = "androidx.test.ext:junit-ktx", version.ref = "androidx-test-ext" }
 androidx-test-rules = { module = "androidx.test:rules", version.ref = "androidx-test" }
-androidx-test-runner = { module = "androidx.test:runner", version.ref = "androidx-test" }
 
 compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }
-compose-runtime = { group = "androidx.compose.runtime", name = "runtime" }
-compose-material = { group = "androidx.compose.material3", name = "material3" }
-compose-ui = { group = "androidx.compose.ui", name = "ui" }
-compose-ui-test = { group = "androidx.compose.ui", name = "ui-test" }
-compose-ui-test-junit = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 
 emerge-perf = { module = "com.emergetools.test:performance", version.ref = "emerge-perf" }
-emerge-relax = "com.emergetools.test:relax:0.1.0"
 emerge-snapshots = { module = "com.emergetools.snapshots:snapshots", version.ref = "emerge-snapshots" }
 emerge-snapshots-annotations = { module = "com.emergetools.snapshots:snapshots-annotations", version.ref = "emerge-snapshots" }
 emerge-snapshots-processor = { module = "com.emergetools.snapshots:snapshots-processor", version.ref = "emerge-snapshots" }
