@@ -72,9 +72,7 @@ dependencies {
   implementation(libs.accompanist.navigationanim)
   implementation(libs.accompanist.webview)
   implementation(libs.androidx.appcompat)
-  implementation(libs.compose.activity)
-  implementation(libs.compose.tooling)
-  implementation(libs.compose.tooling.preview)
+  implementation(libs.androidx.activity.compose)
   implementation(libs.emerge.snapshots.annotations)
   implementation(libs.androidx.datastore.preferences)
   implementation(libs.kotlinx.serialization)
@@ -87,12 +85,15 @@ dependencies {
   implementation(libs.retrofit.core)
   implementation(libs.retrofit.serialization)
 
+  implementation(platform(libs.compose.bom))
+  implementation(libs.compose.ui.tooling)
+  implementation(libs.compose.ui.tooling.preview)
+
   debugImplementation(libs.compose.ui.test.manifest)
 
   testImplementation(libs.junit)
 
   androidTestImplementation(libs.junit)
-  androidTestImplementation(libs.androidx.activity)
   androidTestImplementation(libs.androidx.core)
   androidTestImplementation(libs.androidx.fragment)
   androidTestImplementation(libs.androidx.test.core)
