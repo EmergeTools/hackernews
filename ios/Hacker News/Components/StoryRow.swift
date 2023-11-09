@@ -102,7 +102,7 @@ struct StoryRow_Preview: PreviewProvider {
     Group {
       StoryRow(appState: appState, story: mockStory, index: 0)
         .previewDevice(PreviewDevice(rawValue: "iPhone 14"))
-        .previewDisplayName("iPhone 14 test5")
+        .previewDisplayName("iPhone 14 test6")
         .previewLayout(.sizeThatFits)
       
       StoryRow(appState: appState, story: mockStory, index: 0)
