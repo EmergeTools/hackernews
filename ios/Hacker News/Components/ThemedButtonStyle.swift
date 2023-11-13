@@ -20,8 +20,8 @@ struct ThemedButtonStyle: ButtonStyle {
 
 struct ThemedButtonStyle_PreviewProvider: PreviewProvider {
   static var previews: some View {
-    var test: String? = nil
-    Button(test!) {}
+    fatalError("Test error")
+    Button("Test button") {}
       .buttonStyle(ThemedButtonStyle())
       .previewLayout(.sizeThatFits)
   }
