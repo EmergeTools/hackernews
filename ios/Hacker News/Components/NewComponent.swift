@@ -17,6 +17,7 @@ struct NewComponent: View {
         .padding()
     }
     .padding()
+    .background(Color(UIColor.systemBackground))
     .cornerRadius(20)
     .overlay(
       RoundedRectangle(cornerRadius: 20)
