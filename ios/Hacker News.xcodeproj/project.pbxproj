@@ -35,6 +35,7 @@
 		A4BED5C32AD5E083001642B3 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		A4BED5C42AD5E083001642B3 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		A9DF68FF511E48048B0A703D /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = 673236B0A4D04137A0D80A76 /* Sentry */; };
+		F41E0CB32B163063004623C5 /* NewComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41E0CB22B163063004623C5 /* NewComponent.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -110,6 +111,7 @@
 		A48C0DE62A9818A50034CC0A /* StoryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryScreen.swift; sourceTree = "<group>"; };
 		A48C0DE92A9819E00034CC0A /* StoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryViewModel.swift; sourceTree = "<group>"; };
 		A4BED5B72ACE0ADF001642B3 /* Reaper.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Reaper.xcframework; path = Frameworks/Reaper.xcframework; sourceTree = "<group>"; };
+		F41E0CB22B163063004623C5 /* NewComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewComponent.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -151,6 +153,7 @@
 				A413E8582A8D868500C0F867 /* ThemedButtonStyle.swift */,
 				A434C2DF2A8E75960002F488 /* WebView.swift */,
 				A47309B52AA7D1F600201376 /* CommentRow.swift */,
+				F41E0CB22B163063004623C5 /* NewComponent.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -524,6 +527,7 @@
 				A413E8592A8D868500C0F867 /* ThemedButtonStyle.swift in Sources */,
 				A427057D2A4293B10057E439 /* HNApp.swift in Sources */,
 				A434C2E02A8E75960002F488 /* WebView.swift in Sources */,
+				F41E0CB32B163063004623C5 /* NewComponent.swift in Sources */,
 				A49933942AA28B5900DED8B1 /* StoryViewModel.swift in Sources */,
 				A47309B62AA7D1F600201376 /* CommentRow.swift in Sources */,
 				A49933952AA28B6500DED8B1 /* StoryScreen.swift in Sources */,
