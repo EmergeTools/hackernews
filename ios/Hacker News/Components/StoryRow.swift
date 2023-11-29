@@ -50,7 +50,7 @@ struct StoryRow: View {
             }()
             Text(dateAndAuthor)
               .font(.caption)
-              .foregroundColor(Color.primary.opacity(0.6))
+              .foregroundColor(Color.primary.opacity(0.65))
             
             if story.commentCount > 0 {
               Button(action: {
