@@ -21,7 +21,7 @@ struct ThemedButtonStyle: ButtonStyle {
 struct ThemedButtonStyle_PreviewProvider: PreviewProvider {
   static var previews: some View {
 //    fatalError("Test error")
-    Button("Test button") {}
+    Button("Test button2") {}
       .buttonStyle(ThemedButtonStyle())
       .previewLayout(.sizeThatFits)
   }
