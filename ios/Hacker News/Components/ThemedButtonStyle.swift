@@ -18,6 +18,16 @@ struct ThemedButtonStyle: ButtonStyle {
   }
 }
 
+public struct ThemedButtonStyle2: ButtonStyle {
+  public func makeBody(configuration: Self.Configuration) -> some View {
+    configuration.label
+      .foregroundColor(.white)
+      .padding()
+      .background(HNColors.orange)
+      .cornerRadius(10)
+  }
+}
+
 struct ThemedButtonStyle_PreviewProvider: PreviewProvider {
   static var previews: some View {
 //    fatalError("Test error")
