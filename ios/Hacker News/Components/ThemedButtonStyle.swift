@@ -88,7 +88,7 @@ public struct ThemedButtonStyle8: ButtonStyle {
   }
 }
 
-public struct ThemedButtonStyle10: ButtonStyle {
+public struct ThemedButtonStyle9: ButtonStyle {
   public func makeBody(configuration: Self.Configuration) -> some View {
     configuration.label
       .foregroundColor(.white)
