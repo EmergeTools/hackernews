@@ -32,12 +32,12 @@ struct StoryRow: View {
         
         VStack(alignment: .leading) {
           Text("\(index + 1). \(story.title)")
-            .font(.subheadline)
+            .font(.headline)
             .foregroundColor(Color.primary)
           
           if let displayableUrl = story.displayableUrl {
             Text("(\(displayableUrl))")
-              .font(.caption2)
+              .font(.caption)
               .foregroundColor(Color.primary.opacity(0.6))
           }
           HStack {
