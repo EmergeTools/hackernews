@@ -13,7 +13,7 @@ struct ThemedButtonStyle: ButtonStyle {
     configuration.label
       .foregroundColor(.white)
       .padding()
-      .background(HNColors.orange)
+      .background(Color.black)
       .cornerRadius(10)
   }
 }
