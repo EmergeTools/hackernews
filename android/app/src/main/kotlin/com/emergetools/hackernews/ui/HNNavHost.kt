@@ -1,6 +1,7 @@
 package com.emergetools.hackernews.ui
 
 import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
@@ -40,25 +41,25 @@ fun HNNavHost() {
       Screen.Stories.route,
       enterTransition = {
         slideIntoContainer(
-          AnimatedContentScope.SlideDirection.Left,
+          AnimatedContentTransitionScope.SlideDirection.Left,
           animationSpec = tween(300)
         )
       },
       exitTransition = {
         slideOutOfContainer(
-          AnimatedContentScope.SlideDirection.Left,
+          AnimatedContentTransitionScope.SlideDirection.Left,
           animationSpec = tween(300)
         )
       },
       popEnterTransition = {
         slideIntoContainer(
-          AnimatedContentScope.SlideDirection.Right,
+          AnimatedContentTransitionScope.SlideDirection.Right,
           animationSpec = tween(300)
         )
       },
       popExitTransition = {
         slideOutOfContainer(
-          AnimatedContentScope.SlideDirection.Right,
+          AnimatedContentTransitionScope.SlideDirection.Right,
           animationSpec = tween(300)
         )
       }) {
@@ -68,25 +69,25 @@ fun HNNavHost() {
       Screen.Story.route,
       enterTransition = {
         slideIntoContainer(
-          AnimatedContentScope.SlideDirection.Left,
+          AnimatedContentTransitionScope.SlideDirection.Left,
           animationSpec = tween(300)
         )
       },
       exitTransition = {
         slideOutOfContainer(
-          AnimatedContentScope.SlideDirection.Left,
+          AnimatedContentTransitionScope.SlideDirection.Left,
           animationSpec = tween(300)
         )
       },
       popEnterTransition = {
         slideIntoContainer(
-          AnimatedContentScope.SlideDirection.Right,
+          AnimatedContentTransitionScope.SlideDirection.Right,
           animationSpec = tween(300)
         )
       },
       popExitTransition = {
         slideOutOfContainer(
-          AnimatedContentScope.SlideDirection.Right,
+          AnimatedContentTransitionScope.SlideDirection.Right,
           animationSpec = tween(300)
         )
       },
@@ -105,25 +106,25 @@ fun HNNavHost() {
       Screen.Comments.route,
       enterTransition = {
         slideIntoContainer(
-          AnimatedContentScope.SlideDirection.Left,
+          AnimatedContentTransitionScope.SlideDirection.Left,
           animationSpec = tween(300)
         )
       },
       exitTransition = {
         slideOutOfContainer(
-          AnimatedContentScope.SlideDirection.Left,
+          AnimatedContentTransitionScope.SlideDirection.Left,
           animationSpec = tween(300)
         )
       },
       popEnterTransition = {
         slideIntoContainer(
-          AnimatedContentScope.SlideDirection.Right,
+          AnimatedContentTransitionScope.SlideDirection.Right,
           animationSpec = tween(300)
         )
       },
       popExitTransition = {
         slideOutOfContainer(
-          AnimatedContentScope.SlideDirection.Right,
+          AnimatedContentTransitionScope.SlideDirection.Right,
           animationSpec = tween(300)
         )
       },
