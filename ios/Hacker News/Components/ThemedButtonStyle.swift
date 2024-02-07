@@ -11,7 +11,7 @@ import SwiftUI
 struct ThemedButtonStyle: ButtonStyle {
   func makeBody(configuration: Self.Configuration) -> some View {
     configuration.label
-      .foregroundColor(.yellow)
+      .foregroundColor(.blue)
       .padding()
       .background(HNColors.orange)
       .cornerRadius(10)
