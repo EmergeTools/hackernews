@@ -56,7 +56,7 @@ emerge {
   }
 
   snapshots {
-    buildType.set("snapshot")
+    tag.set("snapshot")
   }
 
   vcs {

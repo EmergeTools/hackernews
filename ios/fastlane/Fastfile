@@ -146,7 +146,7 @@ platform :ios do
       pr_number: ENV['PULL_NUMBER'],
       sha: (ENV.has_key?('COMMIT_SHA') && ENV['COMMIT_SHA'].length > 0) ? ENV['COMMIT_SHA'] : ENV['GITHUB_SHA'],
       base_sha: ENV['BASE_SHA'],
-      build_type: ENV['EMERGE_BUILD_TYPE']
+      tag: ENV['EMERGE_BUILD_TYPE']
     )
 
     # TODO(telkins)
@@ -167,7 +167,7 @@ platform :ios do
       pr_number: ENV['PULL_NUMBER'],
       sha: (ENV.has_key?('COMMIT_SHA') && ENV['COMMIT_SHA'].length > 0) ? ENV['COMMIT_SHA'] : ENV['GITHUB_SHA'],
       base_sha: ENV['BASE_SHA'],
-      build_type: ENV['EMERGE_BUILD_TYPE']
+      tag: ENV['EMERGE_BUILD_TYPE']
     )
   end
 end
