@@ -69,7 +69,9 @@ module Fastlane
         end
 
         file_content = File.read(github_event_path)
-        JSON.parse(file_content, symbolize_names: true)
+        file_json = JSON.parse(file_content, symbolize_names: true)
+        UI.message("Parsed GitHub event data: #{file_json.inspect}")
+        file_json
       end
     end
   end
