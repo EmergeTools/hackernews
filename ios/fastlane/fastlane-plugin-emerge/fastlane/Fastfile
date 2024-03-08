@@ -1,3 +1,0 @@
-lane :test do
-  emerge
-end
