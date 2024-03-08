@@ -64,8 +64,9 @@ module Fastlane
         github_event_path = ENV['GITHUB_EVENT_PATH']
         UI.error!("GITHUB_EVENT_PATH is not set") if github_event_path.nil?
 
-        file = File.new(github_event_path)
-        UI.error!("File #{github_event_path} doesn't exist") unless file.exist?
+        unless File.exist?(github_event_path)
+          UI.error!("File #{github_event_path} doesn't exist")
+        end
 
         file_content = File.read(github_event_path)
         JSON.parse(file_content, symbolize_names: true)
