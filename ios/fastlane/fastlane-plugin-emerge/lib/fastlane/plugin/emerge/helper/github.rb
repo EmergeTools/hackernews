@@ -29,6 +29,7 @@ module Fastlane
       end
 
       def self.is_supported_github_event?
+        UI.message("GitHub event name: #{event_name}")
         is_pull_request? || is_push?
       end
 
@@ -55,7 +56,7 @@ module Fastlane
       end
 
       def self.pr_number
-        is_pull_request? ? pull_request_event_data[:number] : nil
+        is_pull_request? ? pull_request_event_data.dig(:number) : nil
       end
 
       private
