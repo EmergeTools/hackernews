@@ -44,13 +44,13 @@ module Fastlane
         if is_push?
           ENV['GITHUB_SHA']
         elsif is_pull_request?
-          pull_request_event_data.fetch(:pr, :head, :sha)
+          pull_request_event_data.dig(:pr, :head, :sha)
         end
       end
 
       def self.base_sha
         if is_pull_request?
-          pull_request_event_data.fetch(:pr, :base, :sha)
+          pull_request_event_data.dig(:pr, :base, :sha)
         end
       end
 
