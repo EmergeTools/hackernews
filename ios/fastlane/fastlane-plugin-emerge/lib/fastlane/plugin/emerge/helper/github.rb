@@ -44,7 +44,7 @@ module Fastlane
       end
 
       def self.branch
-        is_pull_request? ? github_event_data.dig(:pull_request, :head, :ref) : ENV['GITHUB_REF']
+        is_pull_request? ? github_event_data.dig(:pull_request, :head, :ref) : Git.branch
       end
 
       def self.repo_owner

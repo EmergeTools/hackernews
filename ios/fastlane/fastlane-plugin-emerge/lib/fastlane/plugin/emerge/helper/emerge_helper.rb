@@ -41,7 +41,7 @@ module Fastlane
                        GitResult.new(
                          sha: Helper::Github.sha,
                          base_sha: Helper::Github.base_sha,
-                         branch: Helper::Git.branch,
+                         branch: Helper::Github.branch,
                          pr_number: Helper::Github.pr_number,
                          repo_name: Helper::Github.repo_name
                        )
