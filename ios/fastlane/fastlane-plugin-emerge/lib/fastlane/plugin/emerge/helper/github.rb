@@ -55,7 +55,7 @@ module Fastlane
         github_event_data.dig(:repository, :full_name)
       end
 
-      private
+      private_class_method
 
       def self.github_event_data
         github_event_path = ENV['GITHUB_EVENT_PATH']

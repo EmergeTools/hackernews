@@ -53,9 +53,6 @@ jobs:
           SIGNING_KEY_PASSWORD: ${{ secrets.IOS_DIST_SIGNING_KEY_PASSWORD }}
           SIGNING_KEY_FILE_PATH: signing-cert.p12
           EMERGE_API_TOKEN: ${{ secrets.EMERGE_API_KEY }}
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
-          COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
-          PULL_NUMBER: ${{ github.event.pull_request.number }}
           SCHEME: Debug
           EMERGE_BUILD_TYPE: snapshot
           BUNDLE_ID: com.emerge.hn.Hacker-News.snapshots
