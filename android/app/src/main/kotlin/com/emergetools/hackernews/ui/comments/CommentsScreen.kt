@@ -9,5 +9,5 @@ fun CommentsScreen(
   navController: NavController,
   id: Long,
 ) {
-  Text("Commentss")
+  Text("Commentsss")
 }
