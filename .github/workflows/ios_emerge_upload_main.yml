@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: macos-13
 
     defaults:
       run:
@@ -16,10 +16,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Select Xcode version
+        run: sudo xcode-select -s '/Applications/Xcode_15.0.app/Contents/Developer'
+
       - name: Set up Ruby env
-        uses: ruby/setup-ruby@v1.138.0
+        uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.2.1
+          ruby-version: 3.1.4
           bundler-cache: true
 
       - name: Setup gems
@@ -41,8 +44,5 @@ jobs:
           SIGNING_KEY_PASSWORD: ${{ secrets.IOS_DIST_SIGNING_KEY_PASSWORD }}
           SIGNING_KEY_FILE_PATH: signing-cert.p12
           EMERGE_API_TOKEN: ${{ secrets.EMERGE_API_KEY }}
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
-          COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
-          PULL_NUMBER: ${{ github.event.pull_request.number }}
           SCHEME: Release
           EMERGE_BUILD_TYPE: release

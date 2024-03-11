@@ -1,18 +1,18 @@
 [versions]
 agp = "8.1.0"
-androidx-core = "1.7.0"
+androidx-core = "1.12.0"
 androidx-test = "1.5.0"
 androidx-test-ext = "1.1.5"
 accompanist = "0.33.2-alpha"
-compose-bom = "2023.10.01"
+compose-bom = "2024.02.02"
 compose-compiler-extension = "1.5.3"
-emerge-gradle-plugin = "2.1.5"
+emerge-gradle-plugin = "2.2.0"
 emerge-perf = "2.1.1"
 emerge-snapshots = "0.8.4"
 kotlin = "1.9.10"
 ksp = "1.9.10-1.0.13"
-material-compose = "1.1.0"
-navigation-compose = "2.4.1"
+material-compose = "1.6.3"
+navigation-compose = "2.7.7"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -26,11 +26,11 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 accompanist-navigationanim = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "accompanist" }
 accompanist-webview = { module = "com.google.accompanist:accompanist-webview", version.ref = "accompanist" }
 
-androidx-activity-compose = {module = "androidx.activity:activity-compose", version = "1.7.2" }
+androidx-activity-compose = {module = "androidx.activity:activity-compose", version = "1.8.2" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version = "1.6.1" }
 androidx-core = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
 androidx-datastore-preferences = "androidx.datastore:datastore-preferences:1.0.0"
-androidx-fragment = { module = "androidx.fragment:fragment-ktx", version = "1.5.7" }
+androidx-fragment = { module = "androidx.fragment:fragment-ktx", version = "1.6.2" }
 androidx-test-core = { module = "androidx.test:core-ktx", version.ref = "androidx-test" }
 androidx-test-ext-junit = { module = "androidx.test.ext:junit-ktx", version.ref = "androidx-test-ext" }
 androidx-test-rules = { module = "androidx.test:rules", version.ref = "androidx-test" }
@@ -49,7 +49,7 @@ junit = "junit:junit:4.13.2"
 
 kotlinx-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1"
 
-material-core = "com.google.android.material:material:1.9.0"
+material-core = "com.google.android.material:material:1.11.0"
 material-compose-core = { module = "androidx.compose.material:material", version.ref = "material-compose" }
 material-compose-icons = { module = "androidx.compose.material:material-icons-extended", version.ref = "material-compose" }
 

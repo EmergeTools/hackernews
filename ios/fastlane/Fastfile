@@ -141,13 +141,7 @@ platform :ios do
     fetch_and_increment_build_number
     build_app_for_scheme(build_configuration: ENV['SCHEME'])
     upload_app
-    emerge(
-      repo_name: ENV['GITHUB_REPOSITORY'],
-      pr_number: ENV['PULL_NUMBER'],
-      sha: (ENV.has_key?('COMMIT_SHA') && ENV['COMMIT_SHA'].length > 0) ? ENV['COMMIT_SHA'] : ENV['GITHUB_SHA'],
-      base_sha: ENV['BASE_SHA'],
-      build_type: ENV['EMERGE_BUILD_TYPE']
-    )
+    emerge(tag: ENV['EMERGE_BUILD_TYPE'])
 
     # TODO(telkins)
     # sentry_cli(
@@ -162,12 +156,6 @@ platform :ios do
     load_asc_api_key
     prepare_signing
     build_app_for_scheme(build_configuration: ENV['SCHEME'])
-    emerge(
-      repo_name: ENV['GITHUB_REPOSITORY'],
-      pr_number: ENV['PULL_NUMBER'],
-      sha: (ENV.has_key?('COMMIT_SHA') && ENV['COMMIT_SHA'].length > 0) ? ENV['COMMIT_SHA'] : ENV['GITHUB_SHA'],
-      base_sha: ENV['BASE_SHA'],
-      build_type: ENV['EMERGE_BUILD_TYPE']
-    )
+    emerge(tag: ENV['EMERGE_BUILD_TYPE'])
   end
 end
