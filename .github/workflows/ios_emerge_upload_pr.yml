@@ -1,9 +1,11 @@
 name: Emerge PR iOS Upload (Size Analysis)
 
 on:
-  pull_request:
-    branches: [main]
+  push:
     paths: [ios/**]
+  # pull_request:
+  #   branches: [main]
+  #   paths: [ios/**]
 
 jobs:
   build:
@@ -16,6 +18,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
+      - name: Print Pull Request Action
+        run: echo "The action that triggered this workflow is ${{ github.event.action }}"
+
+      - name: Print Pull Request Action2
+        run: cat $GITHUB_EVENT_PATH
+
+      - name: Print environment variables
+        run: env
 
       - name: Select Xcode version
         run: sudo xcode-select -s '/Applications/Xcode_15.0.app/Contents/Developer'

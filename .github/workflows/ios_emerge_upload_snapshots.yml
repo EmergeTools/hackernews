@@ -16,6 +16,9 @@ jobs:
         working-directory: ./ios
 
     steps:
+      - name: Print Pull Request Action
+        run: echo "The action that triggered this workflow is ${{ github.event.action }}"
+
       - name: Checkout
         uses: actions/checkout@v2
 
