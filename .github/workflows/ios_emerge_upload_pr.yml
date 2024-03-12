@@ -3,9 +3,9 @@ name: Emerge PR iOS Upload (Size Analysis)
 on:
   push:
     paths: [ios/**]
-  pull_request:
-    branches: [main]
-    paths: [ios/**]
+  # pull_request:
+  #   branches: [main]
+  #   paths: [ios/**]
 
 jobs:
   build:
