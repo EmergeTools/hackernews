@@ -158,4 +158,9 @@ platform :ios do
     build_app_for_scheme(build_configuration: ENV['SCHEME'])
     emerge(tag: ENV['EMERGE_BUILD_TYPE'])
   end
+
+  desc 'Build and upload snapshot build to Emerge Tools'
+  lane :build_upload_emerge_snapshot do
+    emerge_snapshot(scheme: "Hacker News")
+  end
 end
