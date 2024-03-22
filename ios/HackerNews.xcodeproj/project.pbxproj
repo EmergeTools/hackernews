@@ -43,14 +43,14 @@
 			containerPortal = A42705712A4293B10057E439 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = A42705782A4293B10057E439;
-			remoteInfo = "Hacker News";
+			remoteInfo = "HackerNews";
 		};
 		A42705942A4293B30057E439 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A42705712A4293B10057E439 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = A42705782A4293B10057E439;
-			remoteInfo = "Hacker News";
+			remoteInfo = "HackerNews";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -60,14 +60,14 @@
 		1DF162022A436E7B001A3F76 /* DateUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateUtils.swift; sourceTree = "<group>"; };
 		A413E8562A8C40E800C0F867 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		A413E8582A8D868500C0F867 /* ThemedButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemedButtonStyle.swift; sourceTree = "<group>"; };
-		A42705792A4293B10057E439 /* Hacker News.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Hacker News.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A42705792A4293B10057E439 /* HackerNews.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HackerNews.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A427057C2A4293B10057E439 /* HNApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HNApp.swift; sourceTree = "<group>"; };
 		A427057E2A4293B10057E439 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		A42705802A4293B20057E439 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A42705832A4293B20057E439 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		A42705892A4293B30057E439 /* Hacker NewsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Hacker NewsTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A42705892A4293B30057E439 /* HackerNewsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HackerNewsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A427058D2A4293B30057E439 /* Hacker_NewsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hacker_NewsTests.swift; sourceTree = "<group>"; };
-		A42705932A4293B30057E439 /* Hacker NewsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Hacker NewsUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A42705932A4293B30057E439 /* HackerNewsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HackerNewsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A42705972A4293B30057E439 /* Hacker_NewsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hacker_NewsUITests.swift; sourceTree = "<group>"; };
 		A42705992A4293B30057E439 /* Hacker_NewsUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hacker_NewsUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		A42705A62A42949D0057E439 /* AppViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewModel.swift; sourceTree = "<group>"; };
@@ -187,9 +187,9 @@
 			isa = PBXGroup;
 			children = (
 				A45C2C7B2A5DDE25009BC030 /* fastlane */,
-				A427057B2A4293B10057E439 /* Hacker News */,
-				A427058C2A4293B30057E439 /* Hacker NewsTests */,
-				A42705962A4293B30057E439 /* Hacker NewsUITests */,
+				A427057B2A4293B10057E439 /* HackerNews */,
+				A427058C2A4293B30057E439 /* HackerNewsTests */,
+				A42705962A4293B30057E439 /* HackerNewsUITests */,
 				A427057A2A4293B10057E439 /* Products */,
 				A4BED5AB2ACDFDCF001642B3 /* Frameworks */,
 			);
@@ -198,14 +198,14 @@
 		A427057A2A4293B10057E439 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A42705792A4293B10057E439 /* Hacker News.app */,
-				A42705892A4293B30057E439 /* Hacker NewsTests.xctest */,
-				A42705932A4293B30057E439 /* Hacker NewsUITests.xctest */,
+				A42705792A4293B10057E439 /* HackerNews.app */,
+				A42705892A4293B30057E439 /* HackerNewsTests.xctest */,
+				A42705932A4293B30057E439 /* HackerNewsUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		A427057B2A4293B10057E439 /* Hacker News */ = {
+		A427057B2A4293B10057E439 /* HackerNews */ = {
 			isa = PBXGroup;
 			children = (
 				A45C2CBB2A5F0A41009BC030 /* Hacker-News-Info.plist */,
@@ -219,7 +219,7 @@
 				A42705802A4293B20057E439 /* Assets.xcassets */,
 				A42705822A4293B20057E439 /* Preview Content */,
 			);
-			path = "Hacker News";
+			path = HackerNews;
 			sourceTree = "<group>";
 		};
 		A42705822A4293B20057E439 /* Preview Content */ = {
@@ -230,22 +230,22 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		A427058C2A4293B30057E439 /* Hacker NewsTests */ = {
+		A427058C2A4293B30057E439 /* HackerNewsTests */ = {
 			isa = PBXGroup;
 			children = (
 				A427058D2A4293B30057E439 /* Hacker_NewsTests.swift */,
 			);
-			path = "Hacker NewsTests";
+			path = HackerNewsTests;
 			sourceTree = "<group>";
 		};
-		A42705962A4293B30057E439 /* Hacker NewsUITests */ = {
+		A42705962A4293B30057E439 /* HackerNewsUITests */ = {
 			isa = PBXGroup;
 			children = (
 				A42705972A4293B30057E439 /* Hacker_NewsUITests.swift */,
 				A42705992A4293B30057E439 /* Hacker_NewsUITestsLaunchTests.swift */,
 				A44B39B42AA27F5600C443B7 /* PreviewingTest.swift */,
 			);
-			path = "Hacker NewsUITests";
+			path = HackerNewsUITests;
 			sourceTree = "<group>";
 		};
 		A45C2C7B2A5DDE25009BC030 /* fastlane */ = {
@@ -336,9 +336,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A42705782A4293B10057E439 /* Hacker News */ = {
+		A42705782A4293B10057E439 /* HackerNews */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A427059D2A4293B30057E439 /* Build configuration list for PBXNativeTarget "Hacker News" */;
+			buildConfigurationList = A427059D2A4293B30057E439 /* Build configuration list for PBXNativeTarget "HackerNews" */;
 			buildPhases = (
 				A42705752A4293B10057E439 /* Sources */,
 				A42705762A4293B10057E439 /* Frameworks */,
@@ -350,18 +350,18 @@
 			);
 			dependencies = (
 			);
-			name = "Hacker News";
+			name = HackerNews;
 			packageProductDependencies = (
 				A47309B32AA29D9600201376 /* SwiftSoup */,
 				673236B0A4D04137A0D80A76 /* Sentry */,
 			);
-			productName = "Hacker News";
-			productReference = A42705792A4293B10057E439 /* Hacker News.app */;
+			productName = "HackerNews";
+			productReference = A42705792A4293B10057E439 /* HackerNews.app */;
 			productType = "com.apple.product-type.application";
 		};
-		A42705882A4293B30057E439 /* Hacker NewsTests */ = {
+		A42705882A4293B30057E439 /* HackerNewsTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A42705A02A4293B30057E439 /* Build configuration list for PBXNativeTarget "Hacker NewsTests" */;
+			buildConfigurationList = A42705A02A4293B30057E439 /* Build configuration list for PBXNativeTarget "HackerNewsTests" */;
 			buildPhases = (
 				A42705852A4293B30057E439 /* Sources */,
 				A42705862A4293B30057E439 /* Frameworks */,
@@ -372,14 +372,14 @@
 			dependencies = (
 				A427058B2A4293B30057E439 /* PBXTargetDependency */,
 			);
-			name = "Hacker NewsTests";
-			productName = "Hacker NewsTests";
-			productReference = A42705892A4293B30057E439 /* Hacker NewsTests.xctest */;
+			name = HackerNewsTests;
+			productName = "HackerNewsTests";
+			productReference = A42705892A4293B30057E439 /* HackerNewsTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		A42705922A4293B30057E439 /* Hacker NewsUITests */ = {
+		A42705922A4293B30057E439 /* HackerNewsUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A42705A32A4293B30057E439 /* Build configuration list for PBXNativeTarget "Hacker NewsUITests" */;
+			buildConfigurationList = A42705A32A4293B30057E439 /* Build configuration list for PBXNativeTarget "HackerNewsUITests" */;
 			buildPhases = (
 				A427058F2A4293B30057E439 /* Sources */,
 				A42705902A4293B30057E439 /* Frameworks */,
@@ -390,13 +390,13 @@
 			dependencies = (
 				A42705952A4293B30057E439 /* PBXTargetDependency */,
 			);
-			name = "Hacker NewsUITests";
+			name = HackerNewsUITests;
 			packageProductDependencies = (
 				A4BED5BB2ACE178C001642B3 /* SnapshottingTests */,
 				A4BED5BD2ACE17B3001642B3 /* Snapshotting */,
 			);
-			productName = "Hacker NewsUITests";
-			productReference = A42705932A4293B30057E439 /* Hacker NewsUITests.xctest */;
+			productName = "HackerNewsUITests";
+			productReference = A42705932A4293B30057E439 /* HackerNewsUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -422,7 +422,7 @@
 					};
 				};
 			};
-			buildConfigurationList = A42705742A4293B10057E439 /* Build configuration list for PBXProject "Hacker News" */;
+			buildConfigurationList = A42705742A4293B10057E439 /* Build configuration list for PBXProject "HackerNews" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -440,9 +440,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A42705782A4293B10057E439 /* Hacker News */,
-				A42705882A4293B30057E439 /* Hacker NewsTests */,
-				A42705922A4293B30057E439 /* Hacker NewsUITests */,
+				A42705782A4293B10057E439 /* HackerNews */,
+				A42705882A4293B30057E439 /* HackerNewsTests */,
+				A42705922A4293B30057E439 /* HackerNewsUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -555,12 +555,12 @@
 /* Begin PBXTargetDependency section */
 		A427058B2A4293B30057E439 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = A42705782A4293B10057E439 /* Hacker News */;
+			target = A42705782A4293B10057E439 /* HackerNews */;
 			targetProxy = A427058A2A4293B30057E439 /* PBXContainerItemProxy */;
 		};
 		A42705952A4293B30057E439 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = A42705782A4293B10057E439 /* Hacker News */;
+			target = A42705782A4293B10057E439 /* HackerNews */;
 			targetProxy = A42705942A4293B30057E439 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -688,7 +688,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_ASSET_PATHS = "\"Hacker News/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"HackerNews/Preview Content\"";
 				DEVELOPMENT_TEAM = 62J2XHNK9T;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -725,7 +725,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_ASSET_PATHS = "\"Hacker News/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"HackerNews/Preview Content\"";
 				DEVELOPMENT_TEAM = 62J2XHNK9T;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -770,7 +770,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Hacker News.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Hacker News";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HackerNews.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/HackerNews";
 			};
 			name = Debug;
 		};
@@ -790,7 +790,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Hacker News.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Hacker News";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HackerNews.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/HackerNews";
 			};
 			name = Release;
 		};
@@ -808,7 +808,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = "Hacker News";
+				TEST_TARGET_NAME = "HackerNews";
 			};
 			name = Debug;
 		};
@@ -826,14 +826,14 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = "Hacker News";
+				TEST_TARGET_NAME = "HackerNews";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A42705742A4293B10057E439 /* Build configuration list for PBXProject "Hacker News" */ = {
+		A42705742A4293B10057E439 /* Build configuration list for PBXProject "HackerNews" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A427059B2A4293B30057E439 /* Debug */,
@@ -842,7 +842,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A427059D2A4293B30057E439 /* Build configuration list for PBXNativeTarget "Hacker News" */ = {
+		A427059D2A4293B30057E439 /* Build configuration list for PBXNativeTarget "HackerNews" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A427059E2A4293B30057E439 /* Debug */,
@@ -851,7 +851,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A42705A02A4293B30057E439 /* Build configuration list for PBXNativeTarget "Hacker NewsTests" */ = {
+		A42705A02A4293B30057E439 /* Build configuration list for PBXNativeTarget "HackerNewsTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A42705A12A4293B30057E439 /* Debug */,
@@ -860,7 +860,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A42705A32A4293B30057E439 /* Build configuration list for PBXNativeTarget "Hacker NewsUITests" */ = {
+		A42705A32A4293B30057E439 /* Build configuration list for PBXNativeTarget "HackerNewsUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A42705A42A4293B30057E439 /* Debug */,
