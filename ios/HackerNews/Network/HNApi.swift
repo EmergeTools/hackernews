@@ -18,7 +18,10 @@ class HNApi {
     let url = URL(string: "https://hacker-news.firebaseio.com/v0/topstories.json")!
     
     do {
-      let (data, _) = try await URLSession.shared.data(from: url)
+      let (data, response) = try await URLSession.shared.data(from: url)
+      if Flags.isEnabled(.networkDebugger) {
+        NetworkDebugger.printStats(for: response)
+      }
       let decoder = JSONDecoder()
       let storyIds = try decoder.decode([Int64].self, from: data)
       let items = await fetchItems(ids: Array(storyIds.prefix(20)))
@@ -40,6 +43,9 @@ class HNApi {
           taskGroup.addTask {
             let url = URL(string: "https://hacker-news.firebaseio.com/v0/item/\(id).json")!
             let (data, response) = try await URLSession.shared.data(from: url)
+            if Flags.isEnabled(.networkDebugger) {
+              NetworkDebugger.printStats(for: response)
+            }
             let decoder = JSONDecoder()
 //            print("Received response: \(response)")
 //            if let str = String(data: data, encoding: .utf8) {
