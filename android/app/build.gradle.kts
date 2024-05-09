@@ -82,6 +82,7 @@ dependencies {
   implementation(libs.mavericks.compose)
   implementation(libs.navigation.compose.core)
   implementation(libs.navigation.compose.ktx)
+  implementation(libs.okhttp)
   implementation(libs.retrofit.core)
   implementation(libs.retrofit.serialization)
 
