@@ -56,4 +56,6 @@
   <string name="content_description_back">Navigate back</string>
 
   <string name="content_description_comment_button">View comments</string>
+
+  <string name="content_description_story_button">View story</string>
 </resources>

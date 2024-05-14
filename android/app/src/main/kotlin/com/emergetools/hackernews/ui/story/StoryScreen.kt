@@ -36,7 +36,7 @@ fun StoryScreen(
   val story = state.stories[id]?.let {
     it as? Story
       ?: throw IllegalArgumentException("item $id not type Story, type: ${it.javaClass.simpleName}")
-  } ?: throw IllegalArgumentException("item $id not found in stories list")
+  } ?: throw IllegalArgumentException("item $id not found in stories map")
 
   Scaffold(
     topBar = {
