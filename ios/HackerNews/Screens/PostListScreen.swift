@@ -119,7 +119,7 @@ struct PostListScreen_Previews: PreviewProvider {
       return Story(
         id: index,
         by: "dang",
-        time: Int64(1715698922) - Int64(index),
+        time: Int64(Date().timeIntervalSince1970) - Int64(index),
         type: .story,
         title: "Test story \(index)",
         text: "Test story body \(index)",
