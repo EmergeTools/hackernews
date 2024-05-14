@@ -138,10 +138,12 @@ fun StoriesToolbar(
 data class StoriesState(
   val topStoriesResponse: Async<List<Long>> = Uninitialized,
   val storyResponse: Async<Item> = Uninitialized,
+  val commentResponse: Async<Item> = Uninitialized,
   val stories: Map<Long, Item> = emptyMap(),
+  val comments: Map<Long, Item> = emptyMap(),
   val start: Int = 0,
 ) : MavericksState {
-  val isLoading = !storyResponse.complete || !topStoriesResponse.complete
+  val isLoading = !storyResponse.complete || !topStoriesResponse.complete || !commentResponse.complete;
 }
 
 class StoriesViewModel(
@@ -201,6 +203,26 @@ class StoriesViewModel(
     }
   }
 
+  fun fetchComments(id: Long) {
+    withState { state ->
+      val story = state.stories[id];
+      when (story) {
+        is Story -> story.comments.forEach(::fetchComment)
+        else -> TODO()
+      }
+    }
+  }
+
+  private fun fetchComment(id: Long) {
+    suspend { api.getItem(id) }.execute { response ->
+      val updatedComments = comments.toMutableMap()
+      response()?.let { updatedComments.putIfAbsent(it.id, it) }
+      copy(
+        commentResponse = response,
+        comments = updatedComments,
+      )
+    }
+  }
   companion object {
 
     const val OFFSET = 20
