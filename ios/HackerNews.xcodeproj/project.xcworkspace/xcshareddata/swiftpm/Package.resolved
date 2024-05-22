@@ -1,6 +1,15 @@
 {
-  "originHash" : "56e5c3ab6043a878447d3da9f27f3cc33e88ef44675eac7ffd59135563400ad6",
+  "originHash" : "da8ea69ffb6fd372d0cc0beb50a5fa1eb106cb6e8ad33822d9c032bd6bb081c4",
   "pins" : [
+    {
+      "identity" : "reaper",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/EmergeTools/Reaper",
+      "state" : {
+        "revision" : "764334d89b37cd9f6997e3718f5d2fe2f88094ca",
+        "version" : "1.3.0"
+      }
+    },
     {
       "identity" : "sentry-cocoa",
       "kind" : "remoteSourceControl",
