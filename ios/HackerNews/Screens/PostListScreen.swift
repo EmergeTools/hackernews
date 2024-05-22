@@ -99,7 +99,7 @@ struct PostListScreen_Previews: PreviewProvider {
         PostListScreen(appState: loading)
       }
       .colorScheme(.dark)
-      .previewDisplayName("Loading, dark mode")
+      .previewDisplayName("Loading, dark mode ")
       
       withNavigationView {
         PostListScreen(appState: loggedIn)
