@@ -29,11 +29,11 @@
 		A44B39B52AA27F5600C443B7 /* PreviewingTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44B39B42AA27F5600C443B7 /* PreviewingTest.swift */; };
 		A47309B42AA29D9600201376 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = A47309B32AA29D9600201376 /* SwiftSoup */; };
 		A47309B62AA7D1F600201376 /* CommentRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47309B52AA7D1F600201376 /* CommentRow.swift */; };
+		A495B2952BFEA11B00A8A8A9 /* Reaper in Frameworks */ = {isa = PBXBuildFile; productRef = A495B2942BFEA11B00A8A8A9 /* Reaper */; };
 		A49933942AA28B5900DED8B1 /* StoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48C0DE92A9819E00034CC0A /* StoryViewModel.swift */; };
 		A49933952AA28B6500DED8B1 /* StoryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48C0DE62A9818A50034CC0A /* StoryScreen.swift */; };
 		A4BED5BC2ACE178C001642B3 /* SnapshottingTests in Frameworks */ = {isa = PBXBuildFile; productRef = A4BED5BB2ACE178C001642B3 /* SnapshottingTests */; };
 		A4BED5BE2ACE17B3001642B3 /* Snapshotting in Frameworks */ = {isa = PBXBuildFile; productRef = A4BED5BD2ACE17B3001642B3 /* Snapshotting */; };
-		A4BED5BF2ACF2806001642B3 /* Reaper.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4BED5B72ACE0ADF001642B3 /* Reaper.xcframework */; };
 		A4BED5C32AD5E083001642B3 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		A4BED5C42AD5E083001642B3 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		A9DF68FF511E48048B0A703D /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = 673236B0A4D04137A0D80A76 /* Sentry */; };
@@ -113,7 +113,6 @@
 		A47309B52AA7D1F600201376 /* CommentRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRow.swift; sourceTree = "<group>"; };
 		A48C0DE62A9818A50034CC0A /* StoryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryScreen.swift; sourceTree = "<group>"; };
 		A48C0DE92A9819E00034CC0A /* StoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryViewModel.swift; sourceTree = "<group>"; };
-		A4BED5B72ACE0ADF001642B3 /* Reaper.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Reaper.xcframework; path = Frameworks/Reaper.xcframework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,8 +120,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A4BED5BF2ACF2806001642B3 /* Reaper.xcframework in Frameworks */,
 				A47309B42AA29D9600201376 /* SwiftSoup in Frameworks */,
+				A495B2952BFEA11B00A8A8A9 /* Reaper in Frameworks */,
 				A9DF68FF511E48048B0A703D /* Sentry in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -334,7 +333,6 @@
 		A4BED5AB2ACDFDCF001642B3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				A4BED5B72ACE0ADF001642B3 /* Reaper.xcframework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -360,6 +358,7 @@
 			packageProductDependencies = (
 				A47309B32AA29D9600201376 /* SwiftSoup */,
 				673236B0A4D04137A0D80A76 /* Sentry */,
+				A495B2942BFEA11B00A8A8A9 /* Reaper */,
 			);
 			productName = HackerNews;
 			productReference = A42705792A4293B10057E439 /* HackerNews.app */;
@@ -441,6 +440,7 @@
 				A47309B22AA29D9600201376 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 				A4BED5BA2ACE178C001642B3 /* XCRemoteSwiftPackageReference "SnapshotPreviews-iOS" */,
 				995A2BEDEF224F7085D3DB13 /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
+				A495B2932BFEA11B00A8A8A9 /* XCRemoteSwiftPackageReference "Reaper" */,
 			);
 			productRefGroup = A427057A2A4293B10057E439 /* Products */;
 			projectDirPath = "";
@@ -896,6 +896,14 @@
 				minimumVersion = 2.6.1;
 			};
 		};
+		A495B2932BFEA11B00A8A8A9 /* XCRemoteSwiftPackageReference "Reaper" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/EmergeTools/Reaper";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.3.0;
+			};
+		};
 		A4BED5BA2ACE178C001642B3 /* XCRemoteSwiftPackageReference "SnapshotPreviews-iOS" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/EmergeTools/SnapshotPreviews-iOS";
@@ -916,6 +924,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A47309B22AA29D9600201376 /* XCRemoteSwiftPackageReference "SwiftSoup" */;
 			productName = SwiftSoup;
+		};
+		A495B2942BFEA11B00A8A8A9 /* Reaper */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A495B2932BFEA11B00A8A8A9 /* XCRemoteSwiftPackageReference "Reaper" */;
+			productName = Reaper;
 		};
 		A4BED5BB2ACE178C001642B3 /* SnapshottingTests */ = {
 			isa = XCSwiftPackageProductDependency;
