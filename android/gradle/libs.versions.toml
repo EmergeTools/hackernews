@@ -42,7 +42,6 @@ compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling
 emerge-perf = { module = "com.emergetools.test:performance", version.ref = "emerge-perf" }
 emerge-snapshots = { module = "com.emergetools.snapshots:snapshots", version.ref = "emerge-snapshots" }
 emerge-snapshots-annotations = { module = "com.emergetools.snapshots:snapshots-annotations", version.ref = "emerge-snapshots" }
-emerge-snapshots-processor = { module = "com.emergetools.snapshots:snapshots-processor", version.ref = "emerge-snapshots" }
 
 junit = "junit:junit:4.13.2"
 

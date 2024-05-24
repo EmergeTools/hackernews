@@ -93,11 +93,11 @@ dependencies {
 
   testImplementation(libs.junit)
 
+  androidTestImplementation(libs.emerge.snapshots)
   androidTestImplementation(libs.junit)
   androidTestImplementation(libs.androidx.core)
   androidTestImplementation(libs.androidx.fragment)
   androidTestImplementation(libs.androidx.test.core)
   androidTestImplementation(libs.androidx.test.ext.junit)
   androidTestImplementation(libs.androidx.test.rules)
-  androidTestImplementation(libs.emerge.snapshots)
 }
