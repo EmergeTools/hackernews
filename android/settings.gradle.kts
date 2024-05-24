@@ -3,7 +3,6 @@ rootProject.name = "HackerNews"
 pluginManagement {
   repositories {
     gradlePluginPortal()
-    mavenLocal()
     google()
   }
 }

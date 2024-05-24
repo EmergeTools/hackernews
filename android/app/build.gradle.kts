@@ -2,7 +2,6 @@ plugins {
   alias(libs.plugins.android.application)
   alias(libs.plugins.emerge)
   alias(libs.plugins.kotlin.android)
-  alias(libs.plugins.ksp)
   alias(libs.plugins.kotlin.serialization)
 }
 
@@ -101,9 +100,4 @@ dependencies {
   androidTestImplementation(libs.androidx.test.ext.junit)
   androidTestImplementation(libs.androidx.test.rules)
   androidTestImplementation(libs.emerge.snapshots)
-
-  // Generates snapshots for any Previews in the main source set
-  ksp(libs.emerge.snapshots.processor)
-  // Generates snapshots for any Previews in the androidTest source set
-  kspAndroidTest(libs.emerge.snapshots.processor)
 }
