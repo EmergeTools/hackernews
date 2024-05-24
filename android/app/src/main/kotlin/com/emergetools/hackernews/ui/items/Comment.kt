@@ -34,7 +34,6 @@ fun BuildComment(
 
 /**
  * Example generated snapshot test from main source set.
- * To generate a snapshot test for this preview, add the snapshot-processor as a ksp dependency.
  */
 @SnapshotTestingPreviews
 @Preview
