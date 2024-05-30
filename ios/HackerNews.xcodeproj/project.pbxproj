@@ -79,6 +79,7 @@
 		A42705AA2A4296BA0057E439 /* PostListScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListScreen.swift; sourceTree = "<group>"; };
 		A42705AC2A429D2E0057E439 /* HNApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HNApi.swift; sourceTree = "<group>"; };
 		A434C2DF2A8E75960002F488 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
+		A435EF3D2C08F2A9005BF473 /* HackerNews.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HackerNews.entitlements; sourceTree = "<group>"; };
 		A44B39B42AA27F5600C443B7 /* PreviewingTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewingTest.swift; sourceTree = "<group>"; };
 		A45C2C7D2A5DDE25009BC030 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 		A45C2C7E2A5DDE25009BC030 /* Pluginfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Pluginfile; sourceTree = "<group>"; };
@@ -213,6 +214,7 @@
 		A427057B2A4293B10057E439 /* HackerNews */ = {
 			isa = PBXGroup;
 			children = (
+				A435EF3D2C08F2A9005BF473 /* HackerNews.entitlements */,
 				A45C2CBB2A5F0A41009BC030 /* Hacker-News-Info.plist */,
 				1DF161FB2A4364CB001A3F76 /* Components */,
 				A48C0DE82A9819B60034CC0A /* Models */,
@@ -412,7 +414,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1430;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 1540;
 				TargetAttributes = {
 					A42705782A4293B10057E439 = {
 						CreatedOnToolsVersion = 14.3.1;
@@ -578,6 +580,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -610,6 +613,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -638,6 +642,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -670,6 +675,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -693,6 +699,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = HackerNews/HackerNews.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -717,7 +724,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.emerge.hn.Hacker-News";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MACCATALYST = YES;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -730,6 +737,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = HackerNews/HackerNews.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -754,7 +762,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.emerge.hn.Hacker-News";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MACCATALYST = YES;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
