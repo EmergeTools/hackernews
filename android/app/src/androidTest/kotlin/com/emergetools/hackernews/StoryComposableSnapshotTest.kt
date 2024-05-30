@@ -7,8 +7,7 @@ import com.emergetools.hackernews.ui.items.BuildStory
 
 /**
  * Example generated snapshot test from androidTest source set.
- * To generate a snapshot test for this preview, add the snapshot-processor as a kspAndroidTest
- * dependency.
+ * To generate a snapshot test for this preview, add the androidTest source set to the debug variant.
  */
 @Preview
 @Composable

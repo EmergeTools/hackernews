@@ -6,11 +6,10 @@ androidx-test-ext = "1.1.5"
 accompanist = "0.33.2-alpha"
 compose-bom = "2024.02.02"
 compose-compiler-extension = "1.5.3"
-emerge-gradle-plugin = "2.2.0"
+emerge-gradle-plugin = "3.0.0"
 emerge-perf = "2.1.1"
-emerge-snapshots = "0.8.4"
+emerge-snapshots = "1.0.0"
 kotlin = "1.9.10"
-ksp = "1.9.10-1.0.13"
 material-compose = "1.6.3"
 navigation-compose = "2.7.7"
 okhttp = "4.11.0"
@@ -21,7 +20,6 @@ android-test = { id = "com.android.test", version.ref = "agp" }
 emerge = { id = "com.emergetools.android", version.ref = "emerge-gradle-plugin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 
 [libraries]
 accompanist-navigationanim = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "accompanist" }
@@ -44,7 +42,6 @@ compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling
 emerge-perf = { module = "com.emergetools.test:performance", version.ref = "emerge-perf" }
 emerge-snapshots = { module = "com.emergetools.snapshots:snapshots", version.ref = "emerge-snapshots" }
 emerge-snapshots-annotations = { module = "com.emergetools.snapshots:snapshots-annotations", version.ref = "emerge-snapshots" }
-emerge-snapshots-processor = { module = "com.emergetools.snapshots:snapshots-processor", version.ref = "emerge-snapshots" }
 
 junit = "junit:junit:4.13.2"
 
