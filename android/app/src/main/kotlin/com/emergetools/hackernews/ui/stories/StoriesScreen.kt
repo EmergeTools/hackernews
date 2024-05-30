@@ -41,7 +41,7 @@ import com.emergetools.hackernews.network.HNApiService
 import com.emergetools.hackernews.network.models.Item
 import com.emergetools.hackernews.network.models.Story
 import com.emergetools.hackernews.ui.BuildItem
-import com.emergetools.hackernews.ui.Orange
+import com.emergetools.hackernews.ui.Purple
 import com.emergetools.hackernews.ui.Screen
 import com.emergetools.hackernews.utils.forEachInParallel
 
@@ -110,7 +110,7 @@ fun StoriesToolbar(
   refreshAction: () -> Unit,
 ) {
   TopAppBar(
-    backgroundColor = Orange,
+    backgroundColor = Purple,
     title = { Text(stringResource(R.string.app_name), color = Color.White) },
     actions = {
       var expanded by remember { mutableStateOf(false) }

@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 val Orange = Color(0xffff6600)
-private val Purple = Color(0xff221E43)
+val Purple = Color(0xff221E43)
 
 // TODO: Success
 private val Error = Color(0xffe53935)
