@@ -65,36 +65,3 @@ struct PostListScreen: View {
   }
   
 }
-
-struct PostListScreen_Loading_Previews: PreviewProvider {
-  static var previews: some View {
-    let appState = AppViewModel()
-    appState.authState = .loggedIn
-    appState.storiesState = .loading
-    return PreviewVariants {
-      PostListScreen(appState: appState)
-    }
-  }
-}
-
-struct PostListScreen_WithPosts_Previews: PreviewProvider {
-  static var previews: some View {
-    let appState = AppViewModel()
-    appState.authState = .loggedIn
-    appState.storiesState = .loaded(stories: PreviewHelpers.makeFakeStories())
-    return PreviewVariants {
-      PostListScreen(appState: appState)
-    }
-  }
-}
-
-struct PostListScreen_EmptyPosts_Previews: PreviewProvider {
-  static var previews: some View {
-    let appState = AppViewModel()
-    appState.authState = .loggedIn
-    appState.storiesState = .loaded(stories: [])
-    return PreviewVariants {
-      PostListScreen(appState: appState)
-    }
-  }
-}
