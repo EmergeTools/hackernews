@@ -8,16 +8,14 @@
 import Foundation
 import SwiftUI
 
-#if DEBUG
-
-public struct PreviewVariants<Content: View>: View {
+struct PreviewVariants<Content: View>: View {
   let content: Content
 
-  public init(@ViewBuilder _ content: () -> Content) {
+  init(@ViewBuilder _ content: () -> Content) {
     self.content = content()
   }
 
-  public var body: some View {
+  var body: some View {
     Group {
       self.content
         .environment(\.colorScheme, .light)
@@ -123,5 +121,3 @@ struct PreviewHelpers {
     FlattenedComment(comment: comment, depth: depth)
   }
 }
-
-#endif
