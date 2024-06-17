@@ -65,3 +65,14 @@ struct PostListScreen: View {
   }
   
 }
+
+#Preview {
+  PostListScreen(appState: AppViewModel())
+}
+
+#Preview("Loading") {
+  let appModel = AppViewModel()
+  appModel.authState = .loggedIn
+  appModel.storiesState = .loading
+  PostListScreen(appState: appModel)
+}
