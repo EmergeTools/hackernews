@@ -79,34 +79,34 @@ struct PostListScreen_Previews: PreviewProvider {
     loggedIn.authState = .loggedIn
     
     return Group {
-      withNavigationView {
+      PreviewHelpers.withNavigationView {
         PostListScreen(appState: appState)
           .previewDisplayName("With posts")
       }
       
-      withNavigationView {
+      PreviewHelpers.withNavigationView {
         PostListScreen(appState: appState)
       }
       .colorScheme(.dark)
       .previewDisplayName("With posts, dark mode")
       
-      withNavigationView {
+      PreviewHelpers.withNavigationView {
         PostListScreen(appState: loading)
       }
       .previewDisplayName("Loading")
       
-      withNavigationView {
+      PreviewHelpers.withNavigationView {
         PostListScreen(appState: loading)
       }
       .colorScheme(.dark)
       .previewDisplayName("Loading, dark mode")
       
-      withNavigationView {
+      PreviewHelpers.withNavigationView {
         PostListScreen(appState: loggedIn)
       }
       .previewDisplayName("No posts")
       
-      withNavigationView {
+      PreviewHelpers.withNavigationView {
         PostListScreen(appState: loggedIn)
       }
       .colorScheme(.dark)

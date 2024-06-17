@@ -39,12 +39,12 @@ struct LoginScreen_Previews: PreviewProvider {
     loggedOut.authState = .loggedOut
     
     return Group {
-      withNavigationView {
+      PreviewHelpers.withNavigationView {
         ContentView(appState: loggedOut)
       }
       .previewDisplayName("Logged out")
       
-      withNavigationView {
+      PreviewHelpers.withNavigationView {
         ContentView(appState: loggedOut)
       }
       .colorScheme(.dark)

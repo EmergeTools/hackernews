@@ -38,7 +38,7 @@ struct CommentView_Preview: PreviewProvider {
   static var previews: some View {
     Group {
       ForEach(0..<6) { index in
-        CommentRow(comment: makeFakeComment(), level: index)
+        CommentRow(comment: PreviewHelpers.makeFakeComment(), level: index)
           .previewLayout(.sizeThatFits)
           .previewDisplayName("Indentation \(index)")
       }

@@ -83,53 +83,40 @@ struct StoryRow: View {
   }
 }
 
-#Preview {
-  let mockStory = Story.init(
-    id: 0,
-    by: "Ryan",
-    time: Int64(Date().timeIntervalSinceNow),
-    type: ItemType.story,
-    title: "Mock story for preview",
-    text: nil,
-    url: "https://emergetools.com",
-    score: 100,
-    descendants: 3,
-    kids: [1, 2, 3]
-  )
-  let appState = AppViewModel()
-  
-  return Group {
-    StoryRow(appState: appState, story: mockStory, index: 0)
-      .previewDevice(PreviewDevice(rawValue: "iPhone 14 Pro"))
-      .previewDisplayName("iPhone 14 Pro")
-      .previewLayout(.sizeThatFits)
-    
-    StoryRow(appState: appState, story: mockStory, index: 0)
-      .previewDevice(PreviewDevice(rawValue: "iPhone 14 Pro"))
-      .previewDisplayName("iPhone 14 Pro, dark")
-      .previewLayout(.sizeThatFits)
-      .colorScheme(.dark)
-    
-    StoryRow(appState: appState, story: mockStory, index: 0)
-      .previewDevice(PreviewDevice(rawValue: "iPhone SE (3rd generation)"))
-      .previewDisplayName("iPhone SE (3rd generation)")
-      .previewLayout(.sizeThatFits)
-    
-    StoryRow(appState: appState, story: mockStory, index: 0)
-      .previewDevice(PreviewDevice(rawValue: "iPhone SE (3rd generation)"))
-      .previewDisplayName("iPhone SE (3rd generation), dark")
-      .previewLayout(.sizeThatFits)
-      .colorScheme(.dark)
-    
-    StoryRow(appState: appState, story: mockStory, index: 0)
-      .previewDevice(PreviewDevice(rawValue: "iPad Pro (11-inch) (4th generation)"))
-      .previewDisplayName("iPad Pro (11-inch) (4th generation)")
-      .previewLayout(.sizeThatFits)
-    
-    StoryRow(appState: appState, story: mockStory, index: 0)
-      .previewDevice(PreviewDevice(rawValue: "iPad Pro (11-inch) (4th generation)"))
-      .previewDisplayName("iPad Pro (11-inch) (4th generation), dark")
-      .previewLayout(.sizeThatFits)
-      .colorScheme(.dark)
-  }
+#if DEBUG
+private let fakeStory = PreviewHelpers.makeFakeStory(index: 0, descendants: 3, kids: [1, 2, 3])
+#endif
+
+#Preview("iPhone 14 Pro", traits: .sizeThatFitsLayout) {
+  return StoryRow(appState: AppViewModel(), story: fakeStory, index: 0)
+    .previewDevice(PreviewDevice(rawValue: "iPhone 14 Pro"))
+}
+
+#Preview("iPhone 14 Pro, dark", traits: .sizeThatFitsLayout) {
+  return StoryRow(appState: AppViewModel(), story: fakeStory, index: 0)
+    .previewDevice(PreviewDevice(rawValue: "iPhone 14 Pro"))
+    .colorScheme(.dark)
+}
+
+#Preview("iPhone SE (3rd generation)", traits: .sizeThatFitsLayout) {
+  return StoryRow(appState: AppViewModel(), story: fakeStory, index: 0)
+    .previewDevice(PreviewDevice(rawValue: "iPhone SE (3rd generation)"))
+}
+
+#Preview("iPhone SE (3rd generation), dark", traits: .sizeThatFitsLayout) {
+  return StoryRow(appState: AppViewModel(), story: fakeStory, index: 0)
+    .previewDevice(PreviewDevice(rawValue: "iPhone SE (3rd generation)"))
+    .colorScheme(.dark)
+}
+
+#Preview("iPad Pro (11-inch) (4th generation)", traits: .sizeThatFitsLayout) {
+  return StoryRow(appState: AppViewModel(), story: fakeStory, index: 0)
+    .previewDevice(PreviewDevice(rawValue: "iPad Pro (11-inch) (4th generation)"))
+    .previewLayout(.sizeThatFits)
+}
+
+#Preview("iPad Pro (11-inch) (4th generation), dark", traits: .sizeThatFitsLayout) {
+  return StoryRow(appState: AppViewModel(), story: fakeStory, index: 0)
+    .previewDevice(PreviewDevice(rawValue: "iPad Pro (11-inch) (4th generation)"))
+    .colorScheme(.dark)
 }
