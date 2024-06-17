@@ -74,5 +74,5 @@ struct PostListScreen: View {
   let appModel = AppViewModel()
   appModel.authState = .loggedIn
   appModel.storiesState = .loading
-  PostListScreen(appState: appModel)
+  return PostListScreen(appState: appModel)
 }
