@@ -83,66 +83,11 @@ struct StoryRow: View {
   }
 }
 
-#if DEBUG
-private let fakeStory = PreviewHelpers.makeFakeStory(index: 0, descendants: 3, kids: [1, 2, 3])
-#endif
-
-#Preview {
-  Group {
-    StoryRow(appState: AppViewModel(), story: fakeStory, index: 0)
-      .previewDevice(PreviewDevice(rawValue: "iPhone 14 Pro"))
-    
-    StoryRow(appState: AppViewModel(), story: fakeStory, index: 0)
-      .previewDevice(PreviewDevice(rawValue: "iPhone 14 Pro"))
-      .colorScheme(.dark)
-    
-    StoryRow(appState: AppViewModel(), story: fakeStory, index: 0)
-      .previewDevice(PreviewDevice(rawValue: "iPhone SE (3rd generation)"))
-    
-    StoryRow(appState: AppViewModel(), story: fakeStory, index: 0)
-      .previewDevice(PreviewDevice(rawValue: "iPhone SE (3rd generation)"))
-      .colorScheme(.dark)
-    
-    StoryRow(appState: AppViewModel(), story: fakeStory, index: 0)
-      .previewDevice(PreviewDevice(rawValue: "iPad Pro (11-inch) (4th generation)"))
-      .previewLayout(.sizeThatFits)
-    
-    StoryRow(appState: AppViewModel(), story: fakeStory, index: 0)
-      .previewDevice(PreviewDevice(rawValue: "iPad Pro (11-inch) (4th generation)"))
-      .colorScheme(.dark)
+struct StoryRow_Preview: PreviewProvider {
+  static var previews: some View {
+    let fakeStory = PreviewHelpers.makeFakeStory(index: 0, descendants: 3, kids: [1, 2, 3])
+    PreviewVariants {
+      StoryRow(appState: AppViewModel(), story: fakeStory, index: 0)
+    }
   }
 }
-
-//#Preview("iPhone 14 Pro", traits: .sizeThatFitsLayout) {
-//  return StoryRow(appState: AppViewModel(), story: fakeStory, index: 0)
-//    .previewDevice(PreviewDevice(rawValue: "iPhone 14 Pro"))
-//}
-//
-//#Preview("iPhone 14 Pro, dark", traits: .sizeThatFitsLayout) {
-//  return StoryRow(appState: AppViewModel(), story: fakeStory, index: 0)
-//    .previewDevice(PreviewDevice(rawValue: "iPhone 14 Pro"))
-//    .colorScheme(.dark)
-//}
-//
-//#Preview("iPhone SE (3rd generation)", traits: .sizeThatFitsLayout) {
-//  return StoryRow(appState: AppViewModel(), story: fakeStory, index: 0)
-//    .previewDevice(PreviewDevice(rawValue: "iPhone SE (3rd generation)"))
-//}
-//
-//#Preview("iPhone SE (3rd generation), dark", traits: .sizeThatFitsLayout) {
-//  return StoryRow(appState: AppViewModel(), story: fakeStory, index: 0)
-//    .previewDevice(PreviewDevice(rawValue: "iPhone SE (3rd generation)"))
-//    .colorScheme(.dark)
-//}
-//
-//#Preview("iPad Pro (11-inch) (4th generation)", traits: .sizeThatFitsLayout) {
-//  return StoryRow(appState: AppViewModel(), story: fakeStory, index: 0)
-//    .previewDevice(PreviewDevice(rawValue: "iPad Pro (11-inch) (4th generation)"))
-//    .previewLayout(.sizeThatFits)
-//}
-//
-//#Preview("iPad Pro (11-inch) (4th generation), dark", traits: .sizeThatFitsLayout) {
-//  return StoryRow(appState: AppViewModel(), story: fakeStory, index: 0)
-//    .previewDevice(PreviewDevice(rawValue: "iPad Pro (11-inch) (4th generation)"))
-//    .colorScheme(.dark)
-//}

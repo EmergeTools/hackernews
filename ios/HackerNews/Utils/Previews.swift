@@ -10,6 +10,60 @@ import SwiftUI
 
 #if DEBUG
 
+public struct PreviewVariants<Content: View>: View {
+  let content: Content
+
+  public init(@ViewBuilder _ content: () -> Content) {
+    self.content = content()
+  }
+
+  public var body: some View {
+    Group {
+      self.content
+        .environment(\.colorScheme, .light)
+        .preferredColorScheme(.light)
+        .navigationBarHidden(true)
+        .previewDevice("iPhone 11 Pro Max")
+        .previewDisplayName("Pro Max, light mode")
+
+      self.content
+        .environment(\.colorScheme, .dark)
+        .preferredColorScheme(.dark)
+        .navigationBarHidden(true)
+        .previewDevice("iPhone 11 Pro Max")
+        .previewDisplayName("Pro Max, dark mode")
+      
+      self.content
+        .environment(\.colorScheme, .light)
+        .preferredColorScheme(.light)
+        .navigationBarHidden(true)
+        .previewDevice("iPhone 8")
+        .previewDisplayName("8, light mode")
+
+      self.content
+        .environment(\.colorScheme, .dark)
+        .preferredColorScheme(.dark)
+        .navigationBarHidden(true)
+        .previewDevice("iPhone 8")
+        .previewDisplayName("8, dark mode")
+      
+      self.content
+        .environment(\.colorScheme, .light)
+        .preferredColorScheme(.light)
+        .navigationBarHidden(true)
+        .previewDevice("iPad Air (5th generation)")
+        .previewDisplayName("iPad, light mode")
+
+      self.content
+        .environment(\.colorScheme, .dark)
+        .preferredColorScheme(.dark)
+        .navigationBarHidden(true)
+        .previewDevice("iPad Air (5th generation)")
+        .previewDisplayName("iPad, dark mode")
+    }
+  }
+}
+
 struct PreviewHelpers {
   static func withNavigationView(@ViewBuilder content: () -> some View) -> some View {
     NavigationStack {
