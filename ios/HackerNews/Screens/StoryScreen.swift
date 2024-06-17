@@ -50,15 +50,15 @@ struct StoryScreen: View {
 struct StoryScreen_Preview: PreviewProvider {
   static var previews: some View {
     let comments = [
-      makeFakeFlattenedComment(),
-      makeFakeFlattenedComment(),
-      makeFakeFlattenedComment(),
-      makeFakeFlattenedComment()
+      PreviewHelpers.makeFakeFlattenedComment(),
+      PreviewHelpers.makeFakeFlattenedComment(),
+      PreviewHelpers.makeFakeFlattenedComment(),
+      PreviewHelpers.makeFakeFlattenedComment()
     ]
-    let viewModel = StoryViewModel(story: makeFakeStory(kids: comments.map { $0.comment.id }))
+    let viewModel = StoryViewModel(story: PreviewHelpers.makeFakeStory(kids: comments.map { $0.comment.id }))
     viewModel.state = .loaded(comments: comments)
-    return Group {
-      withNavigationView {
+    return PreviewVariants {
+      PreviewHelpers.withNavigationView {
         StoryScreen(storyModel: viewModel)
       }
     }

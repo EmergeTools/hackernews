@@ -32,23 +32,3 @@ struct LoginScreen: View {
   }
   
 }
-
-struct LoginScreen_Previews: PreviewProvider {
-  static var previews: some View {
-    let loggedOut = AppViewModel()
-    loggedOut.authState = .loggedOut
-    
-    return Group {
-      withNavigationView {
-        ContentView(appState: loggedOut)
-      }
-      .previewDisplayName("Logged out")
-      
-      withNavigationView {
-        ContentView(appState: loggedOut)
-      }
-      .colorScheme(.dark)
-      .previewDisplayName("Logged out, dark mode")
-    }
-  }
-}
