@@ -65,3 +65,21 @@ struct PostListScreen: View {
   }
   
 }
+
+#Preview {
+  PostListScreen(appState: AppViewModel())
+}
+
+#Preview("Loading") {
+  let appModel = AppViewModel()
+  appModel.authState = .loggedIn
+  appModel.storiesState = .loading
+  return PostListScreen(appState: appModel)
+}
+
+#Preview("Has posts") {
+  let appModel = AppViewModel()
+  appModel.authState = .loggedIn
+  appModel.storiesState = .loaded(stories: PreviewHelpers.makeFakeStories())
+  return PostListScreen(appState: appModel)
+}
