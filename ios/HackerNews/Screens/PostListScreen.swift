@@ -66,68 +66,35 @@ struct PostListScreen: View {
   
 }
 
-struct PostListScreen_Previews: PreviewProvider {
+struct PostListScreen_Loading_Previews: PreviewProvider {
   static var previews: some View {
     let appState = AppViewModel()
-    appState.storiesState = .loaded(stories: makeFakeStories())
-    
-    let loading = AppViewModel()
-    loading.authState = .loggedIn
-    loading.storiesState = .loading
-    
-    let loggedIn = AppViewModel()
-    loggedIn.authState = .loggedIn
-    
-    return Group {
-      PreviewHelpers.withNavigationView {
-        PostListScreen(appState: appState)
-          .previewDisplayName("With posts")
-      }
-      
-      PreviewHelpers.withNavigationView {
-        PostListScreen(appState: appState)
-      }
-      .colorScheme(.dark)
-      .previewDisplayName("With posts, dark mode")
-      
-      PreviewHelpers.withNavigationView {
-        PostListScreen(appState: loading)
-      }
-      .previewDisplayName("Loading")
-      
-      PreviewHelpers.withNavigationView {
-        PostListScreen(appState: loading)
-      }
-      .colorScheme(.dark)
-      .previewDisplayName("Loading, dark mode")
-      
-      PreviewHelpers.withNavigationView {
-        PostListScreen(appState: loggedIn)
-      }
-      .previewDisplayName("No posts")
-      
-      PreviewHelpers.withNavigationView {
-        PostListScreen(appState: loggedIn)
-      }
-      .colorScheme(.dark)
-      .previewDisplayName("No posts, dark mode")
+    appState.authState = .loggedIn
+    appState.storiesState = .loading
+    return PreviewVariants {
+      PostListScreen(appState: appState)
     }
   }
-  
-  static func makeFakeStories() -> [Story] {
-    return (0..<20).map { index in
-      return Story(
-        id: index,
-        by: "dang",
-        time: Int64(Date().timeIntervalSince1970) - Int64(index),
-        type: .story,
-        title: "Test story \(index)",
-        text: "Test story body \(index)",
-        url: "https://emergetools.com",
-        score: 100,
-        descendants: 3,
-        kids: nil
-      )
+}
+
+struct PostListScreen_WithPosts_Previews: PreviewProvider {
+  static var previews: some View {
+    let appState = AppViewModel()
+    appState.authState = .loggedIn
+    appState.storiesState = .loaded(stories: PreviewHelpers.makeFakeStories())
+    return PreviewVariants {
+      PostListScreen(appState: appState)
+    }
+  }
+}
+
+struct PostListScreen_EmptyPosts_Previews: PreviewProvider {
+  static var previews: some View {
+    let appState = AppViewModel()
+    appState.authState = .loggedIn
+    appState.storiesState = .loaded(stories: [])
+    return PreviewVariants {
+      PostListScreen(appState: appState)
     }
   }
 }

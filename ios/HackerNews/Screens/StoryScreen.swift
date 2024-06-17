@@ -57,7 +57,7 @@ struct StoryScreen_Preview: PreviewProvider {
     ]
     let viewModel = StoryViewModel(story: PreviewHelpers.makeFakeStory(kids: comments.map { $0.comment.id }))
     viewModel.state = .loaded(comments: comments)
-    return Group {
+    return PreviewVariants {
       PreviewHelpers.withNavigationView {
         StoryScreen(storyModel: viewModel)
       }

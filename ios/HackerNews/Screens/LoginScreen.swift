@@ -33,22 +33,26 @@ struct LoginScreen: View {
   
 }
 
-struct LoginScreen_Previews: PreviewProvider {
+struct LoginScreen_LoggedIn_Previews: PreviewProvider {
   static var previews: some View {
-    let loggedOut = AppViewModel()
-    loggedOut.authState = .loggedOut
-    
-    return Group {
+    let appModel = AppViewModel()
+    appModel.authState = .loggedIn
+    return PreviewVariants {
       PreviewHelpers.withNavigationView {
-        ContentView(appState: loggedOut)
+        ContentView(appState: appModel)
       }
-      .previewDisplayName("Logged out")
-      
+    }
+  }
+}
+
+struct LoginScreen_LoggedOut_Previews: PreviewProvider {
+  static var previews: some View {
+    let appModel = AppViewModel()
+    appModel.authState = .loggedOut
+    return PreviewVariants {
       PreviewHelpers.withNavigationView {
-        ContentView(appState: loggedOut)
+        ContentView(appState: appModel)
       }
-      .colorScheme(.dark)
-      .previewDisplayName("Logged out, dark mode")
     }
   }
 }
