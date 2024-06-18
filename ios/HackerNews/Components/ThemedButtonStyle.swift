@@ -17,3 +17,9 @@ struct ThemedButtonStyle: ButtonStyle {
       .cornerRadius(10)
   }
 }
+
+#Preview {
+  Button("Test") {
+    
+  }.buttonStyle(ThemedButtonStyle())
+}
