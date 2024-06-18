@@ -19,7 +19,7 @@ struct ThemedButtonStyle: ButtonStyle {
 }
 
 #Preview {
-  Button("Test") {
+  Button("Test2") {
     
   }.buttonStyle(ThemedButtonStyle())
 }
