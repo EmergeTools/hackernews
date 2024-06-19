@@ -1,6 +1,24 @@
 {
-  "originHash" : "77385174260e5a082870946dcb2ffee0e39ed35c0df6df3e0daa25b2102bf3f8",
+  "originHash" : "f5e9fcda69a0d6032ab3c9456ec8a8c9505563afed69c77519902baee4d3134c",
   "pins" : [
+    {
+      "identity" : "accessibilitysnapshot",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/EmergeTools/AccessibilitySnapshot.git",
+      "state" : {
+        "revision" : "54046d8fa44b9fa9f0e2229526f6ed89cb5e0ec2",
+        "version" : "1.0.2"
+      }
+    },
+    {
+      "identity" : "flyingfox",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swhitty/FlyingFox.git",
+      "state" : {
+        "revision" : "ed86fc6d68ec1467aaab3e494b581e66dd7a4512",
+        "version" : "0.12.2"
+      }
+    },
     {
       "identity" : "reaper",
       "kind" : "remoteSourceControl",
@@ -25,7 +43,7 @@
       "location" : "https://github.com/EmergeTools/SnapshotPreviews-iOS",
       "state" : {
         "branch" : "main",
-        "revision" : "f22f2f057ff26b6327d74279f9234f1b11822e23"
+        "revision" : "e5bf73a45a105049a4dacc960011559a78c914b2"
       }
     },
     {

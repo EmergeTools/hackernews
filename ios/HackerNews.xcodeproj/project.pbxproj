@@ -33,10 +33,10 @@
 		A495B2952BFEA11B00A8A8A9 /* Reaper in Frameworks */ = {isa = PBXBuildFile; productRef = A495B2942BFEA11B00A8A8A9 /* Reaper */; };
 		A49933942AA28B5900DED8B1 /* StoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48C0DE92A9819E00034CC0A /* StoryViewModel.swift */; };
 		A49933952AA28B6500DED8B1 /* StoryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48C0DE62A9818A50034CC0A /* StoryScreen.swift */; };
-		A4BED5BC2ACE178C001642B3 /* SnapshottingTests in Frameworks */ = {isa = PBXBuildFile; productRef = A4BED5BB2ACE178C001642B3 /* SnapshottingTests */; };
-		A4BED5BE2ACE17B3001642B3 /* Snapshotting in Frameworks */ = {isa = PBXBuildFile; productRef = A4BED5BD2ACE17B3001642B3 /* Snapshotting */; };
 		A4BED5C32AD5E083001642B3 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		A4BED5C42AD5E083001642B3 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
+		A4D28AEE2C237E2A007F20D0 /* SnapshotPreferences in Frameworks */ = {isa = PBXBuildFile; productRef = A4D28AED2C237E2A007F20D0 /* SnapshotPreferences */; };
+		A4D28AF02C237E2A007F20D0 /* SnapshottingTests in Frameworks */ = {isa = PBXBuildFile; productRef = A4D28AEF2C237E2A007F20D0 /* SnapshottingTests */; };
 		A9DF68FF511E48048B0A703D /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = 673236B0A4D04137A0D80A76 /* Sentry */; };
 /* End PBXBuildFile section */
 
@@ -56,6 +56,19 @@
 			remoteInfo = HackerNews;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A4D28AE92C237BAE007F20D0 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		1DF161F92A4346F6001A3F76 /* StoryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryRow.swift; sourceTree = "<group>"; };
@@ -124,6 +137,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A47309B42AA29D9600201376 /* SwiftSoup in Frameworks */,
+				A4D28AEE2C237E2A007F20D0 /* SnapshotPreferences in Frameworks */,
 				A495B2952BFEA11B00A8A8A9 /* Reaper in Frameworks */,
 				A9DF68FF511E48048B0A703D /* Sentry in Frameworks */,
 			);
@@ -141,8 +155,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A4BED5BE2ACE17B3001642B3 /* Snapshotting in Frameworks */,
-				A4BED5BC2ACE178C001642B3 /* SnapshottingTests in Frameworks */,
+				A4D28AF02C237E2A007F20D0 /* SnapshottingTests in Frameworks */,
 				A4BED5C42AD5E083001642B3 /* (null) in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -354,6 +367,7 @@
 				A42705772A4293B10057E439 /* Resources */,
 				A42705AE2A44C35D0057E439 /* Strip Symbols */,
 				F52059CED4FD476981550295 /* Upload Debug Symbols to Sentry */,
+				A4D28AE92C237BAE007F20D0 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -364,6 +378,7 @@
 				A47309B32AA29D9600201376 /* SwiftSoup */,
 				673236B0A4D04137A0D80A76 /* Sentry */,
 				A495B2942BFEA11B00A8A8A9 /* Reaper */,
+				A4D28AED2C237E2A007F20D0 /* SnapshotPreferences */,
 			);
 			productName = HackerNews;
 			productReference = A42705792A4293B10057E439 /* HackerNews.app */;
@@ -402,8 +417,7 @@
 			);
 			name = HackerNewsUITests;
 			packageProductDependencies = (
-				A4BED5BB2ACE178C001642B3 /* SnapshottingTests */,
-				A4BED5BD2ACE17B3001642B3 /* Snapshotting */,
+				A4D28AEF2C237E2A007F20D0 /* SnapshottingTests */,
 			);
 			productName = HackerNewsUITests;
 			productReference = A42705932A4293B30057E439 /* HackerNewsUITests.xctest */;
@@ -443,9 +457,9 @@
 			mainGroup = A42705702A4293B10057E439;
 			packageReferences = (
 				A47309B22AA29D9600201376 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
-				A4BED5BA2ACE178C001642B3 /* XCRemoteSwiftPackageReference "SnapshotPreviews-iOS" */,
 				995A2BEDEF224F7085D3DB13 /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
 				A495B2932BFEA11B00A8A8A9 /* XCRemoteSwiftPackageReference "Reaper" */,
+				A4D28AEC2C237E2A007F20D0 /* XCRemoteSwiftPackageReference "SnapshotPreviews-iOS" */,
 			);
 			productRefGroup = A427057A2A4293B10057E439 /* Products */;
 			projectDirPath = "";
@@ -923,7 +937,7 @@
 				minimumVersion = 1.3.1;
 			};
 		};
-		A4BED5BA2ACE178C001642B3 /* XCRemoteSwiftPackageReference "SnapshotPreviews-iOS" */ = {
+		A4D28AEC2C237E2A007F20D0 /* XCRemoteSwiftPackageReference "SnapshotPreviews-iOS" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/EmergeTools/SnapshotPreviews-iOS";
 			requirement = {
@@ -949,15 +963,15 @@
 			package = A495B2932BFEA11B00A8A8A9 /* XCRemoteSwiftPackageReference "Reaper" */;
 			productName = Reaper;
 		};
-		A4BED5BB2ACE178C001642B3 /* SnapshottingTests */ = {
+		A4D28AED2C237E2A007F20D0 /* SnapshotPreferences */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = A4BED5BA2ACE178C001642B3 /* XCRemoteSwiftPackageReference "SnapshotPreviews-iOS" */;
-			productName = SnapshottingTests;
+			package = A4D28AEC2C237E2A007F20D0 /* XCRemoteSwiftPackageReference "SnapshotPreviews-iOS" */;
+			productName = SnapshotPreferences;
 		};
-		A4BED5BD2ACE17B3001642B3 /* Snapshotting */ = {
+		A4D28AEF2C237E2A007F20D0 /* SnapshottingTests */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = A4BED5BA2ACE178C001642B3 /* XCRemoteSwiftPackageReference "SnapshotPreviews-iOS" */;
-			productName = Snapshotting;
+			package = A4D28AEC2C237E2A007F20D0 /* XCRemoteSwiftPackageReference "SnapshotPreviews-iOS" */;
+			productName = SnapshottingTests;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
