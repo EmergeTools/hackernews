@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import SnapshotPreferences
 
 struct PreviewVariants<Content: View>: View {
   let content: Content
@@ -58,6 +59,14 @@ struct PreviewVariants<Content: View>: View {
         .navigationBarHidden(true)
         .previewDevice("iPad Air (5th generation)")
         .previewDisplayName("iPad Air, dark mode")
+      
+      self.content
+        .environment(\.colorScheme, .light)
+        .preferredColorScheme(.light)
+        .navigationBarHidden(true)
+        .previewDevice("iPhone 11 Pro Max")
+        .previewDisplayName("Accessibility")
+        .emergeAccessibility(true)
     }
   }
 }
