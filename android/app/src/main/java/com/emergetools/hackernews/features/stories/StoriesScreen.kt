@@ -1,4 +1,4 @@
-package dev.supergooey.hackernews.features.stories
+package com.emergetools.hackernews.features.stories
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -39,10 +39,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import dev.supergooey.hackernews.R
-import dev.supergooey.hackernews.features.comments.CommentsDestinations
-import dev.supergooey.hackernews.ui.theme.HNOrange
-import dev.supergooey.hackernews.ui.theme.HackerNewsTheme
+import com.emergetools.hackernews.R
+import com.emergetools.hackernews.features.comments.CommentsDestinations
+import com.emergetools.hackernews.ui.theme.HNOrange
+import com.emergetools.hackernews.ui.theme.HackerNewsTheme
 
 @Composable
 fun StoriesScreen(

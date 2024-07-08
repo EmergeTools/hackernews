@@ -1,4 +1,4 @@
-package dev.supergooey.hackernews.features.comments
+package com.emergetools.hackernews.features.comments
 
 import android.graphics.Typeface
 import android.text.Layout
@@ -30,7 +30,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.em
 import androidx.core.text.HtmlCompat
-import dev.supergooey.hackernews.ui.theme.HNOrange
+import com.emergetools.hackernews.ui.theme.HNOrange
 
 /**
  * This code will be added to Compose 1.7, just some utilities to convert HTML Spanned to Annotated String

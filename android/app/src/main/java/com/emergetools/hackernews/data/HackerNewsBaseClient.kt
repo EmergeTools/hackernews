@@ -1,4 +1,4 @@
-package dev.supergooey.hackernews.data
+package com.emergetools.hackernews.data
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json

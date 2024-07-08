@@ -7,12 +7,12 @@ plugins {
 }
 
 android {
-  namespace = "dev.supergooey.hackernews"
+  namespace = "com.emergetools.hackernews"
   compileSdk = 34
 
   defaultConfig {
-    applicationId = "dev.supergooey.hackernews"
-    minSdk = 33
+    applicationId = "com.emergetools.hackernews"
+    minSdk = 30
     targetSdk = 34
     versionCode = 1
     versionName = "1.0"
@@ -25,25 +25,42 @@ android {
 
   buildTypes {
     debug {
-      isDebuggable = false
+      isDebuggable = true
+      applicationIdSuffix = ".debug"
     }
     release {
-      isMinifyEnabled = false
-      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+      isMinifyEnabled = true
+      isShrinkResources = true
+      proguardFiles(
+        getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+      )
+      signingConfig = signingConfigs.getByName("debug")
     }
-  }
-  compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-  }
-  kotlinOptions {
-    jvmTarget = "1.8"
   }
   buildFeatures {
     compose = true
   }
+  compileOptions {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+  }
+  kotlinOptions {
+    jvmTarget = JavaVersion.VERSION_17.toString()
+  }
   composeOptions {
-    kotlinCompilerExtensionVersion = "1.5.1"
+    kotlinCompilerExtensionVersion = libs.versions.composeCompilerExtension.get()
+  }
+  emerge {
+    snapshots {
+      tag.set("snapshot")
+    }
+
+    vcs {
+      gitHub {
+        repoName.set("hackernews")
+        repoOwner.set("EmergeTools")
+      }
+    }
   }
   packaging {
     resources {

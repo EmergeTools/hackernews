@@ -1,4 +1,4 @@
-package dev.supergooey.hackernews.features.comments
+package com.emergetools.hackernews.features.comments
 
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -7,7 +7,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import dev.supergooey.searchClient
+import com.emergetools.searchClient
 import kotlinx.serialization.Serializable
 
 sealed interface CommentsDestinations {

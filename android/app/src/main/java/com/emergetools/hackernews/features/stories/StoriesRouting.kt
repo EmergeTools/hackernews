@@ -1,8 +1,6 @@
-package dev.supergooey.hackernews.features.stories
+package com.emergetools.hackernews.features.stories
 
 import android.net.Uri
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -14,9 +12,9 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
-import dev.supergooey.baseClient
-import dev.supergooey.hackernews.features.stories.StoriesDestinations.Closeup
-import dev.supergooey.hackernews.features.stories.StoriesDestinations.Feed
+import com.emergetools.baseClient
+import com.emergetools.hackernews.features.stories.StoriesDestinations.Closeup
+import com.emergetools.hackernews.features.stories.StoriesDestinations.Feed
 import kotlinx.serialization.Serializable
 
 @Serializable

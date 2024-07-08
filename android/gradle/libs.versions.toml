@@ -16,6 +16,7 @@ accompanist = "0.34.0"
 browser = "1.5.0"
 emergePlugin = "3.1.1"
 emergeSnapshots = "1.1.2"
+composeCompilerExtension = "1.5.3"
 composeBom = "2024.06.00"
 
 [libraries]

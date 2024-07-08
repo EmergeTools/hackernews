@@ -1,11 +1,11 @@
-package dev.supergooey.hackernews.features.stories
+package com.emergetools.hackernews.features.stories
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import dev.supergooey.hackernews.data.HackerNewsBaseClient
-import dev.supergooey.hackernews.features.comments.CommentsDestinations
-import dev.supergooey.hackernews.features.stories.StoriesAction.LoadStories
+import com.emergetools.hackernews.data.HackerNewsBaseClient
+import com.emergetools.hackernews.features.comments.CommentsDestinations
+import com.emergetools.hackernews.features.stories.StoriesAction.LoadStories
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

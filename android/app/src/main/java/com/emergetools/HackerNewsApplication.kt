@@ -1,9 +1,9 @@
-package dev.supergooey
+package com.emergetools
 
 import android.app.Application
 import android.content.Context
-import dev.supergooey.hackernews.data.HackerNewsBaseClient
-import dev.supergooey.hackernews.data.HackerNewsSearchClient
+import com.emergetools.hackernews.data.HackerNewsBaseClient
+import com.emergetools.hackernews.data.HackerNewsSearchClient
 import kotlinx.serialization.json.Json
 
 class HackerNewsApplication: Application() {

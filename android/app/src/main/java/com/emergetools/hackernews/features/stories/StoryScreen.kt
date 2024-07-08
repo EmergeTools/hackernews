@@ -1,4 +1,4 @@
-package dev.supergooey.hackernews.features.stories
+package com.emergetools.hackernews.features.stories
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,7 +12,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.google.accompanist.web.WebView
 import com.google.accompanist.web.rememberWebViewState
-import dev.supergooey.hackernews.ui.theme.HackerNewsTheme
+import com.emergetools.hackernews.ui.theme.HackerNewsTheme
 
 @Composable
 fun StoryScreen(url: String) {

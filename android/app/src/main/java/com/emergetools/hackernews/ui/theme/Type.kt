@@ -1,13 +1,12 @@
-package dev.supergooey.hackernews.ui.theme
+package com.emergetools.hackernews.ui.theme
 
 import androidx.compose.material3.Typography
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import dev.supergooey.hackernews.R
+import com.emergetools.hackernews.R
 
 val plex = FontFamily(
   Font(resId = R.font.ibm_plex_sans_regular, weight = FontWeight.Normal),

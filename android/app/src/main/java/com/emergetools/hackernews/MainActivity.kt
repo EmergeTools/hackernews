@@ -1,4 +1,4 @@
-package dev.supergooey.hackernews
+package com.emergetools.hackernews
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -15,11 +15,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.IntOffset
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import dev.supergooey.hackernews.features.comments.CommentsDestinations
-import dev.supergooey.hackernews.features.comments.commentsRoutes
-import dev.supergooey.hackernews.features.stories.Stories
-import dev.supergooey.hackernews.features.stories.storiesGraph
-import dev.supergooey.hackernews.ui.theme.HackerNewsTheme
+import com.emergetools.hackernews.features.comments.commentsRoutes
+import com.emergetools.hackernews.features.stories.Stories
+import com.emergetools.hackernews.features.stories.storiesGraph
+import com.emergetools.hackernews.ui.theme.HackerNewsTheme
 
 class MainActivity : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {

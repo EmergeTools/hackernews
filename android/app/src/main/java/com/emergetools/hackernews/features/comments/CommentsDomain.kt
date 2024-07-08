@@ -1,11 +1,11 @@
-package dev.supergooey.hackernews.features.comments
+package com.emergetools.hackernews.features.comments
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import dev.supergooey.hackernews.data.HackerNewsSearchClient
-import dev.supergooey.hackernews.data.ItemResponse
+import com.emergetools.hackernews.data.HackerNewsSearchClient
+import com.emergetools.hackernews.data.ItemResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
