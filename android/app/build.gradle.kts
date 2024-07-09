@@ -1,25 +1,33 @@
 plugins {
   alias(libs.plugins.android.application)
-  alias(libs.plugins.emerge)
   alias(libs.plugins.kotlin.android)
+  alias(libs.plugins.compose.compiler)
   alias(libs.plugins.kotlin.serialization)
+  alias(libs.plugins.emerge)
 }
 
 android {
-  compileSdk = 34
   namespace = "com.emergetools.hackernews"
+  compileSdk = 34
 
   defaultConfig {
     applicationId = "com.emergetools.hackernews"
-    minSdk = 24
+    minSdk = 30
     targetSdk = 34
     versionCode = 1
     versionName = "1.0"
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    vectorDrawables {
+      useSupportLibrary = true
+    }
   }
 
   buildTypes {
+    debug {
+      isDebuggable = true
+      applicationIdSuffix = ".debug"
+    }
     release {
       isMinifyEnabled = true
       isShrinkResources = true
@@ -27,9 +35,6 @@ android {
         getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
       )
       signingConfig = signingConfigs.getByName("debug")
-    }
-    debug {
-      applicationIdSuffix = ".debug"
     }
   }
   buildFeatures {
@@ -43,61 +48,55 @@ android {
     jvmTarget = JavaVersion.VERSION_17.toString()
   }
   composeOptions {
-    kotlinCompilerExtensionVersion = libs.versions.compose.compiler.extension.get()
+    kotlinCompilerExtensionVersion = libs.versions.composeCompilerExtension.get()
   }
-}
+  emerge {
+    snapshots {
+      tag.set("snapshot")
+    }
 
-emerge {
-  // apiToken is implicitly set from the EMERGE_API_TOKEN environment variable
-
-  performance {
-    projectPath.set(":performance")
+    vcs {
+      gitHub {
+        repoName.set("hackernews")
+        repoOwner.set("EmergeTools")
+      }
+    }
   }
-
-  snapshots {
-    tag.set("snapshot")
-  }
-
-  vcs {
-    gitHub {
-      repoName.set("hackernews")
-      repoOwner.set("EmergeTools")
+  packaging {
+    resources {
+      excludes += "/META-INF/{AL2.0,LGPL2.1}"
     }
   }
 }
 
 dependencies {
 
-  implementation(libs.accompanist.navigationanim)
-  implementation(libs.accompanist.webview)
-  implementation(libs.androidx.appcompat)
+  implementation(libs.androidx.core.ktx)
+  implementation(libs.androidx.lifecycle.runtime.ktx)
+  implementation(libs.androidx.viewmodel)
+  implementation(libs.androidx.navigation)
   implementation(libs.androidx.activity.compose)
-  implementation(libs.emerge.snapshots.annotations)
-  implementation(libs.androidx.datastore.preferences)
-  implementation(libs.kotlinx.serialization)
-  implementation(libs.material.core)
-  implementation(libs.material.compose.core)
-  implementation(libs.material.compose.icons)
-  implementation(libs.mavericks.compose)
-  implementation(libs.navigation.compose.core)
-  implementation(libs.navigation.compose.ktx)
+  implementation(platform(libs.androidx.compose.bom))
+  implementation(libs.androidx.ui)
+  implementation(libs.androidx.ui.graphics)
+  implementation(libs.androidx.ui.tooling.preview)
+  implementation(libs.androidx.material3)
+  implementation(libs.androidx.browser)
+
   implementation(libs.okhttp)
-  implementation(libs.retrofit.core)
-  implementation(libs.retrofit.serialization)
+  implementation(libs.retrofit)
+  implementation(libs.retrofit.kotlinx.serialization)
+  implementation(libs.kotlinx.serialization.json)
 
-  implementation(platform(libs.compose.bom))
-  implementation(libs.compose.ui.tooling)
-  implementation(libs.compose.ui.tooling.preview)
-
-  debugImplementation(libs.compose.ui.test.manifest)
+  implementation(libs.accompanist.webview)
 
   testImplementation(libs.junit)
-
+  androidTestImplementation(libs.androidx.junit)
+  androidTestImplementation(libs.androidx.espresso.core)
+  androidTestImplementation(platform(libs.androidx.compose.bom))
+  androidTestImplementation(libs.androidx.ui.test.junit4)
   androidTestImplementation(libs.emerge.snapshots)
-  androidTestImplementation(libs.junit)
-  androidTestImplementation(libs.androidx.core)
-  androidTestImplementation(libs.androidx.fragment)
-  androidTestImplementation(libs.androidx.test.core)
-  androidTestImplementation(libs.androidx.test.ext.junit)
-  androidTestImplementation(libs.androidx.test.rules)
+
+  debugImplementation(libs.androidx.ui.tooling)
+  debugImplementation(libs.androidx.ui.test.manifest)
 }
