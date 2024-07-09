@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-13
+    runs-on: macos-14
 
     defaults:
       run:
@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Select Xcode version
-        run: sudo xcode-select -s '/Applications/Xcode_15.2.app/Contents/Developer'
+        run: sudo xcode-select -s '/Applications/Xcode_15.3.app/Contents/Developer'
 
       - name: Set up Ruby env
         uses: ruby/setup-ruby@v1
