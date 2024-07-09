@@ -25,7 +25,7 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
       - name: Emerge size analysis
-        run: ./gradlew :app:emergeUploadReleasePerfBundle
+        run: ./gradlew :app:emergeUploadReleaseAab
         env:
           EMERGE_API_TOKEN: ${{ secrets.EMERGE_API_KEY }}
           PR_SHA: ${{ github.event.pull_request.head.sha }}
