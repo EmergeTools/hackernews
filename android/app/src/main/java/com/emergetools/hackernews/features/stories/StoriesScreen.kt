@@ -1,5 +1,6 @@
 package com.emergetools.hackernews.features.stories
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -17,6 +18,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -24,6 +26,7 @@ import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -51,6 +54,7 @@ fun StoriesScreen(
   actions: (StoriesAction) -> Unit,
   navigation: (StoriesNavigation) -> Unit
 ) {
+  val listState = rememberLazyListState()
   Column(
     modifier = modifier.background(color = MaterialTheme.colorScheme.background),
     horizontalAlignment = Alignment.CenterHorizontally,
@@ -61,6 +65,7 @@ fun StoriesScreen(
       onSelected = { actions(StoriesAction.SelectFeed(it)) }
     )
     LazyColumn(
+      state = listState,
       modifier = Modifier
         .fillMaxWidth()
         .weight(1f)
@@ -90,6 +95,9 @@ fun StoriesScreen(
                 comments = CommentsDestinations.Comments(it.id)
               )
             )
+          },
+          onLoadRequested = {
+            actions(StoriesAction.LoadStory(it.id))
           }
         )
       }
@@ -209,7 +217,8 @@ private fun StoryRowPreview() {
         url = ""
       ),
       onClick = {},
-      onCommentClicked = {}
+      onCommentClicked = {},
+      onLoadRequested = {}
     )
   }
 }
@@ -221,7 +230,8 @@ private fun StoryRowLoadingPreview() {
     StoryRow(
       item = StoryItem.Loading(id = 1L),
       onClick = {},
-      onCommentClicked = {}
+      onCommentClicked = {},
+      onLoadRequested = {}
     )
   }
 }
@@ -231,7 +241,8 @@ fun StoryRow(
   modifier: Modifier = Modifier,
   item: StoryItem,
   onClick: (StoryItem.Content) -> Unit,
-  onCommentClicked: (StoryItem.Content) -> Unit
+  onCommentClicked: (StoryItem.Content) -> Unit,
+  onLoadRequested: (StoryItem.Loading) -> Unit
 ) {
   when (item) {
     is StoryItem.Content -> {
@@ -311,14 +322,14 @@ fun StoryRow(
           Box(
             modifier = Modifier
               .fillMaxWidth(0.8f)
-              .height(20.dp)
+              .height(18.dp)
               .clip(CircleShape)
               .background(color = Color.LightGray)
           )
           Box(
             modifier = Modifier
               .fillMaxWidth(0.45f)
-              .height(20.dp)
+              .height(18.dp)
               .clip(CircleShape)
               .background(color = Color.Gray)
           )
@@ -342,6 +353,10 @@ fun StoryRow(
             )
           }
         }
+      }
+
+      SideEffect {
+        onLoadRequested(item)
       }
     }
   }

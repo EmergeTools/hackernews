@@ -3,6 +3,7 @@ package com.emergetools.hackernews.data
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import retrofit2.http.GET
@@ -34,10 +35,11 @@ interface HackerNewsBaseApi {
   suspend fun getItem(@Path("id") itemId: Long): Item
 }
 
-class HackerNewsBaseClient(json: Json) {
+class HackerNewsBaseClient(json: Json, client: OkHttpClient) {
   private val retrofit = Retrofit.Builder()
     .baseUrl(BASE_FIREBASE_URL)
     .addConverterFactory(json.asConverterFactory("application/json; charset=UTF8".toMediaType()))
+    .client(client)
     .build()
 
   val api = retrofit.create(HackerNewsBaseApi::class.java)

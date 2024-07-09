@@ -1,11 +1,12 @@
 package com.emergetools.hackernews.features.stories
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.emergetools.hackernews.data.HackerNewsBaseClient
 import com.emergetools.hackernews.features.comments.CommentsDestinations
-import com.emergetools.hackernews.features.stories.StoriesAction.LoadStories
+import com.emergetools.hackernews.features.stories.StoriesAction.LoadFeedIds
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,7 +21,6 @@ enum class FeedType(val label: String) {
 data class StoriesState(
   val stories: List<StoryItem>,
   val feed: FeedType = FeedType.Top
-
 )
 
 sealed class StoryItem(open val id: Long) {
@@ -36,7 +36,8 @@ sealed class StoryItem(open val id: Long) {
 }
 
 sealed class StoriesAction {
-  data object LoadStories : StoriesAction()
+  data object LoadFeedIds : StoriesAction()
+  data class LoadStory(val id: Long): StoriesAction()
   data class SelectStory(val id: Long) : StoriesAction()
   data class SelectComments(val id: Long) : StoriesAction()
   data class SelectFeed(val feed: FeedType) : StoriesAction()
@@ -53,12 +54,12 @@ class StoriesViewModel(private val baseClient: HackerNewsBaseClient) : ViewModel
   val state = internalState.asStateFlow()
 
   init {
-    actions(LoadStories)
+    actions(LoadFeedIds)
   }
 
   fun actions(action: StoriesAction) {
     when (action) {
-      LoadStories -> {
+      LoadFeedIds -> {
         viewModelScope.launch {
           withContext(Dispatchers.IO) {
             val ids = when(internalState.value.feed) {
@@ -70,32 +71,10 @@ class StoriesViewModel(private val baseClient: HackerNewsBaseClient) : ViewModel
               }
             }
 
-            // now for each ID I need to load the item.
             internalState.update { current ->
               current.copy(
                 stories = ids.map { StoryItem.Loading(it) }
               )
-            }
-            ids.forEach { id ->
-              val item = baseClient.api.getItem(id)
-              internalState.update { current ->
-                current.copy(
-                  stories = current.stories.map {
-                    if (it.id == item.id) {
-                      StoryItem.Content(
-                        id = item.id,
-                        title = item.title!!,
-                        author = item.by!!,
-                        score = item.score ?: 0,
-                        commentCount = item.descendants ?: 0,
-                        url = item.url
-                      )
-                    } else {
-                      it
-                    }
-                  }
-                )
-              }
             }
           }
         }
@@ -116,7 +95,32 @@ class StoriesViewModel(private val baseClient: HackerNewsBaseClient) : ViewModel
             stories = emptyList()
           )
         }
-        actions(LoadStories)
+        actions(LoadFeedIds)
+      }
+
+      is StoriesAction.LoadStory -> {
+        viewModelScope.launch(Dispatchers.IO) {
+          val item = baseClient.api.getItem(action.id)
+          Log.d("Feed", "Loaded item ${action.id}")
+          internalState.update { current ->
+            current.copy(
+              stories = current.stories.map {
+                if (it.id == item.id) {
+                  StoryItem.Content(
+                    id = item.id,
+                    title = item.title!!,
+                    author = item.by!!,
+                    score = item.score ?: 0,
+                    commentCount = item.descendants ?: 0,
+                    url = item.url
+                  )
+                } else {
+                  it
+                }
+              }
+            )
+          }
+        }
       }
     }
   }
