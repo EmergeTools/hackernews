@@ -1,6 +1,5 @@
 package com.emergetools.hackernews.features.stories
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -17,16 +16,20 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -55,6 +58,16 @@ fun StoriesScreen(
   navigation: (StoriesNavigation) -> Unit
 ) {
   val listState = rememberLazyListState()
+  val reachedEnd by remember {
+    derivedStateOf {
+      listState.isCloseToEnd()
+    }
+  }
+
+  LaunchedEffect(reachedEnd) {
+    actions(StoriesAction.LoadNextPage)
+  }
+
   Column(
     modifier = modifier.background(color = MaterialTheme.colorScheme.background),
     horizontalAlignment = Alignment.CenterHorizontally,
@@ -96,9 +109,6 @@ fun StoriesScreen(
               )
             )
           },
-          onLoadRequested = {
-            actions(StoriesAction.LoadStory(it.id))
-          }
         )
       }
     }
@@ -129,15 +139,15 @@ private fun FeedSelection(
     containerColor = MaterialTheme.colorScheme.background,
     contentColor = MaterialTheme.colorScheme.onBackground,
     indicator = { tabPositions ->
-        if (selectedTab < tabPositions.size) {
+      if (selectedTab < tabPositions.size) {
         Box(
           modifier = Modifier
             .tabIndicatorOffset(tabPositions[selectedTab])
             .height(2.dp)
             .drawBehind {
               val barWidth = size.width * 0.33f
-              val start = size.center.x - barWidth/2f
-              val end = size.center.x + barWidth/2f
+              val start = size.center.x - barWidth / 2f
+              val end = size.center.x + barWidth / 2f
               val bottom = size.height - 16f
               drawLine(
                 start = Offset(start, bottom),
@@ -159,8 +169,7 @@ private fun FeedSelection(
           .padding(8.dp)
           .clickable {
             onSelected(feedType)
-          }
-        ,
+          },
         textAlign = TextAlign.Center,
         text = feedType.label,
         style = MaterialTheme.typography.labelSmall,
@@ -218,7 +227,6 @@ private fun StoryRowPreview() {
       ),
       onClick = {},
       onCommentClicked = {},
-      onLoadRequested = {}
     )
   }
 }
@@ -231,7 +239,6 @@ private fun StoryRowLoadingPreview() {
       item = StoryItem.Loading(id = 1L),
       onClick = {},
       onCommentClicked = {},
-      onLoadRequested = {}
     )
   }
 }
@@ -242,7 +249,6 @@ fun StoryRow(
   item: StoryItem,
   onClick: (StoryItem.Content) -> Unit,
   onCommentClicked: (StoryItem.Content) -> Unit,
-  onLoadRequested: (StoryItem.Loading) -> Unit
 ) {
   when (item) {
     is StoryItem.Content -> {
@@ -256,7 +262,10 @@ fun StoryRow(
           }
           .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(16.dp, alignment = Alignment.CenterHorizontally)
+        horizontalArrangement = Arrangement.spacedBy(
+          16.dp,
+          alignment = Alignment.CenterHorizontally
+        )
       ) {
         Column(
           modifier = Modifier
@@ -272,7 +281,7 @@ fun StoryRow(
             Text(text = "${item.score}", style = MaterialTheme.typography.labelSmall)
             Text(text = "•", style = MaterialTheme.typography.labelSmall)
             Text(
-              text = item.author ,
+              text = item.author,
               color = HNOrange,
               style = MaterialTheme.typography.labelSmall,
               fontWeight = FontWeight.Medium
@@ -303,6 +312,7 @@ fun StoryRow(
         }
       }
     }
+
     is StoryItem.Loading -> {
       Row(
         modifier = modifier
@@ -311,7 +321,10 @@ fun StoryRow(
           .background(color = MaterialTheme.colorScheme.background)
           .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(16.dp, alignment = Alignment.CenterHorizontally)
+        horizontalArrangement = Arrangement.spacedBy(
+          16.dp,
+          alignment = Alignment.CenterHorizontally
+        )
       ) {
         Column(
           modifier = Modifier
@@ -323,14 +336,14 @@ fun StoryRow(
             modifier = Modifier
               .fillMaxWidth(0.8f)
               .height(18.dp)
-              .clip(CircleShape)
+              .clip(RoundedCornerShape(4.dp))
               .background(color = Color.LightGray)
           )
           Box(
             modifier = Modifier
               .fillMaxWidth(0.45f)
               .height(18.dp)
-              .clip(CircleShape)
+              .clip(RoundedCornerShape(4.dp))
               .background(color = Color.Gray)
           )
           Row(
@@ -341,23 +354,23 @@ fun StoryRow(
               modifier = Modifier
                 .width(30.dp)
                 .height(14.dp)
-                .clip(CircleShape)
+                .clip(RoundedCornerShape(4.dp))
                 .background(Color.DarkGray)
             )
             Box(
               modifier = Modifier
                 .width(40.dp)
                 .height(14.dp)
-                .clip(CircleShape)
+                .clip(RoundedCornerShape(4.dp))
                 .background(HNOrange)
             )
           }
         }
       }
-
-      SideEffect {
-        onLoadRequested(item)
-      }
     }
   }
+}
+
+fun LazyListState.isCloseToEnd(): Boolean {
+  return layoutInfo.visibleItemsInfo.lastOrNull()?.index == layoutInfo.totalItemsCount - (FEED_PAGE_SIZE / 2)
 }

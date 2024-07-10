@@ -35,7 +35,7 @@ interface HackerNewsBaseApi {
   suspend fun getItem(@Path("id") itemId: Long): Item
 }
 
-class HackerNewsBaseClient(json: Json, client: OkHttpClient) {
+class HackerNewsBaseDataSource(json: Json, client: OkHttpClient) {
   private val retrofit = Retrofit.Builder()
     .baseUrl(BASE_FIREBASE_URL)
     .addConverterFactory(json.asConverterFactory("application/json; charset=UTF8".toMediaType()))

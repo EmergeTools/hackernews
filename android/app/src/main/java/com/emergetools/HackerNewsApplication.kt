@@ -2,8 +2,9 @@ package com.emergetools
 
 import android.app.Application
 import android.content.Context
-import com.emergetools.hackernews.data.HackerNewsBaseClient
+import com.emergetools.hackernews.data.HackerNewsBaseDataSource
 import com.emergetools.hackernews.data.HackerNewsSearchClient
+import com.emergetools.hackernews.data.ItemRepository
 import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
 import java.time.Duration
@@ -14,12 +15,13 @@ class HackerNewsApplication: Application() {
     .readTimeout(Duration.ofSeconds(30))
     .build()
 
-  val baseClient = HackerNewsBaseClient(json, httpClient)
+  private val baseClient = HackerNewsBaseDataSource(json, httpClient)
   val searchClient = HackerNewsSearchClient(json, httpClient)
+  val itemRepository = ItemRepository(baseClient)
 }
 
-fun Context.baseClient(): HackerNewsBaseClient {
-  return (this.applicationContext as HackerNewsApplication).baseClient
+fun Context.itemRepository(): ItemRepository {
+  return (this.applicationContext as HackerNewsApplication).itemRepository
 }
 
 fun Context.searchClient(): HackerNewsSearchClient {
