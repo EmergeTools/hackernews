@@ -19,7 +19,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -57,15 +56,22 @@ fun StoriesScreen(
   actions: (StoriesAction) -> Unit,
   navigation: (StoriesNavigation) -> Unit
 ) {
+  fun LazyListState.atEndOfList(): Boolean {
+    return layoutInfo.visibleItemsInfo.lastOrNull()?.index == layoutInfo.totalItemsCount - 1
+  }
+
   val listState = rememberLazyListState()
-  val reachedEnd by remember {
+
+  val shouldLoadMore by remember {
     derivedStateOf {
-      listState.isCloseToEnd()
+      listState.atEndOfList()
     }
   }
 
-  LaunchedEffect(reachedEnd) {
-    actions(StoriesAction.LoadNextPage)
+  LaunchedEffect(shouldLoadMore) {
+    if (shouldLoadMore) {
+      actions(StoriesAction.LoadNextPage)
+    }
   }
 
   Column(
@@ -369,8 +375,4 @@ fun StoryRow(
       }
     }
   }
-}
-
-fun LazyListState.isCloseToEnd(): Boolean {
-  return layoutInfo.visibleItemsInfo.lastOrNull()?.index == layoutInfo.totalItemsCount - (FEED_PAGE_SIZE / 2)
 }
