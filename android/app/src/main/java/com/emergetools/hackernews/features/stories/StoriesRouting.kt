@@ -12,9 +12,9 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
-import com.emergetools.baseClient
 import com.emergetools.hackernews.features.stories.StoriesDestinations.Closeup
 import com.emergetools.hackernews.features.stories.StoriesDestinations.Feed
+import com.emergetools.itemRepository
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -38,7 +38,7 @@ fun NavGraphBuilder.storiesGraph(navController: NavController) {
 
       val model = viewModel<StoriesViewModel>(
         factory = StoriesViewModel.Factory(
-          baseClient = context.baseClient()
+          itemRepository = context.itemRepository()
         )
       )
       val state by model.state.collectAsState()
@@ -51,8 +51,8 @@ fun NavGraphBuilder.storiesGraph(navController: NavController) {
             is StoriesNavigation.GoToComments -> {
               navController.navigate(place.comments)
             }
+
             is StoriesNavigation.GoToStory -> {
-//              navController.navigate(place.closeup)
               customTabsIntent.launchUrl(context, Uri.parse(place.closeup.url))
             }
           }
@@ -60,7 +60,7 @@ fun NavGraphBuilder.storiesGraph(navController: NavController) {
       )
     }
     composable<Closeup> { entry ->
-      val closeup: Closeup =  entry.toRoute()
+      val closeup: Closeup = entry.toRoute()
       StoryScreen(closeup.url)
     }
   }
