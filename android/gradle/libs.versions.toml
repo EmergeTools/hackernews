@@ -17,6 +17,7 @@ browser = "1.5.0"
 emergePlugin = "3.1.1"
 emergeSnapshots = "1.1.2"
 composeCompilerExtension = "1.5.3"
+material3 = "1.3.0-beta04"
 composeBom = "2024.06.00"
 
 [libraries]
@@ -29,6 +30,7 @@ androidx-activity-compose = { group = "androidx.activity", name = "activity-comp
 androidx-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "viewmodel" }
 androidx-navigation = { group = "androidx.navigation", name = "navigation-compose",  version.ref = "navigation"}
 androidx-browser = { group = "androidx.browser", name = "browser", version.ref = "browser" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 androidx-ui = { group = "androidx.compose.ui", name = "ui" }
@@ -37,7 +39,6 @@ androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
-androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }

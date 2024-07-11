@@ -42,3 +42,5 @@ class ItemRepository(
 }
 
 fun MutableList<Page>.next() = removeFirst()
+
+

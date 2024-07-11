@@ -1,5 +1,6 @@
 package com.emergetools.hackernews.data
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -15,6 +16,8 @@ private const val BASE_SEARCH_URL = "https://hn.algolia.com/api/v1/"
 data class ItemResponse(
   val id: Long,
   val children: List<ItemResponse>,
+  @SerialName("created_at")
+  val createdAt: String,
   val title: String? = null,
   val author: String? = null,
   val text: String? = null,

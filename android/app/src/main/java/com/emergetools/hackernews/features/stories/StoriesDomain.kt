@@ -8,8 +8,10 @@ import com.emergetools.hackernews.data.Item
 import com.emergetools.hackernews.data.ItemRepository
 import com.emergetools.hackernews.data.Page
 import com.emergetools.hackernews.data.next
+import com.emergetools.hackernews.data.relativeTimeStamp
 import com.emergetools.hackernews.features.comments.CommentsDestinations
 import com.emergetools.hackernews.features.stories.StoriesAction.LoadItems
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -20,10 +22,17 @@ enum class FeedType(val label: String) {
   New("New")
 }
 
+enum class LoadingState {
+  Loading,
+  LoadingPage,
+  Refreshing,
+  Idle
+}
+
 data class StoriesState(
   val stories: List<StoryItem>,
   val feed: FeedType = FeedType.Top,
-  val loading: Boolean = true
+  val loading: LoadingState = LoadingState.Idle,
 )
 
 sealed class StoryItem(open val id: Long) {
@@ -34,6 +43,7 @@ sealed class StoryItem(open val id: Long) {
     val author: String,
     val score: Int,
     val commentCount: Int,
+    val timeLabel: String,
     val url: String?
   ) : StoryItem(id)
 }
@@ -41,6 +51,7 @@ sealed class StoryItem(open val id: Long) {
 sealed class StoriesAction {
   data object LoadItems : StoriesAction()
   data object LoadNextPage : StoriesAction()
+  data object RefreshItems: StoriesAction()
   data class SelectStory(val id: Long) : StoriesAction()
   data class SelectComments(val id: Long) : StoriesAction()
   data class SelectFeed(val feed: FeedType) : StoriesAction()
@@ -57,6 +68,7 @@ class StoriesViewModel(private val itemRepository: ItemRepository) : ViewModel()
 
   // TODO: decide if this should be in the ViewModel or the Repository
   private val pages = mutableListOf<Page>()
+  private var fetchJob: Job? = null
 
   init {
     actions(LoadItems)
@@ -65,42 +77,59 @@ class StoriesViewModel(private val itemRepository: ItemRepository) : ViewModel()
   fun actions(action: StoriesAction) {
     when (action) {
       LoadItems -> {
-        viewModelScope.launch {
+        pages.clear()
+        fetchJob?.cancel()
+
+        fetchJob = viewModelScope.launch {
           pages.addAll(
             itemRepository
               .getFeedIds(internalState.value.feed)
               .chunked(FEED_PAGE_SIZE)
           )
           val page = pages.next()
-          Log.d("Feed", "Loading first page: $page")
-          internalState.update { current ->
-            current.copy(
-              stories = page.map { StoryItem.Loading(it) },
-              loading = true
-            )
-          }
 
-          var newStories = itemRepository
-            .getPage(page)
-            .map<Item, StoryItem> { item ->
-              StoryItem.Content(
-                id = item.id,
-                title = item.title!!,
-                author = item.by!!,
-                score = item.score ?: 0,
-                commentCount = item.descendants ?: 0,
-                url = item.url
+          val newStories = fetchPage(page) {
+            internalState.update { current ->
+              current.copy(
+                stories = page.map { StoryItem.Loading(it) },
+                loading = LoadingState.Loading
               )
             }
-
-          if (pages.isNotEmpty()) {
-            newStories = newStories + StoryItem.Loading(0L)
           }
 
           internalState.update { current ->
             current.copy(
               stories = newStories,
-              loading = false
+              loading = LoadingState.Idle
+            )
+          }
+        }
+      }
+
+      is StoriesAction.RefreshItems -> {
+        if (internalState.value.loading != LoadingState.Idle) {
+          return
+        }
+        fetchJob?.cancel()
+        pages.clear()
+        fetchJob = viewModelScope.launch {
+          pages.addAll(
+            itemRepository
+              .getFeedIds(internalState.value.feed)
+              .chunked(FEED_PAGE_SIZE)
+          )
+          val page = pages.next()
+          val newStories = fetchPage(page) {
+            internalState.update { current ->
+              current.copy(
+                loading = LoadingState.Refreshing
+              )
+            }
+          }
+          internalState.update { current ->
+            current.copy(
+              stories = newStories,
+              loading = LoadingState.Idle
             )
           }
         }
@@ -115,52 +144,60 @@ class StoriesViewModel(private val itemRepository: ItemRepository) : ViewModel()
       }
 
       is StoriesAction.SelectFeed -> {
-        internalState.update { current ->
-          current.copy(
-            feed = action.feed,
-            stories = emptyList()
-          )
+        if (action.feed != state.value.feed) {
+          internalState.update { current ->
+            current.copy(
+              feed = action.feed,
+              stories = emptyList()
+            )
+          }
+          actions(LoadItems)
         }
-        actions(LoadItems)
       }
 
       StoriesAction.LoadNextPage -> {
-        if (pages.isNotEmpty() && !state.value.loading) {
-          viewModelScope.launch {
+        if (pages.isNotEmpty() && internalState.value.loading == LoadingState.Idle) {
+          fetchJob = viewModelScope.launch {
             val page = pages.next()
             Log.d("Feed", "Loading next page: $page")
-            internalState.update { current ->
-              current.copy(loading = true)
-            }
-
-            var storiesToAdd = itemRepository
-              .getPage(page)
-              .map<Item, StoryItem> { item ->
-                StoryItem.Content(
-                  id = item.id,
-                  title = item.title!!,
-                  author = item.by!!,
-                  score = item.score ?: 0,
-                  commentCount = item.descendants ?: 0,
-                  url = item.url
-                )
+            val newStories = fetchPage(page) {
+              internalState.update { current ->
+                current.copy(loading = LoadingState.LoadingPage)
               }
-
-            if (pages.isNotEmpty()) {
-              storiesToAdd = storiesToAdd + StoryItem.Loading(0L)
             }
 
             internalState.update { current ->
-              val newStories = current.stories.subList(0, current.stories.lastIndex) + storiesToAdd
               current.copy(
-                stories = newStories,
-                loading = false
+                stories = current.stories.subList(0, current.stories.lastIndex) + newStories,
+                loading = LoadingState.Idle
               )
             }
           }
         }
       }
     }
+  }
+
+  private suspend fun fetchPage(page: Page, onLoading: () -> Unit = {}): List<StoryItem>  {
+    onLoading()
+    var newStories = itemRepository
+      .getPage(page)
+      .map<Item, StoryItem> { item ->
+        Log.d("Feed", "Item: $item")
+        StoryItem.Content(
+          id = item.id,
+          title = item.title!!,
+          author = item.by!!,
+          score = item.score ?: 0,
+          commentCount = item.descendants ?: 0,
+          timeLabel = relativeTimeStamp(epochSeconds = item.time),
+          url = item.url
+        )
+      }
+    if (pages.isNotEmpty()) {
+      newStories = newStories + StoryItem.Loading(0L)
+    }
+    return newStories
   }
 
   @Suppress("UNCHECKED_CAST")
