@@ -200,9 +200,7 @@ private fun FeedSelection(
           },
         textAlign = TextAlign.Center,
         text = feedType.label,
-        style = MaterialTheme.typography.labelSmall,
-        fontWeight = FontWeight.Medium,
-        fontSize = 24.sp
+        style = MaterialTheme.typography.titleMedium,
       )
     }
   }
