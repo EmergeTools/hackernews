@@ -7,7 +7,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import com.emergetools.searchClient
+import com.emergetools.hackernews.searchClient
 import kotlinx.serialization.Serializable
 
 sealed interface CommentsDestinations {

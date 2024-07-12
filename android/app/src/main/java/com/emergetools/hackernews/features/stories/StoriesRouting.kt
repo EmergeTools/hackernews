@@ -14,7 +14,7 @@ import androidx.navigation.navigation
 import androidx.navigation.toRoute
 import com.emergetools.hackernews.features.stories.StoriesDestinations.Closeup
 import com.emergetools.hackernews.features.stories.StoriesDestinations.Feed
-import com.emergetools.itemRepository
+import com.emergetools.hackernews.itemRepository
 import kotlinx.serialization.Serializable
 
 @Serializable

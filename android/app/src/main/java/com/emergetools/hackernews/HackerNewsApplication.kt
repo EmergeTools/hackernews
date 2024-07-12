@@ -1,4 +1,4 @@
-package com.emergetools
+package com.emergetools.hackernews
 
 import android.app.Application
 import android.content.Context

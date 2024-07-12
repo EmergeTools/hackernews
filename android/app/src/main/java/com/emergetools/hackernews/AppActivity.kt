@@ -9,20 +9,24 @@ import androidx.compose.animation.slideIn
 import androidx.compose.animation.slideOut
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Menu
-import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.IntOffset
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavDestination
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.emergetools.hackernews.features.comments.commentsRoutes
+import com.emergetools.hackernews.features.settings.settingsRoutes
 import com.emergetools.hackernews.features.stories.Stories
+import com.emergetools.hackernews.features.stories.StoriesDestinations.Feed
 import com.emergetools.hackernews.features.stories.storiesGraph
 import com.emergetools.hackernews.ui.theme.HackerNewsTheme
 
@@ -39,32 +43,49 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
+fun rememberNavController(
+  onDestinationChanged: (NavDestination) -> Unit
+): NavHostController {
+  return rememberNavController().apply {
+    addOnDestinationChangedListener { _, destination, _ ->
+      onDestinationChanged(destination)
+    }
+  }
+}
+
+@Composable
 fun App() {
-  val navController = rememberNavController()
+  val model = viewModel<AppViewModel>()
+  val state by model.state.collectAsState()
+  val navController = rememberNavController() { destination ->
+    model.actions(AppAction.DestinationChanged(destination))
+  }
 
   Scaffold(
     bottomBar = {
       NavigationBar {
-        NavigationBarItem(
-          selected = true,
-          onClick = {},
-          icon = {
-            Icon(
-              imageVector = Icons.Rounded.Menu,
-              contentDescription = "Feed"
-            )
-          },
-        )
-        NavigationBarItem(
-          selected = false,
-          onClick = {},
-          icon = {
-            Icon(
-              imageVector = Icons.Rounded.Settings,
-              contentDescription = "Settings"
-            )
-          },
-        )
+        state.navItems.forEach { navItem ->
+          NavigationBarItem(
+            selected = navItem.selected,
+            onClick = {
+              model.actions(AppAction.NavItemSelected(navItem))
+
+              navController.navigate(navItem.route) {
+                popUpTo<Feed> {
+                  saveState = true
+                }
+                launchSingleTop = true
+                restoreState = true
+              }
+            },
+            icon = {
+              Icon(
+                imageVector = navItem.icon,
+                contentDescription = navItem.label
+              )
+            },
+          )
+        }
       }
     }
   ) { innerPadding ->
@@ -80,8 +101,8 @@ fun App() {
       startDestination = Stories
     ) {
       storiesGraph(navController)
-
       commentsRoutes()
+      settingsRoutes()
     }
   }
 }

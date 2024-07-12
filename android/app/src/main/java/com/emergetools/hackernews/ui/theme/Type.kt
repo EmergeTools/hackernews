@@ -20,6 +20,11 @@ val Typography = Typography(
     fontWeight = FontWeight.Bold,
     fontSize = 18.sp
   ),
+  titleMedium = TextStyle(
+    fontFamily = plex,
+    fontWeight = FontWeight.Bold,
+    fontSize = 24.sp
+  ),
   labelSmall = TextStyle(
     fontFamily = plex,
     fontWeight = FontWeight.Normal,
