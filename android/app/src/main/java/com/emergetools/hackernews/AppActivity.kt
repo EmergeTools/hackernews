@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination
@@ -80,7 +81,7 @@ fun App() {
             },
             icon = {
               Icon(
-                imageVector = navItem.icon,
+                painter = painterResource(navItem.icon),
                 contentDescription = navItem.label
               )
             },

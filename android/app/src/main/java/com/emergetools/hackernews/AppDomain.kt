@@ -1,5 +1,6 @@
 package com.emergetools.hackernews
 
+import androidx.annotation.DrawableRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material.icons.rounded.Settings
@@ -13,7 +14,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 data class NavItem(
-  val icon: ImageVector,
+  @DrawableRes
+  val icon: Int,
   val label: String,
   val route: Any,
   val selected: Boolean
@@ -22,13 +24,13 @@ data class NavItem(
 data class AppState(
   val navItems: List<NavItem> = listOf(
     NavItem(
-      icon = Icons.Rounded.Menu,
+      icon = R.drawable.ic_feed,
       label = "Feed",
       route = Stories,
       selected = true
     ),
     NavItem(
-      icon = Icons.Rounded.Settings,
+      icon = R.drawable.ic_settings,
       label = "Settings",
       route = Settings,
       selected = false
