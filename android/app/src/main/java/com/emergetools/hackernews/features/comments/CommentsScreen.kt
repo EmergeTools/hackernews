@@ -99,12 +99,14 @@ private fun CommentsScreenPreview() {
             level = 0,
             author = "rikinm",
             content = "Hello Child",
+            timeLabel = "2d ago",
             children = listOf(
               CommentState.Content(
                 id = 2,
                 level = 1,
                 author = "vasantm",
                 content = "Hello Parent",
+                timeLabel = "1h ago",
                 children = listOf()
               )
             )
@@ -136,12 +138,14 @@ fun CommentRowPreview() {
           level = 0,
           author = "rikinm",
           content = "Hello Parent",
+          timeLabel = "2d ago",
           children = listOf(
             CommentState.Content(
               id = 2,
               level = 1,
               author = "vasantm",
               content = "Hello Child",
+              timeLabel = "2h ago",
               children = listOf()
             )
           )
@@ -194,7 +198,7 @@ fun CommentRow(state: CommentState) {
             style = MaterialTheme.typography.labelSmall
           )
           Text(
-            "1h ago",
+            text = state.timeLabel,
             style = MaterialTheme.typography.labelSmall,
             fontWeight = FontWeight.Medium,
             color = Color.Gray

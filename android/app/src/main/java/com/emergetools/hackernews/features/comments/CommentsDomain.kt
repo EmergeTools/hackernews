@@ -6,12 +6,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.emergetools.hackernews.data.HackerNewsSearchClient
 import com.emergetools.hackernews.data.ItemResponse
+import com.emergetools.hackernews.data.relativeTimeStamp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.time.OffsetDateTime
 
 sealed interface CommentsState {
   val headerState: HeaderState
@@ -48,6 +50,7 @@ sealed interface CommentState {
     val id: Long,
     val author: String,
     val content: String,
+    val timeLabel: String,
     override val children: List<CommentState>,
     override val level: Int = 0,
   ): CommentState
@@ -101,6 +104,9 @@ class CommentsViewModel(
       children = children.map { child ->
         child.createCommentState(level + 1)
       },
+      timeLabel = relativeTimeStamp(
+        epochSeconds = OffsetDateTime.parse(createdAt).toInstant().epochSecond
+      ),
       level = level
     )
   }
