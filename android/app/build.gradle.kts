@@ -28,6 +28,11 @@ android {
       isDebuggable = true
       applicationIdSuffix = ".debug"
     }
+      create("fast") {
+      isDebuggable = false
+      applicationIdSuffix = ".fast"
+      signingConfig = signingConfigs.getByName("debug")
+    }
     release {
       isMinifyEnabled = true
       isShrinkResources = true
