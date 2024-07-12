@@ -13,46 +13,62 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-data class CommentsState(
-  val title: String,
-  val author: String,
-  val points: Int,
-  val text: String?,
-  val comments: List<CommentState>,
-) {
-  companion object {
-    val empty = CommentsState(
-      title = "",
-      author = "",
-      points = 0,
-      text = null,
-      comments = emptyList()
+sealed interface CommentsState {
+  val headerState: HeaderState
+  val comments: List<CommentState>
+
+  data object Loading: CommentsState {
+    override val headerState: HeaderState = HeaderState.Loading
+    override val comments: List<CommentState> = listOf(
+      CommentState.Loading(level = 0),
+      CommentState.Loading(level = 0),
     )
   }
 
-  val headerState = HeaderState(title, author, points, text)
+  data class Content(
+    val title: String,
+    val author: String,
+    val points: Int,
+    val text: String?,
+    override val comments: List<CommentState>,
+  ): CommentsState {
+    override val headerState = HeaderState.Content(title, author, points, text)
+  }
 }
 
-data class CommentState(
-  val id: Long,
-  val author: String,
-  val content: String,
-  val children: List<CommentState>,
-  val level: Int = 0,
-)
+sealed interface CommentState {
+  val level: Int
+  val children: List<CommentState>
 
-data class HeaderState(
-  val title: String,
-  val author: String,
-  val points: Int,
-  val body: String?
-)
+  data class Loading(override val level: Int) : CommentState {
+    override val children: List<CommentState> = emptyList()
+  }
+
+  data class Content(
+    val id: Long,
+    val author: String,
+    val content: String,
+    override val children: List<CommentState>,
+    override val level: Int = 0,
+  ): CommentState
+}
+
+sealed interface HeaderState {
+  data object Loading: HeaderState
+  data class Content(
+    val title: String,
+    val author: String,
+    val points: Int,
+    val body: String?
+  ): HeaderState
+}
+
 
 class CommentsViewModel(
   private val itemId: Long,
   private val searchClient: HackerNewsSearchClient
 ) : ViewModel() {
-  private val internalState = MutableStateFlow(CommentsState.empty)
+  private val internalState = MutableStateFlow<CommentsState>(CommentsState.Loading)
   val state = internalState.asStateFlow()
 
   init {
@@ -63,7 +79,7 @@ class CommentsViewModel(
           rootComment.createCommentState(0)
         }
         internalState.update {
-          CommentsState(
+          CommentsState.Content(
             title = response.title ?: "",
             author = response.author ?: "",
             points = response.points ?: 0,
@@ -78,7 +94,7 @@ class CommentsViewModel(
   private fun ItemResponse.createCommentState(level: Int): CommentState {
     Log.d("Creating CommentState()", "Level: $level, Id: $id")
 
-    return CommentState(
+    return CommentState.Content(
       id = id,
       author = author ?: "",
       content = text ?: "",
