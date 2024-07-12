@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -55,9 +56,10 @@ fun CommentsScreen(state: CommentsState) {
       )
     }
     item {
+      val lineColor = MaterialTheme.colorScheme.onBackground
       Box(modifier = Modifier
         .fillMaxWidth()
-        .padding(horizontal = 16.dp)
+        .padding(horizontal = 8.dp)
         .height(16.dp)
         .drawBehind {
           val lineStart = Offset(0f, size.center.y)
@@ -65,7 +67,7 @@ fun CommentsScreen(state: CommentsState) {
           drawLine(
             start = lineStart,
             end = lineEnd,
-            color = HNOrange,
+            color = lineColor,
             strokeWidth = 4f,
             cap = StrokeCap.Round,
             pathEffect = PathEffect.dashPathEffect(
@@ -86,22 +88,25 @@ fun CommentsScreen(state: CommentsState) {
 private fun CommentsScreenPreview() {
   HackerNewsTheme {
     CommentsScreen(
-      state = CommentsState(
+      state = CommentsState.Content(
         title = "Show HN: A new HN client for Android",
         author = "rikinm",
         points = 69,
+        text = null,
         comments = listOf(
-          CommentState(
+          CommentState.Content(
             id = 1,
             level = 0,
             author = "rikinm",
             content = "Hello Child",
+            timeLabel = "2d ago",
             children = listOf(
-              CommentState(
+              CommentState.Content(
                 id = 2,
                 level = 1,
                 author = "vasantm",
                 content = "Hello Parent",
+                timeLabel = "1h ago",
                 children = listOf()
               )
             )
@@ -114,25 +119,49 @@ private fun CommentsScreenPreview() {
 
 @Preview
 @Composable
-private fun CommentRowPreview() {
+private fun CommentsScreenLoadingPreview() {
+  HackerNewsTheme {
+    CommentsScreen(
+      state = CommentsState.Loading
+    )
+  }
+}
+
+@Preview
+@Composable
+fun CommentRowPreview() {
   HackerNewsTheme {
     Column {
       CommentRow(
-        state = CommentState(
+        state = CommentState.Content(
           id = 1,
           level = 0,
           author = "rikinm",
           content = "Hello Parent",
+          timeLabel = "2d ago",
           children = listOf(
-            CommentState(
+            CommentState.Content(
               id = 2,
               level = 1,
               author = "vasantm",
               content = "Hello Child",
+              timeLabel = "2h ago",
               children = listOf()
             )
           )
         )
+      )
+    }
+  }
+}
+
+@Preview
+@Composable
+fun CommentRowLoadingPreview() {
+  HackerNewsTheme {
+    Column {
+      CommentRow(
+        state = CommentState.Loading(level = 0)
       )
     }
   }
@@ -151,44 +180,94 @@ fun CommentRow(state: CommentState) {
       .padding(8.dp),
     verticalArrangement = Arrangement.spacedBy(8.dp)
   ) {
-    Row(
-      modifier = Modifier.fillMaxWidth(),
-      horizontalArrangement = Arrangement.spacedBy(8.dp),
-      verticalAlignment = Alignment.CenterVertically
-    ) {
-      Text(
-        text = state.author,
-        style = MaterialTheme.typography.labelSmall,
-        color = HNOrange,
-        fontWeight = FontWeight.Medium
-      )
-      Text(
-        "•",
-        style = MaterialTheme.typography.labelSmall
-      )
-      Text(
-        "1h ago",
-        style = MaterialTheme.typography.labelSmall,
-        fontWeight = FontWeight.Medium,
-        color = Color.Gray
-      )
-      Spacer(modifier = Modifier.weight(1f))
-      Icon(
-        modifier = Modifier.size(16.dp),
-        imageVector = Icons.Default.ThumbUp,
-        contentDescription = "upvote"
-      )
-      Icon(
-        modifier = Modifier.size(16.dp),
-        imageVector = Icons.Default.MoreVert,
-        contentDescription = "options"
-      )
-    }
-    Row {
-      Text(
-        text = state.content.parseAsHtml(),
-        style = MaterialTheme.typography.labelSmall
-      )
+    when (state) {
+      is CommentState.Content -> {
+        Row(
+          modifier = Modifier.fillMaxWidth(),
+          horizontalArrangement = Arrangement.spacedBy(8.dp),
+          verticalAlignment = Alignment.CenterVertically
+        ) {
+          Text(
+            text = state.author,
+            style = MaterialTheme.typography.labelSmall,
+            color = HNOrange,
+            fontWeight = FontWeight.Medium
+          )
+          Text(
+            "•",
+            style = MaterialTheme.typography.labelSmall
+          )
+          Text(
+            text = state.timeLabel,
+            style = MaterialTheme.typography.labelSmall,
+            fontWeight = FontWeight.Medium,
+            color = Color.Gray
+          )
+          Spacer(modifier = Modifier.weight(1f))
+          Icon(
+            modifier = Modifier.size(16.dp),
+            imageVector = Icons.Default.ThumbUp,
+            contentDescription = "upvote"
+          )
+          Icon(
+            modifier = Modifier.size(16.dp),
+            imageVector = Icons.Default.MoreVert,
+            contentDescription = "options"
+          )
+        }
+        Row {
+          Text(
+            text = state.content.parseAsHtml(),
+            style = MaterialTheme.typography.labelSmall
+          )
+        }
+      }
+
+      is CommentState.Loading -> {
+        Row(
+          horizontalArrangement = Arrangement.spacedBy(4.dp),
+          verticalAlignment = Alignment.CenterVertically
+        ) {
+          Box(
+            modifier = Modifier
+              .width(40.dp)
+              .height(14.dp)
+              .clip(RoundedCornerShape(4.dp))
+              .background(HNOrange)
+          )
+
+          Box(
+            modifier = Modifier
+              .width(40.dp)
+              .height(14.dp)
+              .clip(RoundedCornerShape(4.dp))
+              .background(Color.Gray)
+          )
+        }
+        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+          Box(
+            modifier = Modifier
+              .fillMaxWidth()
+              .height(14.dp)
+              .clip(RoundedCornerShape(4.dp))
+              .background(Color.LightGray)
+          )
+          Box(
+            modifier = Modifier
+              .fillMaxWidth()
+              .height(14.dp)
+              .clip(RoundedCornerShape(4.dp))
+              .background(Color.LightGray)
+          )
+          Box(
+            modifier = Modifier
+              .fillMaxWidth(0.75f)
+              .height(14.dp)
+              .clip(RoundedCornerShape(4.dp))
+              .background(Color.LightGray)
+          )
+        }
+      }
     }
   }
   state.children.forEach { child ->
@@ -201,11 +280,25 @@ fun CommentRow(state: CommentState) {
 private fun ItemHeaderPreview() {
   HackerNewsTheme {
     ItemHeader(
-      state = HeaderState(
+      state = HeaderState.Content(
         title = "Show HN: A super neat HN client for Android",
         author = "rikinm",
-        points = 69
+        points = 69,
+        body = "Hi there"
       ),
+      modifier = Modifier
+        .fillMaxWidth()
+        .wrapContentHeight()
+    )
+  }
+}
+
+@Preview
+@Composable
+private fun ItemHeaderLoadingPreview() {
+  HackerNewsTheme {
+    ItemHeader(
+      state = HeaderState.Loading,
       modifier = Modifier
         .fillMaxWidth()
         .wrapContentHeight()
@@ -218,34 +311,104 @@ fun ItemHeader(
   state: HeaderState,
   modifier: Modifier = Modifier
 ) {
+
   Column(
     modifier = modifier
       .background(color = MaterialTheme.colorScheme.background)
       .padding(8.dp),
     verticalArrangement = Arrangement.spacedBy(16.dp)
   ) {
-    Text(
-      text = state.title,
-      style = MaterialTheme.typography.titleSmall
-    )
-    Row(
-      modifier = Modifier.fillMaxWidth(),
-      horizontalArrangement = Arrangement.spacedBy(4.dp),
-      verticalAlignment = Alignment.CenterVertically
-    ) {
-      Text(
-        text = "${state.points}",
-        style = MaterialTheme.typography.labelSmall
-      )
-      Text(
-        text = "•",
-        style = MaterialTheme.typography.labelSmall
-      )
-      Text(
-        text = state.author,
-        style = MaterialTheme.typography.labelSmall,
-        fontWeight = FontWeight.Medium
-      )
+    when (state) {
+      is HeaderState.Content -> {
+        Text(
+          text = state.title,
+          style = MaterialTheme.typography.titleSmall
+        )
+        if (state.body != null) {
+          Text(
+            text = state.body.parseAsHtml(),
+            style = MaterialTheme.typography.labelSmall,
+          )
+        }
+        Row(
+          modifier = Modifier.fillMaxWidth(),
+          horizontalArrangement = Arrangement.spacedBy(4.dp),
+          verticalAlignment = Alignment.CenterVertically
+        ) {
+          Text(
+            text = "${state.points}",
+            style = MaterialTheme.typography.labelSmall
+          )
+          Text(
+            text = "•",
+            style = MaterialTheme.typography.labelSmall
+          )
+          Text(
+            text = state.author,
+            style = MaterialTheme.typography.labelSmall,
+            fontWeight = FontWeight.Medium
+          )
+        }
+      }
+
+      HeaderState.Loading -> {
+        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+          Box(
+            modifier = Modifier
+              .fillMaxWidth()
+              .height(18.dp)
+              .clip(RoundedCornerShape(4.dp))
+              .background(color = MaterialTheme.colorScheme.onBackground)
+          )
+          Box(
+            modifier = Modifier
+              .fillMaxWidth(0.75f)
+              .height(18.dp)
+              .clip(RoundedCornerShape(4.dp))
+              .background(color = MaterialTheme.colorScheme.onBackground)
+          )
+        }
+        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+          Box(
+            modifier = Modifier
+              .fillMaxWidth()
+              .height(14.dp)
+              .clip(RoundedCornerShape(4.dp))
+              .background(color = Color.LightGray)
+          )
+          Box(
+            modifier = Modifier
+              .fillMaxWidth()
+              .height(14.dp)
+              .clip(RoundedCornerShape(4.dp))
+              .background(color = Color.LightGray)
+          )
+          Box(
+            modifier = Modifier
+              .fillMaxWidth(0.75f)
+              .height(14.dp)
+              .clip(RoundedCornerShape(4.dp))
+              .background(color = Color.LightGray)
+          )
+        }
+
+        Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+          Box(
+            modifier = Modifier
+              .width(30.dp)
+              .height(14.dp)
+              .clip(RoundedCornerShape(4.dp))
+              .background(Color.DarkGray)
+          )
+          Box(
+            modifier = Modifier
+              .width(30.dp)
+              .height(14.dp)
+              .clip(RoundedCornerShape(4.dp))
+              .background(MaterialTheme.colorScheme.onBackground)
+          )
+        }
+      }
     }
   }
 }
