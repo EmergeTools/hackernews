@@ -2,6 +2,7 @@ package com.emergetools.hackernews.features.stories
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,11 +21,14 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -38,6 +42,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.center
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -49,6 +54,7 @@ import com.emergetools.hackernews.features.comments.CommentsDestinations
 import com.emergetools.hackernews.ui.theme.HNOrange
 import com.emergetools.hackernews.ui.theme.HackerNewsTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StoriesScreen(
   modifier: Modifier = Modifier,
@@ -56,11 +62,13 @@ fun StoriesScreen(
   actions: (StoriesAction) -> Unit,
   navigation: (StoriesNavigation) -> Unit
 ) {
+
   fun LazyListState.atEndOfList(): Boolean {
     return layoutInfo.visibleItemsInfo.lastOrNull()?.index == layoutInfo.totalItemsCount - 1
   }
 
   val listState = rememberLazyListState()
+  val pullRefreshState = rememberPullToRefreshState()
 
   val shouldLoadMore by remember {
     derivedStateOf {
@@ -75,47 +83,57 @@ fun StoriesScreen(
   }
 
   Column(
-    modifier = modifier.background(color = MaterialTheme.colorScheme.background),
+    modifier = modifier
+      .graphicsLayer {
+        translationY = 50f * pullRefreshState.distanceFraction
+      }
+      .background(color = MaterialTheme.colorScheme.background),
+    verticalArrangement = Arrangement.spacedBy(8.dp),
     horizontalAlignment = Alignment.CenterHorizontally,
-    verticalArrangement = Arrangement.spacedBy(16.dp)
   ) {
     FeedSelection(
       feedType = state.feed,
       onSelected = { actions(StoriesAction.SelectFeed(it)) }
     )
-    LazyColumn(
-      state = listState,
+    PullToRefreshBox(
+      state = pullRefreshState,
       modifier = Modifier
         .fillMaxWidth()
-        .weight(1f)
+        .weight(1f),
+      onRefresh = {
+        actions(StoriesAction.RefreshItems)
+      },
+      isRefreshing = state.loading == LoadingState.Refreshing
     ) {
-      items(state.stories) { item ->
-        StoryRow(
-          modifier = Modifier.animateItem(),
-          item = item,
-          onClick = {
-            actions(StoriesAction.SelectStory(it.id))
-            navigation(
-              if (it.url != null) {
-                StoriesNavigation.GoToStory(
-                  closeup = StoriesDestinations.Closeup(it.url)
-                )
-              } else {
+      LazyColumn(state = listState) {
+        items(state.stories) { item ->
+          StoryRow(
+            modifier = Modifier.animateItem(),
+            item = item,
+            onClick = {
+              actions(StoriesAction.SelectStory(it.id))
+              navigation(
+                if (it.url != null) {
+                  StoriesNavigation.GoToStory(
+                    closeup = StoriesDestinations.Closeup(it.url)
+                  )
+                } else {
+                  StoriesNavigation.GoToComments(
+                    comments = CommentsDestinations.Comments(it.id)
+                  )
+                }
+              )
+            },
+            onCommentClicked = {
+              actions(StoriesAction.SelectComments(it.id))
+              navigation(
                 StoriesNavigation.GoToComments(
                   comments = CommentsDestinations.Comments(it.id)
                 )
-              }
-            )
-          },
-          onCommentClicked = {
-            actions(StoriesAction.SelectComments(it.id))
-            navigation(
-              StoriesNavigation.GoToComments(
-                comments = CommentsDestinations.Comments(it.id)
               )
-            )
-          },
-        )
+            },
+          )
+        }
       }
     }
   }
@@ -134,6 +152,7 @@ private fun FeedSelectionPreview() {
 
 @Composable
 private fun FeedSelection(
+  modifier: Modifier = Modifier,
   feedType: FeedType,
   onSelected: (FeedType) -> Unit,
 ) {
@@ -141,7 +160,7 @@ private fun FeedSelection(
 
   TabRow(
     selectedTabIndex = selectedTab,
-    modifier = Modifier.wrapContentWidth(),
+    modifier = modifier.wrapContentWidth(),
     containerColor = MaterialTheme.colorScheme.background,
     contentColor = MaterialTheme.colorScheme.onBackground,
     indicator = { tabPositions ->
@@ -173,7 +192,10 @@ private fun FeedSelection(
         modifier = Modifier
           .fillMaxWidth()
           .padding(8.dp)
-          .clickable {
+          .clickable(
+            indication = null,
+            interactionSource = remember { MutableInteractionSource() }
+          ) {
             onSelected(feedType)
           },
         textAlign = TextAlign.Center,
@@ -200,6 +222,7 @@ private fun StoriesScreenPreview() {
             author = "heyrikin",
             score = 10,
             commentCount = 0,
+            timeLabel = "2h ago",
             url = ""
           ),
           StoryItem.Content(
@@ -208,6 +231,7 @@ private fun StoriesScreenPreview() {
             author = "heyrikin",
             score = 10,
             commentCount = 0,
+            timeLabel = "2h ago",
             url = ""
           ),
         )
@@ -229,6 +253,7 @@ private fun StoryRowPreview() {
         author = "heyrikin",
         score = 10,
         commentCount = 0,
+        timeLabel = "2h ago",
         url = ""
       ),
       onClick = {},
@@ -292,6 +317,8 @@ fun StoryRow(
               style = MaterialTheme.typography.labelSmall,
               fontWeight = FontWeight.Medium
             )
+            Text(text = "•", style = MaterialTheme.typography.labelSmall)
+            Text(text = item.timeLabel, style = MaterialTheme.typography.labelSmall)
           }
         }
 

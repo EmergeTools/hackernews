@@ -15,6 +15,7 @@ const val BASE_FIREBASE_URL = "https://hacker-news.firebaseio.com/v0/"
 data class Item(
   val id: Long,
   val type: String,
+  val time: Long,
   val by: String? = null,
   val title: String? = null,
   val score: Int? = null,
