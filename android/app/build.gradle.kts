@@ -25,7 +25,7 @@ android {
 
   buildTypes {
     debug {
-      isDebuggable = false
+      isDebuggable = true
       applicationIdSuffix = ".debug"
     }
     release {

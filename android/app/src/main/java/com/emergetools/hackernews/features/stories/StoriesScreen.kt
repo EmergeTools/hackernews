@@ -88,6 +88,7 @@ fun StoriesScreen(
         translationY = 50f * pullRefreshState.distanceFraction
       }
       .background(color = MaterialTheme.colorScheme.background),
+    verticalArrangement = Arrangement.spacedBy(8.dp),
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {
     FeedSelection(
