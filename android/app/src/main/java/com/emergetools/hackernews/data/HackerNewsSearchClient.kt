@@ -18,8 +18,6 @@ data class ItemResponse(
   @SerialName("created_at")
   val createdAt: String,
   val children: List<ItemResponse>,
-  @SerialName("created_at")
-  val createdAt: String,
   val title: String? = null,
   val author: String? = null,
   val text: String? = null,
