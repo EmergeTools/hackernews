@@ -13,25 +13,17 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemColors
-import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.IntOffset
-import androidx.navigation.Navigation
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.emergetools.hackernews.features.comments.commentsRoutes
 import com.emergetools.hackernews.features.stories.Stories
 import com.emergetools.hackernews.features.stories.storiesGraph
-import com.emergetools.hackernews.ui.theme.HNOrange
-import com.emergetools.hackernews.ui.theme.HNOrangeLight
 import com.emergetools.hackernews.ui.theme.HackerNewsTheme
 
 class MainActivity : ComponentActivity() {
@@ -52,10 +44,7 @@ fun App() {
 
   Scaffold(
     bottomBar = {
-      NavigationBar(
-        containerColor = MaterialTheme.colorScheme.surfaceContainer,
-        contentColor = MaterialTheme.colorScheme.onSurface
-      ) {
+      NavigationBar {
         NavigationBarItem(
           selected = true,
           onClick = {},
@@ -65,11 +54,6 @@ fun App() {
               contentDescription = "Feed"
             )
           },
-          colors = NavigationBarItemDefaults.colors(
-            unselectedIconColor = MaterialTheme.colorScheme.onSurface,
-            selectedIconColor = MaterialTheme.colorScheme.onSurface,
-            indicatorColor = HNOrangeLight
-          )
         )
         NavigationBarItem(
           selected = false,
@@ -79,7 +63,7 @@ fun App() {
               imageVector = Icons.Rounded.Settings,
               contentDescription = "Settings"
             )
-          }
+          },
         )
       }
     }
