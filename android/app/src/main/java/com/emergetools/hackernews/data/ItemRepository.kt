@@ -23,12 +23,6 @@ class ItemRepository(
     }
   }
 
-  suspend fun getItem(id: ItemId): Item {
-    return withContext(Dispatchers.IO) {
-      baseClient.api.getItem(id)
-    }
-  }
-
   suspend fun getPage(page: Page): List<Item> {
     return withContext(Dispatchers.IO) {
       val result = mutableListOf<Item>()

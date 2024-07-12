@@ -55,9 +55,10 @@ fun CommentsScreen(state: CommentsState) {
       )
     }
     item {
+      val lineColor = MaterialTheme.colorScheme.onBackground
       Box(modifier = Modifier
         .fillMaxWidth()
-        .padding(horizontal = 16.dp)
+        .padding(horizontal = 8.dp)
         .height(16.dp)
         .drawBehind {
           val lineStart = Offset(0f, size.center.y)
@@ -65,7 +66,7 @@ fun CommentsScreen(state: CommentsState) {
           drawLine(
             start = lineStart,
             end = lineEnd,
-            color = HNOrange,
+            color = lineColor,
             strokeWidth = 4f,
             cap = StrokeCap.Round,
             pathEffect = PathEffect.dashPathEffect(
@@ -90,6 +91,7 @@ private fun CommentsScreenPreview() {
         title = "Show HN: A new HN client for Android",
         author = "rikinm",
         points = 69,
+        text = null,
         comments = listOf(
           CommentState(
             id = 1,
@@ -114,7 +116,7 @@ private fun CommentsScreenPreview() {
 
 @Preview
 @Composable
-private fun CommentRowPreview() {
+fun CommentRowPreview() {
   HackerNewsTheme {
     Column {
       CommentRow(
@@ -204,7 +206,8 @@ private fun ItemHeaderPreview() {
       state = HeaderState(
         title = "Show HN: A super neat HN client for Android",
         author = "rikinm",
-        points = 69
+        points = 69,
+        body = "Hi there"
       ),
       modifier = Modifier
         .fillMaxWidth()
@@ -228,6 +231,12 @@ fun ItemHeader(
       text = state.title,
       style = MaterialTheme.typography.titleSmall
     )
+    if (state.body != null) {
+      Text(
+        text = state.body.parseAsHtml(),
+        style = MaterialTheme.typography.labelSmall,
+      )
+    }
     Row(
       modifier = Modifier.fillMaxWidth(),
       horizontalArrangement = Arrangement.spacedBy(4.dp),

@@ -17,18 +17,20 @@ data class CommentsState(
   val title: String,
   val author: String,
   val points: Int,
-  val comments: List<CommentState>
+  val text: String?,
+  val comments: List<CommentState>,
 ) {
   companion object {
     val empty = CommentsState(
       title = "",
       author = "",
       points = 0,
+      text = null,
       comments = emptyList()
     )
   }
 
-  val headerState = HeaderState(title, author, points)
+  val headerState = HeaderState(title, author, points, text)
 }
 
 data class CommentState(
@@ -42,7 +44,8 @@ data class CommentState(
 data class HeaderState(
   val title: String,
   val author: String,
-  val points: Int
+  val points: Int,
+  val body: String?
 )
 
 class CommentsViewModel(
@@ -64,6 +67,7 @@ class CommentsViewModel(
             title = response.title ?: "",
             author = response.author ?: "",
             points = response.points ?: 0,
+            text = response.text,
             comments = comments
           )
         }
