@@ -14,6 +14,7 @@ fun BookmarksScreen(state: BookmarksState) {
       StoryRow(
         item = item,
         onClick = {},
+        onBookmark = {},
         onCommentClicked = {}
       )
     }

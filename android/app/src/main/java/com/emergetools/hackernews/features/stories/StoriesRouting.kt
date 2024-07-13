@@ -12,6 +12,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
+import com.emergetools.hackernews.bookmarkDao
 import com.emergetools.hackernews.features.stories.StoriesDestinations.Closeup
 import com.emergetools.hackernews.features.stories.StoriesDestinations.Feed
 import com.emergetools.hackernews.itemRepository
@@ -38,7 +39,8 @@ fun NavGraphBuilder.storiesGraph(navController: NavController) {
 
       val model = viewModel<StoriesViewModel>(
         factory = StoriesViewModel.Factory(
-          itemRepository = context.itemRepository()
+          itemRepository = context.itemRepository(),
+          bookmarkDao = context.bookmarkDao()
         )
       )
       val state by model.state.collectAsState()

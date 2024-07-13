@@ -44,6 +44,19 @@ class BookmarksViewModel(private val bookmarkDao: BookmarkDao) : ViewModel() {
   }
 }
 
+fun StoryItem.Content.toLocalBookmark(): LocalBookmark {
+  return LocalBookmark(
+    id = id,
+    title = title,
+    author = author,
+    score = score,
+    commentCount = commentCount,
+    timestamp = epochTimestamp,
+    bookmarked = true,
+    url = url
+  )
+}
+
 fun LocalBookmark.toStoryItem(): StoryItem {
   return StoryItem.Content(
     id = this.id,
@@ -51,7 +64,9 @@ fun LocalBookmark.toStoryItem(): StoryItem {
     author = this.author,
     score = this.score,
     commentCount = this.commentCount,
+    bookmarked = true,
     url = this.url,
+    epochTimestamp = this.timestamp,
     timeLabel = relativeTimeStamp(this.timestamp)
   )
 }

@@ -1,7 +1,11 @@
 package com.emergetools.hackernews.features.stories
 
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -48,7 +52,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.emergetools.hackernews.R
 import com.emergetools.hackernews.features.comments.CommentsDestinations
 import com.emergetools.hackernews.ui.theme.HNOrange
@@ -123,6 +126,9 @@ fun StoriesScreen(
                   )
                 }
               )
+            },
+            onBookmark = {
+              actions(StoriesAction.ToggleBookmark(it))
             },
             onCommentClicked = {
               actions(StoriesAction.SelectComments(it.id))
@@ -220,6 +226,7 @@ private fun StoriesScreenPreview() {
             author = "heyrikin",
             score = 10,
             commentCount = 0,
+            epochTimestamp = 100L,
             timeLabel = "2h ago",
             url = ""
           ),
@@ -229,6 +236,7 @@ private fun StoriesScreenPreview() {
             author = "heyrikin",
             score = 10,
             commentCount = 0,
+            epochTimestamp = 100L,
             timeLabel = "2h ago",
             url = ""
           ),
@@ -251,10 +259,12 @@ private fun StoryRowPreview() {
         author = "heyrikin",
         score = 10,
         commentCount = 0,
+        epochTimestamp = 100L,
         timeLabel = "2h ago",
         url = ""
       ),
       onClick = {},
+      onBookmark = {},
       onCommentClicked = {},
     )
   }
@@ -267,16 +277,19 @@ private fun StoryRowLoadingPreview() {
     StoryRow(
       item = StoryItem.Loading(id = 1L),
       onClick = {},
+      onBookmark = {},
       onCommentClicked = {},
     )
   }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun StoryRow(
   modifier: Modifier = Modifier,
   item: StoryItem,
   onClick: (StoryItem.Content) -> Unit,
+  onBookmark: (StoryItem.Content) -> Unit,
   onCommentClicked: (StoryItem.Content) -> Unit,
 ) {
   when (item) {
@@ -286,9 +299,21 @@ fun StoryRow(
           .fillMaxWidth()
           .heightIn(min = 80.dp)
           .background(color = MaterialTheme.colorScheme.background)
-          .clickable {
-            onClick(item)
-          }
+          .border(
+            border = if (item.bookmarked) {
+              BorderStroke(width = 4.dp, color = HNOrange)
+            } else {
+              BorderStroke(width = 0.dp, color = Color.Transparent)
+            }
+          )
+          .combinedClickable(
+            onClick = {
+              onClick(item)
+            },
+            onLongClick = {
+              onBookmark(item)
+            }
+          )
           .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(
