@@ -3,6 +3,7 @@ plugins {
   alias(libs.plugins.kotlin.android)
   alias(libs.plugins.compose.compiler)
   alias(libs.plugins.kotlin.serialization)
+  alias(libs.plugins.kotlin.ksp)
   alias(libs.plugins.emerge)
 }
 
@@ -92,6 +93,9 @@ dependencies {
   implementation(libs.retrofit)
   implementation(libs.retrofit.kotlinx.serialization)
   implementation(libs.kotlinx.serialization.json)
+
+  implementation(libs.androidx.room)
+  ksp(libs.androidx.room.compiler)
 
   implementation(libs.accompanist.webview)
 

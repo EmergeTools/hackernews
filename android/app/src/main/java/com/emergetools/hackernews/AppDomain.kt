@@ -7,6 +7,8 @@ import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavDestination
+import com.emergetools.hackernews.features.bookmarks.BookmarksDestinations
+import com.emergetools.hackernews.features.bookmarks.BookmarksDestinations.Bookmarks
 import com.emergetools.hackernews.features.settings.SettingsDestinations.Settings
 import com.emergetools.hackernews.features.stories.Stories
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,6 +30,12 @@ data class AppState(
       label = "Feed",
       route = Stories,
       selected = true
+    ),
+    NavItem(
+      icon = R.drawable.ic_bookmarks,
+      label = "Bookmarks",
+      route = Bookmarks,
+      selected = false
     ),
     NavItem(
       icon = R.drawable.ic_settings,
