@@ -1,20 +1,22 @@
 package com.emergetools.hackernews.features.bookmarks
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import com.emergetools.hackernews.features.stories.StoryRow
 import com.emergetools.hackernews.ui.theme.HackerNewsTheme
 
 @Composable
-fun BookmarksScreen() {
-  Column(modifier = Modifier.fillMaxSize().padding(8.dp)) {
-    Text("Bookmarks", style = MaterialTheme.typography.titleMedium)
+fun BookmarksScreen(state: BookmarksState) {
+  LazyColumn {
+    items(items = state.bookmarks, key = { it.id }) { item ->
+      StoryRow(
+        item = item,
+        onClick = {},
+        onCommentClicked = {}
+      )
+    }
   }
 }
 
@@ -22,6 +24,8 @@ fun BookmarksScreen() {
 @Composable
 private fun BookmarksScreenPreview() {
   HackerNewsTheme {
-    BookmarksScreen()
+    BookmarksScreen(
+      state = BookmarksState()
+    )
   }
 }

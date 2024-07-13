@@ -44,6 +44,7 @@ sealed class StoryItem(open val id: Long) {
     val score: Int,
     val commentCount: Int,
     val timeLabel: String,
+    val bookmarked: Boolean = false,
     val url: String?
   ) : StoryItem(id)
 }

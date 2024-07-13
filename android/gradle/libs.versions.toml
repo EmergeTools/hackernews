@@ -36,6 +36,7 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3",
 
 androidx-room = { group = "androidx.room", name = "room-runtime", version.ref = "room"}
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 androidx-ui = { group = "androidx.compose.ui", name = "ui" }

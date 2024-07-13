@@ -10,6 +10,7 @@ import androidx.room.Query
 import androidx.room.RoomDatabase
 import androidx.room.Upsert
 import kotlinx.coroutines.flow.Flow
+import java.sql.Timestamp
 
 @Entity(tableName = "bookmark")
 data class LocalBookmark(
@@ -17,6 +18,8 @@ data class LocalBookmark(
   @ColumnInfo val title: String,
   @ColumnInfo val author: String,
   @ColumnInfo val score: Int,
+  @ColumnInfo val commentCount: Int,
+  @ColumnInfo val timestamp: Long,
   @ColumnInfo val bookmarked: Boolean,
   @ColumnInfo val url: String?,
 )
@@ -24,7 +27,7 @@ data class LocalBookmark(
 @Dao
 interface BookmarkDao {
   @Query("SELECT * from bookmark")
-  fun getAllBookmarks(): Flow<LocalBookmark>
+  fun getAllBookmarks(): Flow<LocalBookmark?>
 
   @Upsert
   suspend fun addBookmark(bookmark: LocalBookmark)
