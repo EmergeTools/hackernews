@@ -11,6 +11,7 @@ import com.emergetools.hackernews.data.Page
 import com.emergetools.hackernews.data.next
 import com.emergetools.hackernews.data.relativeTimeStamp
 import com.emergetools.hackernews.features.bookmarks.toLocalBookmark
+import com.emergetools.hackernews.features.bookmarks.toStoryItem
 import com.emergetools.hackernews.features.comments.CommentsDestinations
 import com.emergetools.hackernews.features.stories.StoriesAction.LoadItems
 import kotlinx.coroutines.Dispatchers
@@ -34,6 +35,7 @@ enum class LoadingState {
 
 data class StoriesState(
   val stories: List<StoryItem>,
+  val bookmarks: List<StoryItem.Content> = emptyList(),
   val feed: FeedType = FeedType.Top,
   val loading: LoadingState = LoadingState.Idle,
 )
@@ -80,9 +82,29 @@ class StoriesViewModel(
   private var fetchJob: Job? = null
 
   init {
+    observeBookmarks()
     actions(LoadItems)
   }
 
+  private fun observeBookmarks() {
+   viewModelScope.launch {
+     bookmarkDao.getAllBookmarks().collect { bookmarks ->
+       internalState.update { current ->
+         current.copy(
+           stories = current.stories
+             .filterIsInstance<StoryItem.Content>()
+             .map { story ->
+               val isBookmarked = bookmarks.find { it.id == story.id } != null
+               story.copy(
+                 bookmarked = isBookmarked
+               )
+             },
+           bookmarks = bookmarks.map { it.toStoryItem() },
+         )
+       }
+     }
+   }
+  }
   fun actions(action: StoriesAction) {
     when (action) {
       LoadItems -> {
@@ -214,6 +236,7 @@ class StoriesViewModel(
 
   private suspend fun fetchPage(page: Page, onLoading: () -> Unit = {}): List<StoryItem> {
     onLoading()
+    val bookmarks = internalState.value.bookmarks
     var newStories = itemRepository
       .getPage(page)
       .map<Item, StoryItem> { item ->
@@ -226,6 +249,7 @@ class StoriesViewModel(
           commentCount = item.descendants ?: 0,
           epochTimestamp = item.time,
           timeLabel = relativeTimeStamp(epochSeconds = item.time),
+          bookmarked = bookmarks.find { it.id == item.id } != null,
           url = item.url
         )
       }

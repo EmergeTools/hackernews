@@ -68,7 +68,7 @@ fun StoryItem.Content.toLocalBookmark(): LocalBookmark {
   )
 }
 
-fun LocalBookmark.toStoryItem(): StoryItem {
+fun LocalBookmark.toStoryItem(): StoryItem.Content {
   return StoryItem.Content(
     id = this.id,
     title = this.title,
