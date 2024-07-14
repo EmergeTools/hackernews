@@ -24,6 +24,9 @@ fun NavGraphBuilder.bookmarksRoutes() {
       )
     )
     val state by model.state.collectAsState()
-    BookmarksScreen(state)
+    BookmarksScreen(
+      state = state,
+      actions = model::actions
+    )
   }
 }

@@ -7,9 +7,9 @@ import com.emergetools.hackernews.data.BookmarkDao
 import com.emergetools.hackernews.data.LocalBookmark
 import com.emergetools.hackernews.data.relativeTimeStamp
 import com.emergetools.hackernews.features.stories.StoryItem
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -17,23 +17,34 @@ data class BookmarksState(
   val bookmarks: List<StoryItem> = emptyList()
 )
 
+sealed interface BookmarksAction {
+  data class RemoveBookmark(val storyItem: StoryItem.Content): BookmarksAction
+}
+
 class BookmarksViewModel(private val bookmarkDao: BookmarkDao) : ViewModel() {
   private val internalState = MutableStateFlow(BookmarksState())
   val state = internalState.asStateFlow()
 
   init {
-    viewModelScope.launch {
-      bookmarkDao.getAllBookmarks().filterNotNull().collect { bookmark ->
+    viewModelScope.launch(Dispatchers.IO) {
+      bookmarkDao.getAllBookmarks().collect { bookmarks ->
         internalState.update { current ->
-          val currentBookmarks = current.bookmarks.toMutableList()
-          currentBookmarks.add(bookmark.toStoryItem())
           current.copy(
-            bookmarks = currentBookmarks.toList()
+            bookmarks = bookmarks.map { it.toStoryItem() }
           )
         }
       }
     }
+  }
 
+  fun actions(action: BookmarksAction) {
+    when (action) {
+      is BookmarksAction.RemoveBookmark -> {
+        viewModelScope.launch(Dispatchers.IO) {
+          bookmarkDao.deleteBookmark(action.storyItem.toLocalBookmark())
+        }
+      }
+    }
   }
 
   @Suppress("UNCHECKED_CAST")

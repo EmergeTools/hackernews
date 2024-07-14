@@ -8,13 +8,16 @@ import com.emergetools.hackernews.features.stories.StoryRow
 import com.emergetools.hackernews.ui.theme.HackerNewsTheme
 
 @Composable
-fun BookmarksScreen(state: BookmarksState) {
+fun BookmarksScreen(
+  state: BookmarksState,
+  actions: (BookmarksAction) -> Unit
+) {
   LazyColumn {
     items(items = state.bookmarks, key = { it.id }) { item ->
       StoryRow(
         item = item,
         onClick = {},
-        onBookmark = {},
+        onBookmark = { actions(BookmarksAction.RemoveBookmark(it)) },
         onCommentClicked = {}
       )
     }
@@ -26,7 +29,8 @@ fun BookmarksScreen(state: BookmarksState) {
 private fun BookmarksScreenPreview() {
   HackerNewsTheme {
     BookmarksScreen(
-      state = BookmarksState()
+      state = BookmarksState(),
+      actions = {}
     )
   }
 }
