@@ -1,9 +1,10 @@
 package com.emergetools.hackernews.features.stories
 
-import androidx.compose.foundation.BorderStroke
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -42,10 +43,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.geometry.center
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.StrokeJoin
+import androidx.compose.ui.graphics.drawscope.DrawStyle
+import androidx.compose.ui.graphics.drawscope.Fill
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -261,6 +270,7 @@ private fun StoryRowPreview() {
         commentCount = 0,
         epochTimestamp = 100L,
         timeLabel = "2h ago",
+        bookmarked = true,
         url = ""
       ),
       onClick = {},
@@ -294,18 +304,47 @@ fun StoryRow(
 ) {
   when (item) {
     is StoryItem.Content -> {
+      val bookmarkHeight by animateFloatAsState(
+        targetValue = if (item.bookmarked) {
+          80f
+        } else {
+          0f
+        },
+        animationSpec = spring(
+          dampingRatio = if (item.bookmarked) {
+            Spring.DampingRatioMediumBouncy
+          } else {
+            Spring.DampingRatioNoBouncy
+          },
+          stiffness = Spring.StiffnessLow
+        ),
+        label = "Bookmark Height"
+      )
       Row(
         modifier = modifier
           .fillMaxWidth()
           .heightIn(min = 80.dp)
           .background(color = MaterialTheme.colorScheme.background)
-          .border(
-            border = if (item.bookmarked) {
-              BorderStroke(width = 4.dp, color = HNOrange)
-            } else {
-              BorderStroke(width = 0.dp, color = Color.Transparent)
+          .clip(shape = RectangleShape)
+          .drawWithContent {
+            drawContent()
+            val startX = size.width * 0.75f
+            val startY = 0f
+            val bookmarkWidth = 50f
+
+            val path = Path().apply {
+              moveTo(startX, startY)
+              lineTo(startX, startY+bookmarkHeight)
+              lineTo(startX+bookmarkWidth/2f, startY+bookmarkHeight*0.75f)
+              lineTo(startX+bookmarkWidth, startY+bookmarkHeight)
+              lineTo(startX+bookmarkWidth, startY)
             }
-          )
+
+            drawPath(
+              path,
+              color = HNOrange,
+            )
+          }
           .combinedClickable(
             onClick = {
               onClick(item)
