@@ -11,6 +11,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.emergetools.hackernews.bookmarkDao
+import com.emergetools.hackernews.data.LocalCustomTabsIntent
 import com.emergetools.hackernews.features.bookmarks.BookmarksDestinations.Bookmarks
 import kotlinx.serialization.Serializable
 
@@ -24,9 +25,7 @@ fun NavGraphBuilder.bookmarksRoutes(
 ) {
   composable<Bookmarks> {
     val context = LocalContext.current
-    val customTabsIntent = remember {
-      CustomTabsIntent.Builder().build()
-    }
+    val intent = LocalCustomTabsIntent.current
     val model = viewModel<BookmarksViewModel>(
       factory = BookmarksViewModel.Factory(
         bookmarkDao = context.bookmarkDao()
@@ -43,7 +42,7 @@ fun NavGraphBuilder.bookmarksRoutes(
           }
 
           is BookmarksNavigation.GoToStory -> {
-            customTabsIntent.launchUrl(context, Uri.parse(place.closeup.url))
+            intent.launchUrl(context, Uri.parse(place.closeup.url))
           }
         }
       }
