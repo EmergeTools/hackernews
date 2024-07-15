@@ -45,16 +45,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.geometry.center
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.StrokeJoin
-import androidx.compose.ui.graphics.drawscope.DrawStyle
-import androidx.compose.ui.graphics.drawscope.Fill
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -63,7 +58,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.emergetools.hackernews.R
 import com.emergetools.hackernews.features.comments.CommentsDestinations
-import com.emergetools.hackernews.ui.theme.HNOrange
+import com.emergetools.hackernews.ui.theme.HackerOrange
 import com.emergetools.hackernews.ui.theme.HackerNewsTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -192,7 +187,7 @@ private fun FeedSelection(
               drawLine(
                 start = Offset(start, bottom),
                 end = Offset(end, bottom),
-                color = HNOrange,
+                color = HackerOrange,
                 strokeWidth = 4f,
                 cap = StrokeCap.Round,
               )
@@ -342,7 +337,7 @@ fun StoryRow(
 
             drawPath(
               path,
-              color = HNOrange,
+              color = HackerOrange,
             )
           }
           .combinedClickable(
@@ -375,7 +370,7 @@ fun StoryRow(
             Text(text = "•", style = MaterialTheme.typography.labelSmall)
             Text(
               text = item.author,
-              color = HNOrange,
+              color = HackerOrange,
               style = MaterialTheme.typography.labelSmall,
               fontWeight = FontWeight.Medium
             )
@@ -457,7 +452,7 @@ fun StoryRow(
                 .width(40.dp)
                 .height(14.dp)
                 .clip(RoundedCornerShape(4.dp))
-                .background(HNOrange)
+                .background(HackerOrange)
             )
           }
         }

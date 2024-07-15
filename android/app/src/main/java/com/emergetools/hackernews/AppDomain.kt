@@ -1,13 +1,8 @@
 package com.emergetools.hackernews
 
 import androidx.annotation.DrawableRes
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Menu
-import androidx.compose.material.icons.rounded.Settings
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavDestination
-import com.emergetools.hackernews.features.bookmarks.BookmarksDestinations
 import com.emergetools.hackernews.features.bookmarks.BookmarksDestinations.Bookmarks
 import com.emergetools.hackernews.features.settings.SettingsDestinations.Settings
 import com.emergetools.hackernews.features.stories.Stories
@@ -20,7 +15,7 @@ data class NavItem(
   val icon: Int,
   val label: String,
   val route: Any,
-  val selected: Boolean
+  val selected: Boolean,
 )
 
 data class AppState(

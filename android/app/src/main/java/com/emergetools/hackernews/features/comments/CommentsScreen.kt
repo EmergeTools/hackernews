@@ -36,7 +36,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.emergetools.hackernews.ui.theme.HNOrange
+import com.emergetools.hackernews.ui.theme.HackerOrange
 import com.emergetools.hackernews.ui.theme.HackerNewsTheme
 
 @Composable
@@ -190,7 +190,7 @@ fun CommentRow(state: CommentState) {
           Text(
             text = state.author,
             style = MaterialTheme.typography.labelSmall,
-            color = HNOrange,
+            color = HackerOrange,
             fontWeight = FontWeight.Medium
           )
           Text(
@@ -233,7 +233,7 @@ fun CommentRow(state: CommentState) {
               .width(40.dp)
               .height(14.dp)
               .clip(RoundedCornerShape(4.dp))
-              .background(HNOrange)
+              .background(HackerOrange)
           )
 
           Box(
