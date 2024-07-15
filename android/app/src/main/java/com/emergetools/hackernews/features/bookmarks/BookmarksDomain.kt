@@ -6,6 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.emergetools.hackernews.data.BookmarkDao
 import com.emergetools.hackernews.data.LocalBookmark
 import com.emergetools.hackernews.data.relativeTimeStamp
+import com.emergetools.hackernews.features.comments.CommentsDestinations
+import com.emergetools.hackernews.features.stories.StoriesDestinations
 import com.emergetools.hackernews.features.stories.StoryItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,6 +21,11 @@ data class BookmarksState(
 
 sealed interface BookmarksAction {
   data class RemoveBookmark(val storyItem: StoryItem.Content): BookmarksAction
+}
+
+sealed interface BookmarksNavigation {
+  data class GoToStory(val closeup: StoriesDestinations.Closeup) : BookmarksNavigation
+  data class GoToComments(val comments: CommentsDestinations.Comments) : BookmarksNavigation
 }
 
 class BookmarksViewModel(private val bookmarkDao: BookmarkDao) : ViewModel() {
