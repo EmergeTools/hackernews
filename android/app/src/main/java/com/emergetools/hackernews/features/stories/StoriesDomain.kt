@@ -4,13 +4,17 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.emergetools.hackernews.data.BookmarkDao
 import com.emergetools.hackernews.data.Item
 import com.emergetools.hackernews.data.ItemRepository
 import com.emergetools.hackernews.data.Page
 import com.emergetools.hackernews.data.next
 import com.emergetools.hackernews.data.relativeTimeStamp
+import com.emergetools.hackernews.features.bookmarks.toLocalBookmark
+import com.emergetools.hackernews.features.bookmarks.toStoryItem
 import com.emergetools.hackernews.features.comments.CommentsDestinations
 import com.emergetools.hackernews.features.stories.StoriesAction.LoadItems
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -31,6 +35,7 @@ enum class LoadingState {
 
 data class StoriesState(
   val stories: List<StoryItem>,
+  val bookmarks: List<StoryItem.Content> = emptyList(),
   val feed: FeedType = FeedType.Top,
   val loading: LoadingState = LoadingState.Idle,
 )
@@ -43,7 +48,9 @@ sealed class StoryItem(open val id: Long) {
     val author: String,
     val score: Int,
     val commentCount: Int,
+    val epochTimestamp: Long,
     val timeLabel: String,
+    val bookmarked: Boolean = false,
     val url: String?
   ) : StoryItem(id)
 }
@@ -51,8 +58,9 @@ sealed class StoryItem(open val id: Long) {
 sealed class StoriesAction {
   data object LoadItems : StoriesAction()
   data object LoadNextPage : StoriesAction()
-  data object RefreshItems: StoriesAction()
+  data object RefreshItems : StoriesAction()
   data class SelectStory(val id: Long) : StoriesAction()
+  data class ToggleBookmark(val story: StoryItem.Content) : StoriesAction()
   data class SelectComments(val id: Long) : StoriesAction()
   data class SelectFeed(val feed: FeedType) : StoriesAction()
 }
@@ -62,7 +70,10 @@ sealed interface StoriesNavigation {
   data class GoToComments(val comments: CommentsDestinations.Comments) : StoriesNavigation
 }
 
-class StoriesViewModel(private val itemRepository: ItemRepository) : ViewModel() {
+class StoriesViewModel(
+  private val itemRepository: ItemRepository,
+  private val bookmarkDao: BookmarkDao
+) : ViewModel() {
   private val internalState = MutableStateFlow(StoriesState(stories = emptyList()))
   val state = internalState.asStateFlow()
 
@@ -71,9 +82,29 @@ class StoriesViewModel(private val itemRepository: ItemRepository) : ViewModel()
   private var fetchJob: Job? = null
 
   init {
+    observeBookmarks()
     actions(LoadItems)
   }
 
+  private fun observeBookmarks() {
+   viewModelScope.launch {
+     bookmarkDao.getAllBookmarks().collect { bookmarks ->
+       internalState.update { current ->
+         current.copy(
+           stories = current.stories
+             .filterIsInstance<StoryItem.Content>()
+             .map { story ->
+               val isBookmarked = bookmarks.find { it.id == story.id } != null
+               story.copy(
+                 bookmarked = isBookmarked
+               )
+             },
+           bookmarks = bookmarks.map { it.toStoryItem() },
+         )
+       }
+     }
+   }
+  }
   fun actions(action: StoriesAction) {
     when (action) {
       LoadItems -> {
@@ -175,11 +206,37 @@ class StoriesViewModel(private val itemRepository: ItemRepository) : ViewModel()
           }
         }
       }
+
+      is StoriesAction.ToggleBookmark -> {
+        internalState.update { current ->
+          current.copy(
+            stories = current.stories
+              .filterIsInstance<StoryItem.Content>()
+              .map { story ->
+                if (story == action.story) {
+                  story.copy(bookmarked = !story.bookmarked)
+                } else {
+                  story
+                }
+              }
+          )
+        }
+
+        viewModelScope.launch(Dispatchers.IO) {
+          val bookmark = action.story.toLocalBookmark()
+          if (action.story.bookmarked) {
+            bookmarkDao.deleteBookmark(bookmark)
+          } else {
+            bookmarkDao.addBookmark(bookmark)
+          }
+        }
+      }
     }
   }
 
-  private suspend fun fetchPage(page: Page, onLoading: () -> Unit = {}): List<StoryItem>  {
+  private suspend fun fetchPage(page: Page, onLoading: () -> Unit = {}): List<StoryItem> {
     onLoading()
+    val bookmarks = internalState.value.bookmarks
     var newStories = itemRepository
       .getPage(page)
       .map<Item, StoryItem> { item ->
@@ -190,7 +247,9 @@ class StoriesViewModel(private val itemRepository: ItemRepository) : ViewModel()
           author = item.by!!,
           score = item.score ?: 0,
           commentCount = item.descendants ?: 0,
+          epochTimestamp = item.time,
           timeLabel = relativeTimeStamp(epochSeconds = item.time),
+          bookmarked = bookmarks.find { it.id == item.id } != null,
           url = item.url
         )
       }
@@ -201,9 +260,12 @@ class StoriesViewModel(private val itemRepository: ItemRepository) : ViewModel()
   }
 
   @Suppress("UNCHECKED_CAST")
-  class Factory(private val itemRepository: ItemRepository) : ViewModelProvider.Factory {
+  class Factory(
+    private val itemRepository: ItemRepository,
+    private val bookmarkDao: BookmarkDao
+  ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-      return StoriesViewModel(itemRepository) as T
+      return StoriesViewModel(itemRepository, bookmarkDao) as T
     }
   }
 }

@@ -1,7 +1,12 @@
 package com.emergetools.hackernews.features.stories
 
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -38,17 +43,24 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.geometry.center
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.StrokeJoin
+import androidx.compose.ui.graphics.drawscope.DrawStyle
+import androidx.compose.ui.graphics.drawscope.Fill
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.emergetools.hackernews.R
 import com.emergetools.hackernews.features.comments.CommentsDestinations
 import com.emergetools.hackernews.ui.theme.HNOrange
@@ -123,6 +135,9 @@ fun StoriesScreen(
                   )
                 }
               )
+            },
+            onBookmark = {
+              actions(StoriesAction.ToggleBookmark(it))
             },
             onCommentClicked = {
               actions(StoriesAction.SelectComments(it.id))
@@ -200,9 +215,7 @@ private fun FeedSelection(
           },
         textAlign = TextAlign.Center,
         text = feedType.label,
-        style = MaterialTheme.typography.labelSmall,
-        fontWeight = FontWeight.Medium,
-        fontSize = 24.sp
+        style = MaterialTheme.typography.titleMedium,
       )
     }
   }
@@ -222,6 +235,7 @@ private fun StoriesScreenPreview() {
             author = "heyrikin",
             score = 10,
             commentCount = 0,
+            epochTimestamp = 100L,
             timeLabel = "2h ago",
             url = ""
           ),
@@ -231,6 +245,7 @@ private fun StoriesScreenPreview() {
             author = "heyrikin",
             score = 10,
             commentCount = 0,
+            epochTimestamp = 100L,
             timeLabel = "2h ago",
             url = ""
           ),
@@ -253,10 +268,13 @@ private fun StoryRowPreview() {
         author = "heyrikin",
         score = 10,
         commentCount = 0,
+        epochTimestamp = 100L,
         timeLabel = "2h ago",
+        bookmarked = true,
         url = ""
       ),
       onClick = {},
+      onBookmark = {},
       onCommentClicked = {},
     )
   }
@@ -269,28 +287,72 @@ private fun StoryRowLoadingPreview() {
     StoryRow(
       item = StoryItem.Loading(id = 1L),
       onClick = {},
+      onBookmark = {},
       onCommentClicked = {},
     )
   }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun StoryRow(
   modifier: Modifier = Modifier,
   item: StoryItem,
   onClick: (StoryItem.Content) -> Unit,
+  onBookmark: (StoryItem.Content) -> Unit,
   onCommentClicked: (StoryItem.Content) -> Unit,
 ) {
   when (item) {
     is StoryItem.Content -> {
+      val bookmarkHeight by animateFloatAsState(
+        targetValue = if (item.bookmarked) {
+          80f
+        } else {
+          0f
+        },
+        animationSpec = spring(
+          dampingRatio = if (item.bookmarked) {
+            Spring.DampingRatioMediumBouncy
+          } else {
+            Spring.DampingRatioNoBouncy
+          },
+          stiffness = Spring.StiffnessLow
+        ),
+        label = "Bookmark Height"
+      )
       Row(
         modifier = modifier
           .fillMaxWidth()
           .heightIn(min = 80.dp)
           .background(color = MaterialTheme.colorScheme.background)
-          .clickable {
-            onClick(item)
+          .clip(shape = RectangleShape)
+          .drawWithContent {
+            drawContent()
+            val startX = size.width * 0.75f
+            val startY = 0f
+            val bookmarkWidth = 50f
+
+            val path = Path().apply {
+              moveTo(startX, startY)
+              lineTo(startX, startY+bookmarkHeight)
+              lineTo(startX+bookmarkWidth/2f, startY+bookmarkHeight*0.75f)
+              lineTo(startX+bookmarkWidth, startY+bookmarkHeight)
+              lineTo(startX+bookmarkWidth, startY)
+            }
+
+            drawPath(
+              path,
+              color = HNOrange,
+            )
           }
+          .combinedClickable(
+            onClick = {
+              onClick(item)
+            },
+            onLongClick = {
+              onBookmark(item)
+            }
+          )
           .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(
