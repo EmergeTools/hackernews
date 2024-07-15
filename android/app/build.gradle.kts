@@ -29,7 +29,7 @@ android {
       isDebuggable = true
       applicationIdSuffix = ".debug"
     }
-      create("fast") {
+    create("fast") {
       isDebuggable = false
       applicationIdSuffix = ".fast"
       signingConfig = signingConfigs.getByName("debug")
