@@ -1,5 +1,6 @@
 package com.emergetools.hackernews.features.stories
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
@@ -55,11 +56,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.emergetools.hackernews.R
 import com.emergetools.hackernews.features.comments.CommentsDestinations
-import com.emergetools.hackernews.ui.theme.HackerOrange
 import com.emergetools.hackernews.ui.theme.HackerNewsTheme
+import com.emergetools.hackernews.ui.theme.HackerOrange
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -149,74 +151,7 @@ fun StoriesScreen(
   }
 }
 
-@Preview
-@Composable
-private fun FeedSelectionPreview() {
-  HackerNewsTheme {
-    FeedSelection(
-      feedType = FeedType.Top,
-      onSelected = {}
-    )
-  }
-}
-
-@Composable
-private fun FeedSelection(
-  modifier: Modifier = Modifier,
-  feedType: FeedType,
-  onSelected: (FeedType) -> Unit,
-) {
-  val selectedTab = remember(feedType) { feedType.ordinal }
-
-  TabRow(
-    selectedTabIndex = selectedTab,
-    modifier = modifier.wrapContentWidth(),
-    containerColor = MaterialTheme.colorScheme.background,
-    contentColor = MaterialTheme.colorScheme.onBackground,
-    indicator = { tabPositions ->
-      if (selectedTab < tabPositions.size) {
-        Box(
-          modifier = Modifier
-            .tabIndicatorOffset(tabPositions[selectedTab])
-            .height(2.dp)
-            .drawBehind {
-              val barWidth = size.width * 0.33f
-              val start = size.center.x - barWidth / 2f
-              val end = size.center.x + barWidth / 2f
-              val bottom = size.height - 16f
-              drawLine(
-                start = Offset(start, bottom),
-                end = Offset(end, bottom),
-                color = HackerOrange,
-                strokeWidth = 4f,
-                cap = StrokeCap.Round,
-              )
-            }
-        )
-      }
-    },
-    divider = {}
-  ) {
-    FeedType.entries.forEach { feedType ->
-      Text(
-        modifier = Modifier
-          .fillMaxWidth()
-          .padding(8.dp)
-          .clickable(
-            indication = null,
-            interactionSource = remember { MutableInteractionSource() }
-          ) {
-            onSelected(feedType)
-          },
-        textAlign = TextAlign.Center,
-        text = feedType.label,
-        style = MaterialTheme.typography.titleMedium,
-      )
-    }
-  }
-}
-
-@Preview
+@PreviewLightDark
 @Composable
 private fun StoriesScreenPreview() {
   HackerNewsTheme {
@@ -248,42 +183,6 @@ private fun StoriesScreenPreview() {
       ),
       actions = {},
       navigation = {}
-    )
-  }
-}
-
-@Preview
-@Composable
-private fun StoryRowPreview() {
-  HackerNewsTheme {
-    StoryRow(
-      item = StoryItem.Content(
-        id = 1L,
-        title = "Hello There",
-        author = "heyrikin",
-        score = 10,
-        commentCount = 0,
-        epochTimestamp = 100L,
-        timeLabel = "2h ago",
-        bookmarked = true,
-        url = ""
-      ),
-      onClick = {},
-      onBookmark = {},
-      onCommentClicked = {},
-    )
-  }
-}
-
-@Preview
-@Composable
-private fun StoryRowLoadingPreview() {
-  HackerNewsTheme {
-    StoryRow(
-      item = StoryItem.Loading(id = 1L),
-      onClick = {},
-      onBookmark = {},
-      onCommentClicked = {},
     )
   }
 }
@@ -329,10 +228,10 @@ fun StoryRow(
 
             val path = Path().apply {
               moveTo(startX, startY)
-              lineTo(startX, startY+bookmarkHeight)
-              lineTo(startX+bookmarkWidth/2f, startY+bookmarkHeight*0.75f)
-              lineTo(startX+bookmarkWidth, startY+bookmarkHeight)
-              lineTo(startX+bookmarkWidth, startY)
+              lineTo(startX, startY + bookmarkHeight)
+              lineTo(startX + bookmarkWidth / 2f, startY + bookmarkHeight * 0.75f)
+              lineTo(startX + bookmarkWidth, startY + bookmarkHeight)
+              lineTo(startX + bookmarkWidth, startY)
             }
 
             drawPath(
@@ -458,5 +357,109 @@ fun StoryRow(
         }
       }
     }
+  }
+}
+
+@PreviewLightDark
+@Composable
+private fun StoryRowPreview() {
+  HackerNewsTheme {
+    StoryRow(
+      item = StoryItem.Content(
+        id = 1L,
+        title = "Hello There",
+        author = "heyrikin",
+        score = 10,
+        commentCount = 0,
+        epochTimestamp = 100L,
+        timeLabel = "2h ago",
+        bookmarked = true,
+        url = ""
+      ),
+      onClick = {},
+      onBookmark = {},
+      onCommentClicked = {},
+    )
+  }
+}
+
+@PreviewLightDark
+@Composable
+private fun StoryRowLoadingPreview() {
+  HackerNewsTheme {
+    StoryRow(
+      item = StoryItem.Loading(id = 1L),
+      onClick = {},
+      onBookmark = {},
+      onCommentClicked = {},
+    )
+  }
+}
+
+
+@Composable
+private fun FeedSelection(
+  modifier: Modifier = Modifier,
+  feedType: FeedType,
+  onSelected: (FeedType) -> Unit,
+) {
+  val selectedTab = remember(feedType) { feedType.ordinal }
+
+  TabRow(
+    selectedTabIndex = selectedTab,
+    modifier = modifier.wrapContentWidth(),
+    containerColor = MaterialTheme.colorScheme.background,
+    contentColor = MaterialTheme.colorScheme.onBackground,
+    indicator = { tabPositions ->
+      if (selectedTab < tabPositions.size) {
+        Box(
+          modifier = Modifier
+            .tabIndicatorOffset(tabPositions[selectedTab])
+            .height(2.dp)
+            .drawBehind {
+              val barWidth = size.width * 0.33f
+              val start = size.center.x - barWidth / 2f
+              val end = size.center.x + barWidth / 2f
+              val bottom = size.height - 16f
+              drawLine(
+                start = Offset(start, bottom),
+                end = Offset(end, bottom),
+                color = HackerOrange,
+                strokeWidth = 4f,
+                cap = StrokeCap.Round,
+              )
+            }
+        )
+      }
+    },
+    divider = {}
+  ) {
+    FeedType.entries.forEach { feedType ->
+      Text(
+        modifier = Modifier
+          .fillMaxWidth()
+          .padding(8.dp)
+          .clickable(
+            indication = null,
+            interactionSource = remember { MutableInteractionSource() }
+          ) {
+            onSelected(feedType)
+          },
+        textAlign = TextAlign.Center,
+        text = feedType.label,
+        style = MaterialTheme.typography.titleMedium,
+      )
+    }
+  }
+}
+
+@PreviewLightDark
+@Composable
+private fun FeedSelectionPreview() {
+  HackerNewsTheme {
+    FeedSelection(
+      feedType = FeedType.Top,
+      onSelected = {}
+    )
   }
 }
