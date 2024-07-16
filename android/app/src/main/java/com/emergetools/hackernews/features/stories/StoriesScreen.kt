@@ -262,19 +262,36 @@ fun StoryRow(
         ) {
           Text(
             text = item.title,
+            color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.titleSmall
           )
           Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-            Text(text = "${item.score}", style = MaterialTheme.typography.labelSmall)
-            Text(text = "•", style = MaterialTheme.typography.labelSmall)
+            Text(
+              text = "${item.score}",
+              color = MaterialTheme.colorScheme.onSurface,
+              style = MaterialTheme.typography.labelSmall
+            )
+            Text(
+              text = "•",
+              color = MaterialTheme.colorScheme.onSurface,
+              style = MaterialTheme.typography.labelSmall
+            )
             Text(
               text = item.author,
               color = HackerOrange,
               style = MaterialTheme.typography.labelSmall,
               fontWeight = FontWeight.Medium
             )
-            Text(text = "•", style = MaterialTheme.typography.labelSmall)
-            Text(text = item.timeLabel, style = MaterialTheme.typography.labelSmall)
+            Text(
+              text = "•",
+              color = MaterialTheme.colorScheme.onSurface,
+              style = MaterialTheme.typography.labelSmall
+            )
+            Text(
+              text = item.timeLabel,
+              color = MaterialTheme.colorScheme.onSurface,
+              style = MaterialTheme.typography.labelSmall
+            )
           }
         }
 
@@ -295,6 +312,7 @@ fun StoryRow(
           )
           Text(
             text = "${item.commentCount}",
+            color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.labelSmall,
             fontWeight = FontWeight.Medium
           )
