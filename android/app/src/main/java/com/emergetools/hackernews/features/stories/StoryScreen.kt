@@ -9,10 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import com.google.accompanist.web.WebView
 import com.google.accompanist.web.rememberWebViewState
-import com.emergetools.hackernews.ui.theme.HackerNewsTheme
 
 @Composable
 fun StoryScreen(url: String) {
@@ -28,13 +26,5 @@ fun StoryScreen(url: String) {
       modifier = Modifier.fillMaxWidth().weight(1f),
       state = webViewState
     )
-  }
-}
-
-@Preview
-@Composable
-private fun StoryScreenPreview() {
-  HackerNewsTheme {
-    StoryScreen("www.google.com")
   }
 }
