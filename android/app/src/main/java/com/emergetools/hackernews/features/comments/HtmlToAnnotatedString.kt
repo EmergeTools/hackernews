@@ -30,7 +30,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.em
 import androidx.core.text.HtmlCompat
-import com.emergetools.hackernews.ui.theme.HNOrange
+import com.emergetools.hackernews.ui.theme.HackerOrange
 
 /**
  * This code will be added to Compose 1.7, just some utilities to convert HTML Spanned to Annotated String
@@ -108,7 +108,7 @@ private fun AnnotatedString.Builder.addSpan(span: Any, start: Int, end: Int) {
             url,
             styles = TextLinkStyles(
               style = SpanStyle(
-                color = HNOrange
+                color = HackerOrange
               )
             )
           ),

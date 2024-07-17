@@ -45,26 +45,21 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.geometry.center
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.StrokeJoin
-import androidx.compose.ui.graphics.drawscope.DrawStyle
-import androidx.compose.ui.graphics.drawscope.Fill
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.emergetools.hackernews.R
 import com.emergetools.hackernews.features.comments.CommentsDestinations
-import com.emergetools.hackernews.ui.theme.HNOrange
 import com.emergetools.hackernews.ui.theme.HackerNewsTheme
+import com.emergetools.hackernews.ui.theme.HackerOrange
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -154,74 +149,7 @@ fun StoriesScreen(
   }
 }
 
-@Preview
-@Composable
-private fun FeedSelectionPreview() {
-  HackerNewsTheme {
-    FeedSelection(
-      feedType = FeedType.Top,
-      onSelected = {}
-    )
-  }
-}
-
-@Composable
-private fun FeedSelection(
-  modifier: Modifier = Modifier,
-  feedType: FeedType,
-  onSelected: (FeedType) -> Unit,
-) {
-  val selectedTab = remember(feedType) { feedType.ordinal }
-
-  TabRow(
-    selectedTabIndex = selectedTab,
-    modifier = modifier.wrapContentWidth(),
-    containerColor = MaterialTheme.colorScheme.background,
-    contentColor = MaterialTheme.colorScheme.onBackground,
-    indicator = { tabPositions ->
-      if (selectedTab < tabPositions.size) {
-        Box(
-          modifier = Modifier
-            .tabIndicatorOffset(tabPositions[selectedTab])
-            .height(2.dp)
-            .drawBehind {
-              val barWidth = size.width * 0.33f
-              val start = size.center.x - barWidth / 2f
-              val end = size.center.x + barWidth / 2f
-              val bottom = size.height - 16f
-              drawLine(
-                start = Offset(start, bottom),
-                end = Offset(end, bottom),
-                color = HNOrange,
-                strokeWidth = 4f,
-                cap = StrokeCap.Round,
-              )
-            }
-        )
-      }
-    },
-    divider = {}
-  ) {
-    FeedType.entries.forEach { feedType ->
-      Text(
-        modifier = Modifier
-          .fillMaxWidth()
-          .padding(8.dp)
-          .clickable(
-            indication = null,
-            interactionSource = remember { MutableInteractionSource() }
-          ) {
-            onSelected(feedType)
-          },
-        textAlign = TextAlign.Center,
-        text = feedType.label,
-        style = MaterialTheme.typography.titleMedium,
-      )
-    }
-  }
-}
-
-@Preview
+@PreviewLightDark
 @Composable
 private fun StoriesScreenPreview() {
   HackerNewsTheme {
@@ -253,42 +181,6 @@ private fun StoriesScreenPreview() {
       ),
       actions = {},
       navigation = {}
-    )
-  }
-}
-
-@Preview
-@Composable
-private fun StoryRowPreview() {
-  HackerNewsTheme {
-    StoryRow(
-      item = StoryItem.Content(
-        id = 1L,
-        title = "Hello There",
-        author = "heyrikin",
-        score = 10,
-        commentCount = 0,
-        epochTimestamp = 100L,
-        timeLabel = "2h ago",
-        bookmarked = true,
-        url = ""
-      ),
-      onClick = {},
-      onBookmark = {},
-      onCommentClicked = {},
-    )
-  }
-}
-
-@Preview
-@Composable
-private fun StoryRowLoadingPreview() {
-  HackerNewsTheme {
-    StoryRow(
-      item = StoryItem.Loading(id = 1L),
-      onClick = {},
-      onBookmark = {},
-      onCommentClicked = {},
     )
   }
 }
@@ -334,15 +226,15 @@ fun StoryRow(
 
             val path = Path().apply {
               moveTo(startX, startY)
-              lineTo(startX, startY+bookmarkHeight)
-              lineTo(startX+bookmarkWidth/2f, startY+bookmarkHeight*0.75f)
-              lineTo(startX+bookmarkWidth, startY+bookmarkHeight)
-              lineTo(startX+bookmarkWidth, startY)
+              lineTo(startX, startY + bookmarkHeight)
+              lineTo(startX + bookmarkWidth / 2f, startY + bookmarkHeight * 0.75f)
+              lineTo(startX + bookmarkWidth, startY + bookmarkHeight)
+              lineTo(startX + bookmarkWidth, startY)
             }
 
             drawPath(
               path,
-              color = HNOrange,
+              color = HackerOrange,
             )
           }
           .combinedClickable(
@@ -368,19 +260,36 @@ fun StoryRow(
         ) {
           Text(
             text = item.title,
+            color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.titleSmall
           )
           Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-            Text(text = "${item.score}", style = MaterialTheme.typography.labelSmall)
-            Text(text = "•", style = MaterialTheme.typography.labelSmall)
+            Text(
+              text = "${item.score}",
+              color = MaterialTheme.colorScheme.onSurface,
+              style = MaterialTheme.typography.labelSmall
+            )
+            Text(
+              text = "•",
+              color = MaterialTheme.colorScheme.onSurface,
+              style = MaterialTheme.typography.labelSmall
+            )
             Text(
               text = item.author,
-              color = HNOrange,
+              color = HackerOrange,
               style = MaterialTheme.typography.labelSmall,
               fontWeight = FontWeight.Medium
             )
-            Text(text = "•", style = MaterialTheme.typography.labelSmall)
-            Text(text = item.timeLabel, style = MaterialTheme.typography.labelSmall)
+            Text(
+              text = "•",
+              color = MaterialTheme.colorScheme.onSurface,
+              style = MaterialTheme.typography.labelSmall
+            )
+            Text(
+              text = item.timeLabel,
+              color = MaterialTheme.colorScheme.onSurface,
+              style = MaterialTheme.typography.labelSmall
+            )
           }
         }
 
@@ -401,6 +310,7 @@ fun StoryRow(
           )
           Text(
             text = "${item.commentCount}",
+            color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.labelSmall,
             fontWeight = FontWeight.Medium
           )
@@ -457,11 +367,115 @@ fun StoryRow(
                 .width(40.dp)
                 .height(14.dp)
                 .clip(RoundedCornerShape(4.dp))
-                .background(HNOrange)
+                .background(HackerOrange)
             )
           }
         }
       }
     }
+  }
+}
+
+@PreviewLightDark
+@Composable
+private fun StoryRowPreview() {
+  HackerNewsTheme {
+    StoryRow(
+      item = StoryItem.Content(
+        id = 1L,
+        title = "Hello There",
+        author = "heyrikin",
+        score = 10,
+        commentCount = 0,
+        epochTimestamp = 100L,
+        timeLabel = "2h ago",
+        bookmarked = true,
+        url = ""
+      ),
+      onClick = {},
+      onBookmark = {},
+      onCommentClicked = {},
+    )
+  }
+}
+
+@PreviewLightDark
+@Composable
+private fun StoryRowLoadingPreview() {
+  HackerNewsTheme {
+    StoryRow(
+      item = StoryItem.Loading(id = 1L),
+      onClick = {},
+      onBookmark = {},
+      onCommentClicked = {},
+    )
+  }
+}
+
+
+@Composable
+private fun FeedSelection(
+  modifier: Modifier = Modifier,
+  feedType: FeedType,
+  onSelected: (FeedType) -> Unit,
+) {
+  val selectedTab = remember(feedType) { feedType.ordinal }
+
+  TabRow(
+    selectedTabIndex = selectedTab,
+    modifier = modifier.wrapContentWidth(),
+    containerColor = MaterialTheme.colorScheme.background,
+    contentColor = MaterialTheme.colorScheme.onBackground,
+    indicator = { tabPositions ->
+      if (selectedTab < tabPositions.size) {
+        Box(
+          modifier = Modifier
+            .tabIndicatorOffset(tabPositions[selectedTab])
+            .height(2.dp)
+            .drawBehind {
+              val barWidth = size.width * 0.33f
+              val start = size.center.x - barWidth / 2f
+              val end = size.center.x + barWidth / 2f
+              val bottom = size.height - 16f
+              drawLine(
+                start = Offset(start, bottom),
+                end = Offset(end, bottom),
+                color = HackerOrange,
+                strokeWidth = 4f,
+                cap = StrokeCap.Round,
+              )
+            }
+        )
+      }
+    },
+    divider = {}
+  ) {
+    FeedType.entries.forEach { feedType ->
+      Text(
+        modifier = Modifier
+          .fillMaxWidth()
+          .padding(8.dp)
+          .clickable(
+            indication = null,
+            interactionSource = remember { MutableInteractionSource() }
+          ) {
+            onSelected(feedType)
+          },
+        textAlign = TextAlign.Center,
+        text = feedType.label,
+        style = MaterialTheme.typography.titleMedium,
+      )
+    }
+  }
+}
+
+@PreviewLightDark
+@Composable
+private fun FeedSelectionPreview() {
+  HackerNewsTheme {
+    FeedSelection(
+      feedType = FeedType.Top,
+      onSelected = {}
+    )
   }
 }

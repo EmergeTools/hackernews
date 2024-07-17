@@ -18,7 +18,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -34,10 +33,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import com.emergetools.hackernews.ui.theme.HNOrange
 import com.emergetools.hackernews.ui.theme.HackerNewsTheme
+import com.emergetools.hackernews.ui.theme.HackerOrange
 
 @Composable
 fun CommentsScreen(state: CommentsState) {
@@ -83,7 +82,7 @@ fun CommentsScreen(state: CommentsState) {
   }
 }
 
-@Preview
+@PreviewLightDark
 @Composable
 private fun CommentsScreenPreview() {
   HackerNewsTheme {
@@ -117,53 +116,13 @@ private fun CommentsScreenPreview() {
   }
 }
 
-@Preview
+@PreviewLightDark
 @Composable
 private fun CommentsScreenLoadingPreview() {
   HackerNewsTheme {
     CommentsScreen(
       state = CommentsState.Loading
     )
-  }
-}
-
-@Preview
-@Composable
-fun CommentRowPreview() {
-  HackerNewsTheme {
-    Column {
-      CommentRow(
-        state = CommentState.Content(
-          id = 1,
-          level = 0,
-          author = "rikinm",
-          content = "Hello Parent",
-          timeLabel = "2d ago",
-          children = listOf(
-            CommentState.Content(
-              id = 2,
-              level = 1,
-              author = "vasantm",
-              content = "Hello Child",
-              timeLabel = "2h ago",
-              children = listOf()
-            )
-          )
-        )
-      )
-    }
-  }
-}
-
-@Preview
-@Composable
-fun CommentRowLoadingPreview() {
-  HackerNewsTheme {
-    Column {
-      CommentRow(
-        state = CommentState.Loading(level = 0)
-      )
-    }
   }
 }
 
@@ -190,12 +149,13 @@ fun CommentRow(state: CommentState) {
           Text(
             text = state.author,
             style = MaterialTheme.typography.labelSmall,
-            color = HNOrange,
+            color = HackerOrange,
             fontWeight = FontWeight.Medium
           )
           Text(
-            "•",
-            style = MaterialTheme.typography.labelSmall
+            text = "•",
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurface
           )
           Text(
             text = state.timeLabel,
@@ -207,18 +167,15 @@ fun CommentRow(state: CommentState) {
           Icon(
             modifier = Modifier.size(16.dp),
             imageVector = Icons.Default.ThumbUp,
+            tint = MaterialTheme.colorScheme.onSurface,
             contentDescription = "upvote"
-          )
-          Icon(
-            modifier = Modifier.size(16.dp),
-            imageVector = Icons.Default.MoreVert,
-            contentDescription = "options"
           )
         }
         Row {
           Text(
             text = state.content.parseAsHtml(),
-            style = MaterialTheme.typography.labelSmall
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurface,
           )
         }
       }
@@ -233,7 +190,7 @@ fun CommentRow(state: CommentState) {
               .width(40.dp)
               .height(14.dp)
               .clip(RoundedCornerShape(4.dp))
-              .background(HNOrange)
+              .background(HackerOrange)
           )
 
           Box(
@@ -275,34 +232,43 @@ fun CommentRow(state: CommentState) {
   }
 }
 
-@Preview
+@PreviewLightDark
 @Composable
-private fun ItemHeaderPreview() {
+fun CommentRowPreview() {
   HackerNewsTheme {
-    ItemHeader(
-      state = HeaderState.Content(
-        title = "Show HN: A super neat HN client for Android",
-        author = "rikinm",
-        points = 69,
-        body = "Hi there"
-      ),
-      modifier = Modifier
-        .fillMaxWidth()
-        .wrapContentHeight()
-    )
+    Column {
+      CommentRow(
+        state = CommentState.Content(
+          id = 1,
+          level = 0,
+          author = "rikinm",
+          content = "Hello Parent",
+          timeLabel = "2d ago",
+          children = listOf(
+            CommentState.Content(
+              id = 2,
+              level = 1,
+              author = "vasantm",
+              content = "Hello Child",
+              timeLabel = "2h ago",
+              children = listOf()
+            )
+          )
+        )
+      )
+    }
   }
 }
 
-@Preview
+@PreviewLightDark
 @Composable
-private fun ItemHeaderLoadingPreview() {
+fun CommentRowLoadingPreview() {
   HackerNewsTheme {
-    ItemHeader(
-      state = HeaderState.Loading,
-      modifier = Modifier
-        .fillMaxWidth()
-        .wrapContentHeight()
-    )
+    Column {
+      CommentRow(
+        state = CommentState.Loading(level = 0)
+      )
+    }
   }
 }
 
@@ -311,7 +277,6 @@ fun ItemHeader(
   state: HeaderState,
   modifier: Modifier = Modifier
 ) {
-
   Column(
     modifier = modifier
       .background(color = MaterialTheme.colorScheme.background)
@@ -322,11 +287,13 @@ fun ItemHeader(
       is HeaderState.Content -> {
         Text(
           text = state.title,
+          color = MaterialTheme.colorScheme.onSurface,
           style = MaterialTheme.typography.titleSmall
         )
         if (state.body != null) {
           Text(
             text = state.body.parseAsHtml(),
+            color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.labelSmall,
           )
         }
@@ -337,14 +304,17 @@ fun ItemHeader(
         ) {
           Text(
             text = "${state.points}",
+            color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.labelSmall
           )
           Text(
             text = "•",
+            color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.labelSmall
           )
           Text(
             text = state.author,
+            color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.labelSmall,
             fontWeight = FontWeight.Medium
           )
@@ -412,3 +382,35 @@ fun ItemHeader(
     }
   }
 }
+
+@PreviewLightDark
+@Composable
+private fun ItemHeaderPreview() {
+  HackerNewsTheme {
+    ItemHeader(
+      state = HeaderState.Content(
+        title = "Show HN: A super neat HN client for Android",
+        author = "rikinm",
+        points = 69,
+        body = "Hi there"
+      ),
+      modifier = Modifier
+        .fillMaxWidth()
+        .wrapContentHeight()
+    )
+  }
+}
+
+@PreviewLightDark
+@Composable
+private fun ItemHeaderLoadingPreview() {
+  HackerNewsTheme {
+    ItemHeader(
+      state = HeaderState.Loading,
+      modifier = Modifier
+        .fillMaxWidth()
+        .wrapContentHeight()
+    )
+  }
+}
+

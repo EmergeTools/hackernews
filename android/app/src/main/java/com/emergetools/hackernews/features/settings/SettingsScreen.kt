@@ -1,7 +1,9 @@
 package com.emergetools.hackernews.features.settings
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -13,8 +15,16 @@ import com.emergetools.hackernews.ui.theme.HackerNewsTheme
 
 @Composable
 fun SettingsScreen() {
-  Column(modifier = Modifier.fillMaxSize().padding(8.dp)) {
-    Text("Settings", style = MaterialTheme.typography.titleMedium)
+  Column(
+    modifier = Modifier
+      .fillMaxSize()
+      .background(color = MaterialTheme.colorScheme.background)
+  ) {
+    Text(
+      text = "Settings",
+      modifier = Modifier.fillMaxWidth().padding(8.dp),
+      style = MaterialTheme.typography.titleMedium
+    )
   }
 }
 

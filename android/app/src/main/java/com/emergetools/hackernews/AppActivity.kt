@@ -11,8 +11,10 @@ import androidx.compose.animation.slideOut
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -37,6 +39,9 @@ import com.emergetools.hackernews.features.stories.Stories
 import com.emergetools.hackernews.features.stories.StoriesDestinations.Feed
 import com.emergetools.hackernews.features.stories.storiesGraph
 import com.emergetools.hackernews.ui.theme.HackerNewsTheme
+import com.emergetools.hackernews.ui.theme.HackerOrangeLight
+import com.emergetools.hackernews.ui.theme.HackerRed
+import com.emergetools.hackernews.ui.theme.HackerRedLight
 
 class MainActivity : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,6 +81,10 @@ fun App() {
         state.navItems.forEach { navItem ->
           NavigationBarItem(
             selected = navItem.selected,
+            colors = NavigationBarItemDefaults.colors(
+              selectedIconColor = MaterialTheme.colorScheme.primary,
+              indicatorColor = MaterialTheme.colorScheme.primaryContainer
+            ),
             onClick = {
               model.actions(AppAction.NavItemSelected(navItem))
 
