@@ -1,6 +1,7 @@
 package com.emergetools.hackernews.features.comments
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,11 +15,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ThumbUp
+import androidx.compose.material.icons.rounded.ThumbUp
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -35,11 +39,16 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import com.emergetools.hackernews.data.ItemPage
+import com.emergetools.hackernews.ui.theme.HackerGreen
 import com.emergetools.hackernews.ui.theme.HackerNewsTheme
 import com.emergetools.hackernews.ui.theme.HackerOrange
 
 @Composable
-fun CommentsScreen(state: CommentsState) {
+fun CommentsScreen(
+  state: CommentsState,
+  actions: (CommentsAction) -> Unit
+) {
   LazyColumn(
     modifier = Modifier
       .fillMaxSize()
@@ -51,7 +60,10 @@ fun CommentsScreen(state: CommentsState) {
         state = state.headerState,
         modifier = Modifier
           .fillMaxWidth()
-          .wrapContentHeight()
+          .wrapContentHeight(),
+        onLikeTapped = {
+          actions(CommentsAction.LikePostTapped)
+        }
       )
     }
     item {
@@ -88,10 +100,16 @@ private fun CommentsScreenPreview() {
   HackerNewsTheme {
     CommentsScreen(
       state = CommentsState.Content(
+        id = 0,
         title = "Show HN: A new HN client for Android",
         author = "rikinm",
         points = 69,
         text = null,
+        page = ItemPage(
+          id = 0,
+          upvoted = false,
+          upvoteUrl = "upvote.com"
+        ),
         comments = listOf(
           CommentState.Content(
             id = 1,
@@ -111,7 +129,8 @@ private fun CommentsScreenPreview() {
             )
           )
         )
-      )
+      ),
+      actions = {}
     )
   }
 }
@@ -121,7 +140,8 @@ private fun CommentsScreenPreview() {
 private fun CommentsScreenLoadingPreview() {
   HackerNewsTheme {
     CommentsScreen(
-      state = CommentsState.Loading
+      state = CommentsState.Loading,
+      actions = {}
     )
   }
 }
@@ -275,7 +295,8 @@ fun CommentRowLoadingPreview() {
 @Composable
 fun ItemHeader(
   state: HeaderState,
-  modifier: Modifier = Modifier
+  modifier: Modifier = Modifier,
+  onLikeTapped: () -> Unit,
 ) {
   Column(
     modifier = modifier
@@ -302,11 +323,42 @@ fun ItemHeader(
           horizontalArrangement = Arrangement.spacedBy(4.dp),
           verticalAlignment = Alignment.CenterVertically
         ) {
-          Text(
-            text = "${state.points}",
-            color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.labelSmall
-          )
+          Row(
+            modifier = Modifier
+              .wrapContentSize()
+              .clip(CircleShape)
+              .background(
+                color = if (state.upvoted) {
+                  HackerGreen.copy(alpha = 0.2f)
+                } else {
+                  MaterialTheme.colorScheme.surfaceContainerHighest
+                }
+              )
+              .padding(horizontal = 8.dp, vertical = 4.dp)
+              .clickable { onLikeTapped() },
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
+          ) {
+            Icon(
+              modifier = Modifier.size(12.dp),
+              imageVector = Icons.Rounded.ThumbUp,
+              tint = if (state.upvoted) {
+                HackerGreen
+              } else {
+                MaterialTheme.colorScheme.onSurface
+              },
+              contentDescription = "Upvote"
+            )
+            Text(
+              text = "${state.points}",
+              color = if (state.upvoted) {
+                HackerGreen
+              } else {
+                MaterialTheme.colorScheme.onSurface
+              },
+              style = MaterialTheme.typography.labelSmall
+            )
+          }
           Text(
             text = "•",
             color = MaterialTheme.colorScheme.onSurface,
@@ -392,11 +444,13 @@ private fun ItemHeaderPreview() {
         title = "Show HN: A super neat HN client for Android",
         author = "rikinm",
         points = 69,
+        upvoted = false,
         body = "Hi there"
       ),
       modifier = Modifier
         .fillMaxWidth()
-        .wrapContentHeight()
+        .wrapContentHeight(),
+      onLikeTapped = {}
     )
   }
 }
@@ -409,7 +463,8 @@ private fun ItemHeaderLoadingPreview() {
       state = HeaderState.Loading,
       modifier = Modifier
         .fillMaxWidth()
-        .wrapContentHeight()
+        .wrapContentHeight(),
+      onLikeTapped = {}
     )
   }
 }

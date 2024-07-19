@@ -34,6 +34,7 @@ import com.emergetools.hackernews.data.LocalCustomTabsIntent
 import com.emergetools.hackernews.features.bookmarks.BookmarksNavigation
 import com.emergetools.hackernews.features.bookmarks.bookmarksRoutes
 import com.emergetools.hackernews.features.comments.commentsRoutes
+import com.emergetools.hackernews.features.login.loginRoutes
 import com.emergetools.hackernews.features.settings.settingsRoutes
 import com.emergetools.hackernews.features.stories.Stories
 import com.emergetools.hackernews.features.stories.StoriesDestinations.Feed
@@ -121,7 +122,8 @@ fun App() {
       storiesGraph(navController)
       commentsRoutes()
       bookmarksRoutes(navController)
-      settingsRoutes()
+      settingsRoutes(navController)
+      loginRoutes(navController)
     }
   }
 }

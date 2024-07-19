@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.emergetools.hackernews.data.HackerNewsSearchClient
+import com.emergetools.hackernews.data.HackerNewsWebClient
+import com.emergetools.hackernews.data.ItemPage
 import com.emergetools.hackernews.data.ItemResponse
 import com.emergetools.hackernews.data.relativeTimeStamp
 import kotlinx.coroutines.Dispatchers
@@ -28,13 +30,21 @@ sealed interface CommentsState {
   }
 
   data class Content(
+    val id: Long,
     val title: String,
     val author: String,
     val points: Int,
     val text: String?,
+    val page: ItemPage,
     override val comments: List<CommentState>,
   ): CommentsState {
-    override val headerState = HeaderState.Content(title, author, points, text)
+    override val headerState = HeaderState.Content(
+      title,
+      author,
+      points,
+      page.upvoted,
+      text,
+    )
   }
 }
 
@@ -62,14 +72,19 @@ sealed interface HeaderState {
     val title: String,
     val author: String,
     val points: Int,
-    val body: String?
+    val upvoted: Boolean,
+    val body: String?,
   ): HeaderState
 }
 
+sealed interface CommentsAction {
+  data object LikePostTapped: CommentsAction
+}
 
 class CommentsViewModel(
   private val itemId: Long,
-  private val searchClient: HackerNewsSearchClient
+  private val searchClient: HackerNewsSearchClient,
+  private val webClient: HackerNewsWebClient
 ) : ViewModel() {
   private val internalState = MutableStateFlow<CommentsState>(CommentsState.Loading)
   val state = internalState.asStateFlow()
@@ -78,17 +93,46 @@ class CommentsViewModel(
     viewModelScope.launch {
       withContext(Dispatchers.IO) {
         val response = searchClient.api.getItem(itemId)
+        val page = webClient.getItemPage(itemId)
+        Log.d("CommentsViewModel", "Item Page: $page")
         val comments = response.children.map { rootComment ->
           rootComment.createCommentState(0)
         }
         internalState.update {
           CommentsState.Content(
+            id = itemId,
             title = response.title ?: "",
             author = response.author ?: "",
             points = response.points ?: 0,
             text = response.text,
-            comments = comments
+            page = page,
+            comments = comments,
           )
+        }
+      }
+    }
+  }
+
+  fun actions(action: CommentsAction) {
+    when (action) {
+      CommentsAction.LikePostTapped -> {
+        Log.d("CommentsViewModel", "Post Liked: $itemId")
+        val current = internalState.value
+        if (current is CommentsState.Content && !current.page.upvoted && current.page.upvoteUrl.isNotEmpty()) {
+          // eager ui update
+          internalState.value = current.copy(
+            points = current.points + 1,
+            page = current.page.copy(
+              upvoted = true
+            )
+          )
+          viewModelScope.launch {
+            val success = webClient.upvoteItem(current.page.upvoteUrl)
+            if (success) {
+              val refreshedPage = webClient.getItemPage(itemId)
+              Log.d("CommentsViewModel", "Refreshed Item Page: $refreshedPage")
+            }
+          }
         }
       }
     }
@@ -115,10 +159,11 @@ class CommentsViewModel(
   @Suppress("UNCHECKED_CAST")
   class Factory(
     private val itemId: Long,
-    private val searchClient: HackerNewsSearchClient
+    private val searchClient: HackerNewsSearchClient,
+    private val webClient: HackerNewsWebClient,
   ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-      return CommentsViewModel(itemId, searchClient) as T
+      return CommentsViewModel(itemId, searchClient, webClient) as T
     }
   }
 }

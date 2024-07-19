@@ -8,6 +8,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.emergetools.hackernews.searchClient
+import com.emergetools.hackernews.webClient
 import kotlinx.serialization.Serializable
 
 sealed interface CommentsDestinations {
@@ -22,11 +23,15 @@ fun NavGraphBuilder.commentsRoutes() {
     val model = viewModel<CommentsViewModel>(
       factory = CommentsViewModel.Factory(
         itemId = comments.storyId,
-        searchClient = context.searchClient()
+        searchClient = context.searchClient(),
+        webClient = context.webClient()
       )
     )
     val state by model.state.collectAsState()
-    CommentsScreen(state)
+    CommentsScreen(
+      state = state,
+      actions = model::actions
+    )
   }
 }
 
