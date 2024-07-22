@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.emergetools.hackernews.data.CommentPage
 import com.emergetools.hackernews.data.HackerNewsSearchClient
 import com.emergetools.hackernews.data.HackerNewsWebClient
 import com.emergetools.hackernews.data.ItemPage
@@ -15,6 +16,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.json.JsonNull.content
 import java.time.OffsetDateTime
 
 sealed interface CommentsState {
@@ -61,6 +63,8 @@ sealed interface CommentState {
     val author: String,
     val content: String,
     val timeLabel: String,
+    val upvoted: Boolean,
+    val upvoteUrl: String,
     override val children: List<CommentState>,
     override val level: Int = 0,
   ): CommentState
@@ -78,7 +82,11 @@ sealed interface HeaderState {
 }
 
 sealed interface CommentsAction {
-  data object LikePostTapped: CommentsAction
+  data object LikePost: CommentsAction
+  data class LikeComment(
+    val id: Long,
+    val url: String
+  ): CommentsAction
 }
 
 class CommentsViewModel(
@@ -89,6 +97,7 @@ class CommentsViewModel(
   private val internalState = MutableStateFlow<CommentsState>(CommentsState.Loading)
   val state = internalState.asStateFlow()
 
+
   init {
     viewModelScope.launch {
       withContext(Dispatchers.IO) {
@@ -96,7 +105,7 @@ class CommentsViewModel(
         val page = webClient.getItemPage(itemId)
         Log.d("CommentsViewModel", "Item Page: $page")
         val comments = response.children.map { rootComment ->
-          rootComment.createCommentState(0)
+          rootComment.createCommentState(0, page.commentUrlMap)
         }
         internalState.update {
           CommentsState.Content(
@@ -115,7 +124,7 @@ class CommentsViewModel(
 
   fun actions(action: CommentsAction) {
     when (action) {
-      CommentsAction.LikePostTapped -> {
+      CommentsAction.LikePost -> {
         Log.d("CommentsViewModel", "Post Liked: $itemId")
         val current = internalState.value
         if (current is CommentsState.Content && !current.page.upvoted && current.page.upvoteUrl.isNotEmpty()) {
@@ -135,22 +144,33 @@ class CommentsViewModel(
           }
         }
       }
+
+      is CommentsAction.LikeComment -> {
+        viewModelScope.launch {
+          val success = webClient.upvoteItem(action.url)
+          if (success) {
+            Log.d("CommentsViewModel", "Liked Comment ${action.url}")
+          }
+        }
+      }
     }
   }
 
-  private fun ItemResponse.createCommentState(level: Int): CommentState {
+  private fun ItemResponse.createCommentState(level: Int, urlMap: Map<Long, CommentPage>): CommentState {
     Log.d("Creating CommentState()", "Level: $level, Id: $id")
-
+    val page = urlMap[id]
     return CommentState.Content(
       id = id,
       author = author ?: "",
       content = text ?: "",
       children = children.map { child ->
-        child.createCommentState(level + 1)
+        child.createCommentState(level + 1, urlMap)
       },
       timeLabel = relativeTimeStamp(
         epochSeconds = OffsetDateTime.parse(createdAt).toInstant().epochSecond
       ),
+      upvoted = page?.upvoted ?: false,
+      upvoteUrl = page?.upvoteUrl.orEmpty(),
       level = level
     )
   }

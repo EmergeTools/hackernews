@@ -15,7 +15,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.OffsetMapping
+import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.emergetools.hackernews.ui.theme.HackerNewsTheme
@@ -63,6 +66,12 @@ fun LoginScreen(
     TextField(
       value = state.password,
       placeholder = { Text("Password") },
+      visualTransformation = { text ->
+        TransformedText(
+          text = AnnotatedString("*".repeat(text.text.length)),
+          offsetMapping = OffsetMapping.Identity
+        )
+      },
       trailingIcon = {
         if (state.status == LoginStatus.Failed) {
           Icon(
