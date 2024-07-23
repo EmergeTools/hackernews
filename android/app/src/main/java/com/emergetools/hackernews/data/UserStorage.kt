@@ -16,6 +16,12 @@ class UserStorage(private val appContext: Context) {
     }
   }
 
+  suspend fun clearCookie() {
+    appContext.dataStore.edit { store ->
+      store.remove(cookieKey)
+    }
+  }
+
   fun getCookie(): Flow<String?> {
     return appContext.dataStore.data.map { it[cookieKey] }
   }

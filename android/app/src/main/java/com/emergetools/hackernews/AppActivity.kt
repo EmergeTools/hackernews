@@ -10,6 +10,9 @@ import androidx.compose.animation.slideIn
 import androidx.compose.animation.slideOut
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.navigation.ModalBottomSheetLayout
+import androidx.compose.material.navigation.rememberBottomSheetNavigator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -24,9 +27,11 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
+import androidx.navigation.Navigator
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.emergetools.hackernews.data.ChromeTabsProvider
@@ -60,9 +65,10 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun rememberNavController(
+  vararg navigators: Navigator<out NavDestination>,
   onDestinationChanged: (NavDestination) -> Unit
 ): NavHostController {
-  return rememberNavController().apply {
+  return rememberNavController(*navigators).apply {
     addOnDestinationChangedListener { _, destination, _ ->
       onDestinationChanged(destination)
     }
@@ -73,57 +79,64 @@ fun rememberNavController(
 fun App() {
   val model = viewModel<AppViewModel>()
   val state by model.state.collectAsState()
-  val navController = rememberNavController() { destination ->
+  val bottomSheetNavigator = rememberBottomSheetNavigator()
+  val navController = rememberNavController(bottomSheetNavigator) { destination ->
     model.actions(AppAction.DestinationChanged(destination))
   }
-  Scaffold(
-    bottomBar = {
-      NavigationBar {
-        state.navItems.forEach { navItem ->
-          NavigationBarItem(
-            selected = navItem.selected,
-            colors = NavigationBarItemDefaults.colors(
-              selectedIconColor = MaterialTheme.colorScheme.primary,
-              indicatorColor = MaterialTheme.colorScheme.primaryContainer
-            ),
-            onClick = {
-              model.actions(AppAction.NavItemSelected(navItem))
 
-              navController.navigate(navItem.route) {
-                popUpTo<Feed> {
-                  saveState = true
+  ModalBottomSheetLayout(
+    bottomSheetNavigator = bottomSheetNavigator,
+    sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
+  ) {
+    Scaffold(
+      bottomBar = {
+        NavigationBar {
+          state.navItems.forEach { navItem ->
+            NavigationBarItem(
+              selected = navItem.selected,
+              colors = NavigationBarItemDefaults.colors(
+                selectedIconColor = MaterialTheme.colorScheme.primary,
+                indicatorColor = MaterialTheme.colorScheme.primaryContainer
+              ),
+              onClick = {
+                model.actions(AppAction.NavItemSelected(navItem))
+
+                navController.navigate(navItem.route) {
+                  popUpTo<Feed> {
+                    saveState = true
+                  }
+                  launchSingleTop = true
+                  restoreState = true
                 }
-                launchSingleTop = true
-                restoreState = true
-              }
-            },
-            icon = {
-              Icon(
-                painter = painterResource(navItem.icon),
-                contentDescription = navItem.label
-              )
-            },
-          )
+              },
+              icon = {
+                Icon(
+                  painter = painterResource(navItem.icon),
+                  contentDescription = navItem.label
+                )
+              },
+            )
+          }
         }
       }
-    }
-  ) { innerPadding ->
-    NavHost(
-      modifier = Modifier
-        .fillMaxSize()
-        .padding(innerPadding),
-      navController = navController,
-      enterTransition = { slideIn { IntOffset(x = it.width, y = 0) } },
-      exitTransition = { slideOut { IntOffset(x = -it.width / 3, y = 0) } + fadeOut() },
-      popEnterTransition = { slideIn { IntOffset(x = -it.width, y = 0) } },
-      popExitTransition = { slideOut { IntOffset(x = it.width, y = 0) } },
-      startDestination = Stories
-    ) {
-      storiesGraph(navController)
-      commentsRoutes()
-      bookmarksRoutes(navController)
-      settingsRoutes(navController)
-      loginRoutes(navController)
+    ) { innerPadding ->
+      NavHost(
+        modifier = Modifier
+          .fillMaxSize()
+          .padding(innerPadding),
+        navController = navController,
+        enterTransition = { slideIn { IntOffset(x = it.width, y = 0) } },
+        exitTransition = { slideOut { IntOffset(x = -it.width / 3, y = 0) } + fadeOut() },
+        popEnterTransition = { slideIn { IntOffset(x = -it.width, y = 0) } },
+        popExitTransition = { slideOut { IntOffset(x = it.width, y = 0) } },
+        startDestination = Stories
+      ) {
+        storiesGraph(navController)
+        commentsRoutes()
+        bookmarksRoutes(navController)
+        settingsRoutes(navController)
+        loginRoutes(navController)
+      }
     }
   }
 }

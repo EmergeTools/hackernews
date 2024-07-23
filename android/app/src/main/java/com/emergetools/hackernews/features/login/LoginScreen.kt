@@ -4,21 +4,26 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Warning
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.OffsetMapping
-import androidx.compose.ui.text.input.TransformedText
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.emergetools.hackernews.ui.theme.HackerNewsTheme
@@ -30,7 +35,6 @@ fun LoginScreen(
   actions: (LoginAction) -> Unit,
   navigation: (LoginNavigation) -> Unit
 ) {
-
   LaunchedEffect(state.status) {
     if (state.status == LoginStatus.Success) {
       navigation(LoginNavigation.Dismiss)
@@ -41,7 +45,10 @@ fun LoginScreen(
     modifier = Modifier
       .fillMaxSize()
       .background(color = MaterialTheme.colorScheme.background),
-    verticalArrangement = Arrangement.spacedBy(16.dp, alignment = Alignment.CenterVertically),
+    verticalArrangement = Arrangement.spacedBy(
+      16.dp,
+      alignment = Alignment.CenterVertically
+    ),
     horizontalAlignment = Alignment.CenterHorizontally
   ) {
     Text(
@@ -51,6 +58,15 @@ fun LoginScreen(
     )
     TextField(
       value = state.username,
+      shape = RoundedCornerShape(8.dp),
+      colors = TextFieldDefaults.colors(
+        focusedIndicatorColor = Color.Transparent,
+        unfocusedIndicatorColor = Color.Transparent,
+      ),
+      keyboardOptions = KeyboardOptions(
+        keyboardType = KeyboardType.Text,
+        imeAction = ImeAction.Next
+      ),
       placeholder = { Text("Username") },
       trailingIcon = {
         if (state.status == LoginStatus.Failed) {
@@ -65,13 +81,17 @@ fun LoginScreen(
     )
     TextField(
       value = state.password,
+      shape = RoundedCornerShape(8.dp),
+      colors = TextFieldDefaults.colors(
+        focusedIndicatorColor = Color.Transparent,
+        unfocusedIndicatorColor = Color.Transparent,
+      ),
       placeholder = { Text("Password") },
-      visualTransformation = { text ->
-        TransformedText(
-          text = AnnotatedString("*".repeat(text.text.length)),
-          offsetMapping = OffsetMapping.Identity
-        )
-      },
+      keyboardOptions = KeyboardOptions(
+        keyboardType = KeyboardType.Password,
+        imeAction = ImeAction.Done
+      ),
+      visualTransformation = PasswordVisualTransformation(),
       trailingIcon = {
         if (state.status == LoginStatus.Failed) {
           Icon(
@@ -83,8 +103,17 @@ fun LoginScreen(
       },
       onValueChange = { actions(LoginAction.PasswordUpdated(it)) }
     )
-    Button(onClick = { actions(LoginAction.LoginSubmit) }) {
-      Text(text = "Submit", style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold)
+    Button(
+      colors = ButtonDefaults.buttonColors(
+        contentColor = MaterialTheme.colorScheme.onBackground
+      ),
+      onClick = { actions(LoginAction.LoginSubmit) }
+    ) {
+      Text(
+        text = "Submit",
+        style = MaterialTheme.typography.labelMedium,
+        fontWeight = FontWeight.Bold
+      )
     }
   }
 }
