@@ -1,4 +1,4 @@
-package com.emergetools.hackernews.features.settings
+package com.emergetools.hackernews.features.login
 
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -7,30 +7,30 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.emergetools.hackernews.userStorage
+import com.emergetools.hackernews.webClient
 import kotlinx.serialization.Serializable
 
-sealed interface SettingsDestinations {
+sealed interface LoginDestinations {
   @Serializable
-  data object Settings : SettingsDestinations
+  data object Login : LoginDestinations
 }
 
-fun NavGraphBuilder.settingsRoutes(navController: NavController) {
-  composable<SettingsDestinations.Settings> {
+fun NavGraphBuilder.loginRoutes(navController: NavController) {
+  composable<LoginDestinations.Login> {
     val context = LocalContext.current
-    val model = viewModel<SettingsViewModel>(
-      factory = SettingsViewModel.Factory(
-        userStorage = context.userStorage()
+    val model = viewModel<LoginViewModel>(
+      factory = LoginViewModel.Factory(
+        webClient = context.webClient()
       )
     )
     val state by model.state.collectAsState()
-    SettingsScreen(
+    LoginScreen(
       state = state,
       actions = model::actions,
       navigation = { place ->
         when (place) {
-          is SettingsNavigation.GoToLogin -> {
-            navController.navigate(place.login)
+          is LoginNavigation.Dismiss -> {
+            navController.popBackStack()
           }
         }
       }

@@ -88,17 +88,17 @@ dependencies {
   implementation(libs.androidx.ui.tooling.preview)
   implementation(libs.androidx.material3)
   implementation(libs.androidx.browser)
+  implementation(libs.androidx.datastore)
 
   implementation(libs.okhttp)
   implementation(libs.retrofit)
   implementation(libs.retrofit.kotlinx.serialization)
   implementation(libs.kotlinx.serialization.json)
+  implementation(libs.jsoup)
 
   implementation(libs.androidx.room)
   implementation(libs.androidx.room.ktx)
   ksp(libs.androidx.room.compiler)
-
-  implementation(libs.accompanist.webview)
 
   testImplementation(libs.junit)
   androidTestImplementation(libs.androidx.junit)
