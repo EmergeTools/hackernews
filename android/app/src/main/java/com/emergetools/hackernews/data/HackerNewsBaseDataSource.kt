@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonContentPolymorphicSerializer
 import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.jsonObject
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -36,8 +37,8 @@ sealed interface BaseResponse {
 
 object BaseResponseSerializer : JsonContentPolymorphicSerializer<BaseResponse>(BaseResponse::class) {
   override fun selectDeserializer(element: JsonElement) = when {
-    "id" in element.jsonObject -> BaseResponse.Item.serializer()
-    else -> BaseResponse.NullResponse.serializer()
+    element is JsonNull -> BaseResponse.NullResponse.serializer()
+    else -> BaseResponse.Item.serializer()
   }
 }
 
