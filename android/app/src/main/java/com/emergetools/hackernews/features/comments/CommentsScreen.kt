@@ -62,7 +62,7 @@ fun CommentsScreen(
           .fillMaxWidth()
           .wrapContentHeight(),
         onLikeTapped = {
-          actions(CommentsAction.LikePostTapped)
+          actions(CommentsAction.LikePost)
         }
       )
     }
@@ -89,7 +89,17 @@ fun CommentsScreen(
       )
     }
     items(items = state.comments) { comment ->
-      CommentRow(comment)
+      CommentRow(
+        state = comment,
+        onLikeTapped = {
+          actions(
+            CommentsAction.LikeComment(
+              id = it.id,
+              url = it.upvoteUrl
+            )
+          )
+        }
+      )
     }
   }
 }
@@ -108,7 +118,8 @@ private fun CommentsScreenPreview() {
         page = ItemPage(
           id = 0,
           upvoted = false,
-          upvoteUrl = "upvote.com"
+          upvoteUrl = "upvote.com",
+          commentUrlMap = emptyMap()
         ),
         comments = listOf(
           CommentState.Content(
@@ -117,6 +128,8 @@ private fun CommentsScreenPreview() {
             author = "rikinm",
             content = "Hello Child",
             timeLabel = "2d ago",
+            upvoted = false,
+            upvoteUrl = "",
             children = listOf(
               CommentState.Content(
                 id = 2,
@@ -124,6 +137,8 @@ private fun CommentsScreenPreview() {
                 author = "vasantm",
                 content = "Hello Parent",
                 timeLabel = "1h ago",
+                upvoted = false,
+                upvoteUrl = "",
                 children = listOf()
               )
             )
@@ -147,7 +162,7 @@ private fun CommentsScreenLoadingPreview() {
 }
 
 @Composable
-fun CommentRow(state: CommentState) {
+fun CommentRow(state: CommentState, onLikeTapped: (CommentState.Content) -> Unit) {
   val startPadding = (state.level * 16).dp
   Column(
     modifier = Modifier
@@ -184,12 +199,22 @@ fun CommentRow(state: CommentState) {
             color = Color.Gray
           )
           Spacer(modifier = Modifier.weight(1f))
-          Icon(
-            modifier = Modifier.size(16.dp),
-            imageVector = Icons.Default.ThumbUp,
-            tint = MaterialTheme.colorScheme.onSurface,
-            contentDescription = "upvote"
-          )
+          Box(
+            modifier = Modifier
+              .wrapContentSize()
+              .clip(CircleShape)
+              .background(color = MaterialTheme.colorScheme.surfaceContainerHighest)
+              .padding(vertical = 4.dp, horizontal = 8.dp)
+              .clickable { onLikeTapped(state) },
+            contentAlignment = Alignment.Center
+          ) {
+            Icon(
+              modifier = Modifier.size(12.dp),
+              imageVector = Icons.Default.ThumbUp,
+              tint = MaterialTheme.colorScheme.onSurface,
+              contentDescription = "upvote"
+            )
+          }
         }
         Row {
           Text(
@@ -248,7 +273,7 @@ fun CommentRow(state: CommentState) {
     }
   }
   state.children.forEach { child ->
-    CommentRow(child)
+    CommentRow(state = child, onLikeTapped = onLikeTapped)
   }
 }
 
@@ -264,6 +289,8 @@ fun CommentRowPreview() {
           author = "rikinm",
           content = "Hello Parent",
           timeLabel = "2d ago",
+          upvoted = false,
+          upvoteUrl = "",
           children = listOf(
             CommentState.Content(
               id = 2,
@@ -271,10 +298,13 @@ fun CommentRowPreview() {
               author = "vasantm",
               content = "Hello Child",
               timeLabel = "2h ago",
+              upvoted = false,
+              upvoteUrl = "",
               children = listOf()
             )
           )
-        )
+        ),
+        onLikeTapped = {}
       )
     }
   }
@@ -286,7 +316,8 @@ fun CommentRowLoadingPreview() {
   HackerNewsTheme {
     Column {
       CommentRow(
-        state = CommentState.Loading(level = 0)
+        state = CommentState.Loading(level = 0),
+        onLikeTapped = {}
       )
     }
   }
