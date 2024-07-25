@@ -3,10 +3,11 @@ package com.emergetools.hackernews.features.login
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
+import androidx.navigation.compose.dialog
 import com.emergetools.hackernews.webClient
 import kotlinx.serialization.Serializable
 
@@ -16,7 +17,12 @@ sealed interface LoginDestinations {
 }
 
 fun NavGraphBuilder.loginRoutes(navController: NavController) {
-  composable<LoginDestinations.Login> {
+  dialog<LoginDestinations.Login>(
+    dialogProperties = DialogProperties(
+      usePlatformDefaultWidth = false,
+      decorFitsSystemWindows = false
+    )
+  ) {
     val context = LocalContext.current
     val model = viewModel<LoginViewModel>(
       factory = LoginViewModel.Factory(

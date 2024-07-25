@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideIn
 import androidx.compose.animation.slideOut
@@ -17,21 +16,18 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
+import androidx.navigation.Navigator
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.emergetools.hackernews.data.ChromeTabsProvider
-import com.emergetools.hackernews.data.LocalCustomTabsIntent
-import com.emergetools.hackernews.features.bookmarks.BookmarksNavigation
 import com.emergetools.hackernews.features.bookmarks.bookmarksRoutes
 import com.emergetools.hackernews.features.comments.commentsRoutes
 import com.emergetools.hackernews.features.login.loginRoutes
@@ -40,9 +36,6 @@ import com.emergetools.hackernews.features.stories.Stories
 import com.emergetools.hackernews.features.stories.StoriesDestinations.Feed
 import com.emergetools.hackernews.features.stories.storiesGraph
 import com.emergetools.hackernews.ui.theme.HackerNewsTheme
-import com.emergetools.hackernews.ui.theme.HackerOrangeLight
-import com.emergetools.hackernews.ui.theme.HackerRed
-import com.emergetools.hackernews.ui.theme.HackerRedLight
 
 class MainActivity : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,9 +53,10 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun rememberNavController(
+  vararg navigators: Navigator<out NavDestination>,
   onDestinationChanged: (NavDestination) -> Unit
 ): NavHostController {
-  return rememberNavController().apply {
+  return rememberNavController(*navigators).apply {
     addOnDestinationChangedListener { _, destination, _ ->
       onDestinationChanged(destination)
     }
@@ -73,9 +67,10 @@ fun rememberNavController(
 fun App() {
   val model = viewModel<AppViewModel>()
   val state by model.state.collectAsState()
-  val navController = rememberNavController() { destination ->
+  val navController = rememberNavController { destination ->
     model.actions(AppAction.DestinationChanged(destination))
   }
+
   Scaffold(
     bottomBar = {
       NavigationBar {

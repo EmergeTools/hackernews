@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 data class SettingsState(
   val loggedIn: Boolean
@@ -18,6 +19,7 @@ data class SettingsState(
 
 sealed interface SettingsAction {
   data object LoginPressed : SettingsAction
+  data object LogoutPressed: SettingsAction
 }
 
 sealed interface SettingsNavigation {
@@ -26,18 +28,14 @@ sealed interface SettingsNavigation {
   }
 }
 
-class SettingsViewModel(userStorage: UserStorage) : ViewModel() {
+class SettingsViewModel(private val userStorage: UserStorage) : ViewModel() {
   private val internalState = MutableStateFlow(SettingsState(false))
 
   val state = combine(
     userStorage.getCookie(),
     internalState.asStateFlow()
   ) { cookie, state ->
-    if (!cookie.isNullOrEmpty()) {
-      state.copy(loggedIn = true)
-    } else {
-      state
-    }
+    state.copy(loggedIn = !cookie.isNullOrEmpty())
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(),
@@ -47,7 +45,12 @@ class SettingsViewModel(userStorage: UserStorage) : ViewModel() {
   fun actions(action: SettingsAction) {
     when (action) {
       SettingsAction.LoginPressed -> {
-        // TODO
+      }
+
+      SettingsAction.LogoutPressed -> {
+        viewModelScope.launch {
+          userStorage.clearCookie()
+        }
       }
     }
   }
