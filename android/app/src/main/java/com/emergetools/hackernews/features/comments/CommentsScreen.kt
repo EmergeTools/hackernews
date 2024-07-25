@@ -1,5 +1,7 @@
 package com.emergetools.hackernews.features.comments
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -20,12 +22,16 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material.icons.rounded.ThumbUp
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,10 +42,14 @@ import androidx.compose.ui.geometry.center
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import com.emergetools.hackernews.data.ItemPage
+import com.emergetools.hackernews.R
 import com.emergetools.hackernews.ui.theme.HackerGreen
 import com.emergetools.hackernews.ui.theme.HackerNewsTheme
 import com.emergetools.hackernews.ui.theme.HackerOrange
@@ -47,57 +57,105 @@ import com.emergetools.hackernews.ui.theme.HackerOrange
 @Composable
 fun CommentsScreen(
   state: CommentsState,
-  actions: (CommentsAction) -> Unit
+  actions: (CommentsAction) -> Unit,
+  navigation: (CommentsNavigation) -> Unit,
 ) {
-  LazyColumn(
+  Box(
     modifier = Modifier
       .fillMaxSize()
       .background(color = MaterialTheme.colorScheme.background),
-    verticalArrangement = Arrangement.spacedBy(8.dp)
   ) {
-    item {
-      ItemHeader(
-        state = state.headerState,
-        modifier = Modifier
+    LazyColumn(
+      modifier = Modifier.fillMaxSize(),
+      verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+      item {
+        ItemHeader(
+          state = state.headerState,
+          modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight(),
+          onLikeTapped = { item ->
+            if (state is CommentsState.Content && state.loggedIn) {
+              actions(
+                CommentsAction.LikePost(
+                  upvoted = item.upvoted,
+                  url = item.upvoteUrl
+                )
+              )
+            } else {
+              navigation(CommentsNavigation.GoToLogin)
+            }
+          }
+        )
+      }
+      item {
+        val lineColor = MaterialTheme.colorScheme.onBackground
+        Box(modifier = Modifier
           .fillMaxWidth()
-          .wrapContentHeight(),
-        onLikeTapped = {
-          actions(CommentsAction.LikePost)
-        }
-      )
-    }
-    item {
-      val lineColor = MaterialTheme.colorScheme.onBackground
-      Box(modifier = Modifier
-        .fillMaxWidth()
-        .padding(horizontal = 8.dp)
-        .height(16.dp)
-        .drawBehind {
-          val lineStart = Offset(0f, size.center.y)
-          val lineEnd = Offset(size.width, size.center.y)
-          drawLine(
-            start = lineStart,
-            end = lineEnd,
-            color = lineColor,
-            strokeWidth = 4f,
-            cap = StrokeCap.Round,
-            pathEffect = PathEffect.dashPathEffect(
-              intervals = floatArrayOf(20f, 20f)
+          .padding(horizontal = 8.dp)
+          .height(16.dp)
+          .drawBehind {
+            val lineStart = Offset(0f, size.center.y)
+            val lineEnd = Offset(size.width, size.center.y)
+            drawLine(
+              start = lineStart,
+              end = lineEnd,
+              color = lineColor,
+              strokeWidth = 4f,
+              cap = StrokeCap.Round,
+              pathEffect = PathEffect.dashPathEffect(
+                intervals = floatArrayOf(20f, 20f)
+              )
             )
-          )
-        }
-      )
+          }
+        )
+      }
+      items(items = state.comments) { comment ->
+        CommentRow(
+          state = comment,
+          onLikeTapped = {
+            if (state is CommentsState.Content && state.loggedIn) {
+              actions(
+                CommentsAction.LikeComment(
+                  id = it.id,
+                  url = it.upvoteUrl
+                )
+              )
+            } else {
+              navigation(CommentsNavigation.GoToLogin)
+            }
+          }
+        )
+      }
+
+      item {
+        Spacer(modifier = Modifier.fillParentMaxHeight(fraction = 0.2f))
+      }
     }
-    items(items = state.comments) { comment ->
-      CommentRow(
-        state = comment,
-        onLikeTapped = {
+    AnimatedVisibility(
+      modifier = Modifier.align(Alignment.BottomCenter),
+      enter = slideInVertically { it },
+      visible = state is CommentsState.Content && state.postComment != null
+    ) {
+      val content = state as CommentsState.Content
+      val postComment = content.postComment!!
+      val keyboard = LocalSoftwareKeyboardController.current
+      PostCommentBump(
+        modifier = Modifier.fillMaxWidth(),
+        state = postComment,
+        goToLogin = { navigation(CommentsNavigation.GoToLogin) },
+        updateComment = { actions(CommentsAction.UpdateComment(it)) },
+        submitComment = {
           actions(
-            CommentsAction.LikeComment(
-              id = it.id,
-              url = it.upvoteUrl
+            CommentsAction.PostComment(
+              parentId = postComment.parentId,
+              goToUrl = postComment.goToUrl,
+              hmac = postComment.hmac,
+              text = postComment.text
             )
           )
+          keyboard?.hide()
         }
       )
     }
@@ -114,13 +172,12 @@ private fun CommentsScreenPreview() {
         title = "Show HN: A new HN client for Android",
         author = "rikinm",
         points = 69,
-        text = null,
-        page = ItemPage(
-          id = 0,
-          upvoted = false,
-          upvoteUrl = "upvote.com",
-          commentUrlMap = emptyMap()
-        ),
+        body = null,
+        loggedIn = false,
+        upvoted = false,
+        upvoteUrl = "",
+        commentText = "",
+        formData = null,
         comments = listOf(
           CommentState.Content(
             id = 1,
@@ -145,7 +202,8 @@ private fun CommentsScreenPreview() {
           )
         )
       ),
-      actions = {}
+      actions = {},
+      navigation = {}
     )
   }
 }
@@ -156,7 +214,8 @@ private fun CommentsScreenLoadingPreview() {
   HackerNewsTheme {
     CommentsScreen(
       state = CommentsState.Loading,
-      actions = {}
+      actions = {},
+      navigation = {}
     )
   }
 }
@@ -327,7 +386,7 @@ fun CommentRowLoadingPreview() {
 fun ItemHeader(
   state: HeaderState,
   modifier: Modifier = Modifier,
-  onLikeTapped: () -> Unit,
+  onLikeTapped: (HeaderState.Content) -> Unit,
 ) {
   Column(
     modifier = modifier
@@ -366,7 +425,7 @@ fun ItemHeader(
                 }
               )
               .padding(horizontal = 8.dp, vertical = 4.dp)
-              .clickable { onLikeTapped() },
+              .clickable { onLikeTapped(state) },
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(4.dp)
           ) {
@@ -472,11 +531,13 @@ private fun ItemHeaderPreview() {
   HackerNewsTheme {
     ItemHeader(
       state = HeaderState.Content(
+        id = 0L,
         title = "Show HN: A super neat HN client for Android",
         author = "rikinm",
         points = 69,
+        body = "Hi there",
         upvoted = false,
-        body = "Hi there"
+        upvoteUrl = "",
       ),
       modifier = Modifier
         .fillMaxWidth()
@@ -500,3 +561,65 @@ private fun ItemHeaderLoadingPreview() {
   }
 }
 
+@Composable
+fun PostCommentBump(
+  modifier: Modifier = Modifier,
+  state: PostCommentState,
+  goToLogin: () -> Unit,
+  updateComment: (String) -> Unit,
+  submitComment: () -> Unit
+) {
+  Column(
+    modifier = modifier
+      .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
+      .clickable {
+        if (!state.loggedIn) {
+          goToLogin()
+        }
+      }
+      .background(color = MaterialTheme.colorScheme.surfaceContainer)
+      .padding(vertical = 8.dp, horizontal = 32.dp),
+    verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
+    horizontalAlignment = Alignment.CenterHorizontally
+  ) {
+    Row(
+      horizontalArrangement = Arrangement.spacedBy(8.dp),
+      verticalAlignment = Alignment.CenterVertically
+    ) {
+      Icon(
+        modifier = Modifier.size(12.dp),
+        painter = painterResource(R.drawable.ic_chat),
+        tint = MaterialTheme.colorScheme.onSurface,
+        contentDescription = "Add a comment"
+      )
+      Text(
+        text = "Add a comment",
+        style = MaterialTheme.typography.labelSmall,
+        color = MaterialTheme.colorScheme.onSurface
+      )
+    }
+    TextField(
+      modifier = Modifier.fillMaxWidth(),
+      value = state.text,
+      onValueChange = { updateComment(it) },
+      enabled = state.loggedIn,
+      keyboardOptions = KeyboardOptions(
+        keyboardType = KeyboardType.Text,
+        imeAction = ImeAction.Send
+      ),
+      keyboardActions = KeyboardActions(
+        onSend = { submitComment() }
+      ),
+      maxLines = 4,
+      shape = RoundedCornerShape(8.dp),
+      colors = TextFieldDefaults.colors(
+        focusedIndicatorColor = Color.Transparent,
+        unfocusedIndicatorColor = Color.Transparent,
+        disabledIndicatorColor = Color.Transparent,
+        errorIndicatorColor = Color.Transparent,
+        unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+        focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh
+      ),
+    )
+  }
+}

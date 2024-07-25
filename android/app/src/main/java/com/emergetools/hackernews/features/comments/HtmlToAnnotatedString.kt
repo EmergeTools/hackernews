@@ -39,7 +39,7 @@ import com.emergetools.hackernews.ui.theme.HackerOrange
  */
 
 fun String.parseAsHtml(): AnnotatedString {
-  val spanned = HtmlCompat.fromHtml(this, HtmlCompat.FROM_HTML_MODE_COMPACT)
+  val spanned = HtmlCompat.fromHtml(this, HtmlCompat.FROM_HTML_MODE_LEGACY)
   return spanned.toAnnotatedString()
 }
 
