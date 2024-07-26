@@ -115,7 +115,7 @@ fun App() {
       startDestination = Stories
     ) {
       storiesGraph(navController)
-      commentsRoutes()
+      commentsRoutes(navController)
       bookmarksRoutes(navController)
       settingsRoutes(navController)
       loginRoutes(navController)

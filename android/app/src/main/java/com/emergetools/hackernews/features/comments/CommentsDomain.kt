@@ -1,18 +1,24 @@
 package com.emergetools.hackernews.features.comments
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.emergetools.hackernews.data.CommentPage
+import com.emergetools.hackernews.data.CommentFormData
+import com.emergetools.hackernews.data.CommentInfo
 import com.emergetools.hackernews.data.HackerNewsSearchClient
 import com.emergetools.hackernews.data.HackerNewsWebClient
-import com.emergetools.hackernews.data.ItemPage
 import com.emergetools.hackernews.data.ItemResponse
+import com.emergetools.hackernews.data.UserStorage
 import com.emergetools.hackernews.data.relativeTimeStamp
+import com.emergetools.hackernews.features.login.LoginDestinations
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -22,7 +28,7 @@ sealed interface CommentsState {
   val headerState: HeaderState
   val comments: List<CommentState>
 
-  data object Loading: CommentsState {
+  data object Loading : CommentsState {
     override val headerState: HeaderState = HeaderState.Loading
     override val comments: List<CommentState> = listOf(
       CommentState.Loading(level = 0),
@@ -35,19 +41,42 @@ sealed interface CommentsState {
     val title: String,
     val author: String,
     val points: Int,
-    val text: String?,
-    val page: ItemPage,
+    val body: String?,
+    val loggedIn: Boolean,
+    val upvoted: Boolean,
+    val upvoteUrl: String,
+    val commentText: String,
+    val formData: CommentFormData?,
     override val comments: List<CommentState>,
-  ): CommentsState {
+  ) : CommentsState {
     override val headerState = HeaderState.Content(
-      title,
-      author,
-      points,
-      page.upvoted,
-      text,
+      id = id,
+      title = title,
+      author = author,
+      points = points,
+      body = body,
+      upvoted = upvoted,
+      upvoteUrl = upvoteUrl
     )
+    val postComment = formData?.let { data ->
+      PostCommentState(
+        parentId = data.parentId,
+        goToUrl = data.gotoUrl,
+        hmac = data.hmac,
+        loggedIn = loggedIn,
+        text = commentText
+      )
+    }
   }
 }
+
+data class PostCommentState(
+  val parentId: String,
+  val goToUrl: String,
+  val hmac: String,
+  val loggedIn: Boolean,
+  val text: String,
+)
 
 sealed interface CommentState {
   val level: Int
@@ -66,45 +95,83 @@ sealed interface CommentState {
     val upvoteUrl: String,
     override val children: List<CommentState>,
     override val level: Int = 0,
-  ): CommentState
+  ) : CommentState
 }
 
 sealed interface HeaderState {
-  data object Loading: HeaderState
+  data object Loading : HeaderState
   data class Content(
+    val id: Long,
     val title: String,
     val author: String,
     val points: Int,
-    val upvoted: Boolean,
     val body: String?,
-  ): HeaderState
+    val upvoted: Boolean,
+    val upvoteUrl: String,
+  ) : HeaderState
 }
 
 sealed interface CommentsAction {
-  data object LikePost: CommentsAction
+  data class LikePost(
+    val url: String,
+    val upvoted: Boolean
+  ) : CommentsAction
+
   data class LikeComment(
     val id: Long,
     val url: String
-  ): CommentsAction
+  ) : CommentsAction
+
+  data class UpdateComment(val text: String) : CommentsAction
+
+  data class PostComment(
+    val parentId: String,
+    val goToUrl: String,
+    val hmac: String,
+    val text: String
+  ) : CommentsAction
+}
+
+sealed interface CommentsNavigation {
+  data object GoToLogin : CommentsNavigation {
+    val route = LoginDestinations.Login
+  }
 }
 
 class CommentsViewModel(
   private val itemId: Long,
   private val searchClient: HackerNewsSearchClient,
-  private val webClient: HackerNewsWebClient
+  private val webClient: HackerNewsWebClient,
+  private val userStorage: UserStorage,
 ) : ViewModel() {
   private val internalState = MutableStateFlow<CommentsState>(CommentsState.Loading)
-  val state = internalState.asStateFlow()
+  private val loggedInFlow = userStorage.getCookie().map { !it.isNullOrEmpty() }
 
+  val state = combine(
+    loggedInFlow,
+    internalState.filterIsInstance<CommentsState.Content>()
+  ) { loggedIn, state ->
+    if (loggedIn != state.loggedIn) {
+      state.copy(
+        loggedIn = loggedIn
+      )
+    } else {
+      state
+    }
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(),
+    initialValue = CommentsState.Loading
+  )
 
   init {
     viewModelScope.launch {
       withContext(Dispatchers.IO) {
+        val loggedIn = !userStorage.getCookie().first().isNullOrEmpty()
         val response = searchClient.api.getItem(itemId)
-        val page = webClient.getItemPage(itemId)
-        Log.d("CommentsViewModel", "Item Page: $page")
+        val pageInfo = webClient.getPostPage(itemId)
         val comments = response.children.map { rootComment ->
-          rootComment.createCommentState(0, page.commentUrlMap)
+          rootComment.createCommentState(0, pageInfo.commentInfoMap)
         }
         internalState.update {
           CommentsState.Content(
@@ -112,8 +179,12 @@ class CommentsViewModel(
             title = response.title ?: "",
             author = response.author ?: "",
             points = response.points ?: 0,
-            text = response.text,
-            page = page,
+            body = response.text,
+            loggedIn = loggedIn,
+            upvoted = pageInfo.postInfo.upvoted,
+            upvoteUrl = pageInfo.postInfo.upvoteUrl,
+            commentText = "",
+            formData = pageInfo.commentFormData,
             comments = comments,
           )
         }
@@ -123,47 +194,63 @@ class CommentsViewModel(
 
   fun actions(action: CommentsAction) {
     when (action) {
-      CommentsAction.LikePost -> {
-        Log.d("CommentsViewModel", "Post Liked: $itemId")
-        val current = internalState.value
-        if (current is CommentsState.Content && !current.page.upvoted && current.page.upvoteUrl.isNotEmpty()) {
-          // eager ui update
-          internalState.value = current.copy(
-            points = current.points + 1,
-            page = current.page.copy(
+      is CommentsAction.LikePost -> {
+        if (!action.upvoted && action.url.isNotEmpty()) {
+          val current = internalState.value
+          if (current is CommentsState.Content) {
+            internalState.value = current.copy(
+              points = current.points + 1,
               upvoted = true
             )
-          )
+          }
+
           viewModelScope.launch {
-            val success = webClient.upvoteItem(current.page.upvoteUrl)
-            if (success) {
-              val refreshedPage = webClient.getItemPage(itemId)
-              Log.d("CommentsViewModel", "Refreshed Item Page: $refreshedPage")
-            }
+            webClient.upvoteItem(action.url)
           }
         }
       }
 
       is CommentsAction.LikeComment -> {
         viewModelScope.launch {
-          val success = webClient.upvoteItem(action.url)
-          if (success) {
-            Log.d("CommentsViewModel", "Liked Comment ${action.url}")
+          webClient.upvoteItem(action.url)
+        }
+      }
+
+      is CommentsAction.UpdateComment -> {
+        val current = internalState.value
+        if (current is CommentsState.Content) {
+          internalState.value = current.copy(
+            commentText = action.text
+          )
+        }
+      }
+
+      is CommentsAction.PostComment -> {
+        viewModelScope.launch {
+          val current = internalState.value
+          if (current is CommentsState.Content && current.postComment != null) {
+            internalState.value = current.copy(
+              commentText = ""
+            )
+            val (parentId, gotoUrl, hmac, _, text) = current.postComment
+            webClient.postComment(parentId, gotoUrl, hmac, text)
           }
         }
       }
     }
   }
 
-  private fun ItemResponse.createCommentState(level: Int, urlMap: Map<Long, CommentPage>): CommentState {
-    Log.d("Creating CommentState()", "Level: $level, Id: $id")
-    val page = urlMap[id]
+  private fun ItemResponse.createCommentState(
+    level: Int,
+    commentInfoMap: Map<Long, CommentInfo>
+  ): CommentState {
+    val page = commentInfoMap[id]
     return CommentState.Content(
       id = id,
       author = author ?: "",
       content = text ?: "",
       children = children.map { child ->
-        child.createCommentState(level + 1, urlMap)
+        child.createCommentState(level + 1, commentInfoMap)
       },
       timeLabel = relativeTimeStamp(
         epochSeconds = OffsetDateTime.parse(createdAt).toInstant().epochSecond
@@ -180,9 +267,10 @@ class CommentsViewModel(
     private val itemId: Long,
     private val searchClient: HackerNewsSearchClient,
     private val webClient: HackerNewsWebClient,
+    private val userStorage: UserStorage,
   ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-      return CommentsViewModel(itemId, searchClient, webClient) as T
+      return CommentsViewModel(itemId, searchClient, webClient, userStorage) as T
     }
   }
 }
