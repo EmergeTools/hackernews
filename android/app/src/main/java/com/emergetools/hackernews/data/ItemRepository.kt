@@ -1,5 +1,7 @@
 package com.emergetools.hackernews.data
 
+import com.emergetools.hackernews.data.BaseResponse.Item
+import com.emergetools.hackernews.data.BaseResponse.NullResponse
 import com.emergetools.hackernews.features.stories.FeedType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -27,14 +29,16 @@ class ItemRepository(
     return withContext(Dispatchers.IO) {
       val result = mutableListOf<Item>()
       page.forEach { itemId ->
-        val item = baseClient.api.getItem(itemId)
-        result.add(item)
+        val response = baseClient.api.getItem(itemId)
+        if (response is Item) {
+          result.add(response)
+        }
       }
       result.toList()
     }
   }
 }
 
-fun MutableList<Page>.next() = removeFirst()
+fun MutableList<Page>.next() = removeAt(0)
 
 

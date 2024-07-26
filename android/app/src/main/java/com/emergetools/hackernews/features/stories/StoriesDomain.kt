@@ -4,8 +4,9 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.emergetools.hackernews.data.BaseResponse
+import com.emergetools.hackernews.data.BaseResponse.Item
 import com.emergetools.hackernews.data.BookmarkDao
-import com.emergetools.hackernews.data.Item
 import com.emergetools.hackernews.data.ItemRepository
 import com.emergetools.hackernews.data.Page
 import com.emergetools.hackernews.data.next
