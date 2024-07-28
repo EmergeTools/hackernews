@@ -119,7 +119,8 @@ fun CommentsScreen(
               actions(
                 CommentsAction.LikeComment(
                   id = it.id,
-                  url = it.upvoteUrl
+                  url = it.upvoteUrl,
+                  upvoted = it.upvoted
                 )
               )
             } else {
@@ -221,10 +222,14 @@ private fun CommentsScreenLoadingPreview() {
 }
 
 @Composable
-fun CommentRow(state: CommentState, onLikeTapped: (CommentState.Content) -> Unit) {
+fun CommentRow(
+  modifier: Modifier = Modifier,
+  state: CommentState,
+  onLikeTapped: (CommentState.Content) -> Unit
+) {
   val startPadding = (state.level * 16).dp
   Column(
-    modifier = Modifier
+    modifier = modifier
       .padding(start = startPadding)
       .fillMaxWidth()
       .heightIn(min = 80.dp)
@@ -262,7 +267,13 @@ fun CommentRow(state: CommentState, onLikeTapped: (CommentState.Content) -> Unit
             modifier = Modifier
               .wrapContentSize()
               .clip(CircleShape)
-              .background(color = MaterialTheme.colorScheme.surfaceContainerHighest)
+              .background(
+                color = if (state.upvoted) {
+                  HackerGreen.copy(alpha = 0.2f)
+                } else {
+                  MaterialTheme.colorScheme.surfaceContainerHighest
+                }
+              )
               .padding(vertical = 4.dp, horizontal = 8.dp)
               .clickable { onLikeTapped(state) },
             contentAlignment = Alignment.Center
@@ -270,7 +281,11 @@ fun CommentRow(state: CommentState, onLikeTapped: (CommentState.Content) -> Unit
             Icon(
               modifier = Modifier.size(12.dp),
               imageVector = Icons.Default.ThumbUp,
-              tint = MaterialTheme.colorScheme.onSurface,
+              tint = if (state.upvoted) {
+                HackerGreen
+              } else {
+                MaterialTheme.colorScheme.onSurface
+              },
               contentDescription = "upvote"
             )
           }
@@ -332,7 +347,11 @@ fun CommentRow(state: CommentState, onLikeTapped: (CommentState.Content) -> Unit
     }
   }
   state.children.forEach { child ->
-    CommentRow(state = child, onLikeTapped = onLikeTapped)
+    CommentRow(
+      modifier = modifier,
+      state = child,
+      onLikeTapped = onLikeTapped
+    )
   }
 }
 
