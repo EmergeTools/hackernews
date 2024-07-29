@@ -1,10 +1,12 @@
 package com.emergetools.hackernews.features.stories
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.emergetools.hackernews.data.BaseResponse.Item
 import com.emergetools.hackernews.data.BookmarkDao
+import com.emergetools.hackernews.data.FeedIdResponse
 import com.emergetools.hackernews.data.ItemRepository
 import com.emergetools.hackernews.data.Page
 import com.emergetools.hackernews.data.next
@@ -15,6 +17,7 @@ import com.emergetools.hackernews.features.comments.CommentsDestinations
 import com.emergetools.hackernews.features.stories.StoriesAction.LoadItems
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -29,7 +32,8 @@ enum class LoadingState {
   Loading,
   LoadingPage,
   Refreshing,
-  Idle
+  Idle,
+  Error
 }
 
 data class StoriesState(
@@ -112,56 +116,76 @@ class StoriesViewModel(
         fetchJob?.cancel()
 
         fetchJob = viewModelScope.launch {
-          pages.addAll(
-            itemRepository
-              .getFeedIds(internalState.value.feed)
-              .chunked(FEED_PAGE_SIZE)
-          )
-          val page = pages.next()
-
-          val newStories = fetchPage(page) {
-            internalState.update { current ->
-              current.copy(
-                stories = page.map { StoryItem.Loading(it) },
-                loading = LoadingState.Loading
-              )
+          internalState.update { it.copy(loading = LoadingState.Refreshing) }
+          when (val response = itemRepository.getFeedIds(internalState.value.feed)) {
+            is FeedIdResponse.Error -> {
+              Log.e("Feed Load Error", response.message)
+              delay(500)
+              internalState.update { current ->
+                current.copy(
+                  stories = emptyList(),
+                  loading = LoadingState.Error
+                )
+              }
             }
-          }
 
-          internalState.update { current ->
-            current.copy(
-              stories = newStories,
-              loading = LoadingState.Idle
-            )
+            is FeedIdResponse.Success -> {
+              pages.addAll(
+                response.page.chunked(FEED_PAGE_SIZE)
+              )
+              val page = pages.next()
+
+              val newStories = fetchPage(page) {
+                internalState.update { current ->
+                  current.copy(
+                    stories = page.map { StoryItem.Loading(it) },
+                    loading = LoadingState.Loading
+                  )
+                }
+              }
+
+              internalState.update { current ->
+                current.copy(
+                  stories = newStories,
+                  loading = LoadingState.Idle
+                )
+              }
+            }
           }
         }
       }
 
       is StoriesAction.RefreshItems -> {
-        if (internalState.value.loading != LoadingState.Idle) {
+        if (internalState.value.loading !in listOf(LoadingState.Idle, LoadingState.Error)) {
           return
         }
+
         fetchJob?.cancel()
         pages.clear()
         fetchJob = viewModelScope.launch {
-          pages.addAll(
-            itemRepository
-              .getFeedIds(internalState.value.feed)
-              .chunked(FEED_PAGE_SIZE)
-          )
-          val page = pages.next()
-          val newStories = fetchPage(page) {
-            internalState.update { current ->
-              current.copy(
-                loading = LoadingState.Refreshing
-              )
-            }
-          }
           internalState.update { current ->
-            current.copy(
-              stories = newStories,
-              loading = LoadingState.Idle
-            )
+            current.copy(loading = LoadingState.Refreshing)
+          }
+          when (val response = itemRepository.getFeedIds(internalState.value.feed)) {
+            is FeedIdResponse.Error -> {
+              Log.e("Feed Load Error", response.message)
+              delay(500)
+              internalState.update { current ->
+                current.copy(loading = LoadingState.Error)
+              }
+            }
+
+            is FeedIdResponse.Success -> {
+              pages.addAll(response.page.chunked(FEED_PAGE_SIZE))
+              val page = pages.next()
+              val newStories = fetchPage(page) {}
+              internalState.update { current ->
+                current.copy(
+                  stories = newStories,
+                  loading = LoadingState.Idle
+                )
+              }
+            }
           }
         }
       }
