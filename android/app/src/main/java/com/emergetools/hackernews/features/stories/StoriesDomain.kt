@@ -1,10 +1,8 @@
 package com.emergetools.hackernews.features.stories
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.emergetools.hackernews.data.BaseResponse
 import com.emergetools.hackernews.data.BaseResponse.Item
 import com.emergetools.hackernews.data.BookmarkDao
 import com.emergetools.hackernews.data.ItemRepository
@@ -88,24 +86,25 @@ class StoriesViewModel(
   }
 
   private fun observeBookmarks() {
-   viewModelScope.launch {
-     bookmarkDao.getAllBookmarks().collect { bookmarks ->
-       internalState.update { current ->
-         current.copy(
-           stories = current.stories
-             .filterIsInstance<StoryItem.Content>()
-             .map { story ->
-               val isBookmarked = bookmarks.find { it.id == story.id } != null
-               story.copy(
-                 bookmarked = isBookmarked
-               )
-             },
-           bookmarks = bookmarks.map { it.toStoryItem() },
-         )
-       }
-     }
-   }
+    viewModelScope.launch {
+      bookmarkDao.getAllBookmarks().collect { bookmarks ->
+        internalState.update { current ->
+          current.copy(
+            stories = current.stories
+              .filterIsInstance<StoryItem.Content>()
+              .map { story ->
+                val isBookmarked = bookmarks.find { it.id == story.id } != null
+                story.copy(
+                  bookmarked = isBookmarked
+                )
+              },
+            bookmarks = bookmarks.map { it.toStoryItem() },
+          )
+        }
+      }
+    }
   }
+
   fun actions(action: StoriesAction) {
     when (action) {
       LoadItems -> {
@@ -191,7 +190,6 @@ class StoriesViewModel(
         if (pages.isNotEmpty() && internalState.value.loading == LoadingState.Idle) {
           fetchJob = viewModelScope.launch {
             val page = pages.next()
-            Log.d("Feed", "Loading next page: $page")
             val newStories = fetchPage(page) {
               internalState.update { current ->
                 current.copy(loading = LoadingState.LoadingPage)
@@ -241,7 +239,6 @@ class StoriesViewModel(
     var newStories = itemRepository
       .getPage(page)
       .map<Item, StoryItem> { item ->
-        Log.d("Feed", "Item: $item")
         StoryItem.Content(
           id = item.id,
           title = item.title!!,

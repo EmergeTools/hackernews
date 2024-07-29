@@ -1,6 +1,5 @@
 package com.emergetools.hackernews.data
 
-import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.FormBody
@@ -90,7 +89,6 @@ class HackerNewsWebClient(
       val document = Jsoup.parse(response.body?.string()!!)
       val postInfo = document.postInfo(itemId)
       val commentInfos = document.commentInfos()
-      Log.d("Page Comments", "Comments: $commentInfos")
       val commentFormData = document.commentFormData()
 
       PostPage(
