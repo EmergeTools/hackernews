@@ -1,7 +1,6 @@
 package com.emergetools.hackernews.data
 
 import com.emergetools.hackernews.data.BaseResponse.Item
-import com.emergetools.hackernews.data.BaseResponse.NullResponse
 import com.emergetools.hackernews.features.stories.FeedType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -18,6 +17,7 @@ class ItemRepository(
         FeedType.Top -> {
           baseClient.api.getTopStoryIds()
         }
+
         FeedType.New -> {
           baseClient.api.getNewStoryIds()
         }

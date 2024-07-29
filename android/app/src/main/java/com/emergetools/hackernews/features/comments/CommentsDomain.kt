@@ -22,7 +22,9 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.time.LocalDateTime
 import java.time.OffsetDateTime
+import java.time.ZoneOffset
 
 sealed interface CommentsState {
   val headerState: HeaderState
@@ -119,7 +121,8 @@ sealed interface CommentsAction {
 
   data class LikeComment(
     val id: Long,
-    val url: String
+    val url: String,
+    val upvoted: Boolean
   ) : CommentsAction
 
   data class UpdateComment(val text: String) : CommentsAction
@@ -170,9 +173,8 @@ class CommentsViewModel(
         val loggedIn = !userStorage.getCookie().first().isNullOrEmpty()
         val response = searchClient.api.getItem(itemId)
         val pageInfo = webClient.getPostPage(itemId)
-        val comments = response.children.map { rootComment ->
-          rootComment.createCommentState(0, pageInfo.commentInfoMap)
-        }
+        val comments = pageInfo.commentInfos.map { it.toCommentState() }
+
         internalState.update {
           CommentsState.Content(
             id = itemId,
@@ -211,6 +213,24 @@ class CommentsViewModel(
       }
 
       is CommentsAction.LikeComment -> {
+        if (!action.upvoted && action.url.isNotEmpty()) {
+          val current = internalState.value
+          if (current is CommentsState.Content) {
+            internalState.value = current.copy(
+              comments = internalState.value
+                .comments
+                .filterIsInstance<CommentState.Content>()
+                .map { comment ->
+                  if (comment.id == action.id) {
+                    comment.copy(upvoted = true)
+                  } else {
+                    comment
+                  }
+                }
+            )
+          }
+        }
+
         viewModelScope.launch {
           webClient.upvoteItem(action.url)
         }
@@ -229,15 +249,32 @@ class CommentsViewModel(
         viewModelScope.launch {
           val current = internalState.value
           if (current is CommentsState.Content && current.postComment != null) {
-            internalState.value = current.copy(
-              commentText = ""
-            )
             val (parentId, gotoUrl, hmac, _, text) = current.postComment
-            webClient.postComment(parentId, gotoUrl, hmac, text)
+            val updatedComments = webClient.postComment(parentId, gotoUrl, hmac, text)
+            internalState.value = current.copy(
+              commentText = "",
+              comments = updatedComments.map { it.toCommentState() }
+            )
           }
         }
       }
     }
+  }
+
+  private fun CommentInfo.toCommentState(): CommentState.Content {
+    return CommentState.Content(
+      id = id,
+      author = user,
+      content = text,
+      timeLabel = relativeTimeStamp(
+        epochSeconds = LocalDateTime.parse(age)
+          .toInstant(ZoneOffset.UTC).epochSecond
+      ),
+      upvoted = upvoted,
+      upvoteUrl = upvoteUrl,
+      level = level,
+      children = emptyList()
+    )
   }
 
   private fun ItemResponse.createCommentState(

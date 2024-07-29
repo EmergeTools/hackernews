@@ -15,7 +15,7 @@ private const val COMMENT_URL = BASE_WEB_URL + "comment"
 
 data class PostPage(
   val postInfo: PostInfo,
-  val commentInfoMap: Map<Long, CommentInfo>,
+  val commentInfos: List<CommentInfo>,
   val commentFormData: CommentFormData?
 )
 
@@ -28,7 +28,11 @@ data class PostInfo(
 data class CommentInfo(
   val id: Long,
   val upvoted: Boolean,
-  val upvoteUrl: String
+  val upvoteUrl: String,
+  val text: String,
+  val user: String,
+  val age: String,
+  val level: Int,
 )
 
 data class CommentFormData(
@@ -83,14 +87,14 @@ class HackerNewsWebClient(
       ).execute()
 
       val document = Jsoup.parse(response.body?.string()!!)
-      val itemPageInfo = document.postInfo(itemId)
-      val commentPageInfoMap = document.commentInfos()
-      val addCommentFormData = document.commentFormData()
+      val postInfo = document.postInfo(itemId)
+      val commentInfos = document.commentInfos()
+      val commentFormData = document.commentFormData()
 
       PostPage(
-        postInfo = itemPageInfo,
-        commentInfoMap = commentPageInfoMap,
-        commentFormData = addCommentFormData
+        postInfo = postInfo,
+        commentInfos = commentInfos,
+        commentFormData = commentFormData
       )
     }
   }
@@ -104,20 +108,36 @@ class HackerNewsWebClient(
     )
   }
 
-  private fun Document.commentInfos(): Map<Long, CommentInfo> {
+  /**
+   * The comment route on the website gives us a list of comments in order
+   * and also gives us a "level". Now this doesn't do child/parent association
+   * for us, but it does make rendering and updating comment state a lot easier.
+   */
+  private fun Document.commentInfos(): List<CommentInfo> {
     val commentTree = select("table.comment-tree")
-    val commentUpvoteLinks = commentTree.select("a[id^=up_]")
-    return commentUpvoteLinks
-      .groupBy(
-        keySelector = { it.id().substring(3).toLong() },
-        valueTransform = {
-          CommentInfo(
-            id = it.id().substring(3).toLong(),
-            upvoted = it.hasClass("nosee"),
-            upvoteUrl = BASE_WEB_URL + it.attr("href")
-          )
-        }
-      ).mapValues { it.value[0] }
+    val comments = commentTree.select("tr.athing.comtr")
+    val infos = comments.map { commentElement ->
+      val id = commentElement.id().toLong()
+      val level = commentElement.select("td.ind").attr("indent").toInt()
+      val text = commentElement.select("div.commtext").text()
+      val user = commentElement.select("a.hnuser").text()
+      val time = commentElement.select("span.age").attr("title")
+      val upvoteLink = commentElement.select("a[id^=up_]")
+      val url = BASE_WEB_URL + upvoteLink.attr("href")
+      val upvoted = upvoteLink.hasClass("nosee")
+
+      CommentInfo(
+        id = id,
+        user = user,
+        age = time,
+        text = text,
+        level = level,
+        upvoteUrl = url,
+        upvoted = upvoted
+      )
+    }
+
+    return infos
   }
 
   private fun Document.commentFormData(): CommentFormData? {
@@ -153,7 +173,7 @@ class HackerNewsWebClient(
     gotoUrl: String,
     hmac: String,
     text: String
-  ): Boolean {
+  ): List<CommentInfo> {
     return withContext(Dispatchers.IO) {
       val response = httpClient.newCall(
         Request.Builder()
@@ -169,7 +189,8 @@ class HackerNewsWebClient(
           .build()
       ).execute()
 
-      response.isSuccessful
+      val document = Jsoup.parse(response.body?.string()!!)
+      document.commentInfos()
     }
   }
 }
