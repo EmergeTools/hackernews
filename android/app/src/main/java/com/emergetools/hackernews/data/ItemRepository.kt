@@ -37,12 +37,6 @@ class ItemRepository(
       result.toList()
     }
   }
-
-  suspend fun getItem(itemId: Long): BaseResponse {
-    return withContext(Dispatchers.IO) {
-      baseClient.api.getItem(itemId)
-    }
-  }
 }
 
 fun MutableList<Page>.next() = removeAt(0)
