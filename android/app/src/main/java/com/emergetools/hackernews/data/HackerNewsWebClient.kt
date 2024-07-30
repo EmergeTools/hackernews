@@ -13,11 +13,15 @@ private const val LOGIN_URL = BASE_WEB_URL + "login"
 private const val ITEM_URL = BASE_WEB_URL + "item"
 private const val COMMENT_URL = BASE_WEB_URL + "comment"
 
-data class PostPage(
-  val postInfo: PostInfo,
-  val commentInfos: List<CommentInfo>,
-  val commentFormData: CommentFormData?
-)
+sealed class PostPage {
+  data class Success(
+    val postInfo: PostInfo,
+    val commentInfos: List<CommentInfo>,
+    val commentFormData: CommentFormData?
+  ) : PostPage()
+
+  data class Error(val message: String) : PostPage()
+}
 
 data class PostInfo(
   val id: Long,
@@ -79,23 +83,27 @@ class HackerNewsWebClient(
 
   suspend fun getPostPage(itemId: Long): PostPage {
     return withContext(Dispatchers.IO) {
-      val response = httpClient.newCall(
-        Request
-          .Builder()
-          .url("$ITEM_URL?id=$itemId")
-          .build()
-      ).execute()
+      try {
+        val response = httpClient.newCall(
+          Request
+            .Builder()
+            .url("$ITEM_URL?id=$itemId")
+            .build()
+        ).execute()
 
-      val document = Jsoup.parse(response.body?.string()!!)
-      val postInfo = document.postInfo(itemId)
-      val commentInfos = document.commentInfos()
-      val commentFormData = document.commentFormData()
+        val document = Jsoup.parse(response.body?.string()!!)
+        val postInfo = document.postInfo(itemId)
+        val commentInfos = document.commentInfos()
+        val commentFormData = document.commentFormData()
 
-      PostPage(
-        postInfo = postInfo,
-        commentInfos = commentInfos,
-        commentFormData = commentFormData
-      )
+        PostPage.Success(
+          postInfo = postInfo,
+          commentInfos = commentInfos,
+          commentFormData = commentFormData
+        )
+      } catch (error: Exception) {
+        PostPage.Error(error.message.orEmpty())
+      }
     }
   }
 

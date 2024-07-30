@@ -7,11 +7,11 @@ import com.emergetools.hackernews.data.CommentFormData
 import com.emergetools.hackernews.data.CommentInfo
 import com.emergetools.hackernews.data.HackerNewsSearchClient
 import com.emergetools.hackernews.data.HackerNewsWebClient
-import com.emergetools.hackernews.data.ItemResponse
+import com.emergetools.hackernews.data.PostPage
+import com.emergetools.hackernews.data.SearchItem
 import com.emergetools.hackernews.data.UserStorage
 import com.emergetools.hackernews.data.relativeTimeStamp
 import com.emergetools.hackernews.features.login.LoginDestinations
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -21,9 +21,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
-import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
 sealed interface CommentsState {
@@ -33,7 +31,6 @@ sealed interface CommentsState {
   data object Loading : CommentsState {
     override val headerState: HeaderState = HeaderState.Loading
     override val comments: List<CommentState> = listOf(
-      CommentState.Loading(level = 0),
       CommentState.Loading(level = 0),
     )
   }
@@ -169,24 +166,25 @@ class CommentsViewModel(
 
   init {
     viewModelScope.launch {
-      withContext(Dispatchers.IO) {
+      val searchResponse = searchClient.getItem(itemId)
+      val postPage = webClient.getPostPage(itemId)
+
+      if (searchResponse is SearchItem.Success && postPage is PostPage.Success) {
+        val comments = postPage.commentInfos.map { it.toCommentState() }
         val loggedIn = !userStorage.getCookie().first().isNullOrEmpty()
-        val response = searchClient.api.getItem(itemId)
-        val pageInfo = webClient.getPostPage(itemId)
-        val comments = pageInfo.commentInfos.map { it.toCommentState() }
 
         internalState.update {
           CommentsState.Content(
             id = itemId,
-            title = response.title ?: "",
-            author = response.author ?: "",
-            points = response.points ?: 0,
-            body = response.text,
+            title = searchResponse.item.title ?: "",
+            author = searchResponse.item.author ?: "",
+            points = searchResponse.item.points ?: 0,
+            body = searchResponse.item.text,
             loggedIn = loggedIn,
-            upvoted = pageInfo.postInfo.upvoted,
-            upvoteUrl = pageInfo.postInfo.upvoteUrl,
+            upvoted = postPage.postInfo.upvoted,
+            upvoteUrl = postPage.postInfo.upvoteUrl,
             commentText = "",
-            formData = pageInfo.commentFormData,
+            formData = postPage.commentFormData,
             comments = comments,
           )
         }
@@ -276,28 +274,6 @@ class CommentsViewModel(
       children = emptyList()
     )
   }
-
-  private fun ItemResponse.createCommentState(
-    level: Int,
-    commentInfoMap: Map<Long, CommentInfo>
-  ): CommentState {
-    val page = commentInfoMap[id]
-    return CommentState.Content(
-      id = id,
-      author = author ?: "",
-      content = text ?: "",
-      children = children.map { child ->
-        child.createCommentState(level + 1, commentInfoMap)
-      },
-      timeLabel = relativeTimeStamp(
-        epochSeconds = OffsetDateTime.parse(createdAt).toInstant().epochSecond
-      ),
-      upvoted = page?.upvoted ?: false,
-      upvoteUrl = page?.upvoteUrl.orEmpty(),
-      level = level
-    )
-  }
-
 
   @Suppress("UNCHECKED_CAST")
   class Factory(

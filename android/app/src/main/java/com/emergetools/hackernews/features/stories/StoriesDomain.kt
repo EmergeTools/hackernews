@@ -1,6 +1,5 @@
 package com.emergetools.hackernews.features.stories
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -116,10 +115,9 @@ class StoriesViewModel(
         fetchJob?.cancel()
 
         fetchJob = viewModelScope.launch {
-          internalState.update { it.copy(loading = LoadingState.Refreshing) }
+          internalState.update { it.copy(loading = LoadingState.Loading) }
           when (val response = itemRepository.getFeedIds(internalState.value.feed)) {
             is FeedIdResponse.Error -> {
-              Log.e("Feed Load Error", response.message)
               delay(500)
               internalState.update { current ->
                 current.copy(
@@ -168,7 +166,6 @@ class StoriesViewModel(
           }
           when (val response = itemRepository.getFeedIds(internalState.value.feed)) {
             is FeedIdResponse.Error -> {
-              Log.e("Feed Load Error", response.message)
               delay(500)
               internalState.update { current ->
                 current.copy(loading = LoadingState.Error)
