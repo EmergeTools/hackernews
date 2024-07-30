@@ -115,39 +115,8 @@ fun StoriesScreen(
       LazyColumn(state = listState) {
         if (state.loading == LoadingState.Error) {
           item {
-            Column(
-              modifier = Modifier
-                .animateItem()
-                .fillMaxWidth()
-                .height(200.dp),
-              verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
-              horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-              Icon(
-                imageVector = Icons.Rounded.Warning,
-                tint = HackerRed,
-                contentDescription = "Failed to Load",
-              )
-
-              Text(
-                text = "Failed to Load Feed",
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurface
-              )
-
-              Button(
-                colors = ButtonDefaults.buttonColors(
-                  containerColor = HackerRed,
-                  contentColor = Color.White
-                ),
-                onClick = {
-                  actions(StoriesAction.LoadItems)
-                }) {
-                Icon(
-                  imageVector = Icons.Rounded.Refresh,
-                  contentDescription = "Reload Feed"
-                )
-              }
+            FeedErrorCard(modifier = Modifier.animateItem()) {
+              actions(StoriesAction.LoadItems)
             }
           }
         }
@@ -436,6 +405,51 @@ private fun StoryRowLoadingPreview() {
   }
 }
 
+@Composable
+fun FeedErrorCard(modifier: Modifier = Modifier, onRefresh: () -> Unit) {
+  Column(
+    modifier = modifier
+      .fillMaxWidth()
+      .height(200.dp)
+      .background(color = MaterialTheme.colorScheme.background),
+    verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
+    horizontalAlignment = Alignment.CenterHorizontally
+  ) {
+    Icon(
+      imageVector = Icons.Rounded.Warning,
+      tint = HackerRed,
+      contentDescription = "Failed to Load",
+    )
+
+    Text(
+      text = "Failed to Load Feed",
+      style = MaterialTheme.typography.titleSmall,
+      color = MaterialTheme.colorScheme.onBackground
+    )
+
+    Button(
+      colors = ButtonDefaults.buttonColors(
+        containerColor = HackerRed,
+        contentColor = Color.White
+      ),
+      onClick = { onRefresh() }) {
+      Icon(
+        imageVector = Icons.Rounded.Refresh,
+        contentDescription = "Reload Feed"
+      )
+    }
+  }
+}
+
+@PreviewLightDark
+@Composable
+fun FeedErrorCardPreview() {
+  HackerNewsTheme {
+    FeedErrorCard(
+      onRefresh = {}
+    )
+  }
+}
 
 @Composable
 private fun FeedSelection(
