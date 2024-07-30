@@ -15,6 +15,7 @@ enum class LoginStatus {
   Success,
   Failed
 }
+
 data class LoginState(
   val username: String = "",
   val password: String = "",
@@ -22,21 +23,21 @@ data class LoginState(
 )
 
 sealed interface LoginAction {
-  data class UsernameUpdated(val input: String): LoginAction
-  data class PasswordUpdated(val input: String): LoginAction
-  data object LoginSubmit: LoginAction
+  data class UsernameUpdated(val input: String) : LoginAction
+  data class PasswordUpdated(val input: String) : LoginAction
+  data object LoginSubmit : LoginAction
 }
 
 sealed interface LoginNavigation {
-  data object Dismiss: LoginNavigation
+  data object Dismiss : LoginNavigation
 }
 
-class LoginViewModel(private val webClient: HackerNewsWebClient): ViewModel() {
+class LoginViewModel(private val webClient: HackerNewsWebClient) : ViewModel() {
   private val internalState = MutableStateFlow(LoginState())
   val state = internalState.asStateFlow()
 
   fun actions(action: LoginAction) {
-    when(action) {
+    when (action) {
       LoginAction.LoginSubmit -> {
         viewModelScope.launch {
           val response = webClient.login(
@@ -50,7 +51,8 @@ class LoginViewModel(private val webClient: HackerNewsWebClient): ViewModel() {
                 LoginResponse.Success -> {
                   LoginStatus.Success
                 }
-                LoginResponse.Failed -> {
+
+                LoginResponse.Failed, LoginResponse.Error -> {
                   LoginStatus.Failed
                 }
               }
@@ -58,6 +60,7 @@ class LoginViewModel(private val webClient: HackerNewsWebClient): ViewModel() {
           }
         }
       }
+
       is LoginAction.PasswordUpdated -> {
         internalState.update { current ->
           current.copy(
@@ -65,6 +68,7 @@ class LoginViewModel(private val webClient: HackerNewsWebClient): ViewModel() {
           )
         }
       }
+
       is LoginAction.UsernameUpdated -> {
         internalState.update { current ->
           current.copy(
@@ -76,7 +80,7 @@ class LoginViewModel(private val webClient: HackerNewsWebClient): ViewModel() {
   }
 
   @Suppress("UNCHECKED_CAST")
-  class Factory(private val webClient: HackerNewsWebClient): ViewModelProvider.Factory {
+  class Factory(private val webClient: HackerNewsWebClient) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
       return LoginViewModel(webClient) as T
     }

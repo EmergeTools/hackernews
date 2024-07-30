@@ -47,7 +47,8 @@ data class CommentFormData(
 
 enum class LoginResponse {
   Success,
-  Failed
+  Failed,
+  Error
 }
 
 class HackerNewsWebClient(
@@ -55,28 +56,32 @@ class HackerNewsWebClient(
 ) {
   suspend fun login(username: String, password: String): LoginResponse {
     return withContext(Dispatchers.IO) {
-      val response = httpClient.newCall(
-        Request.Builder()
-          .url(LOGIN_URL)
-          .post(
-            FormBody.Builder()
-              .add("acct", username)
-              .add("pw", password)
-              .build()
-          )
-          .build()
-      ).execute()
+      try {
+        val response = httpClient.newCall(
+          Request.Builder()
+            .url(LOGIN_URL)
+            .post(
+              FormBody.Builder()
+                .add("acct", username)
+                .add("pw", password)
+                .build()
+            )
+            .build()
+        ).execute()
 
-      val document = Jsoup.parse(response.body?.string()!!)
+        val document = Jsoup.parse(response.body?.string()!!)
 
-      val body = document.body()
-      val firstElement = body.firstChild()
-      val loginFailed = firstElement?.toString()?.contains("Bad login") ?: false
+        val body = document.body()
+        val firstElement = body.firstChild()
+        val loginFailed = firstElement?.toString()?.contains("Bad login") ?: false
 
-      if (loginFailed) {
-        LoginResponse.Failed
-      } else {
-        LoginResponse.Success
+        if (loginFailed) {
+          LoginResponse.Failed
+        } else {
+          LoginResponse.Success
+        }
+      } catch (error: Exception) {
+        LoginResponse.Error
       }
     }
   }
