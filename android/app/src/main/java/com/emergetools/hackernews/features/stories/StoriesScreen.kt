@@ -11,15 +11,16 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -27,6 +28,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.DateRange
+import androidx.compose.material.icons.rounded.ThumbUp
 import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.material.icons.rounded.Warning
 import androidx.compose.material3.Button
@@ -116,12 +119,15 @@ fun StoriesScreen(
         actions(StoriesAction.RefreshItems)
       }, isRefreshing = state.loading == LoadingState.Refreshing
     ) {
-      LazyColumn(state = listState) {
-        if (state.loading == LoadingState.Error) {
-          item {
-            FeedErrorCard(modifier = Modifier.animateItem()) {
-              actions(StoriesAction.LoadItems)
-            }
+      LazyColumn(
+        state = listState,
+        contentPadding = PaddingValues(horizontal = 4.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp)
+      ) {
+      if (state.loading == LoadingState.Error) {
+        item {
+          FeedErrorCard(modifier = Modifier.animateItem()) {
+            actions(StoriesAction.LoadItems)
           }
         }
         items(state.stories) { item ->
@@ -215,16 +221,17 @@ fun StoryRow(
           }, stiffness = Spring.StiffnessLow
         ), label = "Bookmark Height"
       )
-      Row(modifier = modifier
-        .fillMaxWidth()
-        .heightIn(min = 80.dp)
-        .background(color = MaterialTheme.colorScheme.background)
-        .clip(shape = RectangleShape)
-        .drawWithContent {
-          drawContent()
-          val startX = size.width * 0.75f
-          val startY = 0f
-          val bookmarkWidth = 50f
+      Column(
+        modifier = modifier
+          .fillMaxWidth()
+          .heightIn(min = 100.dp)
+          .clip(shape = RoundedCornerShape(16.dp))
+          .background(color = MaterialTheme.colorScheme.surface)
+          .drawWithContent {
+            drawContent()
+            val startX = size.width * 0.75f
+            val startY = 0f
+            val bookmarkWidth = 50f
 
           val path = Path().apply {
             moveTo(startX, startY)
@@ -234,27 +241,28 @@ fun StoryRow(
             lineTo(startX + bookmarkWidth, startY)
           }
 
-          drawPath(
-            path,
-            color = HackerOrange,
+            drawPath(
+              path,
+              color = HackerOrange,
+            )
+          }
+          .combinedClickable(
+            onClick = {
+              onClick(item)
+            },
+            onLongClick = {
+              onBookmark(item)
+            }
           )
-        }
-        .combinedClickable(onClick = {
-          onClick(item)
-        }, onLongClick = {
-          onBookmark(item)
-        })
-        .padding(8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(
-          16.dp, alignment = Alignment.CenterHorizontally
+          .padding(12.dp),
+        verticalArrangement = Arrangement.spacedBy(
+          space = 8.dp,
+          alignment = Alignment.CenterVertically
         )
       ) {
-        Column(
-          modifier = Modifier
-            .wrapContentHeight()
-            .weight(1f),
-          verticalArrangement = Arrangement.Center
+        Row(
+          verticalAlignment = Alignment.CenterVertically,
+          horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
           Text(
             text = "@${item.author}",
@@ -269,7 +277,7 @@ fun StoryRow(
           style = MaterialTheme.typography.titleSmall
         )
 
-        ListSeperator(lineColor = MaterialTheme.colorScheme.surfaceContainerHighest)
+        ListSeparator(lineColor = MaterialTheme.colorScheme.surfaceContainerHighest)
 
         Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
           MetadataTag(
@@ -309,54 +317,93 @@ fun StoryRow(
     }
 
     is StoryItem.Loading -> {
-      Row(
+      Column(
         modifier = modifier
           .fillMaxWidth()
-          .heightIn(min = 80.dp)
-          .background(color = MaterialTheme.colorScheme.background)
-          .padding(8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(
-          16.dp, alignment = Alignment.CenterHorizontally
-        )
+          .height(100.dp)
+          .clip(shape = RoundedCornerShape(16.dp))
+          .background(color = MaterialTheme.colorScheme.surface)
+          .padding(12.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
       ) {
-        Column(
+        Box(
           modifier = Modifier
-            .wrapContentHeight()
-            .weight(1f),
-          verticalArrangement = Arrangement.spacedBy(4.dp)
-        ) {
-          Box(
-            modifier = Modifier
-              .fillMaxWidth(0.8f)
-              .height(18.dp)
-              .clip(RoundedCornerShape(4.dp))
-              .background(color = Color.LightGray)
-          )
-          Box(
-            modifier = Modifier
-              .fillMaxWidth(0.45f)
-              .height(18.dp)
-              .clip(RoundedCornerShape(4.dp))
-              .background(color = Color.Gray)
-          )
+            .fillMaxWidth(0.15f)
+            .height(12.dp)
+            .clip(RoundedCornerShape(4.dp))
+            .background(color = HackerOrange.copy(alpha = 0.5f))
+        )
+        Box(
+          modifier = Modifier
+            .fillMaxWidth(0.5f)
+            .height(12.dp)
+            .clip(RoundedCornerShape(4.dp))
+            .background(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f))
+        )
+        ListSeparator(lineColor = MaterialTheme.colorScheme.surfaceContainerHighest)
+        Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
           Row(
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
-            verticalAlignment = Alignment.CenterVertically
+            modifier = Modifier
+              .wrapContentSize()
+              .clip(RoundedCornerShape(8.dp))
+              .background(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f))
+              .padding(4.dp),
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
           ) {
             Box(
               modifier = Modifier
-                .width(30.dp)
-                .height(14.dp)
+                .size(12.dp)
                 .clip(RoundedCornerShape(4.dp))
-                .background(Color.DarkGray)
+                .background(color = HackerGreen.copy(alpha = 0.5f))
             )
             Box(
               modifier = Modifier
-                .width(40.dp)
-                .height(14.dp)
+                .size(12.dp)
                 .clip(RoundedCornerShape(4.dp))
-                .background(HackerOrange)
+                .background(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f))
+            )
+          }
+          Row(
+            modifier = Modifier
+              .wrapContentSize()
+              .clip(RoundedCornerShape(8.dp))
+              .background(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f))
+              .padding(4.dp),
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
+          ) {
+            Box(
+              modifier = Modifier
+                .size(12.dp)
+                .clip(RoundedCornerShape(4.dp))
+                .background(color = HackerRed.copy(alpha = 0.5f))
+            )
+            Box(
+              modifier = Modifier
+                .size(12.dp)
+                .clip(RoundedCornerShape(4.dp))
+                .background(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f))
+            )
+          }
+          Spacer(modifier = Modifier.weight(1f))
+          Row(
+            modifier = Modifier
+              .wrapContentSize()
+              .clip(RoundedCornerShape(8.dp))
+              .background(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f))
+              .padding(4.dp),
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
+          ) {
+            Box(
+              modifier = Modifier
+                .size(12.dp)
+                .clip(RoundedCornerShape(4.dp))
+                .background(color = HackerBlue.copy(alpha = 0.5f))
+            )
+            Box(
+              modifier = Modifier
+                .size(12.dp)
+                .clip(RoundedCornerShape(4.dp))
+                .background(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f))
             )
           }
         }
@@ -366,7 +413,7 @@ fun StoryRow(
 }
 
 @Composable
-fun ListSeperator(lineColor: Color) {
+fun ListSeparator(lineColor: Color) {
   Spacer(modifier = Modifier
     .fillMaxWidth()
     .height(8.dp)
@@ -387,7 +434,6 @@ fun ListSeperator(lineColor: Color) {
 fun MetadataTag(
   label: String,
   contentColor: Color = MaterialTheme.colorScheme.onSurface,
-  containerColor: Color = MaterialTheme.colorScheme.surfaceContainerHighest,
   onClick: () -> Unit = {},
   icon: @Composable (tintColor: Color) -> Unit,
 ) {
