@@ -1,6 +1,5 @@
 package com.emergetools.hackernews.ui.theme
 
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -19,7 +18,7 @@ val Typography = Typography(
   titleSmall = TextStyle(
     fontFamily = plex,
     fontWeight = FontWeight.Bold,
-    fontSize = 18.sp
+    fontSize = 16.sp
   ),
   titleMedium = TextStyle(
     fontFamily = plex,
@@ -29,12 +28,12 @@ val Typography = Typography(
   labelSmall = TextStyle(
     fontFamily = plex,
     fontWeight = FontWeight.Normal,
-    fontSize = 14.sp
+    fontSize = 12.sp
   ),
   labelMedium = TextStyle(
     fontFamily = plex,
     fontWeight = FontWeight.Normal,
-    fontSize = 16.sp
+    fontSize = 14.sp
   ),
   /* Other default text styles to override
     titleLarge = TextStyle(

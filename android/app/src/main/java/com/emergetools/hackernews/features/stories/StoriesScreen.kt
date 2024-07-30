@@ -257,61 +257,53 @@ fun StoryRow(
           verticalArrangement = Arrangement.Center
         ) {
           Text(
-            text = item.title,
-            color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.titleSmall
+            text = "@${item.author}",
+            color = HackerOrange,
+            style = MaterialTheme.typography.labelSmall,
+            fontWeight = FontWeight.Bold
           )
-          Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-            Text(
-              text = "${item.score}",
-              color = MaterialTheme.colorScheme.onSurface,
-              style = MaterialTheme.typography.labelSmall
-            )
-            Text(
-              text = "•",
-              color = MaterialTheme.colorScheme.onSurface,
-              style = MaterialTheme.typography.labelSmall
-            )
-            Text(
-              text = item.author,
-              color = HackerOrange,
-              style = MaterialTheme.typography.labelSmall,
-              fontWeight = FontWeight.Medium
-            )
-            Text(
-              text = "•",
-              color = MaterialTheme.colorScheme.onSurface,
-              style = MaterialTheme.typography.labelSmall
-            )
-            Text(
-              text = item.timeLabel,
-              color = MaterialTheme.colorScheme.onSurface,
-              style = MaterialTheme.typography.labelSmall
+        }
+        Text(
+          text = item.title,
+          color = MaterialTheme.colorScheme.onSurface,
+          style = MaterialTheme.typography.titleSmall
+        )
+
+        ListSeperator(lineColor = MaterialTheme.colorScheme.surfaceContainerHighest)
+
+        Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+          MetadataTag(
+            label = "${item.score}",
+          ) { tintColor ->
+            Icon(
+              modifier = Modifier.size(12.dp),
+              imageVector = Icons.Rounded.ThumbUp,
+              tint = HackerGreen,
+              contentDescription = "Likes"
             )
           }
-        }
-
-        Column(
-          modifier = Modifier
-            .padding(horizontal = 16.dp)
-            .clickable {
-              onCommentClicked(item)
-            },
-          verticalArrangement = Arrangement.Center,
-          horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-          Icon(
-            modifier = Modifier.size(20.dp),
-            painter = painterResource(R.drawable.ic_chat),
-            tint = MaterialTheme.colorScheme.onBackground,
-            contentDescription = ""
-          )
-          Text(
-            text = "${item.commentCount}",
-            color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.labelSmall,
-            fontWeight = FontWeight.Medium
-          )
+          MetadataTag(
+            label = item.timeLabel,
+          ) { tintColor ->
+            Icon(
+              modifier = Modifier.size(12.dp),
+              imageVector = Icons.Rounded.DateRange,
+              tint = HackerRed,
+              contentDescription = "Likes"
+            )
+          }
+          Spacer(modifier = Modifier.weight(1f))
+          MetadataTag(
+            label = "${item.commentCount}",
+            onClick = { onCommentClicked(item) }
+          ) { tintColor ->
+            Icon(
+              modifier = Modifier.size(12.dp),
+              painter = painterResource(R.drawable.ic_chat),
+              tint = HackerBlue,
+              contentDescription = "Comments"
+            )
+          }
         }
       }
     }
@@ -370,6 +362,52 @@ fun StoryRow(
         }
       }
     }
+  }
+}
+
+@Composable
+fun ListSeperator(lineColor: Color) {
+  Spacer(modifier = Modifier
+    .fillMaxWidth()
+    .height(8.dp)
+    .drawBehind {
+      val center = size.center
+      val width = size.width
+
+      drawLine(
+        color = lineColor,
+        start = Offset(0f, center.y),
+        end = Offset(width, center.y),
+        strokeWidth = 2f
+      )
+    })
+}
+
+@Composable
+fun MetadataTag(
+  label: String,
+  contentColor: Color = MaterialTheme.colorScheme.onSurface,
+  containerColor: Color = MaterialTheme.colorScheme.surfaceContainerHighest,
+  onClick: () -> Unit = {},
+  icon: @Composable (tintColor: Color) -> Unit,
+) {
+  Row(
+    modifier = Modifier
+      .wrapContentSize()
+      .clip(RoundedCornerShape(8.dp))
+      .clickable { onClick() }
+      .background(color = contentColor.copy(alpha = 0.1f))
+      .padding(vertical = 4.dp, horizontal = 8.dp),
+    horizontalArrangement = Arrangement.spacedBy(4.dp),
+    verticalAlignment = Alignment.CenterVertically
+  ) {
+    icon(contentColor)
+    Text(
+      text = label,
+      style = MaterialTheme.typography.labelSmall,
+      fontWeight = FontWeight.Medium,
+      color = contentColor
+    )
   }
 }
 
