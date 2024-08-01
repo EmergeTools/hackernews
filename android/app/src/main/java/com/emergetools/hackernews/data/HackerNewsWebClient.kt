@@ -13,11 +13,15 @@ private const val LOGIN_URL = BASE_WEB_URL + "login"
 private const val ITEM_URL = BASE_WEB_URL + "item"
 private const val COMMENT_URL = BASE_WEB_URL + "comment"
 
-data class PostPage(
-  val postInfo: PostInfo,
-  val commentInfos: List<CommentInfo>,
-  val commentFormData: CommentFormData?
-)
+sealed class PostPage {
+  data class Success(
+    val postInfo: PostInfo,
+    val commentInfos: List<CommentInfo>,
+    val commentFormData: CommentFormData?
+  ) : PostPage()
+
+  data class Error(val message: String) : PostPage()
+}
 
 data class PostInfo(
   val id: Long,
@@ -43,7 +47,8 @@ data class CommentFormData(
 
 enum class LoginResponse {
   Success,
-  Failed
+  Failed,
+  Error
 }
 
 class HackerNewsWebClient(
@@ -51,51 +56,59 @@ class HackerNewsWebClient(
 ) {
   suspend fun login(username: String, password: String): LoginResponse {
     return withContext(Dispatchers.IO) {
-      val response = httpClient.newCall(
-        Request.Builder()
-          .url(LOGIN_URL)
-          .post(
-            FormBody.Builder()
-              .add("acct", username)
-              .add("pw", password)
-              .build()
-          )
-          .build()
-      ).execute()
+      try {
+        val response = httpClient.newCall(
+          Request.Builder()
+            .url(LOGIN_URL)
+            .post(
+              FormBody.Builder()
+                .add("acct", username)
+                .add("pw", password)
+                .build()
+            )
+            .build()
+        ).execute()
 
-      val document = Jsoup.parse(response.body?.string()!!)
+        val document = Jsoup.parse(response.body?.string()!!)
 
-      val body = document.body()
-      val firstElement = body.firstChild()
-      val loginFailed = firstElement?.toString()?.contains("Bad login") ?: false
+        val body = document.body()
+        val firstElement = body.firstChild()
+        val loginFailed = firstElement?.toString()?.contains("Bad login") ?: false
 
-      if (loginFailed) {
-        LoginResponse.Failed
-      } else {
-        LoginResponse.Success
+        if (loginFailed) {
+          LoginResponse.Failed
+        } else {
+          LoginResponse.Success
+        }
+      } catch (error: Exception) {
+        LoginResponse.Error
       }
     }
   }
 
   suspend fun getPostPage(itemId: Long): PostPage {
     return withContext(Dispatchers.IO) {
-      val response = httpClient.newCall(
-        Request
-          .Builder()
-          .url("$ITEM_URL?id=$itemId")
-          .build()
-      ).execute()
+      try {
+        val response = httpClient.newCall(
+          Request
+            .Builder()
+            .url("$ITEM_URL?id=$itemId")
+            .build()
+        ).execute()
 
-      val document = Jsoup.parse(response.body?.string()!!)
-      val postInfo = document.postInfo(itemId)
-      val commentInfos = document.commentInfos()
-      val commentFormData = document.commentFormData()
+        val document = Jsoup.parse(response.body?.string()!!)
+        val postInfo = document.postInfo(itemId)
+        val commentInfos = document.commentInfos()
+        val commentFormData = document.commentFormData()
 
-      PostPage(
-        postInfo = postInfo,
-        commentInfos = commentInfos,
-        commentFormData = commentFormData
-      )
+        PostPage.Success(
+          postInfo = postInfo,
+          commentInfos = commentInfos,
+          commentFormData = commentFormData
+        )
+      } catch (error: Exception) {
+        PostPage.Error(error.message.orEmpty())
+      }
     }
   }
 

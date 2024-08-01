@@ -26,6 +26,11 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Refresh
+import androidx.compose.material.icons.rounded.Warning
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -60,6 +65,7 @@ import com.emergetools.hackernews.R
 import com.emergetools.hackernews.features.comments.CommentsDestinations
 import com.emergetools.hackernews.ui.theme.HackerNewsTheme
 import com.emergetools.hackernews.ui.theme.HackerOrange
+import com.emergetools.hackernews.ui.theme.HackerRed
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -98,21 +104,22 @@ fun StoriesScreen(
     verticalArrangement = Arrangement.spacedBy(8.dp),
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {
-    FeedSelection(
-      feedType = state.feed,
-      onSelected = { actions(StoriesAction.SelectFeed(it)) }
-    )
+    FeedSelection(feedType = state.feed, onSelected = { actions(StoriesAction.SelectFeed(it)) })
     PullToRefreshBox(
-      state = pullRefreshState,
-      modifier = Modifier
+      state = pullRefreshState, modifier = Modifier
         .fillMaxWidth()
-        .weight(1f),
-      onRefresh = {
+        .weight(1f), onRefresh = {
         actions(StoriesAction.RefreshItems)
-      },
-      isRefreshing = state.loading == LoadingState.Refreshing
+      }, isRefreshing = state.loading == LoadingState.Refreshing
     ) {
       LazyColumn(state = listState) {
+        if (state.loading == LoadingState.Error) {
+          item {
+            FeedErrorCard(modifier = Modifier.animateItem()) {
+              actions(StoriesAction.LoadItems)
+            }
+          }
+        }
         items(state.stories) { item ->
           StoryRow(
             modifier = Modifier.animateItem(),
@@ -153,35 +160,30 @@ fun StoriesScreen(
 @Composable
 private fun StoriesScreenPreview() {
   HackerNewsTheme {
-    StoriesScreen(
-      modifier = Modifier.fillMaxSize(),
-      state = StoriesState(
-        stories = listOf(
-          StoryItem.Content(
-            id = 1L,
-            title = "Hello There",
-            author = "heyrikin",
-            score = 10,
-            commentCount = 0,
-            epochTimestamp = 100L,
-            timeLabel = "2h ago",
-            url = ""
-          ),
-          StoryItem.Content(
-            id = 1L,
-            title = "Hello There",
-            author = "heyrikin",
-            score = 10,
-            commentCount = 0,
-            epochTimestamp = 100L,
-            timeLabel = "2h ago",
-            url = ""
-          ),
-        )
-      ),
-      actions = {},
-      navigation = {}
-    )
+    StoriesScreen(modifier = Modifier.fillMaxSize(), state = StoriesState(
+      stories = listOf(
+        StoryItem.Content(
+          id = 1L,
+          title = "Hello There",
+          author = "heyrikin",
+          score = 10,
+          commentCount = 0,
+          epochTimestamp = 100L,
+          timeLabel = "2h ago",
+          url = ""
+        ),
+        StoryItem.Content(
+          id = 1L,
+          title = "Hello There",
+          author = "heyrikin",
+          score = 10,
+          commentCount = 0,
+          epochTimestamp = 100L,
+          timeLabel = "2h ago",
+          url = ""
+        ),
+      )
+    ), actions = {}, navigation = {})
   }
 }
 
@@ -201,55 +203,47 @@ fun StoryRow(
           80f
         } else {
           0f
-        },
-        animationSpec = spring(
+        }, animationSpec = spring(
           dampingRatio = if (item.bookmarked) {
             Spring.DampingRatioMediumBouncy
           } else {
             Spring.DampingRatioNoBouncy
-          },
-          stiffness = Spring.StiffnessLow
-        ),
-        label = "Bookmark Height"
+          }, stiffness = Spring.StiffnessLow
+        ), label = "Bookmark Height"
       )
-      Row(
-        modifier = modifier
-          .fillMaxWidth()
-          .heightIn(min = 80.dp)
-          .background(color = MaterialTheme.colorScheme.background)
-          .clip(shape = RectangleShape)
-          .drawWithContent {
-            drawContent()
-            val startX = size.width * 0.75f
-            val startY = 0f
-            val bookmarkWidth = 50f
+      Row(modifier = modifier
+        .fillMaxWidth()
+        .heightIn(min = 80.dp)
+        .background(color = MaterialTheme.colorScheme.background)
+        .clip(shape = RectangleShape)
+        .drawWithContent {
+          drawContent()
+          val startX = size.width * 0.75f
+          val startY = 0f
+          val bookmarkWidth = 50f
 
-            val path = Path().apply {
-              moveTo(startX, startY)
-              lineTo(startX, startY + bookmarkHeight)
-              lineTo(startX + bookmarkWidth / 2f, startY + bookmarkHeight * 0.75f)
-              lineTo(startX + bookmarkWidth, startY + bookmarkHeight)
-              lineTo(startX + bookmarkWidth, startY)
-            }
-
-            drawPath(
-              path,
-              color = HackerOrange,
-            )
+          val path = Path().apply {
+            moveTo(startX, startY)
+            lineTo(startX, startY + bookmarkHeight)
+            lineTo(startX + bookmarkWidth / 2f, startY + bookmarkHeight * 0.75f)
+            lineTo(startX + bookmarkWidth, startY + bookmarkHeight)
+            lineTo(startX + bookmarkWidth, startY)
           }
-          .combinedClickable(
-            onClick = {
-              onClick(item)
-            },
-            onLongClick = {
-              onBookmark(item)
-            }
+
+          drawPath(
+            path,
+            color = HackerOrange,
           )
-          .padding(8.dp),
+        }
+        .combinedClickable(onClick = {
+          onClick(item)
+        }, onLongClick = {
+          onBookmark(item)
+        })
+        .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(
-          16.dp,
-          alignment = Alignment.CenterHorizontally
+          16.dp, alignment = Alignment.CenterHorizontally
         )
       ) {
         Column(
@@ -327,8 +321,7 @@ fun StoryRow(
           .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(
-          16.dp,
-          alignment = Alignment.CenterHorizontally
+          16.dp, alignment = Alignment.CenterHorizontally
         )
       ) {
         Column(
@@ -412,6 +405,51 @@ private fun StoryRowLoadingPreview() {
   }
 }
 
+@Composable
+fun FeedErrorCard(modifier: Modifier = Modifier, onRefresh: () -> Unit) {
+  Column(
+    modifier = modifier
+      .fillMaxWidth()
+      .height(200.dp)
+      .background(color = MaterialTheme.colorScheme.background),
+    verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
+    horizontalAlignment = Alignment.CenterHorizontally
+  ) {
+    Icon(
+      imageVector = Icons.Rounded.Warning,
+      tint = HackerRed,
+      contentDescription = "Failed to Load",
+    )
+
+    Text(
+      text = "Failed to Load Feed",
+      style = MaterialTheme.typography.titleSmall,
+      color = MaterialTheme.colorScheme.onBackground
+    )
+
+    Button(
+      colors = ButtonDefaults.buttonColors(
+        containerColor = HackerRed,
+        contentColor = Color.White
+      ),
+      onClick = { onRefresh() }) {
+      Icon(
+        imageVector = Icons.Rounded.Refresh,
+        contentDescription = "Reload Feed"
+      )
+    }
+  }
+}
+
+@PreviewLightDark
+@Composable
+fun FeedErrorCardPreview() {
+  HackerNewsTheme {
+    FeedErrorCard(
+      onRefresh = {}
+    )
+  }
+}
 
 @Composable
 private fun FeedSelection(
@@ -421,35 +459,31 @@ private fun FeedSelection(
 ) {
   val selectedTab = remember(feedType) { feedType.ordinal }
 
-  TabRow(
-    selectedTabIndex = selectedTab,
+  TabRow(selectedTabIndex = selectedTab,
     modifier = modifier.wrapContentWidth(),
     containerColor = MaterialTheme.colorScheme.background,
     contentColor = MaterialTheme.colorScheme.onBackground,
     indicator = { tabPositions ->
       if (selectedTab < tabPositions.size) {
-        Box(
-          modifier = Modifier
-            .tabIndicatorOffset(tabPositions[selectedTab])
-            .height(2.dp)
-            .drawBehind {
-              val barWidth = size.width * 0.33f
-              val start = size.center.x - barWidth / 2f
-              val end = size.center.x + barWidth / 2f
-              val bottom = size.height - 16f
-              drawLine(
-                start = Offset(start, bottom),
-                end = Offset(end, bottom),
-                color = HackerOrange,
-                strokeWidth = 4f,
-                cap = StrokeCap.Round,
-              )
-            }
-        )
+        Box(modifier = Modifier
+          .tabIndicatorOffset(tabPositions[selectedTab])
+          .height(2.dp)
+          .drawBehind {
+            val barWidth = size.width * 0.33f
+            val start = size.center.x - barWidth / 2f
+            val end = size.center.x + barWidth / 2f
+            val bottom = size.height - 16f
+            drawLine(
+              start = Offset(start, bottom),
+              end = Offset(end, bottom),
+              color = HackerOrange,
+              strokeWidth = 4f,
+              cap = StrokeCap.Round,
+            )
+          })
       }
     },
-    divider = {}
-  ) {
+    divider = {}) {
     FeedType.entries.forEach { feedType ->
       Text(
         modifier = Modifier
@@ -457,8 +491,7 @@ private fun FeedSelection(
           .padding(8.dp)
           .clickable(
             indication = null,
-            interactionSource = remember { MutableInteractionSource() }
-          ) {
+            interactionSource = remember { MutableInteractionSource() }) {
             onSelected(feedType)
           },
         textAlign = TextAlign.Center,
@@ -473,9 +506,6 @@ private fun FeedSelection(
 @Composable
 private fun FeedSelectionPreview() {
   HackerNewsTheme {
-    FeedSelection(
-      feedType = FeedType.Top,
-      onSelected = {}
-    )
+    FeedSelection(feedType = FeedType.Top, onSelected = {})
   }
 }
