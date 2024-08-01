@@ -15,10 +15,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HackerNews"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="io.sentry.dsn"
+            android:value="https://db2524adf3fee320562f372d15f98098@o497846.ingest.us.sentry.io/4506028523388928" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.HackerNews">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
