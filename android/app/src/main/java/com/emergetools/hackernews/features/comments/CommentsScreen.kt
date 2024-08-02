@@ -26,6 +26,8 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ThumbUp
+import androidx.compose.material.icons.rounded.DateRange
+import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material.icons.rounded.ThumbUp
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -50,9 +52,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.emergetools.hackernews.R
+import com.emergetools.hackernews.features.stories.MetadataTag
+import com.emergetools.hackernews.ui.theme.HackerBlue
 import com.emergetools.hackernews.ui.theme.HackerGreen
 import com.emergetools.hackernews.ui.theme.HackerNewsTheme
 import com.emergetools.hackernews.ui.theme.HackerOrange
+import com.emergetools.hackernews.ui.theme.HackerRed
 
 @Composable
 fun CommentsScreen(
@@ -173,7 +178,8 @@ private fun CommentsScreenPreview() {
         title = "Show HN: A new HN client for Android",
         author = "rikinm",
         points = 69,
-        body = null,
+        timeLabel = "2h ago",
+        body = "Hello There",
         loggedIn = false,
         upvoted = false,
         upvoteUrl = "",
@@ -246,15 +252,10 @@ fun CommentRow(
           verticalAlignment = Alignment.CenterVertically
         ) {
           Text(
-            text = state.author,
+            text = "@${state.author}",
             style = MaterialTheme.typography.labelSmall,
             color = HackerOrange,
-            fontWeight = FontWeight.Medium
-          )
-          Text(
-            text = "•",
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurface
+            fontWeight = FontWeight.Bold
           )
           Text(
             text = state.timeLabel,
@@ -294,6 +295,7 @@ fun CommentRow(
           Text(
             text = state.content.parseAsHtml(),
             style = MaterialTheme.typography.labelSmall,
+            fontWeight = FontWeight.Normal,
             color = MaterialTheme.colorScheme.onSurface,
           )
         }
@@ -411,74 +413,73 @@ fun ItemHeader(
     modifier = modifier
       .background(color = MaterialTheme.colorScheme.background)
       .padding(8.dp),
-    verticalArrangement = Arrangement.spacedBy(16.dp)
+    verticalArrangement = Arrangement.spacedBy(8.dp)
   ) {
     when (state) {
       is HeaderState.Content -> {
+        Text(
+          text = "@${state.author}",
+          color = HackerOrange,
+          style = MaterialTheme.typography.labelSmall,
+          fontWeight = FontWeight.Bold
+        )
         Text(
           text = state.title,
           color = MaterialTheme.colorScheme.onSurface,
           style = MaterialTheme.typography.titleSmall
         )
-        if (state.body != null) {
-          Text(
-            text = state.body.parseAsHtml(),
-            color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.labelSmall,
-          )
-        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
         Row(
           modifier = Modifier.fillMaxWidth(),
           horizontalArrangement = Arrangement.spacedBy(4.dp),
           verticalAlignment = Alignment.CenterVertically
         ) {
-          Row(
-            modifier = Modifier
-              .wrapContentSize()
-              .clip(CircleShape)
-              .background(
-                color = if (state.upvoted) {
-                  HackerGreen.copy(alpha = 0.2f)
-                } else {
-                  MaterialTheme.colorScheme.surfaceContainerHighest
-                }
-              )
-              .padding(horizontal = 8.dp, vertical = 4.dp)
-              .clickable { onLikeTapped(state) },
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(4.dp)
+          MetadataTag(
+            label = "${state.points}",
+            contentColor = if (state.upvoted) {
+              HackerGreen
+            } else {
+              MaterialTheme.colorScheme.onSurface
+            },
+            onClick = { onLikeTapped(state) }
           ) {
             Icon(
               modifier = Modifier.size(12.dp),
-              imageVector = Icons.Rounded.ThumbUp,
-              tint = if (state.upvoted) {
-                HackerGreen
-              } else {
-                MaterialTheme.colorScheme.onSurface
-              },
-              contentDescription = "Upvote"
+              painter = painterResource(R.drawable.ic_upvote),
+              tint = HackerGreen,
+              contentDescription = "Upvotes"
             )
+          }
+          MetadataTag(label = state.timeLabel) {
+            Icon(
+              modifier = Modifier.size(12.dp),
+              painter = painterResource(R.drawable.ic_time),
+              tint = HackerRed,
+              contentDescription = "Time Posted"
+            )
+          }
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        if (state.body != null) {
+          Box(
+            Modifier
+              .fillMaxWidth()
+              .heightIn(min = 44.dp)
+              .clip(RoundedCornerShape(8.dp))
+              .background(color = MaterialTheme.colorScheme.surface)
+              .padding(8.dp),
+            contentAlignment = Alignment.CenterStart
+          ) {
             Text(
-              text = "${state.points}",
-              color = if (state.upvoted) {
-                HackerGreen
-              } else {
-                MaterialTheme.colorScheme.onSurface
-              },
+              text = state.body.parseAsHtml(),
+              color = MaterialTheme.colorScheme.onBackground,
               style = MaterialTheme.typography.labelSmall
             )
           }
-          Text(
-            text = "•",
-            color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.labelSmall
-          )
-          Text(
-            text = state.author,
-            color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.labelSmall,
-            fontWeight = FontWeight.Medium
-          )
         }
       }
 
@@ -554,6 +555,7 @@ private fun ItemHeaderPreview() {
         title = "Show HN: A super neat HN client for Android",
         author = "rikinm",
         points = 69,
+        timeLabel = "2h ago",
         body = "Hi there",
         upvoted = false,
         upvoteUrl = "",

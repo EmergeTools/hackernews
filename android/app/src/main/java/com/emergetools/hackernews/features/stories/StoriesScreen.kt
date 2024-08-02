@@ -29,8 +29,8 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.DateRange
-import androidx.compose.material.icons.rounded.ThumbUp
 import androidx.compose.material.icons.rounded.Refresh
+import androidx.compose.material.icons.rounded.ThumbUp
 import androidx.compose.material.icons.rounded.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -65,6 +65,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.emergetools.hackernews.R
 import com.emergetools.hackernews.features.comments.CommentsDestinations
@@ -124,10 +125,11 @@ fun StoriesScreen(
         contentPadding = PaddingValues(horizontal = 4.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp)
       ) {
-      if (state.loading == LoadingState.Error) {
-        item {
-          FeedErrorCard(modifier = Modifier.animateItem()) {
-            actions(StoriesAction.LoadItems)
+        if (state.loading == LoadingState.Error) {
+          item {
+            FeedErrorCard(modifier = Modifier.animateItem()) {
+              actions(StoriesAction.LoadItems)
+            }
           }
         }
         items(state.stories) { item ->
@@ -233,13 +235,13 @@ fun StoryRow(
             val startY = 0f
             val bookmarkWidth = 50f
 
-          val path = Path().apply {
-            moveTo(startX, startY)
-            lineTo(startX, startY + bookmarkHeight)
-            lineTo(startX + bookmarkWidth / 2f, startY + bookmarkHeight * 0.75f)
-            lineTo(startX + bookmarkWidth, startY + bookmarkHeight)
-            lineTo(startX + bookmarkWidth, startY)
-          }
+            val path = Path().apply {
+              moveTo(startX, startY)
+              lineTo(startX, startY + bookmarkHeight)
+              lineTo(startX + bookmarkWidth / 2f, startY + bookmarkHeight * 0.75f)
+              lineTo(startX + bookmarkWidth, startY + bookmarkHeight)
+              lineTo(startX + bookmarkWidth, startY)
+            }
 
             drawPath(
               path,
@@ -340,7 +342,9 @@ fun StoryRow(
             .clip(RoundedCornerShape(4.dp))
             .background(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f))
         )
+
         ListSeparator(lineColor = MaterialTheme.colorScheme.surfaceContainerHighest)
+
         Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
           Row(
             modifier = Modifier
@@ -413,10 +417,13 @@ fun StoryRow(
 }
 
 @Composable
-fun ListSeparator(lineColor: Color) {
+fun ListSeparator(
+  lineColor: Color,
+  space: Dp = 8.dp
+) {
   Spacer(modifier = Modifier
     .fillMaxWidth()
-    .height(8.dp)
+    .height(space)
     .drawBehind {
       val center = size.center
       val width = size.width

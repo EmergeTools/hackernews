@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.ZoneOffset
+import java.time.ZonedDateTime
 
 sealed interface CommentsState {
   val headerState: HeaderState
@@ -40,6 +41,7 @@ sealed interface CommentsState {
     val title: String,
     val author: String,
     val points: Int,
+    val timeLabel: String,
     val body: String?,
     val loggedIn: Boolean,
     val upvoted: Boolean,
@@ -53,6 +55,7 @@ sealed interface CommentsState {
       title = title,
       author = author,
       points = points,
+      timeLabel = timeLabel,
       body = body,
       upvoted = upvoted,
       upvoteUrl = upvoteUrl
@@ -104,6 +107,7 @@ sealed interface HeaderState {
     val title: String,
     val author: String,
     val points: Int,
+    val timeLabel: String,
     val body: String?,
     val upvoted: Boolean,
     val upvoteUrl: String,
@@ -179,6 +183,11 @@ class CommentsViewModel(
             title = searchResponse.item.title ?: "",
             author = searchResponse.item.author ?: "",
             points = searchResponse.item.points ?: 0,
+            timeLabel = relativeTimeStamp(
+              epochSeconds = ZonedDateTime
+                .parse(searchResponse.item.createdAt)
+                .toEpochSecond()
+            ),
             body = searchResponse.item.text,
             loggedIn = loggedIn,
             upvoted = postPage.postInfo.upvoted,
