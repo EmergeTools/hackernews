@@ -332,7 +332,7 @@ fun CommentRow(
               .background(color = MaterialTheme.colorScheme.onSurface.copy(alpha = skeletonAlpha))
           )
 
-          Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+          Row(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
             Box(
               modifier = Modifier
                 .size(12.dp)
@@ -541,14 +541,14 @@ fun ItemHeader(
               modifier = Modifier
                 .fillMaxWidth()
                 .height(18.dp)
-                .clip(RoundedCornerShape(4.dp))
+                .clip(RoundedCornerShape(6.dp))
                 .background(color = MaterialTheme.colorScheme.onBackground.copy(alpha = skeletonAlpha))
             )
             Box(
               modifier = Modifier
                 .fillMaxWidth(0.75f)
                 .height(18.dp)
-                .clip(RoundedCornerShape(4.dp))
+                .clip(RoundedCornerShape(6.dp))
                 .background(color = MaterialTheme.colorScheme.onBackground.copy(alpha = skeletonAlpha))
             )
           }
@@ -561,7 +561,7 @@ fun ItemHeader(
               .clip(RoundedCornerShape(4.dp))
               .background(HackerOrange.copy(alpha = skeletonAlpha))
           )
-          Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+          Row(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
             Box(
               modifier = Modifier
                 .size(12.dp)
@@ -581,7 +581,7 @@ fun ItemHeader(
               .clip(CircleShape)
               .background(MaterialTheme.colorScheme.onBackground.copy(alpha = 0.1f))
               .padding(vertical = 4.dp, horizontal = 8.dp),
-            horizontalArrangement = Arrangement.spacedBy(4.dp)
+            horizontalArrangement = Arrangement.spacedBy(2.dp)
           ) {
             Box(
               modifier = Modifier

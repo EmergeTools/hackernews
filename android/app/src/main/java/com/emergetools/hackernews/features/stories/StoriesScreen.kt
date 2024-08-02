@@ -365,7 +365,7 @@ fun StoryRow(
         ) {
           Row(
             modifier = Modifier.wrapContentSize(),
-            horizontalArrangement = Arrangement.spacedBy(4.dp)
+            horizontalArrangement = Arrangement.spacedBy(2.dp)
           ) {
             Box(
               modifier = Modifier
@@ -382,7 +382,7 @@ fun StoryRow(
           }
           Row(
             modifier = Modifier.wrapContentSize(),
-            horizontalArrangement = Arrangement.spacedBy(4.dp)
+            horizontalArrangement = Arrangement.spacedBy(2.dp)
           ) {
             Box(
               modifier = Modifier
@@ -404,7 +404,7 @@ fun StoryRow(
               .clip(CircleShape)
               .background(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f))
               .padding(vertical = 4.dp, horizontal = 8.dp),
-            horizontalArrangement = Arrangement.spacedBy(4.dp)
+            horizontalArrangement = Arrangement.spacedBy(2.dp)
           ) {
             Box(
               modifier = Modifier
