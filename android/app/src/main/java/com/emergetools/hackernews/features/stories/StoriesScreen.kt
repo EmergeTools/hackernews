@@ -166,7 +166,6 @@ fun StoriesScreen(
           if (index != state.stories.lastIndex) {
             ListSeparator(
               lineColor = MaterialTheme.colorScheme.surfaceContainerHighest,
-              space = 2.dp
             )
           }
         }
@@ -429,22 +428,12 @@ fun StoryRow(
 @Composable
 fun ListSeparator(
   lineColor: Color,
-  space: Dp = 8.dp
+  space: Dp = 0.5.dp
 ) {
   Spacer(modifier = Modifier
     .fillMaxWidth()
     .height(space)
-    .drawBehind {
-      val center = size.center
-      val width = size.width
-
-      drawLine(
-        color = lineColor,
-        start = Offset(0f, center.y),
-        end = Offset(width, center.y),
-        strokeWidth = 2f
-      )
-    })
+    .background(color = lineColor))
 }
 
 @Composable

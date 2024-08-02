@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.emergetools.hackernews.features.comments.CommentsDestinations
+import com.emergetools.hackernews.features.stories.ListSeparator
 import com.emergetools.hackernews.features.stories.StoriesDestinations
 import com.emergetools.hackernews.features.stories.StoryItem
 import com.emergetools.hackernews.features.stories.StoryRow
@@ -40,7 +42,7 @@ fun BookmarksScreen(
       style = MaterialTheme.typography.titleMedium
     )
     LazyColumn {
-      items(items = state.bookmarks, key = { it.id }) { item ->
+      itemsIndexed(items = state.bookmarks, key = {_, item -> item.id }) { index, item ->
         StoryRow(
           item = item,
           onClick = {
@@ -55,6 +57,11 @@ fun BookmarksScreen(
             navigator(BookmarksNavigation.GoToComments(CommentsDestinations.Comments(it.id)))
           }
         )
+        if(index != state.bookmarks.lastIndex) {
+          ListSeparator(
+            lineColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+          )
+        }
       }
     }
   }
