@@ -214,7 +214,7 @@ fun LoginCard(
               scaleY = iconScale
             }
             .size(12.dp),
-          imageVector = Icons.Rounded.ThumbUp,
+          painter = painterResource(R.drawable.ic_upvote),
           tint = likeColor,
           contentDescription = "Likes"
         )

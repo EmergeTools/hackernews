@@ -266,9 +266,9 @@ fun CommentRow(
           ) {
             Icon(
               modifier = Modifier.size(12.dp),
-              painter = painterResource(R.drawable.ic_time),
+              painter = painterResource(R.drawable.ic_time_outline),
               tint = MaterialTheme.colorScheme.onSurface,
-              contentDescription = "To,e"
+              contentDescription = "Time posted"
             )
           }
           Spacer(modifier = Modifier.weight(1f))
@@ -411,18 +411,7 @@ fun CommentRowPreview() {
           timeLabel = "2d ago",
           upvoted = false,
           upvoteUrl = "",
-          children = listOf(
-            CommentState.Content(
-              id = 2,
-              level = 1,
-              author = "vasantm",
-              content = "Hello Child",
-              timeLabel = "2h ago",
-              upvoted = false,
-              upvoteUrl = "",
-              children = listOf()
-            )
-          )
+          children = listOf()
         ),
         onLikeTapped = {}
       )
@@ -481,7 +470,7 @@ fun ItemHeader(
             MetadataTag(label = state.timeLabel) {
               Icon(
                 modifier = Modifier.size(12.dp),
-                painter = painterResource(R.drawable.ic_time),
+                painter = painterResource(R.drawable.ic_time_outline),
                 tint = HackerRed,
                 contentDescription = "Time Posted"
               )
@@ -509,7 +498,7 @@ fun ItemHeader(
           Box(
             Modifier
               .fillMaxWidth()
-              .heightIn(min = 44.dp)
+              .heightIn(min = 40.dp)
               .clip(RoundedCornerShape(8.dp))
               .background(color = MaterialTheme.colorScheme.surface)
               .padding(8.dp),
@@ -553,7 +542,10 @@ fun ItemHeader(
             )
           }
         }
-        Row(horizontalArrangement = Arrangement.spacedBy(4.dp), verticalAlignment = Alignment.CenterVertically) {
+        Row(
+          horizontalArrangement = Arrangement.spacedBy(4.dp),
+          verticalAlignment = Alignment.CenterVertically
+        ) {
           Box(
             modifier = Modifier
               .width(60.dp)
@@ -606,22 +598,28 @@ fun ItemHeader(
 @Composable
 private fun ItemHeaderPreview() {
   HackerNewsTheme {
-    ItemHeader(
-      state = HeaderState.Content(
-        id = 0L,
-        title = "Show HN: A super neat HN client for Android",
-        author = "rikinm",
-        points = 69,
-        timeLabel = "2h ago",
-        body = "Hi there",
-        upvoted = false,
-        upvoteUrl = "",
-      ),
+    Box(
       modifier = Modifier
-        .fillMaxWidth()
-        .wrapContentHeight(),
-      onLikeTapped = {}
-    )
+        .background(MaterialTheme.colorScheme.background)
+        .padding(8.dp)
+    ) {
+      ItemHeader(
+        state = HeaderState.Content(
+          id = 0L,
+          title = "Show HN: A super neat HN client for Android",
+          author = "rikinm",
+          points = 69,
+          timeLabel = "2h ago",
+          body = "Wassup HN. I just built a sick new Hacker News Android client",
+          upvoted = false,
+          upvoteUrl = "",
+        ),
+        modifier = Modifier
+          .fillMaxWidth()
+          .wrapContentHeight(),
+        onLikeTapped = {}
+      )
+    }
   }
 }
 
@@ -629,13 +627,19 @@ private fun ItemHeaderPreview() {
 @Composable
 private fun ItemHeaderLoadingPreview() {
   HackerNewsTheme {
-    ItemHeader(
-      state = HeaderState.Loading,
+    Box(
       modifier = Modifier
-        .fillMaxWidth()
-        .wrapContentHeight(),
-      onLikeTapped = {}
-    )
+        .background(MaterialTheme.colorScheme.background)
+        .padding(8.dp)
+    ) {
+      ItemHeader(
+        state = HeaderState.Loading,
+        modifier = Modifier
+          .fillMaxWidth()
+          .wrapContentHeight(),
+        onLikeTapped = {}
+      )
+    }
   }
 }
 

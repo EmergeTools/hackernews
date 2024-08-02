@@ -34,7 +34,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.DateRange
 import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.material.icons.rounded.Warning
 import androidx.compose.material3.Button
@@ -295,7 +294,7 @@ fun StoryRow(
           ) {
             Icon(
               modifier = Modifier.size(12.dp),
-              painter = painterResource(R.drawable.ic_time),
+              painter = painterResource(R.drawable.ic_time_outline),
               tint = HackerRed,
               contentDescription = "Likes"
             )
@@ -430,10 +429,12 @@ fun ListSeparator(
   lineColor: Color,
   space: Dp = 0.5.dp
 ) {
-  Spacer(modifier = Modifier
-    .fillMaxWidth()
-    .height(space)
-    .background(color = lineColor))
+  Spacer(
+    modifier = Modifier
+      .fillMaxWidth()
+      .height(space)
+      .background(color = lineColor)
+  )
 }
 
 @Composable
