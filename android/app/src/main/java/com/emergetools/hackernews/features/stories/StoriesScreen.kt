@@ -451,7 +451,7 @@ fun MetadataButton(
       .clickable { onClick() }
       .background(color = backgroundColor)
       .padding(vertical = 4.dp, horizontal = 8.dp),
-    horizontalArrangement = Arrangement.spacedBy(4.dp),
+    horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally),
     verticalAlignment = Alignment.CenterVertically
   ) {
     icon()
@@ -472,7 +472,7 @@ fun MetadataTag(
 ) {
   Row(
     modifier = Modifier.wrapContentSize(),
-    horizontalArrangement = Arrangement.spacedBy(2.dp),
+    horizontalArrangement = Arrangement.spacedBy(2.dp, Alignment.CenterHorizontally),
     verticalAlignment = Alignment.CenterVertically
   ) {
     icon()
