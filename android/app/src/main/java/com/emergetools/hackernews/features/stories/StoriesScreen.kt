@@ -1,8 +1,14 @@
 package com.emergetools.hackernews.features.stories
 
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -11,7 +17,6 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,13 +29,13 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.DateRange
 import androidx.compose.material.icons.rounded.Refresh
-import androidx.compose.material.icons.rounded.ThumbUp
 import androidx.compose.material.icons.rounded.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -120,11 +125,7 @@ fun StoriesScreen(
         actions(StoriesAction.RefreshItems)
       }, isRefreshing = state.loading == LoadingState.Refreshing
     ) {
-      LazyColumn(
-        state = listState,
-        contentPadding = PaddingValues(horizontal = 4.dp),
-        verticalArrangement = Arrangement.spacedBy(4.dp)
-      ) {
+      LazyColumn(state = listState) {
         if (state.loading == LoadingState.Error) {
           item {
             FeedErrorCard(modifier = Modifier.animateItem()) {
@@ -132,7 +133,7 @@ fun StoriesScreen(
             }
           }
         }
-        items(state.stories) { item ->
+        itemsIndexed(state.stories) { index, item ->
           StoryRow(
             modifier = Modifier.animateItem(),
             item = item,
@@ -162,6 +163,12 @@ fun StoriesScreen(
               )
             },
           )
+          if (index != state.stories.lastIndex) {
+            ListSeparator(
+              lineColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+              space = 2.dp
+            )
+          }
         }
       }
     }
@@ -227,8 +234,7 @@ fun StoryRow(
         modifier = modifier
           .fillMaxWidth()
           .heightIn(min = 100.dp)
-          .clip(shape = RoundedCornerShape(16.dp))
-          .background(color = MaterialTheme.colorScheme.surface)
+          .background(color = MaterialTheme.colorScheme.background)
           .drawWithContent {
             drawContent()
             val startX = size.width * 0.75f
@@ -248,65 +254,58 @@ fun StoryRow(
               color = HackerOrange,
             )
           }
-          .combinedClickable(
-            onClick = {
-              onClick(item)
-            },
-            onLongClick = {
-              onBookmark(item)
-            }
-          )
-          .padding(12.dp),
+          .combinedClickable(onClick = {
+            onClick(item)
+          }, onLongClick = {
+            onBookmark(item)
+          })
+          .padding(8.dp),
         verticalArrangement = Arrangement.spacedBy(
           space = 8.dp,
           alignment = Alignment.CenterVertically
         )
       ) {
-        Row(
-          verticalAlignment = Alignment.CenterVertically,
-          horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-          Text(
-            text = "@${item.author}",
-            color = HackerOrange,
-            style = MaterialTheme.typography.labelSmall,
-            fontWeight = FontWeight.Bold
-          )
-        }
+        Text(
+          text = "@${item.author}",
+          color = HackerOrange,
+          style = MaterialTheme.typography.labelSmall,
+          fontWeight = FontWeight.Bold
+        )
         Text(
           text = item.title,
           color = MaterialTheme.colorScheme.onSurface,
           style = MaterialTheme.typography.titleSmall
         )
-
-        ListSeparator(lineColor = MaterialTheme.colorScheme.surfaceContainerHighest)
-
-        Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+        Spacer(modifier = Modifier.height(0.dp))
+        Row(
+          horizontalArrangement = Arrangement.spacedBy(8.dp),
+          verticalAlignment = Alignment.CenterVertically
+        ) {
           MetadataTag(
             label = "${item.score}",
-          ) { tintColor ->
+          ) {
             Icon(
               modifier = Modifier.size(12.dp),
-              imageVector = Icons.Rounded.ThumbUp,
+              painter = painterResource(R.drawable.ic_upvote),
               tint = HackerGreen,
               contentDescription = "Likes"
             )
           }
           MetadataTag(
             label = item.timeLabel,
-          ) { tintColor ->
+          ) {
             Icon(
               modifier = Modifier.size(12.dp),
-              imageVector = Icons.Rounded.DateRange,
+              painter = painterResource(R.drawable.ic_time),
               tint = HackerRed,
               contentDescription = "Likes"
             )
           }
           Spacer(modifier = Modifier.weight(1f))
-          MetadataTag(
+          MetadataButton(
             label = "${item.commentCount}",
             onClick = { onCommentClicked(item) }
-          ) { tintColor ->
+          ) {
             Icon(
               modifier = Modifier.size(12.dp),
               painter = painterResource(R.drawable.ic_chat),
@@ -319,95 +318,106 @@ fun StoryRow(
     }
 
     is StoryItem.Loading -> {
+      val infiniteTransition = rememberInfiniteTransition("Skeleton")
+      val skeletonAlpha by infiniteTransition.animateFloat(
+        initialValue = 0.2f,
+        targetValue = 0.6f,
+        animationSpec = infiniteRepeatable(
+          animation = tween(durationMillis = 1000, easing = LinearEasing),
+          repeatMode = RepeatMode.Reverse,
+        ),
+        label = "Skeleton Alpha"
+      )
       Column(
         modifier = modifier
           .fillMaxWidth()
-          .height(100.dp)
-          .clip(shape = RoundedCornerShape(16.dp))
-          .background(color = MaterialTheme.colorScheme.surface)
-          .padding(12.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+          .heightIn(min = 100.dp)
+          .background(color = MaterialTheme.colorScheme.background)
+          .padding(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically)
       ) {
         Box(
           modifier = Modifier
             .fillMaxWidth(0.15f)
             .height(12.dp)
             .clip(RoundedCornerShape(4.dp))
-            .background(color = HackerOrange.copy(alpha = 0.5f))
+            .background(color = HackerOrange.copy(alpha = skeletonAlpha))
         )
-        Box(
-          modifier = Modifier
-            .fillMaxWidth(0.5f)
-            .height(12.dp)
-            .clip(RoundedCornerShape(4.dp))
-            .background(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f))
-        )
-
-        ListSeparator(lineColor = MaterialTheme.colorScheme.surfaceContainerHighest)
-
-        Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-          Row(
+        Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+          Box(
             modifier = Modifier
-              .wrapContentSize()
-              .clip(RoundedCornerShape(8.dp))
-              .background(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f))
-              .padding(4.dp),
+              .fillMaxWidth(0.75f)
+              .height(12.dp)
+              .clip(RoundedCornerShape(4.dp))
+              .background(color = MaterialTheme.colorScheme.onSurface.copy(alpha = skeletonAlpha))
+          )
+          Box(
+            modifier = Modifier
+              .fillMaxWidth(0.5f)
+              .height(12.dp)
+              .clip(RoundedCornerShape(4.dp))
+              .background(color = MaterialTheme.colorScheme.onSurface.copy(alpha = skeletonAlpha))
+          )
+        }
+        Spacer(modifier = Modifier.height(0.dp))
+        Row(
+          horizontalArrangement = Arrangement.spacedBy(8.dp),
+          verticalAlignment = Alignment.CenterVertically
+        ) {
+          Row(
+            modifier = Modifier.wrapContentSize(),
             horizontalArrangement = Arrangement.spacedBy(4.dp)
           ) {
             Box(
               modifier = Modifier
                 .size(12.dp)
                 .clip(RoundedCornerShape(4.dp))
-                .background(color = HackerGreen.copy(alpha = 0.5f))
+                .background(color = HackerGreen.copy(alpha = skeletonAlpha))
             )
             Box(
               modifier = Modifier
                 .size(12.dp)
                 .clip(RoundedCornerShape(4.dp))
-                .background(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f))
+                .background(color = MaterialTheme.colorScheme.onSurface.copy(alpha = skeletonAlpha))
             )
           }
           Row(
-            modifier = Modifier
-              .wrapContentSize()
-              .clip(RoundedCornerShape(8.dp))
-              .background(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f))
-              .padding(4.dp),
+            modifier = Modifier.wrapContentSize(),
             horizontalArrangement = Arrangement.spacedBy(4.dp)
           ) {
             Box(
               modifier = Modifier
                 .size(12.dp)
                 .clip(RoundedCornerShape(4.dp))
-                .background(color = HackerRed.copy(alpha = 0.5f))
+                .background(color = HackerRed.copy(alpha = skeletonAlpha))
             )
             Box(
               modifier = Modifier
                 .size(12.dp)
                 .clip(RoundedCornerShape(4.dp))
-                .background(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f))
+                .background(color = MaterialTheme.colorScheme.onSurface.copy(alpha = skeletonAlpha))
             )
           }
           Spacer(modifier = Modifier.weight(1f))
           Row(
             modifier = Modifier
               .wrapContentSize()
-              .clip(RoundedCornerShape(8.dp))
+              .clip(CircleShape)
               .background(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f))
-              .padding(4.dp),
+              .padding(vertical = 4.dp, horizontal = 8.dp),
             horizontalArrangement = Arrangement.spacedBy(4.dp)
           ) {
             Box(
               modifier = Modifier
                 .size(12.dp)
                 .clip(RoundedCornerShape(4.dp))
-                .background(color = HackerBlue.copy(alpha = 0.5f))
+                .background(color = HackerBlue.copy(alpha = skeletonAlpha))
             )
             Box(
               modifier = Modifier
                 .size(12.dp)
                 .clip(RoundedCornerShape(4.dp))
-                .background(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f))
+                .background(color = MaterialTheme.colorScheme.onSurface.copy(alpha = skeletonAlpha))
             )
           }
         }
@@ -438,23 +448,45 @@ fun ListSeparator(
 }
 
 @Composable
-fun MetadataTag(
+fun MetadataButton(
   label: String,
   contentColor: Color = MaterialTheme.colorScheme.onSurface,
+  backgroundColor: Color = contentColor.copy(alpha = 0.1f),
   onClick: () -> Unit = {},
-  icon: @Composable (tintColor: Color) -> Unit,
+  icon: @Composable () -> Unit,
 ) {
   Row(
     modifier = Modifier
       .wrapContentSize()
-      .clip(RoundedCornerShape(8.dp))
+      .clip(CircleShape)
       .clickable { onClick() }
-      .background(color = contentColor.copy(alpha = 0.1f))
+      .background(color = backgroundColor)
       .padding(vertical = 4.dp, horizontal = 8.dp),
     horizontalArrangement = Arrangement.spacedBy(4.dp),
     verticalAlignment = Alignment.CenterVertically
   ) {
-    icon(contentColor)
+    icon()
+    Text(
+      text = label,
+      style = MaterialTheme.typography.labelSmall,
+      fontWeight = FontWeight.Medium,
+      color = contentColor
+    )
+  }
+}
+
+@Composable
+fun MetadataTag(
+  label: String,
+  contentColor: Color = MaterialTheme.colorScheme.onSurface,
+  icon: @Composable () -> Unit
+) {
+  Row(
+    modifier = Modifier.wrapContentSize(),
+    horizontalArrangement = Arrangement.spacedBy(2.dp),
+    verticalAlignment = Alignment.CenterVertically
+  ) {
+    icon()
     Text(
       text = label,
       style = MaterialTheme.typography.labelSmall,
@@ -584,8 +616,7 @@ private fun FeedSelection(
         modifier = Modifier
           .fillMaxWidth()
           .padding(8.dp)
-          .clickable(
-            indication = null,
+          .clickable(indication = null,
             interactionSource = remember { MutableInteractionSource() }) {
             onSelected(feedType)
           },

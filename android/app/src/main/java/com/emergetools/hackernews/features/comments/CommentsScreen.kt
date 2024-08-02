@@ -26,9 +26,6 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ThumbUp
-import androidx.compose.material.icons.rounded.DateRange
-import androidx.compose.material.icons.rounded.PlayArrow
-import androidx.compose.material.icons.rounded.ThumbUp
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -52,8 +49,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.emergetools.hackernews.R
-import com.emergetools.hackernews.features.stories.MetadataTag
-import com.emergetools.hackernews.ui.theme.HackerBlue
+import com.emergetools.hackernews.features.stories.MetadataButton
 import com.emergetools.hackernews.ui.theme.HackerGreen
 import com.emergetools.hackernews.ui.theme.HackerNewsTheme
 import com.emergetools.hackernews.ui.theme.HackerOrange
@@ -429,14 +425,12 @@ fun ItemHeader(
           style = MaterialTheme.typography.titleSmall
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
-
         Row(
           modifier = Modifier.fillMaxWidth(),
           horizontalArrangement = Arrangement.spacedBy(4.dp),
           verticalAlignment = Alignment.CenterVertically
         ) {
-          MetadataTag(
+          MetadataButton(
             label = "${state.points}",
             contentColor = if (state.upvoted) {
               HackerGreen
@@ -452,7 +446,7 @@ fun ItemHeader(
               contentDescription = "Upvotes"
             )
           }
-          MetadataTag(label = state.timeLabel) {
+          MetadataButton(label = state.timeLabel) {
             Icon(
               modifier = Modifier.size(12.dp),
               painter = painterResource(R.drawable.ic_time),
@@ -462,7 +456,6 @@ fun ItemHeader(
           }
         }
 
-        Spacer(modifier = Modifier.height(8.dp))
 
         if (state.body != null) {
           Box(
