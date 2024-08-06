@@ -75,6 +75,7 @@ import com.emergetools.hackernews.ui.theme.HackerBlue
 import com.emergetools.hackernews.ui.theme.HackerGreen
 import com.emergetools.hackernews.ui.theme.HackerNewsTheme
 import com.emergetools.hackernews.ui.theme.HackerOrange
+import com.emergetools.hackernews.ui.theme.HackerPurple
 import com.emergetools.hackernews.ui.theme.HackerRed
 import com.emergetools.snapshots.annotations.EmergeAppStoreSnapshot
 
@@ -294,8 +295,8 @@ fun StoryRow(
             Icon(
               modifier = Modifier.size(12.dp),
               painter = painterResource(R.drawable.ic_time_outline),
-              tint = HackerRed,
-              contentDescription = "Likes"
+              tint = HackerPurple,
+              contentDescription = "Time Posted"
             )
           }
           Spacer(modifier = Modifier.weight(1f))
@@ -386,7 +387,7 @@ fun StoryRow(
               modifier = Modifier
                 .size(12.dp)
                 .clip(RoundedCornerShape(4.dp))
-                .background(color = HackerRed.copy(alpha = skeletonAlpha))
+                .background(color = HackerPurple.copy(alpha = skeletonAlpha))
             )
             Box(
               modifier = Modifier
