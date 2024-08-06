@@ -57,23 +57,28 @@ android {
   composeOptions {
     kotlinCompilerExtensionVersion = libs.versions.composeCompilerExtension.get()
   }
-  emerge {
-    snapshots {
-      tag.set("snapshot")
-    }
-
-    vcs {
-      gitHub {
-        repoName.set("hackernews")
-        repoOwner.set("EmergeTools")
-      }
-    }
-  }
   packaging {
     resources {
       excludes += "/META-INF/{AL2.0,LGPL2.1}"
     }
   }
+}
+
+emerge {
+  snapshots {
+    tag.set("snapshot")
+  }
+
+  vcs {
+    gitHub {
+      repoName.set("hackernews")
+      repoOwner.set("EmergeTools")
+    }
+  }
+}
+
+sentry {
+  org.set("emerge-tools")
 }
 
 dependencies {
