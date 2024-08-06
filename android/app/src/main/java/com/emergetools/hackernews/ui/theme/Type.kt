@@ -14,6 +14,10 @@ val plex = FontFamily(
   Font(resId = R.font.ibm_plex_sans_bold, weight = FontWeight.Bold),
 )
 
+val unbounded = FontFamily(
+  Font(resId = R.font.unbounded, weight = FontWeight.Normal)
+)
+
 val Typography = Typography(
   titleSmall = TextStyle(
     fontFamily = plex,
