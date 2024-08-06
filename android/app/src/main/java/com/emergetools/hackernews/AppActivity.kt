@@ -79,7 +79,7 @@ fun App() {
             selected = navItem.selected,
             colors = NavigationBarItemDefaults.colors(
               selectedIconColor = MaterialTheme.colorScheme.primary,
-              indicatorColor = MaterialTheme.colorScheme.primaryContainer
+              indicatorColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
             ),
             onClick = {
               model.actions(AppAction.NavItemSelected(navItem))

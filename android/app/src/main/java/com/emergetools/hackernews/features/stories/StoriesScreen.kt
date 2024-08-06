@@ -1,8 +1,14 @@
 package com.emergetools.hackernews.features.stories
 
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -12,19 +18,20 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Refresh
@@ -53,19 +60,19 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.center
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.emergetools.hackernews.R
 import com.emergetools.hackernews.features.comments.CommentsDestinations
 import com.emergetools.hackernews.ui.preview.AppStoreSnapshot
+import com.emergetools.hackernews.ui.theme.HackerBlue
+import com.emergetools.hackernews.ui.theme.HackerGreen
 import com.emergetools.hackernews.ui.theme.HackerNewsTheme
 import com.emergetools.hackernews.ui.theme.HackerOrange
 import com.emergetools.hackernews.ui.theme.HackerRed
@@ -124,7 +131,7 @@ fun StoriesScreen(
             }
           }
         }
-        items(state.stories) { item ->
+        itemsIndexed(state.stories) { index, item ->
           StoryRow(
             modifier = Modifier.animateItem(),
             item = item,
@@ -154,6 +161,11 @@ fun StoriesScreen(
               )
             },
           )
+          if (index != state.stories.lastIndex) {
+            ListSeparator(
+              lineColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+            )
+          }
         }
       }
     }
@@ -215,161 +227,261 @@ fun StoryRow(
           }, stiffness = Spring.StiffnessLow
         ), label = "Bookmark Height"
       )
-      Row(modifier = modifier
-        .fillMaxWidth()
-        .heightIn(min = 80.dp)
-        .background(color = MaterialTheme.colorScheme.background)
-        .clip(shape = RectangleShape)
-        .drawWithContent {
-          drawContent()
-          val startX = size.width * 0.75f
-          val startY = 0f
-          val bookmarkWidth = 50f
+      Column(
+        modifier = modifier
+          .fillMaxWidth()
+          .heightIn(min = 100.dp)
+          .background(color = MaterialTheme.colorScheme.background)
+          .drawWithContent {
+            drawContent()
+            val startX = size.width * 0.75f
+            val startY = 0f
+            val bookmarkWidth = 50f
 
-          val path = Path().apply {
-            moveTo(startX, startY)
-            lineTo(startX, startY + bookmarkHeight)
-            lineTo(startX + bookmarkWidth / 2f, startY + bookmarkHeight * 0.75f)
-            lineTo(startX + bookmarkWidth, startY + bookmarkHeight)
-            lineTo(startX + bookmarkWidth, startY)
+            val path = Path().apply {
+              moveTo(startX, startY)
+              lineTo(startX, startY + bookmarkHeight)
+              lineTo(startX + bookmarkWidth / 2f, startY + bookmarkHeight * 0.75f)
+              lineTo(startX + bookmarkWidth, startY + bookmarkHeight)
+              lineTo(startX + bookmarkWidth, startY)
+            }
+
+            drawPath(
+              path,
+              color = HackerOrange,
+            )
           }
-
-          drawPath(
-            path,
-            color = HackerOrange,
-          )
-        }
-        .combinedClickable(onClick = {
-          onClick(item)
-        }, onLongClick = {
-          onBookmark(item)
-        })
-        .padding(8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(
-          16.dp, alignment = Alignment.CenterHorizontally
+          .combinedClickable(onClick = {
+            onClick(item)
+          }, onLongClick = {
+            onBookmark(item)
+          })
+          .padding(8.dp),
+        verticalArrangement = Arrangement.spacedBy(
+          space = 8.dp,
+          alignment = Alignment.CenterVertically
         )
       ) {
-        Column(
-          modifier = Modifier
-            .wrapContentHeight()
-            .weight(1f),
-          verticalArrangement = Arrangement.Center
+        Text(
+          text = "@${item.author}",
+          color = HackerOrange,
+          style = MaterialTheme.typography.labelSmall,
+          fontWeight = FontWeight.Bold
+        )
+        Text(
+          text = item.title,
+          color = MaterialTheme.colorScheme.onSurface,
+          style = MaterialTheme.typography.titleSmall
+        )
+        Spacer(modifier = Modifier.height(0.dp))
+        Row(
+          horizontalArrangement = Arrangement.spacedBy(8.dp),
+          verticalAlignment = Alignment.CenterVertically
         ) {
-          Text(
-            text = item.title,
-            color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.titleSmall
-          )
-          Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-            Text(
-              text = "${item.score}",
-              color = MaterialTheme.colorScheme.onSurface,
-              style = MaterialTheme.typography.labelSmall
-            )
-            Text(
-              text = "•",
-              color = MaterialTheme.colorScheme.onSurface,
-              style = MaterialTheme.typography.labelSmall
-            )
-            Text(
-              text = item.author,
-              color = HackerOrange,
-              style = MaterialTheme.typography.labelSmall,
-              fontWeight = FontWeight.Medium
-            )
-            Text(
-              text = "•",
-              color = MaterialTheme.colorScheme.onSurface,
-              style = MaterialTheme.typography.labelSmall
-            )
-            Text(
-              text = item.timeLabel,
-              color = MaterialTheme.colorScheme.onSurface,
-              style = MaterialTheme.typography.labelSmall
+          MetadataTag(
+            label = "${item.score}",
+          ) {
+            Icon(
+              modifier = Modifier.size(12.dp),
+              painter = painterResource(R.drawable.ic_upvote),
+              tint = HackerGreen,
+              contentDescription = "Likes"
             )
           }
-        }
-
-        Column(
-          modifier = Modifier
-            .padding(horizontal = 16.dp)
-            .clickable {
-              onCommentClicked(item)
-            },
-          verticalArrangement = Arrangement.Center,
-          horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-          Icon(
-            modifier = Modifier.size(20.dp),
-            painter = painterResource(R.drawable.ic_chat),
-            tint = MaterialTheme.colorScheme.onBackground,
-            contentDescription = ""
-          )
-          Text(
-            text = "${item.commentCount}",
-            color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.labelSmall,
-            fontWeight = FontWeight.Medium
-          )
+          MetadataTag(
+            label = item.timeLabel,
+          ) {
+            Icon(
+              modifier = Modifier.size(12.dp),
+              painter = painterResource(R.drawable.ic_time_outline),
+              tint = HackerRed,
+              contentDescription = "Likes"
+            )
+          }
+          Spacer(modifier = Modifier.weight(1f))
+          MetadataButton(
+            label = "${item.commentCount}",
+            onClick = { onCommentClicked(item) }
+          ) {
+            Icon(
+              modifier = Modifier.size(12.dp),
+              painter = painterResource(R.drawable.ic_chat),
+              tint = HackerBlue,
+              contentDescription = "Comments"
+            )
+          }
         }
       }
     }
 
     is StoryItem.Loading -> {
-      Row(
+      val infiniteTransition = rememberInfiniteTransition("Skeleton")
+      val skeletonAlpha by infiniteTransition.animateFloat(
+        initialValue = 0.2f,
+        targetValue = 0.6f,
+        animationSpec = infiniteRepeatable(
+          animation = tween(durationMillis = 1000, easing = LinearEasing),
+          repeatMode = RepeatMode.Reverse,
+        ),
+        label = "Skeleton Alpha"
+      )
+      Column(
         modifier = modifier
           .fillMaxWidth()
-          .heightIn(min = 80.dp)
+          .heightIn(min = 100.dp)
           .background(color = MaterialTheme.colorScheme.background)
           .padding(8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(
-          16.dp, alignment = Alignment.CenterHorizontally
-        )
+        verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically)
       ) {
-        Column(
+        Box(
           modifier = Modifier
-            .wrapContentHeight()
-            .weight(1f),
-          verticalArrangement = Arrangement.spacedBy(4.dp)
+            .fillMaxWidth(0.15f)
+            .height(12.dp)
+            .clip(RoundedCornerShape(4.dp))
+            .background(color = HackerOrange.copy(alpha = skeletonAlpha))
+        )
+        Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+          Box(
+            modifier = Modifier
+              .fillMaxWidth(0.75f)
+              .height(12.dp)
+              .clip(RoundedCornerShape(4.dp))
+              .background(color = MaterialTheme.colorScheme.onSurface.copy(alpha = skeletonAlpha))
+          )
+          Box(
+            modifier = Modifier
+              .fillMaxWidth(0.5f)
+              .height(12.dp)
+              .clip(RoundedCornerShape(4.dp))
+              .background(color = MaterialTheme.colorScheme.onSurface.copy(alpha = skeletonAlpha))
+          )
+        }
+        Spacer(modifier = Modifier.height(0.dp))
+        Row(
+          horizontalArrangement = Arrangement.spacedBy(8.dp),
+          verticalAlignment = Alignment.CenterVertically
         ) {
-          Box(
-            modifier = Modifier
-              .fillMaxWidth(0.8f)
-              .height(18.dp)
-              .clip(RoundedCornerShape(4.dp))
-              .background(color = Color.LightGray)
-          )
-          Box(
-            modifier = Modifier
-              .fillMaxWidth(0.45f)
-              .height(18.dp)
-              .clip(RoundedCornerShape(4.dp))
-              .background(color = Color.Gray)
-          )
           Row(
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
-            verticalAlignment = Alignment.CenterVertically
+            modifier = Modifier.wrapContentSize(),
+            horizontalArrangement = Arrangement.spacedBy(2.dp)
           ) {
             Box(
               modifier = Modifier
-                .width(30.dp)
-                .height(14.dp)
+                .size(12.dp)
                 .clip(RoundedCornerShape(4.dp))
-                .background(Color.DarkGray)
+                .background(color = HackerGreen.copy(alpha = skeletonAlpha))
             )
             Box(
               modifier = Modifier
-                .width(40.dp)
-                .height(14.dp)
+                .size(12.dp)
                 .clip(RoundedCornerShape(4.dp))
-                .background(HackerOrange)
+                .background(color = MaterialTheme.colorScheme.onSurface.copy(alpha = skeletonAlpha))
+            )
+          }
+          Row(
+            modifier = Modifier.wrapContentSize(),
+            horizontalArrangement = Arrangement.spacedBy(2.dp)
+          ) {
+            Box(
+              modifier = Modifier
+                .size(12.dp)
+                .clip(RoundedCornerShape(4.dp))
+                .background(color = HackerRed.copy(alpha = skeletonAlpha))
+            )
+            Box(
+              modifier = Modifier
+                .size(12.dp)
+                .clip(RoundedCornerShape(4.dp))
+                .background(color = MaterialTheme.colorScheme.onSurface.copy(alpha = skeletonAlpha))
+            )
+          }
+          Spacer(modifier = Modifier.weight(1f))
+          Row(
+            modifier = Modifier
+              .wrapContentSize()
+              .clip(CircleShape)
+              .background(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f))
+              .padding(vertical = 4.dp, horizontal = 8.dp),
+            horizontalArrangement = Arrangement.spacedBy(2.dp)
+          ) {
+            Box(
+              modifier = Modifier
+                .size(12.dp)
+                .clip(RoundedCornerShape(4.dp))
+                .background(color = HackerBlue.copy(alpha = skeletonAlpha))
+            )
+            Box(
+              modifier = Modifier
+                .size(12.dp)
+                .clip(RoundedCornerShape(4.dp))
+                .background(color = MaterialTheme.colorScheme.onSurface.copy(alpha = skeletonAlpha))
             )
           }
         }
       }
     }
+  }
+}
+
+@Composable
+fun ListSeparator(
+  lineColor: Color,
+  space: Dp = 0.5.dp
+) {
+  Spacer(
+    modifier = Modifier
+      .fillMaxWidth()
+      .height(space)
+      .background(color = lineColor)
+  )
+}
+
+@Composable
+fun MetadataButton(
+  label: String,
+  contentColor: Color = MaterialTheme.colorScheme.onSurface,
+  backgroundColor: Color = contentColor.copy(alpha = 0.1f),
+  onClick: () -> Unit = {},
+  icon: @Composable () -> Unit,
+) {
+  Row(
+    modifier = Modifier
+      .wrapContentSize()
+      .clip(CircleShape)
+      .clickable { onClick() }
+      .background(color = backgroundColor)
+      .padding(vertical = 4.dp, horizontal = 8.dp),
+    horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally),
+    verticalAlignment = Alignment.CenterVertically
+  ) {
+    icon()
+    Text(
+      text = label,
+      style = MaterialTheme.typography.labelSmall,
+      fontWeight = FontWeight.Medium,
+      color = contentColor
+    )
+  }
+}
+
+@Composable
+fun MetadataTag(
+  label: String,
+  contentColor: Color = MaterialTheme.colorScheme.onSurface,
+  icon: @Composable () -> Unit
+) {
+  Row(
+    modifier = Modifier.wrapContentSize(),
+    horizontalArrangement = Arrangement.spacedBy(2.dp, Alignment.CenterHorizontally),
+    verticalAlignment = Alignment.CenterVertically
+  ) {
+    icon()
+    Text(
+      text = label,
+      style = MaterialTheme.typography.labelSmall,
+      fontWeight = FontWeight.Medium,
+      color = contentColor
+    )
   }
 }
 
@@ -493,8 +605,7 @@ private fun FeedSelection(
         modifier = Modifier
           .fillMaxWidth()
           .padding(8.dp)
-          .clickable(
-            indication = null,
+          .clickable(indication = null,
             interactionSource = remember { MutableInteractionSource() }) {
             onSelected(feedType)
           },
