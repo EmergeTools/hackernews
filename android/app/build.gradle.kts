@@ -91,6 +91,7 @@ dependencies {
   implementation(libs.androidx.browser)
   implementation(libs.androidx.datastore)
 
+  implementation(libs.emerge.snapshots.annotations)
   implementation(libs.okhttp)
   implementation(libs.retrofit)
   implementation(libs.retrofit.kotlinx.serialization)
@@ -110,4 +111,5 @@ dependencies {
 
   debugImplementation(libs.androidx.ui.tooling)
   debugImplementation(libs.androidx.ui.test.manifest)
+
 }

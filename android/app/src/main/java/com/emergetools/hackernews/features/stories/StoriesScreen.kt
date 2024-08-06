@@ -59,13 +59,17 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.emergetools.hackernews.R
 import com.emergetools.hackernews.features.comments.CommentsDestinations
+import com.emergetools.hackernews.ui.preview.AppStoreSnapshot
 import com.emergetools.hackernews.ui.theme.HackerNewsTheme
 import com.emergetools.hackernews.ui.theme.HackerOrange
 import com.emergetools.hackernews.ui.theme.HackerRed
+import com.emergetools.snapshots.annotations.EmergeAppStoreSnapshot
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -507,5 +511,119 @@ private fun FeedSelection(
 private fun FeedSelectionPreview() {
   HackerNewsTheme {
     FeedSelection(feedType = FeedType.Top, onSelected = {})
+  }
+}
+
+@OptIn(EmergeAppStoreSnapshot::class)
+@AppStoreSnapshot
+@Composable
+private fun StoriesScreenAppStorePreview() {
+  val stories = listOf(
+    StoryItem.Content(
+      id = 1L,
+      title = "Launch HN: Airhart Aeronautics (YC S22) – A modern personal airplane",
+      author = "heyrikin",
+      score = 252,
+      commentCount = 229,
+      epochTimestamp = 100L,
+      timeLabel = "5h ago",
+      url = ""
+    ),
+    StoryItem.Content(
+      id = 2L,
+      title = "Can we stop the decline of monarch butterflies and other pollinators?",
+      author = "rbro112",
+      score = 40,
+      commentCount = 23,
+      epochTimestamp = 100L,
+      timeLabel = "2h ago",
+      url = ""
+    ),
+    StoryItem.Content(
+      id = 3L,
+      title = "Andy Warhol's lost Amiga art found",
+      author = "telkins",
+      score = 332,
+      commentCount = 103,
+      epochTimestamp = 100L,
+      timeLabel = "7h ago",
+      url = ""
+    ),
+    StoryItem.Content(
+      id = 4L,
+      title = "A new type of neural network is more interpretable",
+      author = "jshchnz",
+      score = 332,
+      commentCount = 37,
+      epochTimestamp = 100L,
+      timeLabel = "6h ago",
+      url = ""
+    ),
+    StoryItem.Content(
+      id = 5L,
+      title = "Below the Root: A story, a computer game and my lifelong obsession (2015)",
+      author = "sond813",
+      score = 29,
+      commentCount = 8,
+      epochTimestamp = 100L,
+      timeLabel = "2h ago",
+      url = ""
+    ),
+    StoryItem.Content(
+      id = 6L,
+      title = "Replacing Liquid Metal on an Asus Zephyrus G15's CPU",
+      author = "mptop27",
+      score = 19,
+      commentCount = 7,
+      epochTimestamp = 100L,
+      timeLabel = "2h ago",
+      url = ""
+    ),
+    StoryItem.Content(
+      id = 7L,
+      title = "Debugging a rustc segfault on Illumos",
+      author = "chromy",
+      score = 301,
+      commentCount = 74,
+      epochTimestamp = 100L,
+      timeLabel = "5h ago",
+      url = ""
+    ),
+    StoryItem.Content(
+      id = 8L,
+      title = "Google loses antitrust suit over search deals on phones",
+      author = "itaybre",
+      score = 537,
+      commentCount = 359,
+      epochTimestamp = 100L,
+      timeLabel = "3h ago",
+      url = ""
+    ),
+    StoryItem.Content(
+      id = 9L,
+      title = "It's lights out at a cosmic restaurant",
+      author = "nhinderling",
+      score = 142,
+      commentCount = 22,
+      epochTimestamp = 100L,
+      timeLabel = "4h ago",
+      url = ""
+    ),
+    StoryItem.Content(
+      id = 10L,
+      title = "Uncovered Euripides fragments are 'kind of a big deal'",
+      author = "sarahteng_",
+      score = 332,
+      commentCount = 46,
+      epochTimestamp = 100L,
+      timeLabel = "6h ago",
+      url = ""
+    ),
+  )
+
+  HackerNewsTheme {
+    StoriesScreen(modifier = Modifier.fillMaxSize(), state = StoriesState(
+      stories = stories
+    ), actions = {}, navigation = {})
   }
 }

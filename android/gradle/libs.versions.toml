@@ -52,6 +52,7 @@ kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-
 jsoup = { group = "org.jsoup", name = "jsoup", version.ref = "jsoup" }
 
 emerge-snapshots = { group = "com.emergetools.snapshots", name = "snapshots", version.ref = "emergeSnapshots" }
+emerge-snapshots-annotations = { group = "com.emergetools.snapshots", name = "snapshots-annotations", version.ref = "emergeSnapshots" }
 
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
