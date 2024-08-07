@@ -23,12 +23,12 @@ struct Hacker_NewsApp: App {
     
     SentrySDK.start { options in
         options.dsn = "https://118cff4b239bd3e0ede8fd74aad9bf8f@o497846.ingest.sentry.io/4506027753668608"
-        options.debug = true // Enabled debug when first installing is always helpful
+#if DEBUG
+        options.debug = true
+#else
+        options.debug = false
+#endif
         options.enableTracing = true
-
-        // Uncomment the following lines to add more data to your events
-        // options.attachScreenshot = true // This adds a screenshot to the error events
-        // options.attachViewHierarchy = true // This adds the view hierarchy to the error events
     }
   }
 
