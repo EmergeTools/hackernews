@@ -26,6 +26,7 @@ sealed interface SettingsNavigation {
   data object GoToLogin : SettingsNavigation {
     val login = LoginDestinations.Login
   }
+  data class GoToSettingsLink(val url: String) : SettingsNavigation
 }
 
 class SettingsViewModel(private val userStorage: UserStorage) : ViewModel() {
