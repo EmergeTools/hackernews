@@ -47,6 +47,7 @@ import androidx.compose.ui.geometry.center
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -121,9 +122,12 @@ fun CommentsScreen(
           }
         )
       }
-      items(items = state.comments) { comment ->
+      items(items = state.comments.filter { it.hidden != HiddenStatus.HiddenByParent }) { comment ->
         CommentRow(
           state = comment,
+          onToggleHide = {
+            actions(CommentsAction.ToggleHideComment(it.id))
+          },
           onLikeTapped = {
             if (state is CommentsState.Content && state.loggedIn) {
               actions(
@@ -235,21 +239,23 @@ private fun CommentsScreenLoadingPreview() {
 fun CommentRow(
   modifier: Modifier = Modifier,
   state: CommentState,
+  onToggleHide: (CommentState.Content) -> Unit,
   onLikeTapped: (CommentState.Content) -> Unit
 ) {
-  val startPadding = (state.level * 16).dp
-  Column(
-    modifier = modifier
-      .padding(start = startPadding)
-      .fillMaxWidth()
-      .heightIn(min = 80.dp)
-      .clip(RoundedCornerShape(8.dp))
-      .background(color = MaterialTheme.colorScheme.surface)
-      .padding(8.dp),
-    verticalArrangement = Arrangement.spacedBy(8.dp)
-  ) {
-    when (state) {
-      is CommentState.Content -> {
+  when (state) {
+    is CommentState.Content -> {
+      val startPadding = (state.level * 16).dp
+      Column(
+        modifier = modifier
+          .padding(start = startPadding)
+          .fillMaxWidth()
+          .wrapContentHeight()
+          .clip(RoundedCornerShape(8.dp))
+          .clickable { onToggleHide(state) }
+          .background(color = MaterialTheme.colorScheme.surface)
+          .padding(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+      ) {
         Row(
           modifier = Modifier.fillMaxWidth(),
           horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -268,9 +274,19 @@ fun CommentRow(
               modifier = Modifier.size(12.dp),
               painter = painterResource(R.drawable.ic_time_outline),
               tint = MaterialTheme.colorScheme.onSurface,
-              contentDescription = "Time posted"
+              contentDescription = "Time Posted"
             )
           }
+          Icon(
+            modifier = Modifier
+              .graphicsLayer {
+                rotationZ = if (state.hidden == HiddenStatus.Hidden) 180f else 0f
+              }
+              .size(12.dp),
+            painter = painterResource(R.drawable.ic_collapse),
+            tint = MaterialTheme.colorScheme.onSurface,
+            contentDescription = "Expand or Collapse"
+          )
           Spacer(modifier = Modifier.weight(1f))
           Box(
             modifier = Modifier
@@ -299,7 +315,7 @@ fun CommentRow(
             )
           }
         }
-        Row {
+        if (state.hidden == HiddenStatus.Displayed) {
           Text(
             text = state.content.parseAsHtml(),
             style = MaterialTheme.typography.labelSmall,
@@ -308,18 +324,28 @@ fun CommentRow(
           )
         }
       }
+    }
 
-      is CommentState.Loading -> {
-        val infiniteTransition = rememberInfiniteTransition("Skeleton")
-        val skeletonAlpha by infiniteTransition.animateFloat(
-          initialValue = 0.2f,
-          targetValue = 0.6f,
-          animationSpec = infiniteRepeatable(
-            animation = tween(durationMillis = 1000, easing = LinearEasing),
-            repeatMode = RepeatMode.Reverse,
-          ),
-          label = "Skeleton Alpha"
-        )
+    is CommentState.Loading -> {
+      val infiniteTransition = rememberInfiniteTransition("Skeleton")
+      val skeletonAlpha by infiniteTransition.animateFloat(
+        initialValue = 0.2f,
+        targetValue = 0.6f,
+        animationSpec = infiniteRepeatable(
+          animation = tween(durationMillis = 1000, easing = LinearEasing),
+          repeatMode = RepeatMode.Reverse,
+        ),
+        label = "Skeleton Alpha"
+      )
+      Column(
+        modifier = modifier
+          .fillMaxWidth()
+          .wrapContentHeight()
+          .clip(RoundedCornerShape(8.dp))
+          .background(color = MaterialTheme.colorScheme.surface)
+          .padding(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+      ) {
         Row(
           horizontalArrangement = Arrangement.spacedBy(8.dp),
           verticalAlignment = Alignment.CenterVertically
@@ -388,13 +414,6 @@ fun CommentRow(
       }
     }
   }
-  state.children.forEach { child ->
-    CommentRow(
-      modifier = modifier,
-      state = child,
-      onLikeTapped = onLikeTapped
-    )
-  }
 }
 
 @PreviewLightDark
@@ -413,6 +432,7 @@ fun CommentRowPreview() {
           upvoteUrl = "",
           children = listOf()
         ),
+        onToggleHide = {},
         onLikeTapped = {}
       )
     }
@@ -426,6 +446,7 @@ fun CommentRowLoadingPreview() {
     Column {
       CommentRow(
         state = CommentState.Loading(level = 0),
+        onToggleHide = {},
         onLikeTapped = {}
       )
     }

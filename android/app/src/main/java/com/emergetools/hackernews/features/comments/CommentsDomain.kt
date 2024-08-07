@@ -80,12 +80,34 @@ data class PostCommentState(
   val text: String,
 )
 
+enum class HiddenStatus {
+  Hidden,
+  HiddenByParent,
+  Displayed;
+
+  fun toggle(): HiddenStatus {
+    return when(this) {
+      Hidden, HiddenByParent -> Displayed
+      else -> Hidden
+    }
+  }
+
+  fun toggleChild(): HiddenStatus {
+    return when(this) {
+      Hidden, HiddenByParent -> Displayed
+      else -> HiddenByParent
+    }
+  }
+}
+
 sealed interface CommentState {
   val level: Int
   val children: List<CommentState>
+  val hidden: HiddenStatus
 
   data class Loading(override val level: Int) : CommentState {
     override val children: List<CommentState> = emptyList()
+    override val hidden: HiddenStatus = HiddenStatus.Displayed
   }
 
   data class Content(
@@ -96,6 +118,7 @@ sealed interface CommentState {
     val upvoted: Boolean,
     val upvoteUrl: String,
     override val children: List<CommentState>,
+    override val hidden: HiddenStatus = HiddenStatus.Displayed,
     override val level: Int = 0,
   ) : CommentState
 }
@@ -134,6 +157,8 @@ sealed interface CommentsAction {
     val hmac: String,
     val text: String
   ) : CommentsAction
+
+  data class ToggleHideComment(val id: Long) : CommentsAction
 }
 
 sealed interface CommentsNavigation {
@@ -263,6 +288,48 @@ class CommentsViewModel(
               comments = updatedComments.map { it.toCommentState() }
             )
           }
+        }
+      }
+
+      is CommentsAction.ToggleHideComment -> {
+        fun toggleComments(
+          parentId: Long,
+          comments: List<CommentState.Content>
+        ): List<CommentState.Content> {
+          val updates = mutableListOf<CommentState.Content>()
+
+          val parentIndex = comments.indexOfFirst { it.id == parentId }
+          val parentComment = comments[parentIndex]
+          updates.add(parentComment.copy(hidden = parentComment.hidden.toggle()))
+
+          val parentLevel = parentComment.level
+          var currentIndex = parentIndex + 1
+          while (currentIndex <= comments.lastIndex) {
+            val currentChild = comments[currentIndex]
+            if (currentChild.level <= parentLevel) {
+              break
+            }
+            updates.add(
+              currentChild.copy(
+                hidden = parentComment.hidden.toggleChild()
+              )
+            )
+            currentIndex++
+          }
+          return updates
+        }
+
+        val currentState = internalState.value
+        if (currentState is CommentsState.Content) {
+          val contentComments = currentState.comments.filterIsInstance<CommentState.Content>()
+          val updates = toggleComments(action.id, contentComments)
+          val updatedState = currentState.copy(
+            comments = contentComments.map { prev ->
+              updates.find { it.id == prev.id } ?: prev
+            }
+          )
+
+          internalState.compareAndSet(currentState, updatedState)
         }
       }
     }
