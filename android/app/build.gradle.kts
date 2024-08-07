@@ -79,6 +79,10 @@ emerge {
 
 sentry {
   org.set("emerge-tools")
+  projectName.set("hackernews-android")
+
+  // Don't upload source code to Sentry
+  includeSourceContext.set(false)
 }
 
 dependencies {
