@@ -4,15 +4,10 @@ import androidx.compose.ui.graphics.Color
 
 val HackerOrange = Color(0xFFF59342)
 val HackerOrangeLight = Color(0xFFFCE0C9)
-
 val HackerRed = Color(0xFFEF476F)
-val HackerRedLight = Color(0xFFF8B1C1)
-
 val HackerBlue = Color(0xFF118AB2)
-val HackerBlueLight = Color(0xFFACE5F7)
-
 val HackerGreen = Color(0xFF06D6A0)
-val HackerGreenLight = Color(0xFFAEFDE8)
+val HackerPurple = Color(0xFFC448F0)
 
 val BackgroundLight = Color(0xFFF9F9FF)
 val BackgroundDark = Color(0xFF121317)

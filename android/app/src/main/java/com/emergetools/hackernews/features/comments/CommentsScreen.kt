@@ -61,7 +61,7 @@ import com.emergetools.hackernews.features.stories.MetadataTag
 import com.emergetools.hackernews.ui.theme.HackerGreen
 import com.emergetools.hackernews.ui.theme.HackerNewsTheme
 import com.emergetools.hackernews.ui.theme.HackerOrange
-import com.emergetools.hackernews.ui.theme.HackerRed
+import com.emergetools.hackernews.ui.theme.HackerPurple
 
 @Composable
 fun CommentsScreen(
@@ -276,6 +276,7 @@ fun CommentRow(
             modifier = Modifier
               .wrapContentSize()
               .clip(CircleShape)
+              .clickable { onLikeTapped(state) }
               .background(
                 color = if (state.upvoted) {
                   HackerGreen.copy(alpha = 0.2f)
@@ -283,8 +284,7 @@ fun CommentRow(
                   MaterialTheme.colorScheme.surfaceContainerHighest
                 }
               )
-              .padding(4.dp)
-              .clickable { onLikeTapped(state) },
+              .padding(vertical = 4.dp, horizontal = 8.dp),
             contentAlignment = Alignment.Center
           ) {
             Icon(
@@ -295,7 +295,7 @@ fun CommentRow(
               } else {
                 MaterialTheme.colorScheme.onSurface
               },
-              contentDescription = "upvote"
+              contentDescription = "Upvote"
             )
           }
         }
@@ -471,7 +471,7 @@ fun ItemHeader(
               Icon(
                 modifier = Modifier.size(12.dp),
                 painter = painterResource(R.drawable.ic_time_outline),
-                tint = HackerRed,
+                tint = HackerPurple,
                 contentDescription = "Time Posted"
               )
             }
@@ -558,7 +558,7 @@ fun ItemHeader(
               modifier = Modifier
                 .size(12.dp)
                 .clip(RoundedCornerShape(4.dp))
-                .background(HackerRed.copy(alpha = skeletonAlpha))
+                .background(HackerPurple.copy(alpha = skeletonAlpha))
             )
             Box(
               modifier = Modifier

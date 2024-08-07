@@ -14,6 +14,7 @@ private val LightColorScheme = lightColorScheme(
   primaryContainer = HackerOrangeLight,
   background = BackgroundLight,
   surface = SurfaceLight,
+  surfaceContainer = SurfaceLight,
   onBackground = OnBackgroundLight,
   onSurface = OnSurfaceLight
 )
@@ -23,6 +24,7 @@ private val DarkColorScheme = darkColorScheme(
   primaryContainer = HackerOrangeLight,
   background = BackgroundDark,
   surface = SurfaceDark,
+  surfaceContainer = SurfaceDark,
   onBackground = OnBackgroundDark,
   onSurface = OnSurfaceDark
 )
