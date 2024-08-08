@@ -132,7 +132,7 @@ class HackerNewsWebClient(
     val infos = comments.map { commentElement ->
       val id = commentElement.id().toLong()
       val level = commentElement.select("td.ind").attr("indent").toInt()
-      val text = commentElement.select("div.commtext").text()
+      val text = commentElement.select("div.commtext").html()
       val user = commentElement.select("a.hnuser").text()
       val time = commentElement.select("span.age").attr("title")
       val upvoteLink = commentElement.select("a[id^=up_]")
