@@ -127,7 +127,7 @@ fun SettingsScreen(
   }
 }
 
-@PreviewLightDark
+//@PreviewLightDark
 @Composable
 private fun SettingsScreenPreview() {
   HackerNewsTheme {

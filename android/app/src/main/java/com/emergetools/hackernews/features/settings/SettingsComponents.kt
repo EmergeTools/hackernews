@@ -198,7 +198,7 @@ fun BuiltByCard(
   }
 }
 
-@Preview
+//@Preview
 @Composable
 fun BuiltByCardPrevew() {
   HackerNewsTheme {
