@@ -69,6 +69,11 @@ emerge {
     tag.set("snapshot")
   }
 
+  reaper {
+    enabledVariants.set(listOf("release"))
+    publishableApiKey.set(System.getenv("REAPER_API_KEY"))
+  }
+
   vcs {
     gitHub {
       repoName.set("hackernews")
@@ -102,6 +107,7 @@ dependencies {
   implementation(libs.androidx.datastore)
 
   implementation(libs.emerge.snapshots.annotations)
+  implementation(libs.emerge.reaper)
   implementation(libs.okhttp)
   implementation(libs.retrofit)
   implementation(libs.retrofit.kotlinx.serialization)
