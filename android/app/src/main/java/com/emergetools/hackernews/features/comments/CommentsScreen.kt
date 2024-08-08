@@ -19,7 +19,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -53,6 +52,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -97,7 +97,8 @@ fun CommentsScreen(
             } else {
               navigation(CommentsNavigation.GoToLogin)
             }
-          }
+          },
+          onToggleBody = { actions(CommentsAction.ToggleBody(it)) }
         )
       }
       item {
@@ -188,7 +189,7 @@ private fun CommentsScreenPreview() {
         author = "rikinm",
         points = 69,
         timeLabel = "2h ago",
-        body = "Hello There",
+        body = BodyState("Hello There"),
         loggedIn = false,
         upvoted = false,
         upvoteUrl = "",
@@ -458,6 +459,7 @@ fun ItemHeader(
   state: HeaderState,
   modifier: Modifier = Modifier,
   onLikeTapped: (HeaderState.Content) -> Unit,
+  onToggleBody: (Boolean) -> Unit
 ) {
   Column(
     modifier = modifier.background(color = MaterialTheme.colorScheme.background),
@@ -515,22 +517,35 @@ fun ItemHeader(
             }
           }
         }
-        if (state.body != null) {
-          Box(
-            Modifier
-              .fillMaxWidth()
-              .heightIn(min = 40.dp)
-              .clip(RoundedCornerShape(8.dp))
-              .background(color = MaterialTheme.colorScheme.surface)
-              .padding(8.dp),
-            contentAlignment = Alignment.CenterStart
-          ) {
-            Text(
-              text = state.body.parseAsHtml(),
-              color = MaterialTheme.colorScheme.onBackground,
-              style = MaterialTheme.typography.labelSmall,
-            )
-          }
+        if (state.body.text != null) {
+            Column(
+              Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .clip(RoundedCornerShape(8.dp))
+                .clickable { onToggleBody(!state.body.collapsed) }
+                .background(color = MaterialTheme.colorScheme.surface)
+                .padding(8.dp),
+              verticalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+              Icon(
+                modifier = Modifier
+                  .graphicsLayer {
+                    rotationZ = if (state.body.collapsed) 180f else 0f
+                  }
+                  .size(12.dp),
+                painter = painterResource(R.drawable.ic_collapse),
+                tint = MaterialTheme.colorScheme.onSurface,
+                contentDescription = "Expand or Collapse"
+              )
+              Text(
+                text = state.body.text.parseAsHtml(),
+                color = MaterialTheme.colorScheme.onBackground,
+                style = MaterialTheme.typography.labelSmall,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = if (state.body.collapsed) 4 else Int.MAX_VALUE
+              )
+            }
         }
       }
 
@@ -631,14 +646,15 @@ private fun ItemHeaderPreview() {
           author = "rikinm",
           points = 69,
           timeLabel = "2h ago",
-          body = "Wassup HN. I just built a sick new Hacker News Android client",
+          body = BodyState("Wassup HN. I just built a sick new Hacker News Android client. Lalalalalala hahahah"),
           upvoted = false,
           upvoteUrl = "",
         ),
         modifier = Modifier
           .fillMaxWidth()
           .wrapContentHeight(),
-        onLikeTapped = {}
+        onLikeTapped = {},
+        onToggleBody = {}
       )
     }
   }
@@ -658,7 +674,8 @@ private fun ItemHeaderLoadingPreview() {
         modifier = Modifier
           .fillMaxWidth()
           .wrapContentHeight(),
-        onLikeTapped = {}
+        onLikeTapped = {},
+        onToggleBody = {}
       )
     }
   }
