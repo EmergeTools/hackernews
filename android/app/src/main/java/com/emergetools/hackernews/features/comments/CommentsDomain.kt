@@ -42,7 +42,7 @@ sealed interface CommentsState {
     val author: String,
     val points: Int,
     val timeLabel: String,
-    val body: String?,
+    val body: BodyState,
     val loggedIn: Boolean,
     val upvoted: Boolean,
     val upvoteUrl: String,
@@ -86,14 +86,14 @@ enum class HiddenStatus {
   Displayed;
 
   fun toggle(): HiddenStatus {
-    return when(this) {
+    return when (this) {
       Hidden, HiddenByParent -> Displayed
       else -> Hidden
     }
   }
 
   fun toggleChild(): HiddenStatus {
-    return when(this) {
+    return when (this) {
       Hidden, HiddenByParent -> Displayed
       else -> HiddenByParent
     }
@@ -123,6 +123,11 @@ sealed interface CommentState {
   ) : CommentState
 }
 
+data class BodyState(
+  val text: String?,
+  val collapsed: Boolean = true
+)
+
 sealed interface HeaderState {
   data object Loading : HeaderState
   data class Content(
@@ -131,7 +136,7 @@ sealed interface HeaderState {
     val author: String,
     val points: Int,
     val timeLabel: String,
-    val body: String?,
+    val body: BodyState,
     val upvoted: Boolean,
     val upvoteUrl: String,
   ) : HeaderState
@@ -159,6 +164,7 @@ sealed interface CommentsAction {
   ) : CommentsAction
 
   data class ToggleHideComment(val id: Long) : CommentsAction
+  data class ToggleBody(val collapse: Boolean) : CommentsAction
 }
 
 sealed interface CommentsNavigation {
@@ -213,7 +219,7 @@ class CommentsViewModel(
                 .parse(searchResponse.item.createdAt)
                 .toEpochSecond()
             ),
-            body = searchResponse.item.text,
+            body = BodyState(text = searchResponse.item.text),
             loggedIn = loggedIn,
             upvoted = postPage.postInfo.upvoted,
             upvoteUrl = postPage.postInfo.upvoteUrl,
@@ -329,6 +335,16 @@ class CommentsViewModel(
             }
           )
 
+          internalState.compareAndSet(currentState, updatedState)
+        }
+      }
+
+      is CommentsAction.ToggleBody -> {
+        val currentState = internalState.value
+        if (currentState is CommentsState.Content) {
+          val updatedState = currentState.copy(
+            body = currentState.body.copy(collapsed = action.collapse)
+          )
           internalState.compareAndSet(currentState, updatedState)
         }
       }
