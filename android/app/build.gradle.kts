@@ -129,6 +129,5 @@ dependencies {
   debugImplementation(libs.androidx.ui.tooling)
   debugImplementation(libs.androidx.ui.test.manifest)
 
-  // TODO Ryan change to `implementation` once we can properly handle Reaper being included but not enabled
-  releaseImplementation(libs.emerge.reaper)
+  implementation(libs.emerge.reaper)
 }
