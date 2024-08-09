@@ -69,6 +69,11 @@ emerge {
     tag.set("snapshot")
   }
 
+  reaper {
+    enabledVariants.set(listOf("release"))
+    publishableApiKey.set(System.getenv("REAPER_API_KEY"))
+  }
+
   vcs {
     gitHub {
       repoName.set("hackernews")
@@ -80,6 +85,8 @@ emerge {
 sentry {
   org.set("emerge-tools")
   projectName.set("hackernews-android")
+
+  ignoredVariants.set(listOf("debug", "fast"))
 
   // Don't upload source code to Sentry
   includeSourceContext.set(false)
@@ -122,4 +129,5 @@ dependencies {
   debugImplementation(libs.androidx.ui.tooling)
   debugImplementation(libs.androidx.ui.test.manifest)
 
+  implementation(libs.emerge.reaper)
 }
