@@ -109,7 +109,6 @@ dependencies {
   implementation(libs.androidx.datastore)
 
   implementation(libs.emerge.snapshots.annotations)
-  implementation(libs.emerge.reaper)
   implementation(libs.okhttp)
   implementation(libs.retrofit)
   implementation(libs.retrofit.kotlinx.serialization)
@@ -130,4 +129,6 @@ dependencies {
   debugImplementation(libs.androidx.ui.tooling)
   debugImplementation(libs.androidx.ui.test.manifest)
 
+  // TODO Ryan change to `implementation` once we can properly handle Reaper being included but not enabled
+  releaseImplementation(libs.emerge.reaper)
 }
