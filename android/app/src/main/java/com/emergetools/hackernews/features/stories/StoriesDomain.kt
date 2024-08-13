@@ -24,8 +24,16 @@ import kotlinx.coroutines.launch
 
 enum class FeedType(val label: String) {
   Top("Top"),
-  New("New")
+  New("New"),
+  Best("Best"),
+  Ask("Ask"),
+  Show("Show"),
 }
+
+data class NewsFeed(
+  val type: FeedType,
+  val selected: Boolean
+)
 
 enum class LoadingState {
   Loading,
@@ -35,12 +43,22 @@ enum class LoadingState {
   Error
 }
 
+val supportedFeeds = listOf(
+  NewsFeed(type = FeedType.Top, selected = true),
+  NewsFeed(type = FeedType.New, selected = false),
+  NewsFeed(type = FeedType.Best, selected = false),
+  NewsFeed(type = FeedType.Show, selected = false),
+  NewsFeed(type = FeedType.Ask, selected = false),
+)
+
 data class StoriesState(
   val stories: List<StoryItem>,
   val bookmarks: List<StoryItem.Content> = emptyList(),
-  val feed: FeedType = FeedType.Top,
+  val feeds: List<NewsFeed> = supportedFeeds,
   val loading: LoadingState = LoadingState.Idle,
-)
+) {
+  val selectedFeed = feeds.first { it.selected }
+}
 
 sealed class StoryItem(open val id: Long) {
   data class Loading(override val id: Long) : StoryItem(id)
@@ -116,7 +134,7 @@ class StoriesViewModel(
 
         fetchJob = viewModelScope.launch {
           internalState.update { it.copy(loading = LoadingState.Loading) }
-          when (val response = baseClient.getFeedIds(internalState.value.feed)) {
+          when (val response = baseClient.getFeedIds(internalState.value.selectedFeed.type)) {
             is FeedIdResponse.Error -> {
               delay(500)
               internalState.update { current ->
@@ -164,7 +182,7 @@ class StoriesViewModel(
           internalState.update { current ->
             current.copy(loading = LoadingState.Refreshing)
           }
-          when (val response = baseClient.getFeedIds(internalState.value.feed)) {
+          when (val response = baseClient.getFeedIds(internalState.value.selectedFeed.type)) {
             is FeedIdResponse.Error -> {
               delay(500)
               internalState.update { current ->
@@ -188,18 +206,22 @@ class StoriesViewModel(
       }
 
       is StoriesAction.SelectStory -> {
-        // TODO
       }
 
       is StoriesAction.SelectComments -> {
-        // TODO
       }
 
       is StoriesAction.SelectFeed -> {
-        if (action.feed != state.value.feed) {
+        if (action.feed != state.value.selectedFeed.type) {
           internalState.update { current ->
             current.copy(
-              feed = action.feed,
+              feeds = current.feeds.map { old ->
+                if (old.type == action.feed) {
+                  old.copy(selected = true)
+                } else {
+                  old.copy(selected = false)
+                }
+              },
               stories = emptyList()
             )
           }

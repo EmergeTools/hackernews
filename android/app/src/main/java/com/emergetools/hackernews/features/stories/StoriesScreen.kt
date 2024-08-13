@@ -25,8 +25,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -41,8 +41,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.TabRow
-import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
@@ -54,20 +52,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.drawWithContent
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.center
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.emergetools.hackernews.R
 import com.emergetools.hackernews.features.comments.CommentsDestinations
 import com.emergetools.hackernews.ui.preview.AppStoreSnapshot
@@ -78,6 +76,10 @@ import com.emergetools.hackernews.ui.theme.HackerOrange
 import com.emergetools.hackernews.ui.theme.HackerPurple
 import com.emergetools.hackernews.ui.theme.HackerRed
 import com.emergetools.snapshots.annotations.EmergeAppStoreSnapshot
+import me.saket.extendedspans.ExtendedSpans
+import me.saket.extendedspans.SquigglyUnderlineSpanPainter
+import me.saket.extendedspans.drawBehind
+import me.saket.extendedspans.rememberSquigglyUnderlineAnimator
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -116,7 +118,10 @@ fun StoriesScreen(
     verticalArrangement = Arrangement.spacedBy(8.dp),
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {
-    FeedSelection(feedType = state.feed, onSelected = { actions(StoriesAction.SelectFeed(it)) })
+    FeedHeader(
+      feeds = state.feeds,
+      onSelected = { actions(StoriesAction.SelectFeed(it)) }
+    )
     PullToRefreshBox(
       state = pullRefreshState, modifier = Modifier
         .fillMaxWidth()
@@ -569,61 +574,85 @@ fun FeedErrorCardPreview() {
 }
 
 @Composable
-private fun FeedSelection(
+fun FeedHeader(
   modifier: Modifier = Modifier,
-  feedType: FeedType,
-  onSelected: (FeedType) -> Unit,
+  feeds: List<NewsFeed>,
+  onSelected: (FeedType) -> Unit
 ) {
-  val selectedTab = remember(feedType) { feedType.ordinal }
-
-  TabRow(selectedTabIndex = selectedTab,
-    modifier = modifier.wrapContentWidth(),
-    containerColor = MaterialTheme.colorScheme.background,
-    contentColor = MaterialTheme.colorScheme.onBackground,
-    indicator = { tabPositions ->
-      if (selectedTab < tabPositions.size) {
-        Box(modifier = Modifier
-          .tabIndicatorOffset(tabPositions[selectedTab])
-          .height(2.dp)
-          .drawBehind {
-            val barWidth = size.width * 0.33f
-            val start = size.center.x - barWidth / 2f
-            val end = size.center.x + barWidth / 2f
-            val bottom = size.height - 16f
-            drawLine(
-              start = Offset(start, bottom),
-              end = Offset(end, bottom),
-              color = HackerOrange,
-              strokeWidth = 4f,
-              cap = StrokeCap.Round,
-            )
-          })
-      }
-    },
-    divider = {}) {
-    FeedType.entries.forEach { feedType ->
-      Text(
-        modifier = Modifier
-          .fillMaxWidth()
-          .padding(8.dp)
-          .clickable(indication = null,
-            interactionSource = remember { MutableInteractionSource() }) {
-            onSelected(feedType)
-          },
-        textAlign = TextAlign.Center,
-        text = feedType.label,
-        style = MaterialTheme.typography.titleMedium,
-      )
+  Row(
+    modifier = modifier
+      .fillMaxWidth()
+      .wrapContentHeight()
+      .background(color = MaterialTheme.colorScheme.background),
+    horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally),
+    verticalAlignment = Alignment.CenterVertically
+  ) {
+    feeds.forEach { feed ->
+      FeedHeaderItem(state = feed, select = onSelected)
     }
   }
 }
 
 @PreviewLightDark
 @Composable
-private fun FeedSelectionPreview() {
+fun FeedHeaderPreview() {
   HackerNewsTheme {
-    FeedSelection(feedType = FeedType.Top, onSelected = {})
+    FeedHeader(
+      feeds = supportedFeeds,
+      onSelected = {}
+    )
   }
+}
+
+@Composable
+fun FeedHeaderItem(state: NewsFeed, select: (FeedType) -> Unit) {
+  val squigglyUnderlineAnimator = rememberSquigglyUnderlineAnimator()
+  val spans = remember(state.selected) {
+    ExtendedSpans(
+      SquigglyUnderlineSpanPainter(
+        width = if (state.selected) 2.sp else 0.sp,
+        amplitude = if (state.selected) 1.sp else 0.sp,
+        animator = squigglyUnderlineAnimator
+      )
+    )
+  }
+  val label = remember(state) {
+    AnnotatedString(
+      text = state.type.label,
+      spanStyle = if (state.selected) {
+        SpanStyle(textDecoration = TextDecoration.Underline)
+      } else {
+        SpanStyle()
+      }
+    )
+  }
+
+  val scale by animateFloatAsState(
+    targetValue = if (state.selected) 1.0f else 0.8f,
+    animationSpec = spring(
+      dampingRatio = Spring.DampingRatioMediumBouncy,
+      stiffness = Spring.StiffnessLow
+    ),
+    label = "Selection Scale"
+  )
+  Text(
+    modifier = Modifier
+      .scale(scale)
+      .clickable(
+        interactionSource = remember { MutableInteractionSource() },
+        indication = null
+      ) {
+        select(state.type)
+      }
+      .padding(8.dp)
+      .drawBehind(spans),
+    text = spans.extend(label),
+    color = if (state.selected) HackerOrange else MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f),
+    style = MaterialTheme.typography.titleMedium,
+    onTextLayout = { result ->
+      spans.onTextLayout(result)
+    }
+  )
 }
 
 @OptIn(EmergeAppStoreSnapshot::class)
