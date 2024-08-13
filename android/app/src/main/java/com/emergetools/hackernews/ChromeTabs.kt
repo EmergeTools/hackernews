@@ -1,4 +1,4 @@
-package com.emergetools.hackernews.data
+package com.emergetools.hackernews
 
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.runtime.Composable

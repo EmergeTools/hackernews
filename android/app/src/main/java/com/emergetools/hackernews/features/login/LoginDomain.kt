@@ -3,8 +3,8 @@ package com.emergetools.hackernews.features.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.emergetools.hackernews.data.HackerNewsWebClient
-import com.emergetools.hackernews.data.LoginResponse
+import com.emergetools.hackernews.data.remote.HackerNewsWebClient
+import com.emergetools.hackernews.data.remote.LoginResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update

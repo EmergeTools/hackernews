@@ -1,4 +1,4 @@
-package com.emergetools.hackernews.data
+package com.emergetools.hackernews.data.local
 
 import android.content.Context
 import androidx.datastore.preferences.core.edit

@@ -1,4 +1,4 @@
-package com.emergetools.hackernews.data
+package com.emergetools.hackernews.data.local
 
 import androidx.room.ColumnInfo
 import androidx.room.Dao
@@ -36,7 +36,7 @@ interface BookmarkDao {
 }
 
 @Database(entities = [LocalBookmark::class], version = 1)
-abstract class HackerNewsDatabase: RoomDatabase() {
+abstract class HackerNewsDatabase : RoomDatabase() {
   abstract fun bookmarkDao(): BookmarkDao
 }
 

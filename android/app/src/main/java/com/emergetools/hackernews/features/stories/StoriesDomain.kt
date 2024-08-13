@@ -3,13 +3,13 @@ package com.emergetools.hackernews.features.stories
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.emergetools.hackernews.data.BaseResponse.Item
-import com.emergetools.hackernews.data.BookmarkDao
-import com.emergetools.hackernews.data.FeedIdResponse
-import com.emergetools.hackernews.data.ItemRepository
-import com.emergetools.hackernews.data.Page
-import com.emergetools.hackernews.data.next
+import com.emergetools.hackernews.data.local.BookmarkDao
 import com.emergetools.hackernews.data.relativeTimeStamp
+import com.emergetools.hackernews.data.remote.FeedIdResponse
+import com.emergetools.hackernews.data.remote.HackerNewsBaseClient
+import com.emergetools.hackernews.data.remote.ItemResponse.Item
+import com.emergetools.hackernews.data.remote.Page
+import com.emergetools.hackernews.data.remote.next
 import com.emergetools.hackernews.features.bookmarks.toLocalBookmark
 import com.emergetools.hackernews.features.bookmarks.toStoryItem
 import com.emergetools.hackernews.features.comments.CommentsDestinations
@@ -73,7 +73,7 @@ sealed interface StoriesNavigation {
 }
 
 class StoriesViewModel(
-  private val itemRepository: ItemRepository,
+  private val baseClient: HackerNewsBaseClient,
   private val bookmarkDao: BookmarkDao
 ) : ViewModel() {
   private val internalState = MutableStateFlow(StoriesState(stories = emptyList()))
@@ -116,7 +116,7 @@ class StoriesViewModel(
 
         fetchJob = viewModelScope.launch {
           internalState.update { it.copy(loading = LoadingState.Loading) }
-          when (val response = itemRepository.getFeedIds(internalState.value.feed)) {
+          when (val response = baseClient.getFeedIds(internalState.value.feed)) {
             is FeedIdResponse.Error -> {
               delay(500)
               internalState.update { current ->
@@ -164,7 +164,7 @@ class StoriesViewModel(
           internalState.update { current ->
             current.copy(loading = LoadingState.Refreshing)
           }
-          when (val response = itemRepository.getFeedIds(internalState.value.feed)) {
+          when (val response = baseClient.getFeedIds(internalState.value.feed)) {
             is FeedIdResponse.Error -> {
               delay(500)
               internalState.update { current ->
@@ -257,7 +257,7 @@ class StoriesViewModel(
   private suspend fun fetchPage(page: Page, onLoading: () -> Unit = {}): List<StoryItem> {
     onLoading()
     val bookmarks = internalState.value.bookmarks
-    var newStories = itemRepository
+    var newStories = baseClient
       .getPage(page)
       .map<Item, StoryItem> { item ->
         StoryItem.Content(
@@ -280,11 +280,11 @@ class StoriesViewModel(
 
   @Suppress("UNCHECKED_CAST")
   class Factory(
-    private val itemRepository: ItemRepository,
+    private val baseClient: HackerNewsBaseClient,
     private val bookmarkDao: BookmarkDao
   ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-      return StoriesViewModel(itemRepository, bookmarkDao) as T
+      return StoriesViewModel(baseClient, bookmarkDao) as T
     }
   }
 }

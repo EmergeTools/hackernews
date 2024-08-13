@@ -8,7 +8,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import com.emergetools.hackernews.searchClient
+import com.emergetools.hackernews.baseClient
 import com.emergetools.hackernews.userStorage
 import com.emergetools.hackernews.webClient
 import kotlinx.serialization.Serializable
@@ -25,7 +25,7 @@ fun NavGraphBuilder.commentsRoutes(navController: NavController) {
     val model = viewModel<CommentsViewModel>(
       factory = CommentsViewModel.Factory(
         itemId = comments.storyId,
-        searchClient = context.searchClient(),
+        baseClient = context.baseClient(),
         webClient = context.webClient(),
         userStorage = context.userStorage()
       )
