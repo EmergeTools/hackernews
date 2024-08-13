@@ -26,8 +26,10 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import com.emergetools.hackernews.ui.preview.AppStoreSnapshot
 import com.emergetools.hackernews.ui.theme.HackerNewsTheme
 import com.emergetools.hackernews.ui.theme.HackerRed
+import com.emergetools.snapshots.annotations.EmergeAppStoreSnapshot
 
 @Composable
 fun LoginScreen(
@@ -118,7 +120,9 @@ fun LoginScreen(
   }
 }
 
+@OptIn(EmergeAppStoreSnapshot::class)
 @PreviewLightDark
+@AppStoreSnapshot
 @Composable
 private fun LoginScreenPreview() {
   HackerNewsTheme {

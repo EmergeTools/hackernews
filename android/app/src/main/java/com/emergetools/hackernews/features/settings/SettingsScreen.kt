@@ -20,9 +20,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.emergetools.hackernews.R
+import com.emergetools.hackernews.ui.preview.AppStoreSnapshot
 import com.emergetools.hackernews.ui.theme.HackerBlue
 import com.emergetools.hackernews.ui.theme.HackerNewsTheme
 import com.emergetools.hackernews.ui.theme.HackerOrange
+import com.emergetools.snapshots.annotations.EmergeAppStoreSnapshot
 
 @Composable
 fun SettingsScreen(
@@ -127,7 +129,9 @@ fun SettingsScreen(
   }
 }
 
+@OptIn(EmergeAppStoreSnapshot::class)
 @PreviewLightDark
+@AppStoreSnapshot
 @Composable
 private fun SettingsScreenPreview() {
   HackerNewsTheme {

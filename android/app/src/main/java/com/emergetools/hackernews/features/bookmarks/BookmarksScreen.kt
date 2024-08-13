@@ -76,17 +76,6 @@ fun BookmarksScreenPreview() {
         bookmarks = listOf(
           StoryItem.Content(
             id = 1L,
-            title = "Hello There",
-            author = "newuser",
-            score = 10,
-            commentCount = 0,
-            epochTimestamp = 100L,
-            timeLabel = "2h ago",
-            bookmarked = true,
-            url = ""
-          ),
-          StoryItem.Content(
-            id = 2L,
             title = "Show HN: A new Android client",
             author = "heyrikin",
             score = 10,
@@ -94,6 +83,26 @@ fun BookmarksScreenPreview() {
             epochTimestamp = 100L,
             timeLabel = "3h ago",
             bookmarked = true,
+            url = ""
+          ),
+          StoryItem.Content(
+            id = 2L,
+            title = "Can we stop the decline of monarch butterflies and other pollinators?",
+            author = "rbro112",
+            score = 40,
+            commentCount = 23,
+            epochTimestamp = 100L,
+            timeLabel = "2h ago",
+            url = ""
+          ),
+          StoryItem.Content(
+            id = 3L,
+            title = "Andy Warhol's lost Amiga art found",
+            author = "telkins",
+            score = 332,
+            commentCount = 103,
+            epochTimestamp = 100L,
+            timeLabel = "7h ago",
             url = ""
           ),
         )
