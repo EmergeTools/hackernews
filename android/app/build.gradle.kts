@@ -31,6 +31,9 @@ android {
     debug {
       isDebuggable = true
       applicationIdSuffix = ".debug"
+      // TODO: Set from plugin
+      enableUnitTestCoverage = true
+      enableAndroidTestCoverage = true
     }
     create("fast") {
       isDebuggable = false
