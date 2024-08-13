@@ -1,6 +1,3 @@
-import java.io.FileInputStream
-import java.util.Properties
-
 plugins {
   alias(libs.plugins.android.application)
   alias(libs.plugins.kotlin.android)
@@ -28,18 +25,7 @@ android {
     }
   }
 
-  signingConfigs {
-    create("release") {
-      val keystorePropertiesFile = rootProject.file("keystore.properties")
-      val keystoreProperties = Properties()
-      keystoreProperties.load(FileInputStream(keystorePropertiesFile))
-
-      storeFile = file(keystoreProperties["storeFile"] as String)
-      storePassword = keystoreProperties["storePassword"] as String
-      keyAlias = keystoreProperties["keyAlias"] as String
-      keyPassword = keystoreProperties["keyPassword"] as String
-    }
-  }
+  signingConfigs {}
 
   buildTypes {
     debug {
@@ -58,7 +44,7 @@ android {
       proguardFiles(
         getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
       )
-      signingConfig = signingConfigs.getByName("release")
+      signingConfig = signingConfigs.getByName("debug")
     }
   }
   buildFeatures {
