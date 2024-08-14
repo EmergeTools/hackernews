@@ -45,7 +45,6 @@ class HackerNewsApplication : Application() {
       .cookieJar(LocalCookieJar(userStorage))
       .build()
 
-    searchClient = HackerNewsSearchClient(json, httpClient)
     webClient = HackerNewsWebClient(httpClient)
     baseClient = HackerNewsBaseClient(json, httpClient)
   }
