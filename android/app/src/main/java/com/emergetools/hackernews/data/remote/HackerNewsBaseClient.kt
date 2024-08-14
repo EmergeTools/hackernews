@@ -112,6 +112,15 @@ class HackerNewsBaseClient(
             FeedIdResponse.Error(error.message.orEmpty())
           }
         }
+
+        FeedType.Jobs -> {
+          try {
+            val result = api.getJobStoryIds()
+            FeedIdResponse.Success(result)
+          } catch (error: Exception) {
+            FeedIdResponse.Error(error.message.orEmpty())
+          }
+        }
       }
     }
   }

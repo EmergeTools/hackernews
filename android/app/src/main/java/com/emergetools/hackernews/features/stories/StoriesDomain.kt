@@ -28,6 +28,7 @@ enum class FeedType(val label: String) {
   Best("Best"),
   Ask("Ask"),
   Show("Show"),
+  Jobs("Jobs")
 }
 
 data class NewsFeed(
@@ -49,6 +50,7 @@ val supportedFeeds = listOf(
   NewsFeed(type = FeedType.Best, selected = false),
   NewsFeed(type = FeedType.Show, selected = false),
   NewsFeed(type = FeedType.Ask, selected = false),
+  NewsFeed(type = FeedType.Jobs, selected = false),
 )
 
 data class StoriesState(
