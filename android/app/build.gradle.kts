@@ -16,7 +16,7 @@ android {
     applicationId = "com.emergetools.hackernews"
     minSdk = 30
     targetSdk = 34
-    versionCode = 4
+    versionCode = 5
     versionName = "1.0-beta02"
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
