@@ -85,6 +85,42 @@ class HackerNewsBaseClient(
             FeedIdResponse.Error(error.message.orEmpty())
           }
         }
+
+        FeedType.Ask -> {
+          try {
+            val result = api.getAskStoryIds()
+            FeedIdResponse.Success(result)
+          } catch (error: Exception) {
+            FeedIdResponse.Error(error.message.orEmpty())
+          }
+        }
+
+        FeedType.Show -> {
+          try {
+            val result = api.getShowStoryIds()
+            FeedIdResponse.Success(result)
+          } catch (error: Exception) {
+            FeedIdResponse.Error(error.message.orEmpty())
+          }
+        }
+
+        FeedType.Best -> {
+          try {
+            val result = api.getBestStoryIds()
+            FeedIdResponse.Success(result)
+          } catch (error: Exception) {
+            FeedIdResponse.Error(error.message.orEmpty())
+          }
+        }
+
+        FeedType.Jobs -> {
+          try {
+            val result = api.getJobStoryIds()
+            FeedIdResponse.Success(result)
+          } catch (error: Exception) {
+            FeedIdResponse.Error(error.message.orEmpty())
+          }
+        }
       }
     }
   }

@@ -111,6 +111,8 @@ dependencies {
   implementation(libs.androidx.browser)
   implementation(libs.androidx.datastore)
 
+  implementation(libs.extendedspans)
+
   implementation(libs.emerge.snapshots.annotations)
   implementation(libs.okhttp)
   implementation(libs.retrofit)

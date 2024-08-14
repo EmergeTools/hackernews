@@ -10,6 +10,18 @@ interface HackerNewsBaseApi {
   @GET("newstories.json")
   suspend fun getNewStoryIds(): List<Long>
 
+  @GET("beststories.json")
+  suspend fun getBestStoryIds(): List<Long>
+
+  @GET("askstories.json")
+  suspend fun getAskStoryIds(): List<Long>
+
+  @GET("showstories.json")
+  suspend fun getShowStoryIds(): List<Long>
+
+  @GET("jobstories.json")
+  suspend fun getJobStoryIds(): List<Long>
+
   @GET("item/{id}.json")
   suspend fun getItem(@Path("id") itemId: Long): ItemResponse
 }
