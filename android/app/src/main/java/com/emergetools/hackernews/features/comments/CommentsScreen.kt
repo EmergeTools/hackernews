@@ -59,6 +59,7 @@ import androidx.compose.ui.unit.sp
 import com.emergetools.hackernews.R
 import com.emergetools.hackernews.features.stories.MetadataButton
 import com.emergetools.hackernews.features.stories.MetadataTag
+import com.emergetools.hackernews.parseAsHtml
 import com.emergetools.hackernews.ui.theme.HackerGreen
 import com.emergetools.hackernews.ui.theme.HackerNewsTheme
 import com.emergetools.hackernews.ui.theme.HackerOrange
@@ -518,34 +519,34 @@ fun ItemHeader(
           }
         }
         if (state.body.text != null) {
-            Column(
-              Modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .clip(RoundedCornerShape(8.dp))
-                .clickable { onToggleBody(!state.body.collapsed) }
-                .background(color = MaterialTheme.colorScheme.surface)
-                .padding(8.dp),
-              verticalArrangement = Arrangement.spacedBy(4.dp)
-            ) {
-              Icon(
-                modifier = Modifier
-                  .graphicsLayer {
-                    rotationZ = if (state.body.collapsed) 180f else 0f
-                  }
-                  .size(12.dp),
-                painter = painterResource(R.drawable.ic_collapse),
-                tint = MaterialTheme.colorScheme.onSurface,
-                contentDescription = "Expand or Collapse"
-              )
-              Text(
-                text = state.body.text.parseAsHtml(),
-                color = MaterialTheme.colorScheme.onBackground,
-                style = MaterialTheme.typography.labelSmall,
-                overflow = TextOverflow.Ellipsis,
-                maxLines = if (state.body.collapsed) 4 else Int.MAX_VALUE
-              )
-            }
+          Column(
+            Modifier
+              .fillMaxWidth()
+              .wrapContentHeight()
+              .clip(RoundedCornerShape(8.dp))
+              .clickable { onToggleBody(!state.body.collapsed) }
+              .background(color = MaterialTheme.colorScheme.surface)
+              .padding(8.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp)
+          ) {
+            Icon(
+              modifier = Modifier
+                .graphicsLayer {
+                  rotationZ = if (state.body.collapsed) 180f else 0f
+                }
+                .size(12.dp),
+              painter = painterResource(R.drawable.ic_collapse),
+              tint = MaterialTheme.colorScheme.onSurface,
+              contentDescription = "Expand or Collapse"
+            )
+            Text(
+              text = state.body.text.parseAsHtml(),
+              color = MaterialTheme.colorScheme.onBackground,
+              style = MaterialTheme.typography.labelSmall,
+              overflow = TextOverflow.Ellipsis,
+              maxLines = if (state.body.collapsed) 4 else Int.MAX_VALUE
+            )
+          }
         }
       }
 

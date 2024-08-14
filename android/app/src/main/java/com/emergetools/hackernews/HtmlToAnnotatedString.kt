@@ -1,4 +1,4 @@
-package com.emergetools.hackernews.features.comments
+package com.emergetools.hackernews
 
 import android.graphics.Typeface
 import android.text.Layout

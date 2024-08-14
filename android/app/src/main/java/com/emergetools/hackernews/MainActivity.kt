@@ -27,7 +27,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.Navigator
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.emergetools.hackernews.data.ChromeTabsProvider
 import com.emergetools.hackernews.features.bookmarks.bookmarksRoutes
 import com.emergetools.hackernews.features.comments.commentsRoutes
 import com.emergetools.hackernews.features.login.loginRoutes

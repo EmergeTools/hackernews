@@ -1,4 +1,4 @@
-package com.emergetools.hackernews.data
+package com.emergetools.hackernews.data.remote
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

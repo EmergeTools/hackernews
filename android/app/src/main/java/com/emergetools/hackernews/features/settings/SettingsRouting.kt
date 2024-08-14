@@ -8,7 +8,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.emergetools.hackernews.data.LocalCustomTabsIntent
+import com.emergetools.hackernews.LocalCustomTabsIntent
 import com.emergetools.hackernews.userStorage
 import kotlinx.serialization.Serializable
 

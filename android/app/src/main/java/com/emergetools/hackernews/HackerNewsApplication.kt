@@ -6,29 +6,27 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.room.Room
-import com.emergetools.hackernews.data.BookmarkDao
-import com.emergetools.hackernews.data.HackerNewsBaseDataSource
-import com.emergetools.hackernews.data.HackerNewsDatabase
-import com.emergetools.hackernews.data.HackerNewsSearchClient
-import com.emergetools.hackernews.data.HackerNewsWebClient
-import com.emergetools.hackernews.data.ItemRepository
-import com.emergetools.hackernews.data.LocalCookieJar
-import com.emergetools.hackernews.data.UserStorage
+import com.emergetools.hackernews.data.local.BookmarkDao
+import com.emergetools.hackernews.data.local.HackerNewsDatabase
+import com.emergetools.hackernews.data.local.LocalCookieJar
+import com.emergetools.hackernews.data.local.UserStorage
+import com.emergetools.hackernews.data.remote.HackerNewsBaseClient
+import com.emergetools.hackernews.data.remote.HackerNewsSearchClient
+import com.emergetools.hackernews.data.remote.HackerNewsWebClient
 import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
 import java.time.Duration
 
-class HackerNewsApplication: Application() {
+class HackerNewsApplication : Application() {
   private val json = Json { ignoreUnknownKeys = true }
 
   private lateinit var httpClient: OkHttpClient
-  private lateinit var baseClient: HackerNewsBaseDataSource
 
   lateinit var bookmarkDao: BookmarkDao
   lateinit var userStorage: UserStorage
   lateinit var searchClient: HackerNewsSearchClient
   lateinit var webClient: HackerNewsWebClient
-  lateinit var itemRepository: ItemRepository
+  lateinit var baseClient: HackerNewsBaseClient
 
   override fun onCreate() {
     super.onCreate()
@@ -47,17 +45,16 @@ class HackerNewsApplication: Application() {
       .cookieJar(LocalCookieJar(userStorage))
       .build()
 
-    baseClient = HackerNewsBaseDataSource(json, httpClient)
     searchClient = HackerNewsSearchClient(json, httpClient)
     webClient = HackerNewsWebClient(httpClient)
-    itemRepository = ItemRepository(baseClient)
+    baseClient = HackerNewsBaseClient(json, httpClient)
   }
 }
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user")
 
-fun Context.itemRepository(): ItemRepository {
-  return (this.applicationContext as HackerNewsApplication).itemRepository
+fun Context.baseClient(): HackerNewsBaseClient {
+  return (this.applicationContext as HackerNewsApplication).baseClient
 }
 
 fun Context.userStorage(): UserStorage {

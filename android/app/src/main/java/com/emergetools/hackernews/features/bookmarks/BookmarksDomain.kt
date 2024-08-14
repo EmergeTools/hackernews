@@ -3,8 +3,8 @@ package com.emergetools.hackernews.features.bookmarks
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.emergetools.hackernews.data.BookmarkDao
-import com.emergetools.hackernews.data.LocalBookmark
+import com.emergetools.hackernews.data.local.BookmarkDao
+import com.emergetools.hackernews.data.local.LocalBookmark
 import com.emergetools.hackernews.data.relativeTimeStamp
 import com.emergetools.hackernews.features.comments.CommentsDestinations
 import com.emergetools.hackernews.features.stories.StoriesDestinations
@@ -20,7 +20,7 @@ data class BookmarksState(
 )
 
 sealed interface BookmarksAction {
-  data class RemoveBookmark(val storyItem: StoryItem.Content): BookmarksAction
+  data class RemoveBookmark(val storyItem: StoryItem.Content) : BookmarksAction
 }
 
 sealed interface BookmarksNavigation {

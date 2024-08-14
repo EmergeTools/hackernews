@@ -1,4 +1,4 @@
-package com.emergetools.hackernews.data
+package com.emergetools.hackernews.data.local
 
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking

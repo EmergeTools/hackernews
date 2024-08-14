@@ -3,14 +3,14 @@ package com.emergetools.hackernews.features.comments
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.emergetools.hackernews.data.CommentFormData
-import com.emergetools.hackernews.data.CommentInfo
-import com.emergetools.hackernews.data.HackerNewsSearchClient
-import com.emergetools.hackernews.data.HackerNewsWebClient
-import com.emergetools.hackernews.data.PostPage
-import com.emergetools.hackernews.data.SearchItem
-import com.emergetools.hackernews.data.UserStorage
+import com.emergetools.hackernews.data.local.UserStorage
 import com.emergetools.hackernews.data.relativeTimeStamp
+import com.emergetools.hackernews.data.remote.CommentFormData
+import com.emergetools.hackernews.data.remote.CommentInfo
+import com.emergetools.hackernews.data.remote.HackerNewsBaseClient
+import com.emergetools.hackernews.data.remote.HackerNewsWebClient
+import com.emergetools.hackernews.data.remote.ItemResponse
+import com.emergetools.hackernews.data.remote.PostPage
 import com.emergetools.hackernews.features.login.LoginDestinations
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -23,7 +23,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.ZoneOffset
-import java.time.ZonedDateTime
 
 sealed interface CommentsState {
   val headerState: HeaderState
@@ -175,7 +174,7 @@ sealed interface CommentsNavigation {
 
 class CommentsViewModel(
   private val itemId: Long,
-  private val searchClient: HackerNewsSearchClient,
+  private val baseClient: HackerNewsBaseClient,
   private val webClient: HackerNewsWebClient,
   private val userStorage: UserStorage,
 ) : ViewModel() {
@@ -201,25 +200,23 @@ class CommentsViewModel(
 
   init {
     viewModelScope.launch {
-      val searchResponse = searchClient.getItem(itemId)
+      val response = baseClient.getItem(itemId)
       val postPage = webClient.getPostPage(itemId)
 
-      if (searchResponse is SearchItem.Success && postPage is PostPage.Success) {
+      if (response is ItemResponse.Item && postPage is PostPage.Success) {
         val comments = postPage.commentInfos.map { it.toCommentState() }
         val loggedIn = !userStorage.getCookie().first().isNullOrEmpty()
 
         internalState.update {
           CommentsState.Content(
             id = itemId,
-            title = searchResponse.item.title ?: "",
-            author = searchResponse.item.author ?: "",
-            points = searchResponse.item.points ?: 0,
+            title = response.title ?: "",
+            author = response.by ?: "",
+            points = response.score ?: 0,
             timeLabel = relativeTimeStamp(
-              epochSeconds = ZonedDateTime
-                .parse(searchResponse.item.createdAt)
-                .toEpochSecond()
+              epochSeconds = response.time
             ),
-            body = BodyState(text = searchResponse.item.text),
+            body = BodyState(text = response.text),
             loggedIn = loggedIn,
             upvoted = postPage.postInfo.upvoted,
             upvoteUrl = postPage.postInfo.upvoteUrl,
@@ -370,12 +367,12 @@ class CommentsViewModel(
   @Suppress("UNCHECKED_CAST")
   class Factory(
     private val itemId: Long,
-    private val searchClient: HackerNewsSearchClient,
+    private val baseClient: HackerNewsBaseClient,
     private val webClient: HackerNewsWebClient,
     private val userStorage: UserStorage,
   ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-      return CommentsViewModel(itemId, searchClient, webClient, userStorage) as T
+      return CommentsViewModel(itemId, baseClient, webClient, userStorage) as T
     }
   }
 }
