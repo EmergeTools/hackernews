@@ -22,6 +22,7 @@ import com.emergetools.hackernews.features.stories.StoriesDestinations
 import com.emergetools.hackernews.features.stories.StoryItem
 import com.emergetools.hackernews.ui.components.ColumnSeparator
 import com.emergetools.hackernews.ui.components.StoryRow
+import com.emergetools.hackernews.ui.preview.SnapshotPreview
 import com.emergetools.hackernews.ui.theme.HackerNewsTheme
 
 @Composable
@@ -45,7 +46,9 @@ fun BookmarksScreen(
       style = MaterialTheme.typography.titleMedium
     )
     if (state.bookmarks.isEmpty()) {
-      Box(modifier = Modifier.fillMaxWidth().weight(1f), contentAlignment = Alignment.Center) {
+      Box(modifier = Modifier
+        .fillMaxWidth()
+        .weight(1f), contentAlignment = Alignment.Center) {
         BookmarksEducationCard()
       }
     } else {
@@ -76,7 +79,7 @@ fun BookmarksScreen(
   }
 }
 
-@PreviewLightDark
+@SnapshotPreview
 @Composable
 fun BookmarksScreenPreview() {
   HackerNewsTheme {
@@ -124,7 +127,7 @@ fun BookmarksScreenPreview() {
   }
 }
 
-@PreviewLightDark
+@SnapshotPreview
 @Composable
 fun BookmarksScreenEmptyPreview() {
   HackerNewsTheme {
