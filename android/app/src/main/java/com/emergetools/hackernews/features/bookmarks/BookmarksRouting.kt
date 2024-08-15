@@ -8,9 +8,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.emergetools.hackernews.LocalCustomTabsIntent
 import com.emergetools.hackernews.bookmarkDao
 import com.emergetools.hackernews.features.bookmarks.BookmarksDestinations.Bookmarks
+import com.emergetools.hackernews.ui.components.LocalCustomTabsIntent
 import kotlinx.serialization.Serializable
 
 sealed interface BookmarksDestinations {

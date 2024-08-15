@@ -20,6 +20,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.emergetools.hackernews.R
+import com.emergetools.hackernews.features.settings.components.BuiltByCard
+import com.emergetools.hackernews.features.settings.components.LoginCard
+import com.emergetools.hackernews.features.settings.components.SettingsCard
+import com.emergetools.hackernews.features.settings.components.SettingsSectionLabel
 import com.emergetools.hackernews.ui.preview.AppStoreSnapshot
 import com.emergetools.hackernews.ui.theme.HackerBlue
 import com.emergetools.hackernews.ui.theme.HackerNewsTheme
