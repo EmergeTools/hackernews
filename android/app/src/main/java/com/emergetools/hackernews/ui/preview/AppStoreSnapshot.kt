@@ -11,14 +11,8 @@ import com.emergetools.snapshots.annotations.EmergeAppStoreSnapshot
 @Preview(device = Devices.PIXEL_5)
 annotation class AppStoreSnapshot
 
-@Preview(
-  name = "Foldable",
-  device = Devices.PIXEL_FOLD
-)
-@Preview(
-  name = "Tablet",
-  device = Devices.PIXEL_TABLET
-)
+@Preview(device = Devices.PIXEL_FOLD)
+@Preview(device = Devices.PIXEL_TABLET)
 annotation class DevicePreview
 
 @DevicePreview
