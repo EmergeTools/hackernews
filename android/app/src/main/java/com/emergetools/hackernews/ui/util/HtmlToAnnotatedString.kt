@@ -1,4 +1,4 @@
-package com.emergetools.hackernews
+package com.emergetools.hackernews.ui.util
 
 import android.graphics.Typeface
 import android.text.Layout

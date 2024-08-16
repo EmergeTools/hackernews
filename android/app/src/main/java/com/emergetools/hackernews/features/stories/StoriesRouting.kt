@@ -10,11 +10,11 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
-import com.emergetools.hackernews.LocalCustomTabsIntent
 import com.emergetools.hackernews.baseClient
 import com.emergetools.hackernews.bookmarkDao
 import com.emergetools.hackernews.features.stories.StoriesDestinations.Closeup
 import com.emergetools.hackernews.features.stories.StoriesDestinations.Feed
+import com.emergetools.hackernews.ui.components.LocalCustomTabsIntent
 import kotlinx.serialization.Serializable
 
 @Serializable

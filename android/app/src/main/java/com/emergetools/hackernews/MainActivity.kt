@@ -34,6 +34,7 @@ import com.emergetools.hackernews.features.settings.settingsRoutes
 import com.emergetools.hackernews.features.stories.Stories
 import com.emergetools.hackernews.features.stories.StoriesDestinations.Feed
 import com.emergetools.hackernews.features.stories.storiesGraph
+import com.emergetools.hackernews.ui.components.ChromeTabsProvider
 import com.emergetools.hackernews.ui.theme.HackerNewsTheme
 
 class MainActivity : ComponentActivity() {

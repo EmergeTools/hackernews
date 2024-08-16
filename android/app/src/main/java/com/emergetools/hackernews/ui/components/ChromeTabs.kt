@@ -1,4 +1,4 @@
-package com.emergetools.hackernews
+package com.emergetools.hackernews.ui.components
 
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.runtime.Composable
@@ -6,6 +6,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
 
 private val sharedIntent = CustomTabsIntent.Builder().build()
+
 val LocalCustomTabsIntent = staticCompositionLocalOf<CustomTabsIntent> {
   error("LocalCustomTabsIntent not provided")
 }
