@@ -4,9 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideIn
-import androidx.compose.animation.slideOut
+import androidx.compose.animation.scaleIn
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
@@ -20,7 +20,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.IntOffset
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
@@ -108,10 +107,9 @@ fun App() {
         .fillMaxSize()
         .padding(innerPadding),
       navController = navController,
-      enterTransition = { slideIn { IntOffset(x = it.width, y = 0) } },
-      exitTransition = { slideOut { IntOffset(x = -it.width / 3, y = 0) } + fadeOut() },
-      popEnterTransition = { slideIn { IntOffset(x = -it.width, y = 0) } },
-      popExitTransition = { slideOut { IntOffset(x = it.width, y = 0) } },
+      enterTransition = { scaleIn(initialScale = 1.05f) + fadeIn() },
+      exitTransition = { fadeOut() },
+      popEnterTransition = { scaleIn(initialScale = 0.95f) + fadeIn() },
       startDestination = Stories
     ) {
       storiesGraph(navController)
