@@ -12,16 +12,12 @@ import com.emergetools.snapshots.annotations.EmergeAppStoreSnapshot
 annotation class AppStoreSnapshot
 
 @Preview(
-  name = "landscape",
-  device = "spec:width=411dp,height=891dp, orientation=landscape, dpi=480"
+  name = "Foldable",
+  device = Devices.PIXEL_FOLD
 )
 @Preview(
-  name = "foldable",
-  device = "spec:width=673dp, height=841dp, orientation=portrait, dpi=480"
-)
-@Preview(
-  name = "tablet",
-  device = "spec:width=800dp, height=1280dp, orientation=landscape, dpi=480"
+  name = "Tablet",
+  device = Devices.PIXEL_TABLET
 )
 annotation class DevicePreview
 
