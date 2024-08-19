@@ -128,7 +128,9 @@ fun SettingsScreen(
           )
         },
         label = "Send Feedback"
-      ) { }
+      ) {
+        navigation(SettingsNavigation.GoToSettingsLink("https://forms.gle/YYno9sUehE5xuKAq9"))
+      }
     }
   }
 }
