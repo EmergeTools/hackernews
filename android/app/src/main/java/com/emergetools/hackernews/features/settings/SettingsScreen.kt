@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Lock
 import androidx.compose.material.icons.rounded.Warning
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -28,6 +29,7 @@ import com.emergetools.hackernews.ui.preview.SnapshotPreview
 import com.emergetools.hackernews.ui.theme.HackerBlue
 import com.emergetools.hackernews.ui.theme.HackerNewsTheme
 import com.emergetools.hackernews.ui.theme.HackerOrange
+import com.emergetools.hackernews.ui.theme.HackerRed
 import com.emergetools.snapshots.annotations.EmergeAppStoreSnapshot
 
 @Composable
@@ -116,7 +118,7 @@ fun SettingsScreen(
             modifier = Modifier.width(14.dp),
             imageVector = Icons.Rounded.Warning,
             tint = HackerOrange,
-            contentDescription = "Twitter"
+            contentDescription = "Send Feedback"
           )
         },
         trailingIcon = {
@@ -130,6 +132,27 @@ fun SettingsScreen(
         label = "Send Feedback"
       ) {
         navigation(SettingsNavigation.GoToSettingsLink("https://forms.gle/YYno9sUehE5xuKAq9"))
+      }
+      SettingsCard(
+        leadingIcon = {
+          Icon(
+            modifier = Modifier.width(14.dp),
+            imageVector = Icons.Rounded.Lock,
+            tint = HackerRed,
+            contentDescription = "Privacy Policy"
+          )
+        },
+        trailingIcon = {
+          Icon(
+            modifier = Modifier.width(12.dp),
+            painter = painterResource(R.drawable.ic_arrow_up_right),
+            tint = MaterialTheme.colorScheme.onSurface,
+            contentDescription = "Link"
+          )
+        },
+        label = "Privacy Policy"
+      ) {
+        navigation(SettingsNavigation.GoToSettingsLink("https://www.emergetools.com/HackerNewsPrivacyPolicy.html"))
       }
     }
   }
