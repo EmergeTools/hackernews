@@ -22,8 +22,10 @@ import com.emergetools.hackernews.features.stories.StoriesDestinations
 import com.emergetools.hackernews.features.stories.StoryItem
 import com.emergetools.hackernews.ui.components.ColumnSeparator
 import com.emergetools.hackernews.ui.components.StoryRow
+import com.emergetools.hackernews.ui.preview.AppStoreSnapshot
 import com.emergetools.hackernews.ui.preview.SnapshotPreview
 import com.emergetools.hackernews.ui.theme.HackerNewsTheme
+import com.emergetools.snapshots.annotations.EmergeAppStoreSnapshot
 
 @Composable
 fun BookmarksScreen(
@@ -141,3 +143,54 @@ fun BookmarksScreenEmptyPreview() {
   }
 }
 
+
+@OptIn(EmergeAppStoreSnapshot::class)
+@AppStoreSnapshot
+@Composable
+fun BookmarksScreenAppStorePreview() {
+  val stories = listOf(
+    StoryItem.Content(
+      id = 1L,
+      title = "Why is the Oral-B iOS app almost 300 MB? And why is Colgate's app even bigger..?",
+      author = "heyrikin",
+      score = 252,
+      commentCount = 229,
+      epochTimestamp = 100L,
+      timeLabel = "5h ago",
+      bookmarked = true,
+      url = ""
+    ),
+    StoryItem.Content(
+      id = 2L,
+      title = "Can we stop the decline of monarch butterflies and other pollinators?",
+      author = "rbro112",
+      score = 40,
+      commentCount = 23,
+      epochTimestamp = 100L,
+      timeLabel = "2h ago",
+      bookmarked = true,
+      url = ""
+    ),
+    StoryItem.Content(
+      id = 3L,
+      title = "Andy Warhol's lost Amiga art found",
+      author = "telkins",
+      score = 332,
+      commentCount = 103,
+      epochTimestamp = 100L,
+      timeLabel = "7h ago",
+      bookmarked = true,
+      url = ""
+    ),
+  )
+
+  HackerNewsTheme {
+    BookmarksScreen(
+      state = BookmarksState(
+        bookmarks = stories,
+      ),
+      actions = {},
+      navigator = {}
+    )
+  }
+}

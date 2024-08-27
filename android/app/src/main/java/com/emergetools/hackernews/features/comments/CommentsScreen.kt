@@ -28,8 +28,10 @@ import androidx.compose.ui.unit.dp
 import com.emergetools.hackernews.features.comments.components.CommentRow
 import com.emergetools.hackernews.features.comments.components.CommentsHeader
 import com.emergetools.hackernews.features.comments.components.PostCommentBump
+import com.emergetools.hackernews.ui.preview.AppStoreSnapshot
 import com.emergetools.hackernews.ui.preview.SnapshotPreview
 import com.emergetools.hackernews.ui.theme.HackerNewsTheme
+import com.emergetools.snapshots.annotations.EmergeAppStoreSnapshot
 
 @Composable
 fun CommentsScreen(
@@ -203,3 +205,102 @@ private fun CommentsScreenLoadingPreview() {
   }
 }
 
+@OptIn(EmergeAppStoreSnapshot::class)
+@AppStoreSnapshot
+@Composable
+fun CommentsScreenAppStorePreview() {
+  HackerNewsTheme {
+    CommentsScreen(
+      state = CommentsState.Content(
+        id = 0,
+        title = "Why is the Oral-B iOS app almost 300 MB? And why is Colgate's app even bigger..?",
+        author = "rbro112",
+        points = 155,
+        timeLabel = "6h ago",
+        body = BodyState(null),
+        loggedIn = false,
+        upvoted = false,
+        upvoteUrl = "",
+        commentText = "",
+        formData = null,
+        comments = listOf(
+          CommentState.Content(
+            id = 1,
+            level = 0,
+            author = "rikinm",
+            content = "My question is: why do an Oral-B app and a Colgate app even exist?",
+            timeLabel = "2h ago",
+            upvoted = false,
+            upvoteUrl = "",
+            children = listOf()
+          ),
+          CommentState.Content(
+            id = 2,
+            level = 1,
+            author = "telkins",
+            content = "The same reason they now have a toothbrush with AI. Because they are in a race to continuously re-invent the toothbrush every year to create new USPs, create new marketing angles and keep sales high.",
+            timeLabel = "2h ago",
+            upvoted = false,
+            upvoteUrl = "",
+            children = listOf()
+          ),
+          CommentState.Content(
+            id = 3,
+            level = 2,
+            author = "nhinderling",
+            content = "I'm surprised that health insurance companies haven't started offering \"good brusher\" discounts the way car insurance companies offer a \"good driver\" discount when you use their car data logging device/app.",
+            timeLabel = "1h ago",
+            upvoted = false,
+            upvoteUrl = "",
+            children = listOf()
+          ),
+          // TODO
+          CommentState.Content(
+            id = 4,
+            level = 0,
+            author = "vasantm",
+            content = "So it’s all just stupidly big PDFs used as images of the different models?\n" +
+              "Not what I was expecting. I was expecting it to be more like the Colgate app mentioned later in thread.",
+            timeLabel = "2h ago",
+            upvoted = false,
+            upvoteUrl = "",
+            children = listOf()
+          ),
+          CommentState.Content(
+            id = 5,
+            level = 1,
+            author = "itaybre",
+            content = "I wonder if they generated the PDFs with a web browser's Print to PDF feature. Chrome's PDFs are massive.",
+            timeLabel = "1h ago",
+            upvoted = false,
+            upvoteUrl = "",
+            children = listOf()
+          ),
+          CommentState.Content(
+            id = 6,
+            level = 1,
+            author = "chromy",
+            content = "That’s insane. They should absolutely, 100% be pulled on demand.",
+            timeLabel = "1h ago",
+            upvoted = false,
+            upvoteUrl = "",
+            children = listOf()
+          ),
+          CommentState.Content(
+            id = 7,
+            level = 2,
+            author = "mptop27",
+            content = "I think there’s nothing wrong with shipping the images, why should you need an Internet connection to pair your toothbrush (which of your using the app you must want to do).\n" +
+              "But why can’t they be vector images? The pictures in the tweet looks like they could easily be replaced by vectors and the difference would be nearly unnoticeable.",
+            timeLabel = "30m ago",
+            upvoted = false,
+            upvoteUrl = "",
+            children = listOf()
+          ),
+        )
+      ),
+      actions = {},
+      navigation = {}
+    )
+  }
+}
