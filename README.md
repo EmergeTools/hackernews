@@ -1,8 +1,14 @@
-## Overview
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/61852a1b-4716-4893-8e54-4fd2a4399df1" alt="Cover image"/>
+</p>
 
-Welcome to the [Emerge Tools](https://www.emergetools.com/) example project! This repository serves as a practical example for how you can integrate Emerge Tools products. It's designed for both [iOS](https://github.com/EmergeTools/hackernews/tree/main/ios) and [Android](https://github.com/EmergeTools/hackernews/tree/main/android) platforms.
+Welcome to the [Emerge Tools](https://www.emergetools.com/) Hacker News repo!
 
-## Getting Started
+This repository serves as a practical Android & iOS example project, leveraging Emerge's suite of products for size analysis, snapshot testing, reaper for detecting dead code, and performance testing. 
+
+The Android app is available on [Google Play](https://play.google.com/store/apps/details?id=com.emergetools.hackernews), and the iOS project is currently in development.
+
+## Getting Started with Emerge
 
 [Full docs](https://docs.emergetools.com/docs/quickstart)
 
