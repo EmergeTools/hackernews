@@ -1,0 +1,67 @@
+name: Android Release Build
+
+on:
+  release:
+    types: [ published ]
+  # TODO: Remove before merging
+  pull_request:
+    branches: [ main ]
+    paths: [ android/** ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    # Only run when the tag begins with the string "android-"
+    # if: ${{ startsWith(github.event.release.tag_name, 'android-') }}
+
+    defaults:
+      run:
+        working-directory: ./android
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+
+      - name: Decode Keystore
+        env:
+          ENCODED_KEYSTORE: ${{ secrets.ANDROID_RELEASE_KEYSTORE_BASE64 }}
+          DECODED_KEYSTORE_PATH: ${{ secrets.ANDROID_RELEASE_KEYSTORE_PATH }}
+        run: |
+          echo $ENCODED_KEYSTORE > keystore_base64.txt
+          base64 -d keystore_base64.txt > $DECODED_KEYSTORE_PATH
+
+      - name: Build AAB
+        env:
+          RUNNING_ENV: release_workflow
+          DECODED_KEYSTORE_PATH: ${{ secrets.ANDROID_RELEASE_KEYSTORE_PATH }}
+          RELEASE_KEY_ALIAS: ${{ secrets.ANDROID_RELEASE_KEY_ALIAS }}
+          RELEASE_KEY_PASSWORD: ${{ secrets.ANDROID_RELEASE_KEY_PASSWORD }}
+          RELEASE_STORE_PASSWORD: ${{ secrets.ANDROID_RELEASE_STORE_PASSWORD }}
+        run: ./gradlew :app:bundleRelease
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-west-1
+
+      # - name: Extract version from tag
+      #   run: echo "VERSION_NAME=$(echo ${{ github.event.release.tag_name }} | sed 's/android-//')" >> $GITHUB_ENV
+
+      - name: Extract version from tag
+        run: echo "VERSION_NAME=test" >> $GITHUB_ENV
+
+      - name: Upload AAB to S3
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: |
+          aws s3 cp app/build/outputs/bundle/release/app-release.aab s3://hn-artifacts/app-release-${{ env.VERSION_NAME }}.aab

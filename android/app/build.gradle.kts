@@ -16,8 +16,8 @@ android {
     applicationId = "com.emergetools.hackernews"
     minSdk = 30
     targetSdk = 34
-    versionCode = 8
-    versionName = "1.0-beta04"
+    versionCode = 9
+    versionName = "1.0.0-test"
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables {
@@ -25,7 +25,18 @@ android {
     }
   }
 
-  signingConfigs {}
+  val runningEnv: String? = System.getenv("RUNNING_ENV")
+
+  signingConfigs {
+    if (runningEnv == "release_workflow") {
+      create("release") {
+        storeFile = file(System.getenv("DECODED_KEYSTORE_PATH"))
+        keyAlias = System.getenv("RELEASE_KEY_ALIAS")
+        keyPassword = System.getenv("RELEASE_KEY_PASSWORD")
+        storePassword = System.getenv("RELEASE_STORE_PASSWORD")
+      }
+    }
+  }
 
   buildTypes {
     debug {
@@ -44,7 +55,8 @@ android {
       proguardFiles(
         getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
       )
-      signingConfig = signingConfigs.getByName("debug")
+      val signingConfigName = if (runningEnv == "release_workflow") "release" else "debug"
+      signingConfigs.getByName(signingConfigName)
     }
   }
   buildFeatures {
