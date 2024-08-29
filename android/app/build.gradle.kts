@@ -30,7 +30,7 @@ android {
   signingConfigs {
     if (runningEnv == "release_workflow") {
       create("release") {
-        storeFile = file(System.getenv("keystore.jks"))
+        storeFile = file("keystore.jks")
         keyAlias = System.getenv("RELEASE_KEY_ALIAS")
         keyPassword = System.getenv("RELEASE_KEY_PASSWORD")
         storePassword = System.getenv("RELEASE_STORE_PASSWORD")
