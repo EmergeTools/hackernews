@@ -8,6 +8,8 @@ plugins {
   alias(libs.plugins.sentry)
 }
 
+val runningEnv: String? = System.getenv("RUNNING_ENV")
+
 android {
   namespace = "com.emergetools.hackernews"
   compileSdk = 34
@@ -24,8 +26,6 @@ android {
       useSupportLibrary = true
     }
   }
-
-  val runningEnv: String? = System.getenv("RUNNING_ENV")
 
   signingConfigs {
     if (runningEnv == "release_workflow") {
@@ -86,7 +86,10 @@ emerge {
   }
 
   reaper {
-    enabledVariants.set(listOf("release"))
+    // Only enable reaper on release workflow
+    if (runningEnv == "release_workflow") {
+      enabledVariants.set(listOf("release"))
+    }
     publishableApiKey.set(System.getenv("REAPER_API_KEY"))
   }
 
