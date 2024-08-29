@@ -56,7 +56,7 @@ android {
         getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
       )
       val signingConfigName = if (runningEnv == "release_workflow") "release" else "debug"
-      signingConfigs.getByName(signingConfigName)
+      signingConfig = signingConfigs.getByName(signingConfigName)
     }
   }
   buildFeatures {
