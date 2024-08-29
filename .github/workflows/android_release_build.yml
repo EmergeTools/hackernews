@@ -8,7 +8,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    Only run when the tag begins with the string "android-"
+    # Only run when the tag begins with the string "android-"
     if: ${{ startsWith(github.event.release.tag_name, 'android-') }}
 
     defaults:
