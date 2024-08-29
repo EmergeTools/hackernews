@@ -35,7 +35,7 @@ jobs:
           DECODED_KEYSTORE_PATH: ${{ secrets.ANDROID_RELEASE_KEYSTORE_PATH }}
         run: |
           echo $ENCODED_KEYSTORE > keystore_base64.txt
-          base64 -d keystore_base64.txt > $DECODED_KEYSTORE_PATH
+          base64 -d keystore_base64.txt > ./app/$DECODED_KEYSTORE_PATH
 
       - name: Build AAB
         env:
