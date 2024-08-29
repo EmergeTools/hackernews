@@ -3,17 +3,13 @@ name: Android Release Build
 on:
   release:
     types: [ published ]
-  # TODO: Remove before merging
-  pull_request:
-    branches: [ main ]
-    paths: [ android/** ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
-    # Only run when the tag begins with the string "android-"
-    # if: ${{ startsWith(github.event.release.tag_name, 'android-') }}
+    Only run when the tag begins with the string "android-"
+    if: ${{ startsWith(github.event.release.tag_name, 'android-') }}
 
     defaults:
       run:
@@ -56,11 +52,8 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-west-1
 
-      # - name: Extract version from tag
-      #   run: echo "VERSION_NAME=$(echo ${{ github.event.release.tag_name }} | sed 's/android-//')" >> $GITHUB_ENV
-
       - name: Extract version from tag
-        run: echo "VERSION_NAME=test" >> $GITHUB_ENV
+        run: echo "VERSION_NAME=$(echo ${{ github.event.release.tag_name }} | sed 's/android-//')" >> $GITHUB_ENV
 
       - name: Upload AAB to S3
         env:
