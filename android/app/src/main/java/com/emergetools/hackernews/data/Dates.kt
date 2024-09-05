@@ -6,8 +6,11 @@ import java.time.Instant
  * Convert the difference between two epoch second times
  * to a relative timestamp label like "2m ago" or "5d ago"
  */
-fun relativeTimeStamp(epochSeconds: Long): String {
-  val now = Instant.now().epochSecond
+fun relativeTimeStamp(
+  epochSeconds: Long,
+  // For testing
+  now: Long = Instant.now().epochSecond,
+): String {
   val difference = now - epochSeconds
 
   val minutes = difference / SECONDS_IN_MINUTE

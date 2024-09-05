@@ -21,8 +21,11 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.Instant
 import java.time.LocalDateTime
+import java.time.OffsetDateTime
 import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 
 sealed interface CommentsState {
   val headerState: HeaderState
@@ -348,20 +351,26 @@ class CommentsViewModel(
     }
   }
 
-  private fun CommentInfo.toCommentState(): CommentState.Content {
-    return CommentState.Content(
-      id = id,
-      author = user,
-      content = text,
-      timeLabel = relativeTimeStamp(
-        epochSeconds = LocalDateTime.parse(age)
-          .toInstant(ZoneOffset.UTC).epochSecond
-      ),
-      upvoted = upvoted,
-      upvoteUrl = upvoteUrl,
-      level = level,
-      children = emptyList()
-    )
+
+  companion object {
+    fun CommentInfo.toCommentState(
+      now: Instant = LocalDateTime.now().toInstant(ZoneOffset.UTC),
+    ): CommentState.Content {
+      return CommentState.Content(
+        id = id,
+        author = user,
+        content = text,
+        timeLabel = relativeTimeStamp(
+          epochSeconds = OffsetDateTime.parse(age, DateTimeFormatter.ISO_DATE_TIME)
+            .toInstant().epochSecond,
+          now = now.epochSecond,
+        ),
+        upvoted = upvoted,
+        upvoteUrl = upvoteUrl,
+        level = level,
+        children = emptyList()
+      )
+    }
   }
 
   @Suppress("UNCHECKED_CAST")
