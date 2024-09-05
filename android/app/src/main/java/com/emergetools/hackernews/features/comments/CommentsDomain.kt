@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 
 sealed interface CommentsState {
   val headerState: HeaderState
@@ -354,7 +355,8 @@ class CommentsViewModel(
       author = user,
       content = text,
       timeLabel = relativeTimeStamp(
-        epochSeconds = LocalDateTime.parse(age)
+        epochSeconds = LocalDateTime
+          .parse(age, DateTimeFormatter.ISO_DATE_TIME)
           .toInstant(ZoneOffset.UTC).epochSecond
       ),
       upvoted = upvoted,
