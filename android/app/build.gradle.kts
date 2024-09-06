@@ -18,8 +18,8 @@ android {
     applicationId = "com.emergetools.hackernews"
     minSdk = 30
     targetSdk = 34
-    versionCode = 9
-    versionName = "1.0.0"
+    versionCode = 10
+    versionName = "1.0.1"
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables {
