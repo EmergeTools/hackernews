@@ -36,12 +36,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.emergetools.hackernews.R
+import com.emergetools.hackernews.data.relativeTimeStamp
 import com.emergetools.hackernews.features.comments.CommentState
 import com.emergetools.hackernews.features.comments.HiddenStatus
 import com.emergetools.hackernews.ui.components.MetadataTag
 import com.emergetools.hackernews.ui.theme.HackerGreen
 import com.emergetools.hackernews.ui.theme.HackerNewsTheme
 import com.emergetools.hackernews.ui.util.parseAsHtml
+import java.time.Instant
 
 @Composable
 fun CommentRow(
@@ -76,7 +78,7 @@ fun CommentRow(
             fontWeight = FontWeight.Bold
           )
           MetadataTag(
-            label = state.timeLabel
+            label = relativeTimeStamp(state.epochSeconds),
           ) {
             Icon(
               modifier = Modifier.size(12.dp),
@@ -235,7 +237,7 @@ fun CommentRowPreview() {
           level = 0,
           author = "rikinm",
           content = "Hello Parent",
-          timeLabel = "2d ago",
+          epochSeconds = Instant.now().minusSeconds(60 * 60 * 2).epochSecond,
           upvoted = false,
           upvoteUrl = "",
           children = listOf()

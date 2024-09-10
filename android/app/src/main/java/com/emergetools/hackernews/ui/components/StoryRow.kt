@@ -40,12 +40,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.emergetools.hackernews.R
+import com.emergetools.hackernews.data.relativeTimeStamp
 import com.emergetools.hackernews.features.stories.StoryItem
 import com.emergetools.hackernews.ui.theme.HackerBlue
 import com.emergetools.hackernews.ui.theme.HackerGreen
 import com.emergetools.hackernews.ui.theme.HackerNewsTheme
 import com.emergetools.hackernews.ui.theme.HackerOrange
 import com.emergetools.hackernews.ui.theme.HackerPurple
+import java.time.Instant
 
 @PreviewLightDark
 @Composable
@@ -58,8 +60,7 @@ private fun StoryRowPreview() {
         author = "heyrikin",
         score = 10,
         commentCount = 0,
-        epochTimestamp = 100L,
-        timeLabel = "2h ago",
+        epochTimestamp = Instant.now().minusSeconds(60 * 60 * 2).epochSecond,
         bookmarked = true,
         url = ""
       ),
@@ -170,7 +171,7 @@ fun StoryRow(
             )
           }
           MetadataTag(
-            label = item.timeLabel,
+            label = relativeTimeStamp(item.epochTimestamp),
           ) {
             Icon(
               modifier = Modifier.size(12.dp),

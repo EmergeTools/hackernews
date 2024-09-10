@@ -26,6 +26,7 @@ import com.emergetools.hackernews.ui.preview.AppStoreSnapshot
 import com.emergetools.hackernews.ui.preview.SnapshotPreview
 import com.emergetools.hackernews.ui.theme.HackerNewsTheme
 import com.emergetools.snapshots.annotations.EmergeAppStoreSnapshot
+import java.time.Instant
 
 @Composable
 fun BookmarksScreen(
@@ -94,8 +95,7 @@ fun BookmarksScreenPreview() {
             author = "heyrikin",
             score = 10,
             commentCount = 45,
-            epochTimestamp = 100L,
-            timeLabel = "3h ago",
+            epochTimestamp = Instant.now().minusSeconds(60 * 60 * 3).epochSecond,
             bookmarked = true,
             url = ""
           ),
@@ -105,8 +105,7 @@ fun BookmarksScreenPreview() {
             author = "rbro112",
             score = 40,
             commentCount = 23,
-            epochTimestamp = 100L,
-            timeLabel = "2h ago",
+            epochTimestamp = Instant.now().minusSeconds(60 * 60 * 2).epochSecond,
             bookmarked = true,
             url = ""
           ),
@@ -116,8 +115,7 @@ fun BookmarksScreenPreview() {
             author = "telkins",
             score = 332,
             commentCount = 103,
-            epochTimestamp = 100L,
-            timeLabel = "7h ago",
+            epochTimestamp = Instant.now().minusSeconds(60 * 60 * 7).epochSecond,
             bookmarked = true,
             url = ""
           ),
@@ -155,8 +153,7 @@ fun BookmarksScreenAppStorePreview() {
       author = "heyrikin",
       score = 252,
       commentCount = 229,
-      epochTimestamp = 100L,
-      timeLabel = "5h ago",
+      epochTimestamp = Instant.now().minusSeconds(60 * 60 * 5).epochSecond,
       bookmarked = true,
       url = ""
     ),
@@ -166,8 +163,7 @@ fun BookmarksScreenAppStorePreview() {
       author = "rbro112",
       score = 40,
       commentCount = 23,
-      epochTimestamp = 100L,
-      timeLabel = "2h ago",
+      epochTimestamp = Instant.now().minusSeconds(60 * 60 * 2).epochSecond,
       bookmarked = true,
       url = ""
     ),
@@ -177,8 +173,7 @@ fun BookmarksScreenAppStorePreview() {
       author = "telkins",
       score = 332,
       commentCount = 103,
-      epochTimestamp = 100L,
-      timeLabel = "7h ago",
+      epochTimestamp = Instant.now().minusSeconds(60 * 60 * 7).epochSecond,
       bookmarked = true,
       url = ""
     ),

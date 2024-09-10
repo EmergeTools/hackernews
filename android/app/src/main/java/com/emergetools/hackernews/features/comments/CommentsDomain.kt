@@ -41,7 +41,7 @@ sealed interface CommentsState {
     val title: String,
     val author: String,
     val points: Int,
-    val timeLabel: String,
+    val epochSeconds: Long,
     val body: BodyState,
     val loggedIn: Boolean,
     val upvoted: Boolean,
@@ -55,7 +55,7 @@ sealed interface CommentsState {
       title = title,
       author = author,
       points = points,
-      timeLabel = timeLabel,
+      epochSeconds = epochSeconds,
       body = body,
       upvoted = upvoted,
       upvoteUrl = upvoteUrl
@@ -114,7 +114,7 @@ sealed interface CommentState {
     val id: Long,
     val author: String,
     val content: String,
-    val timeLabel: String,
+    val epochSeconds: Long,
     val upvoted: Boolean,
     val upvoteUrl: String,
     override val children: List<CommentState>,
@@ -135,7 +135,7 @@ sealed interface HeaderState {
     val title: String,
     val author: String,
     val points: Int,
-    val timeLabel: String,
+    val epochSeconds: Long,
     val body: BodyState,
     val upvoted: Boolean,
     val upvoteUrl: String,
@@ -214,9 +214,7 @@ class CommentsViewModel(
             title = response.title ?: "",
             author = response.by ?: "",
             points = response.score ?: 0,
-            timeLabel = relativeTimeStamp(
-              epochSeconds = response.time
-            ),
+            epochSeconds = response.time,
             body = BodyState(text = response.text),
             loggedIn = loggedIn,
             upvoted = postPage.postInfo.upvoted,
@@ -354,11 +352,9 @@ class CommentsViewModel(
       id = id,
       author = user,
       content = text,
-      timeLabel = relativeTimeStamp(
-        epochSeconds = LocalDateTime
-          .parse(age, DateTimeFormatter.ISO_DATE_TIME)
-          .toInstant(ZoneOffset.UTC).epochSecond
-      ),
+      epochSeconds = LocalDateTime
+        .parse(age, DateTimeFormatter.ISO_DATE_TIME)
+        .toInstant(ZoneOffset.UTC).epochSecond,
       upvoted = upvoted,
       upvoteUrl = upvoteUrl,
       level = level,

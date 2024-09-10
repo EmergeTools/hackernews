@@ -31,6 +31,7 @@ import com.emergetools.hackernews.ui.preview.AppStoreSnapshot
 import com.emergetools.hackernews.ui.preview.SnapshotPreview
 import com.emergetools.hackernews.ui.theme.HackerNewsTheme
 import com.emergetools.snapshots.annotations.EmergeAppStoreSnapshot
+import java.time.Instant
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -142,8 +143,7 @@ private fun StoriesScreenPreview() {
             author = "heyrikin",
             score = 10,
             commentCount = 0,
-            epochTimestamp = 100L,
-            timeLabel = "2h ago",
+            epochTimestamp = Instant.now().minusSeconds(60 * 60 * 1).epochSecond,
             url = ""
           ),
           StoryItem.Content(
@@ -152,8 +152,7 @@ private fun StoriesScreenPreview() {
             author = "heyrikin",
             score = 10,
             commentCount = 0,
-            epochTimestamp = 100L,
-            timeLabel = "2h ago",
+            epochTimestamp = Instant.now().minusSeconds(60 * 60 * 2).epochSecond,
             url = ""
           ),
         )
@@ -174,8 +173,7 @@ private fun StoriesScreenAppStorePreview() {
       author = "heyrikin",
       score = 252,
       commentCount = 229,
-      epochTimestamp = 100L,
-      timeLabel = "5h ago",
+      epochTimestamp = Instant.now().minusSeconds(60 * 60 * 5).epochSecond,
       url = ""
     ),
     StoryItem.Content(
@@ -184,8 +182,7 @@ private fun StoriesScreenAppStorePreview() {
       author = "rbro112",
       score = 40,
       commentCount = 23,
-      epochTimestamp = 100L,
-      timeLabel = "2h ago",
+      epochTimestamp = Instant.now().minusSeconds(60 * 60 * 2).epochSecond,
       url = ""
     ),
     StoryItem.Content(
@@ -194,8 +191,7 @@ private fun StoriesScreenAppStorePreview() {
       author = "telkins",
       score = 332,
       commentCount = 103,
-      epochTimestamp = 100L,
-      timeLabel = "7h ago",
+      epochTimestamp = Instant.now().minusSeconds(60 * 60 * 7).epochSecond,
       url = ""
     ),
     StoryItem.Content(
@@ -204,8 +200,7 @@ private fun StoriesScreenAppStorePreview() {
       author = "jshchnz",
       score = 332,
       commentCount = 37,
-      epochTimestamp = 100L,
-      timeLabel = "6h ago",
+      epochTimestamp = Instant.now().minusSeconds(60 * 60 * 6).epochSecond,
       url = ""
     ),
     StoryItem.Content(
@@ -214,8 +209,7 @@ private fun StoriesScreenAppStorePreview() {
       author = "sond813",
       score = 29,
       commentCount = 8,
-      epochTimestamp = 100L,
-      timeLabel = "2h ago",
+      epochTimestamp = Instant.now().minusSeconds(60 * 60 * 2).epochSecond,
       url = ""
     ),
     StoryItem.Content(
@@ -224,8 +218,7 @@ private fun StoriesScreenAppStorePreview() {
       author = "mptop27",
       score = 19,
       commentCount = 7,
-      epochTimestamp = 100L,
-      timeLabel = "2h ago",
+      epochTimestamp = Instant.now().minusSeconds(60 * 60 * 2).epochSecond,
       url = ""
     ),
     StoryItem.Content(
@@ -234,8 +227,7 @@ private fun StoriesScreenAppStorePreview() {
       author = "chromy",
       score = 301,
       commentCount = 74,
-      epochTimestamp = 100L,
-      timeLabel = "5h ago",
+      epochTimestamp = Instant.now().minusSeconds(60 * 60 * 5).epochSecond,
       url = ""
     ),
     StoryItem.Content(
@@ -244,8 +236,7 @@ private fun StoriesScreenAppStorePreview() {
       author = "itaybre",
       score = 537,
       commentCount = 359,
-      epochTimestamp = 100L,
-      timeLabel = "3h ago",
+      epochTimestamp = Instant.now().minusSeconds(60 * 60 * 3).epochSecond,
       url = ""
     ),
     StoryItem.Content(
@@ -255,7 +246,6 @@ private fun StoriesScreenAppStorePreview() {
       score = 142,
       commentCount = 22,
       epochTimestamp = 100L,
-      timeLabel = "4h ago",
       url = ""
     ),
     StoryItem.Content(
@@ -264,8 +254,7 @@ private fun StoriesScreenAppStorePreview() {
       author = "sarahteng_",
       score = 332,
       commentCount = 46,
-      epochTimestamp = 100L,
-      timeLabel = "6h ago",
+      epochTimestamp = Instant.now().minusSeconds(60 * 60 * 6).epochSecond,
       url = ""
     ),
   )
