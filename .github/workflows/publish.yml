@@ -1,0 +1,45 @@
+name: Publish a build
+
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+
+jobs:
+  build:
+    name: Build for Android
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    defaults:
+      run:
+        working-directory: ./android
+
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: 'adopt'
+          cache: 'gradle'
+
+      - name: Build APK
+        run: ./gradlew :app:assembleDebug
+
+      - name: Create release on GitHub
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref_name, 'v')
+        with:
+          name: ${{ github.ref_name }}
+          fail_on_unmatched_files: true
+          # see https://github.com/softprops/action-gh-release/issues/158
+          files: |
+            build/app/outputs/apk/debug/app-debug.apk
