@@ -71,7 +71,6 @@ sealed class StoryItem(open val id: Long) {
     val score: Int,
     val commentCount: Int,
     val epochTimestamp: Long,
-    val timeLabel: String,
     val bookmarked: Boolean = false,
     val url: String?
   ) : StoryItem(id)
@@ -291,7 +290,6 @@ class StoriesViewModel(
           score = item.score ?: 0,
           commentCount = item.descendants ?: 0,
           epochTimestamp = item.time,
-          timeLabel = relativeTimeStamp(epochSeconds = item.time),
           bookmarked = bookmarks.find { it.id == item.id } != null,
           url = item.url
         )

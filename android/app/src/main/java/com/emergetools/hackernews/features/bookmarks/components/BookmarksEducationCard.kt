@@ -33,6 +33,7 @@ import com.emergetools.hackernews.ui.components.StoryRow
 import com.emergetools.hackernews.ui.theme.HackerNewsTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.time.Instant
 
 @Composable
 fun BookmarksEducationCard() {
@@ -131,8 +132,7 @@ fun BookmarksEducationCard() {
         author = "heyrikin",
         score = 10,
         commentCount = 45,
-        epochTimestamp = 100L,
-        timeLabel = "3h ago",
+        epochTimestamp = Instant.now().minusSeconds(60 * 60 * 3).epochSecond,
         bookmarked = bookmarked,
         url = ""
       ),

@@ -37,6 +37,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.emergetools.hackernews.R
+import com.emergetools.hackernews.data.relativeTimeStamp
 import com.emergetools.hackernews.features.comments.BodyState
 import com.emergetools.hackernews.features.comments.HeaderState
 import com.emergetools.hackernews.ui.components.MetadataButton
@@ -46,6 +47,7 @@ import com.emergetools.hackernews.ui.theme.HackerNewsTheme
 import com.emergetools.hackernews.ui.theme.HackerOrange
 import com.emergetools.hackernews.ui.theme.HackerPurple
 import com.emergetools.hackernews.ui.util.parseAsHtml
+import java.time.Instant
 
 @Composable
 fun CommentsHeader(
@@ -83,7 +85,7 @@ fun CommentsHeader(
                 fontWeight = FontWeight.Bold
               )
             }
-            MetadataTag(label = state.timeLabel) {
+            MetadataTag(label = relativeTimeStamp(state.epochSeconds)) {
               Icon(
                 modifier = Modifier.size(12.dp),
                 painter = painterResource(R.drawable.ic_time_outline),
@@ -238,7 +240,7 @@ private fun CommentsHeaderPreview() {
           title = "Show HN: A super neat HN client for Android",
           author = "rikinm",
           points = 69,
-          timeLabel = "2h ago",
+          epochSeconds = Instant.now().minusSeconds(60 * 60 * 2).epochSecond,
           body = BodyState("Wassup HN. I just built a sick new Hacker News Android client."),
           upvoted = false,
           upvoteUrl = "",

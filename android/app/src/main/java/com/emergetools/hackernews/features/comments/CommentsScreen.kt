@@ -32,6 +32,7 @@ import com.emergetools.hackernews.ui.preview.AppStoreSnapshot
 import com.emergetools.hackernews.ui.preview.SnapshotPreview
 import com.emergetools.hackernews.ui.theme.HackerNewsTheme
 import com.emergetools.snapshots.annotations.EmergeAppStoreSnapshot
+import java.time.Instant
 
 @Composable
 fun CommentsScreen(
@@ -41,8 +42,8 @@ fun CommentsScreen(
 ) {
   Box(
     modifier = Modifier
-      .fillMaxSize()
-      .background(color = MaterialTheme.colorScheme.background),
+        .fillMaxSize()
+        .background(color = MaterialTheme.colorScheme.background),
   ) {
     LazyColumn(
       modifier = Modifier.fillMaxSize(),
@@ -53,8 +54,8 @@ fun CommentsScreen(
         CommentsHeader(
           state = state.headerState,
           modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight(),
+              .fillMaxWidth()
+              .wrapContentHeight(),
           onLikeTapped = { item ->
             if (state is CommentsState.Content && state.loggedIn) {
               actions(
@@ -73,23 +74,23 @@ fun CommentsScreen(
       item {
         val lineColor = MaterialTheme.colorScheme.onBackground
         Box(modifier = Modifier
-          .fillMaxWidth()
-          .padding(horizontal = 8.dp)
-          .height(16.dp)
-          .drawBehind {
-            val lineStart = Offset(0f, size.center.y)
-            val lineEnd = Offset(size.width, size.center.y)
-            drawLine(
-              start = lineStart,
-              end = lineEnd,
-              color = lineColor,
-              strokeWidth = 4f,
-              cap = StrokeCap.Round,
-              pathEffect = PathEffect.dashPathEffect(
-                intervals = floatArrayOf(10f, 10f)
-              )
-            )
-          }
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp)
+            .height(16.dp)
+            .drawBehind {
+                val lineStart = Offset(0f, size.center.y)
+                val lineEnd = Offset(size.width, size.center.y)
+                drawLine(
+                    start = lineStart,
+                    end = lineEnd,
+                    color = lineColor,
+                    strokeWidth = 4f,
+                    cap = StrokeCap.Round,
+                    pathEffect = PathEffect.dashPathEffect(
+                        intervals = floatArrayOf(10f, 10f)
+                    )
+                )
+            }
         )
       }
       items(items = state.comments.filter { it.hidden != HiddenStatus.HiddenByParent }) { comment ->
@@ -157,7 +158,7 @@ private fun CommentsScreenPreview() {
         title = "Show HN: A new HN client for Android",
         author = "rikinm",
         points = 69,
-        timeLabel = "2h ago",
+        epochSeconds = Instant.now().minusSeconds(60 * 60 * 2).epochSecond,
         body = BodyState("Hello There"),
         loggedIn = false,
         upvoted = false,
@@ -170,7 +171,7 @@ private fun CommentsScreenPreview() {
             level = 0,
             author = "rikinm",
             content = "Hello Child",
-            timeLabel = "2d ago",
+            epochSeconds = Instant.now().minusSeconds(60 * 60 * 24 * 2).epochSecond,
             upvoted = false,
             upvoteUrl = "",
             children = listOf()
@@ -180,7 +181,7 @@ private fun CommentsScreenPreview() {
             level = 1,
             author = "vasantm",
             content = "Hello Parent",
-            timeLabel = "1h ago",
+            epochSeconds = Instant.now().minusSeconds(60 * 60 * 1).epochSecond,
             upvoted = false,
             upvoteUrl = "",
             children = listOf()
@@ -216,7 +217,7 @@ fun CommentsScreenAppStorePreview() {
         title = "Why is the Oral-B iOS app almost 300 MB? And why is Colgate's app even bigger..?",
         author = "rbro112",
         points = 155,
-        timeLabel = "6h ago",
+        epochSeconds = Instant.now().minusSeconds(60 * 60 * 6).epochSecond,
         body = BodyState(null),
         loggedIn = false,
         upvoted = false,
@@ -229,7 +230,7 @@ fun CommentsScreenAppStorePreview() {
             level = 0,
             author = "rikinm",
             content = "My question is: why do an Oral-B app and a Colgate app even exist?",
-            timeLabel = "2h ago",
+            epochSeconds = Instant.now().minusSeconds(60 * 60 * 2).epochSecond,
             upvoted = false,
             upvoteUrl = "",
             children = listOf()
@@ -239,7 +240,7 @@ fun CommentsScreenAppStorePreview() {
             level = 1,
             author = "telkins",
             content = "The same reason they now have a toothbrush with AI. Because they are in a race to continuously re-invent the toothbrush every year to create new USPs, create new marketing angles and keep sales high.",
-            timeLabel = "2h ago",
+            epochSeconds = Instant.now().minusSeconds(60 * 60 * 2).epochSecond,
             upvoted = false,
             upvoteUrl = "",
             children = listOf()
@@ -249,7 +250,7 @@ fun CommentsScreenAppStorePreview() {
             level = 2,
             author = "nhinderling",
             content = "I'm surprised that health insurance companies haven't started offering \"good brusher\" discounts the way car insurance companies offer a \"good driver\" discount when you use their car data logging device/app.",
-            timeLabel = "1h ago",
+            epochSeconds = Instant.now().minusSeconds(60 * 60 * 1).epochSecond,
             upvoted = false,
             upvoteUrl = "",
             children = listOf()
@@ -261,7 +262,7 @@ fun CommentsScreenAppStorePreview() {
             author = "vasantm",
             content = "So it’s all just stupidly big PDFs used as images of the different models?\n" +
               "Not what I was expecting. I was expecting it to be more like the Colgate app mentioned later in thread.",
-            timeLabel = "2h ago",
+            epochSeconds = Instant.now().minusSeconds(60 * 60 * 2).epochSecond,
             upvoted = false,
             upvoteUrl = "",
             children = listOf()
@@ -271,7 +272,7 @@ fun CommentsScreenAppStorePreview() {
             level = 1,
             author = "itaybre",
             content = "I wonder if they generated the PDFs with a web browser's Print to PDF feature. Chrome's PDFs are massive.",
-            timeLabel = "1h ago",
+            epochSeconds = Instant.now().minusSeconds(60 * 60 * 1).epochSecond,
             upvoted = false,
             upvoteUrl = "",
             children = listOf()
@@ -281,7 +282,7 @@ fun CommentsScreenAppStorePreview() {
             level = 1,
             author = "chromy",
             content = "That’s insane. They should absolutely, 100% be pulled on demand.",
-            timeLabel = "1h ago",
+            epochSeconds = Instant.now().minusSeconds(60 * 60 * 1).epochSecond,
             upvoted = false,
             upvoteUrl = "",
             children = listOf()
@@ -292,7 +293,7 @@ fun CommentsScreenAppStorePreview() {
             author = "mptop27",
             content = "I think there’s nothing wrong with shipping the images, why should you need an Internet connection to pair your toothbrush (which of your using the app you must want to do).\n" +
               "But why can’t they be vector images? The pictures in the tweet looks like they could easily be replaced by vectors and the difference would be nearly unnoticeable.",
-            timeLabel = "30m ago",
+            epochSeconds = Instant.now().minusSeconds(60 * 30).epochSecond,
             upvoted = false,
             upvoteUrl = "",
             children = listOf()

@@ -85,6 +85,5 @@ fun LocalBookmark.toStoryItem(): StoryItem.Content {
     bookmarked = true,
     url = this.url,
     epochTimestamp = this.timestamp,
-    timeLabel = relativeTimeStamp(this.timestamp)
   )
 }
