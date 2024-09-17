@@ -237,7 +237,7 @@ fun CommentRowPreview() {
           level = 0,
           author = "rikinm",
           content = "Hello Parent",
-          epochSeconds = Instant.now().minusSeconds(60 * 60 * 2).epochSecond,
+          epochSeconds = Instant.now().minusSeconds(60 * 60 * 6).epochSecond,
           upvoted = false,
           upvoteUrl = "",
           children = listOf()
