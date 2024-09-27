@@ -114,7 +114,7 @@ sealed interface CommentState {
     val id: Long,
     val author: String,
     val content: String,
-    val epochSeconds: Long,
+    val age: String,
     val upvoted: Boolean,
     val upvoteUrl: String,
     override val children: List<CommentState>,
@@ -352,9 +352,7 @@ class CommentsViewModel(
       id = id,
       author = user,
       content = text,
-      epochSeconds = LocalDateTime
-        .parse(age, DateTimeFormatter.ISO_DATE_TIME)
-        .toInstant(ZoneOffset.UTC).epochSecond,
+      age = age,
       upvoted = upvoted,
       upvoteUrl = upvoteUrl,
       level = level,
