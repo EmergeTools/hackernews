@@ -268,14 +268,14 @@ fun CommentRowLoadingPreview() {
 private fun ProperlyParseDateTime() {
   HackerNewsTheme {
     Column {
-      val inputString = "2024-09-05T17:48:25.000000Z"
+      val isoDateWithTimeZone = "2024-09-05T17:48:25.000000Z"
       CommentRow(
         state = CommentState.Content(
           id = 1,
           level = 0,
           author = "rikinm",
           content = "Hello Parent",
-          age = inputString,
+          age = isoDateWithTimeZone,
           upvoted = false,
           upvoteUrl = "",
           children = listOf()
