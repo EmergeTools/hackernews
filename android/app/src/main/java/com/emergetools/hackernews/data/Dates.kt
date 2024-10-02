@@ -29,7 +29,7 @@ fun relativeTimeStamp(epochSeconds: Long): String {
 
 fun relativeTimeStamp(date: String): String {
   val dateEpochs = LocalDateTime
-    .parse(date)
+    .parse(date, DateTimeFormatter.ISO_DATE_TIME)
     .toInstant(ZoneOffset.UTC)
     .epochSecond
   val now = Instant.now().epochSecond
