@@ -189,7 +189,7 @@ private fun SettingsScreenPreview() {
   showSystemUi = true
 )
 @Composable
-private fun TestSettingsSmallScreen() {
+private fun SettingsSmallScreenPreview() {
   HackerNewsTheme {
     Scaffold(
       bottomBar = {

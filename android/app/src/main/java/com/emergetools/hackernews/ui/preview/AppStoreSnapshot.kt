@@ -13,6 +13,7 @@ annotation class AppStoreSnapshot
 
 @Preview(device = Devices.PIXEL_FOLD)
 @Preview(device = Devices.PIXEL_TABLET)
+@Preview(device = Devices.PIXEL_2)
 annotation class DevicePreview
 
 @DevicePreview
