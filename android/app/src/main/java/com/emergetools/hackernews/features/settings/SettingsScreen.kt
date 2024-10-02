@@ -55,14 +55,15 @@ fun SettingsScreen(
   ) {
     Text(
       text = "Settings",
-      modifier = Modifier.fillMaxWidth().padding(8.dp),
+      modifier = Modifier
+        .fillMaxWidth()
+        .padding(8.dp),
       style = MaterialTheme.typography.titleMedium,
       color = MaterialTheme.colorScheme.onBackground
     )
     Column(
-      modifier = Modifier.verticalScroll(
-        state = rememberScrollState()
-      )
+      modifier = Modifier
+        .verticalScroll(state = rememberScrollState())
         .padding(horizontal = 8.dp),
       verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
@@ -193,50 +194,7 @@ private fun SettingsSmallScreenPreview() {
   HackerNewsTheme {
     Scaffold(
       bottomBar = {
-        NavigationBar {
-          NavigationBarItem(
-            selected = false,
-            colors = NavigationBarItemDefaults.colors(
-              selectedIconColor = MaterialTheme.colorScheme.primary,
-              indicatorColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
-            ),
-            onClick = { },
-            icon = {
-              Icon(
-                painter = painterResource(R.drawable.ic_feed),
-                contentDescription = "feed"
-              )
-            },
-          )
-          NavigationBarItem(
-            selected = false,
-            colors = NavigationBarItemDefaults.colors(
-              selectedIconColor = MaterialTheme.colorScheme.primary,
-              indicatorColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
-            ),
-            onClick = { },
-            icon = {
-              Icon(
-                painter = painterResource(R.drawable.ic_bookmarks),
-                contentDescription = "bookmarks"
-              )
-            },
-          )
-          NavigationBarItem(
-            selected = true,
-            colors = NavigationBarItemDefaults.colors(
-              selectedIconColor = MaterialTheme.colorScheme.primary,
-              indicatorColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
-            ),
-            onClick = { },
-            icon = {
-              Icon(
-                painter = painterResource(R.drawable.ic_settings),
-                contentDescription = "settings"
-              )
-            },
-          )
-        }
+        SettingsPreviewNavBar()
       }
     ) { innerPadding ->
       Box(modifier = Modifier.padding(innerPadding)) {
@@ -247,5 +205,53 @@ private fun SettingsSmallScreenPreview() {
         )
       }
     }
+  }
+}
+
+@Composable
+private fun SettingsPreviewNavBar() {
+  NavigationBar {
+    NavigationBarItem(
+      selected = false,
+      colors = NavigationBarItemDefaults.colors(
+        selectedIconColor = MaterialTheme.colorScheme.primary,
+        indicatorColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
+      ),
+      onClick = { },
+      icon = {
+        Icon(
+          painter = painterResource(R.drawable.ic_feed),
+          contentDescription = "feed"
+        )
+      },
+    )
+    NavigationBarItem(
+      selected = false,
+      colors = NavigationBarItemDefaults.colors(
+        selectedIconColor = MaterialTheme.colorScheme.primary,
+        indicatorColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
+      ),
+      onClick = { },
+      icon = {
+        Icon(
+          painter = painterResource(R.drawable.ic_bookmarks),
+          contentDescription = "bookmarks"
+        )
+      },
+    )
+    NavigationBarItem(
+      selected = true,
+      colors = NavigationBarItemDefaults.colors(
+        selectedIconColor = MaterialTheme.colorScheme.primary,
+        indicatorColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
+      ),
+      onClick = { },
+      icon = {
+        Icon(
+          painter = painterResource(R.drawable.ic_settings),
+          contentDescription = "settings"
+        )
+      },
+    )
   }
 }
