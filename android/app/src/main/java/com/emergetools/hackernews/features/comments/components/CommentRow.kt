@@ -265,7 +265,7 @@ fun CommentRowLoadingPreview() {
 
 @Preview
 @Composable
-private fun ProperlyParseDateTime() {
+private fun TestIsoDateTimeParsing() {
   HackerNewsTheme {
     Column {
       val isoDateWithTimeZone = "2024-09-05T17:48:25.000000Z"
