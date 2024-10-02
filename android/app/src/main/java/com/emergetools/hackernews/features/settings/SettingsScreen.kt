@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Lock
 import androidx.compose.material.icons.rounded.Warning
@@ -48,17 +50,20 @@ fun SettingsScreen(
   Column(
     modifier = Modifier
       .fillMaxSize()
-      .background(color = MaterialTheme.colorScheme.background)
-      .padding(8.dp),
+      .background(color = MaterialTheme.colorScheme.background),
     verticalArrangement = Arrangement.spacedBy(16.dp),
   ) {
     Text(
       text = "Settings",
-      modifier = Modifier.fillMaxWidth(),
+      modifier = Modifier.fillMaxWidth().padding(8.dp),
       style = MaterialTheme.typography.titleMedium,
       color = MaterialTheme.colorScheme.onBackground
     )
     Column(
+      modifier = Modifier.verticalScroll(
+        state = rememberScrollState()
+      )
+        .padding(horizontal = 8.dp),
       verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
       SettingsSectionLabel("Profile")
