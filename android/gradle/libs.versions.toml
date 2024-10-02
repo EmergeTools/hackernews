@@ -22,7 +22,7 @@ shapes = "1.0.0-rc01"
 datastore = "1.1.1"
 room = "2.6.1"
 jsoup = "1.18.1"
-extendedspans = "1.3.0"
+extendedspans = "1.4.0"
 composeBom = "2024.09.02"
 
 [libraries]
