@@ -27,7 +27,6 @@
 		A42705AB2A4296BA0057E439 /* PostListScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A42705AA2A4296BA0057E439 /* PostListScreen.swift */; };
 		A42705AD2A429D2E0057E439 /* HNApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = A42705AC2A429D2E0057E439 /* HNApi.swift */; };
 		A434C2E02A8E75960002F488 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A434C2DF2A8E75960002F488 /* WebView.swift */; };
-		A44B39B52AA27F5600C443B7 /* PreviewingTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44B39B42AA27F5600C443B7 /* PreviewingTest.swift */; };
 		A47309B42AA29D9600201376 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = A47309B32AA29D9600201376 /* SwiftSoup */; };
 		A47309B62AA7D1F600201376 /* CommentRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47309B52AA7D1F600201376 /* CommentRow.swift */; };
 		A495B2952BFEA11B00A8A8A9 /* Reaper in Frameworks */ = {isa = PBXBuildFile; productRef = A495B2942BFEA11B00A8A8A9 /* Reaper */; };
@@ -38,6 +37,9 @@
 		A4D28AEE2C237E2A007F20D0 /* SnapshotPreferences in Frameworks */ = {isa = PBXBuildFile; productRef = A4D28AED2C237E2A007F20D0 /* SnapshotPreferences */; };
 		A4D28AF02C237E2A007F20D0 /* SnapshottingTests in Frameworks */ = {isa = PBXBuildFile; productRef = A4D28AEF2C237E2A007F20D0 /* SnapshottingTests */; };
 		A9DF68FF511E48048B0A703D /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = 673236B0A4D04137A0D80A76 /* Sentry */; };
+		C3AC6AD42CB6E806006BD22D /* HackerNewsPreviewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3AC6AD32CB6E7FD006BD22D /* HackerNewsPreviewTest.swift */; };
+		C3AC6AD62CB6E81B006BD22D /* HackerNewsSnapshotTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3AC6AD52CB6E816006BD22D /* HackerNewsSnapshotTest.swift */; };
+		C3AC6AD92CB6E8F7006BD22D /* SnapshottingTests in Frameworks */ = {isa = PBXBuildFile; productRef = C3AC6AD82CB6E8F7006BD22D /* SnapshottingTests */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -95,7 +97,6 @@
 		A42705AC2A429D2E0057E439 /* HNApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HNApi.swift; sourceTree = "<group>"; };
 		A434C2DF2A8E75960002F488 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		A435EF3D2C08F2A9005BF473 /* HackerNews.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HackerNews.entitlements; sourceTree = "<group>"; };
-		A44B39B42AA27F5600C443B7 /* PreviewingTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewingTest.swift; sourceTree = "<group>"; };
 		A45C2C7D2A5DDE25009BC030 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 		A45C2C7E2A5DDE25009BC030 /* Pluginfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Pluginfile; sourceTree = "<group>"; };
 		A45C2C7F2A5DDE25009BC030 /* Appfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Appfile; sourceTree = "<group>"; };
@@ -129,6 +130,9 @@
 		A47309B52AA7D1F600201376 /* CommentRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRow.swift; sourceTree = "<group>"; };
 		A48C0DE62A9818A50034CC0A /* StoryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryScreen.swift; sourceTree = "<group>"; };
 		A48C0DE92A9819E00034CC0A /* StoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryViewModel.swift; sourceTree = "<group>"; };
+		C3AC6AD32CB6E7FD006BD22D /* HackerNewsPreviewTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HackerNewsPreviewTest.swift; sourceTree = "<group>"; };
+		C3AC6AD52CB6E816006BD22D /* HackerNewsSnapshotTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HackerNewsSnapshotTest.swift; sourceTree = "<group>"; };
+		C3AC6AD72CB6E854006BD22D /* HackerNews.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = HackerNews.xctestplan; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,6 +151,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C3AC6AD92CB6E8F7006BD22D /* SnapshottingTests in Frameworks */,
 				A4BED5C32AD5E083001642B3 /* (null) in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -208,6 +213,7 @@
 		A42705702A4293B10057E439 = {
 			isa = PBXGroup;
 			children = (
+				C3AC6AD72CB6E854006BD22D /* HackerNews.xctestplan */,
 				A45C2C7B2A5DDE25009BC030 /* fastlane */,
 				A427057B2A4293B10057E439 /* HackerNews */,
 				A427058C2A4293B30057E439 /* HackerNewsTests */,
@@ -257,6 +263,8 @@
 			isa = PBXGroup;
 			children = (
 				A427058D2A4293B30057E439 /* Hacker_NewsTests.swift */,
+				C3AC6AD32CB6E7FD006BD22D /* HackerNewsPreviewTest.swift */,
+				C3AC6AD52CB6E816006BD22D /* HackerNewsSnapshotTest.swift */,
 			);
 			path = HackerNewsTests;
 			sourceTree = "<group>";
@@ -266,7 +274,6 @@
 			children = (
 				A42705972A4293B30057E439 /* Hacker_NewsUITests.swift */,
 				A42705992A4293B30057E439 /* Hacker_NewsUITestsLaunchTests.swift */,
-				A44B39B42AA27F5600C443B7 /* PreviewingTest.swift */,
 			);
 			path = HackerNewsUITests;
 			sourceTree = "<group>";
@@ -568,6 +575,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A427058E2A4293B30057E439 /* Hacker_NewsTests.swift in Sources */,
+				C3AC6AD62CB6E81B006BD22D /* HackerNewsSnapshotTest.swift in Sources */,
+				C3AC6AD42CB6E806006BD22D /* HackerNewsPreviewTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -575,7 +584,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A44B39B52AA27F5600C443B7 /* PreviewingTest.swift in Sources */,
 				A42705982A4293B30057E439 /* Hacker_NewsUITests.swift in Sources */,
 				A427059A2A4293B30057E439 /* Hacker_NewsUITestsLaunchTests.swift in Sources */,
 			);
@@ -971,6 +979,11 @@
 			productName = SnapshotPreferences;
 		};
 		A4D28AEF2C237E2A007F20D0 /* SnapshottingTests */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A4D28AEC2C237E2A007F20D0 /* XCRemoteSwiftPackageReference "SnapshotPreviews-iOS" */;
+			productName = SnapshottingTests;
+		};
+		C3AC6AD82CB6E8F7006BD22D /* SnapshottingTests */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = A4D28AEC2C237E2A007F20D0 /* XCRemoteSwiftPackageReference "SnapshotPreviews-iOS" */;
 			productName = SnapshottingTests;
