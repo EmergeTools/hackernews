@@ -50,6 +50,7 @@ import com.emergetools.snapshots.annotations.EmergeAppStoreSnapshot
 import com.google.android.play.core.review.ReviewInfo
 import com.google.android.play.core.review.ReviewManager
 import com.google.android.play.core.review.ReviewManagerFactory
+import io.sentry.Sentry
 
 @Composable
 fun rememberReviewInfo(manager: ReviewManager): ReviewInfo? {
@@ -73,11 +74,15 @@ fun SettingsScreen(
   val activity = context as Activity
   val reviewManager = remember { ReviewManagerFactory.create(context) }
   val reviewInfo = rememberReviewInfo(reviewManager)
-  LaunchedEffect(reviewInfo, reviewManager) {
+  LaunchedEffect(reviewInfo) {
     reviewInfo?.let { info ->
-      reviewManager.launchReviewFlow(activity, info)
+      val flow = reviewManager.launchReviewFlow(activity, info)
+      flow.addOnCompleteListener {
+        Sentry.captureMessage("Showed Review Modal")
+      }
     }
   }
+
   Column(
     modifier = Modifier
       .fillMaxSize()
