@@ -1,5 +1,6 @@
 package com.emergetools.hackernews.features.settings
 
+import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,7 +24,13 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
@@ -40,6 +47,21 @@ import com.emergetools.hackernews.ui.theme.HackerNewsTheme
 import com.emergetools.hackernews.ui.theme.HackerOrange
 import com.emergetools.hackernews.ui.theme.HackerRed
 import com.emergetools.snapshots.annotations.EmergeAppStoreSnapshot
+import com.google.android.play.core.review.ReviewInfo
+import com.google.android.play.core.review.ReviewManager
+import com.google.android.play.core.review.ReviewManagerFactory
+
+@Composable
+fun rememberReviewInfo(manager: ReviewManager): ReviewInfo? {
+  var reviewInfo: ReviewInfo? by remember { mutableStateOf(null) }
+  val request = manager.requestReviewFlow()
+  request.addOnCompleteListener { task ->
+    if (task.isSuccessful) {
+      reviewInfo = task.result
+    }
+  }
+  return reviewInfo
+}
 
 @Composable
 fun SettingsScreen(
@@ -47,6 +69,15 @@ fun SettingsScreen(
   actions: (SettingsAction) -> Unit,
   navigation: (SettingsNavigation) -> Unit,
 ) {
+  val context = LocalContext.current
+  val activity = context as Activity
+  val reviewManager = remember { ReviewManagerFactory.create(context) }
+  val reviewInfo = rememberReviewInfo(reviewManager)
+  LaunchedEffect(reviewInfo, reviewManager) {
+    reviewInfo?.let { info ->
+      reviewManager.launchReviewFlow(activity, info)
+    }
+  }
   Column(
     modifier = Modifier
       .fillMaxSize()
