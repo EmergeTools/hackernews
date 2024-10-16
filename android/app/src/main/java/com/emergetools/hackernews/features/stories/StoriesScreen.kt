@@ -1,5 +1,6 @@
 package com.emergetools.hackernews.features.stories
 
+import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.emergetools.hackernews.features.comments.CommentsDestinations
 import com.emergetools.hackernews.features.stories.components.FeedErrorCard
@@ -31,6 +33,7 @@ import com.emergetools.hackernews.ui.preview.AppStoreSnapshot
 import com.emergetools.hackernews.ui.preview.SnapshotPreview
 import com.emergetools.hackernews.ui.theme.HackerNewsTheme
 import com.emergetools.snapshots.annotations.EmergeAppStoreSnapshot
+import com.google.android.play.core.review.ReviewManagerFactory
 import java.time.Instant
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -46,12 +49,27 @@ fun StoriesScreen(
     return layoutInfo.visibleItemsInfo.lastOrNull()?.index == layoutInfo.totalItemsCount - 1
   }
 
+  val context = LocalContext.current
+  val activity = context as Activity
   val listState = rememberLazyListState()
   val pullRefreshState = rememberPullToRefreshState()
+  val reviewManager = ReviewManagerFactory.create(context)
 
   val shouldLoadMore by remember {
     derivedStateOf {
       listState.atEndOfList()
+    }
+  }
+
+  LaunchedEffect(Unit) {
+    val request = reviewManager.requestReviewFlow()
+    request.addOnCompleteListener { task ->
+      if (task.isSuccessful) {
+        val flow = reviewManager.launchReviewFlow(activity, task.result)
+        flow.addOnCompleteListener {
+
+        }
+      }
     }
   }
 

@@ -136,6 +136,9 @@ dependencies {
   implementation(libs.kotlinx.serialization.json)
   implementation(libs.jsoup)
 
+  implementation(libs.play.review)
+  implementation(libs.play.review.ktx)
+
   implementation(libs.androidx.room)
   implementation(libs.androidx.room.ktx)
   ksp(libs.androidx.room.compiler)
