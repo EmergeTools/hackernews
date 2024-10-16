@@ -1,15 +1,18 @@
 name: Android Release Build
 
 on:
+  push:
+    branches: [ main ]
+    tags: [ '*' ]
+  pull_request:
+    branches: [ main ]
+    paths: [ android/** ]
   release:
     types: [ published ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    # Only run when the tag begins with the string "android-"
-    if: ${{ startsWith(github.event.release.tag_name, 'android-') }}
 
     defaults:
       run:
@@ -45,17 +48,47 @@ jobs:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
         run: ./gradlew :app:bundleRelease
 
+      - name: Convert AAB to APK
+        uses: mukeshsolanki/bundletool-action@v1.0.2
+        with:
+          aabFile: app/build/outputs/bundle/release/app-release.aab
+          base64Keystore: ${{ secrets.ANDROID_RELEASE_KEYSTORE_BASE64 }}
+          keystoreAlias: ${{ secrets.ANDROID_RELEASE_KEY_ALIAS }}
+          keyPassword: ${{ secrets.ANDROID_RELEASE_KEY_PASSWORD }}
+          keystorePassword: ${{ secrets.ANDROID_RELEASE_STORE_PASSWORD }}
+          bundletoolVersion: '1.9.0'
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: release-apk
+          path: ${{ steps.convert_aab.outputs.apkPath }}
+
+      # All the below should only run if we are doing a release.
+
+      - name: Add APK to GitHub release
+        uses: softprops/action-gh-release@v2
+        if: ${{ startsWith(github.event.release.tag_name, 'android-') }}
+        with:
+          name: ${{ github.ref_name }}
+          fail_on_unmatched_files: true
+          # see https://github.com/softprops/action-gh-release/issues/158
+          files: |
+            ${{ steps.convert_aab.outputs.apkPath }}
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
+        if: ${{ startsWith(github.event.release.tag_name, 'android-') }}
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-west-1
 
       - name: Extract version from tag
+        if: ${{ startsWith(github.event.release.tag_name, 'android-') }}
         run: echo "VERSION_NAME=$(echo ${{ github.event.release.tag_name }} | sed 's/android-//')" >> $GITHUB_ENV
 
       - name: Upload AAB to S3
+        if: ${{ startsWith(github.event.release.tag_name, 'android-') }}
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
