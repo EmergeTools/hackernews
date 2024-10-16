@@ -54,7 +54,7 @@ struct Hacker_NewsApp: App {
           case .storyComments(let story):
             let model = StoryViewModel(story: story)
             StoryScreen(storyModel: model)
-              .background(.clear)
+              .background(.blue)
               .task {
                 await model.fetchComments()
               }
