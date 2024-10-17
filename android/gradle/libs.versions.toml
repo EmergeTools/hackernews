@@ -24,6 +24,7 @@ room = "2.6.1"
 jsoup = "1.18.1"
 extendedspans = "1.4.0"
 composeBom = "2024.09.03"
+playReview = "2.0.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -54,6 +55,9 @@ retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = 
 retrofit-kotlinx-serialization = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization", version.ref = "retrofit" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 jsoup = { group = "org.jsoup", name = "jsoup", version.ref = "jsoup" }
+
+play-review = { group = "com.google.android.play", name = "review", version.ref = "playReview" }
+play-review-ktx = { group = "com.google.android.play", name = "review-ktx", version.ref = "playReview" }
 
 emerge-snapshots = { group = "com.emergetools.snapshots", name = "snapshots", version.ref = "emergeSnapshots" }
 emerge-snapshots-annotations = { group = "com.emergetools.snapshots", name = "snapshots-annotations", version.ref = "emergeSnapshots" }
