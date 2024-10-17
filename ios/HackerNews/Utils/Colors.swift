@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct HNColors {
-  static let orange = Color("HNOrange")
+  static let orange = Color("HNRed")
   static let background = Color("Background")
   static let commentBackground = Color("CommentBackground")
 }
