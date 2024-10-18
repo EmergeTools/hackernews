@@ -1,12 +1,6 @@
 name: Android Release Build
 
 on:
-  push:
-    branches: [ main ]
-    tags: [ '*' ]
-  pull_request:
-    branches: [ main ]
-    paths: [ android/** ]
   release:
     types: [ published ]
 
@@ -28,71 +22,68 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
 
+      - name: Install Bundletool
+        run: |
+          wget https://github.com/google/bundletool/releases/download/1.17.0/bundletool-all-1.17.0.jar -O /usr/local/bin/bundletool.jar
+
       - name: Decode Keystore
         env:
           ENCODED_KEYSTORE: ${{ secrets.ANDROID_RELEASE_KEYSTORE_BASE64 }}
-          DECODED_KEYSTORE_PATH: ${{ secrets.ANDROID_RELEASE_KEYSTORE_PATH }}
         run: |
           echo $ENCODED_KEYSTORE > keystore_base64.txt
-          base64 -d keystore_base64.txt > ./app/$DECODED_KEYSTORE_PATH
+          base64 -d keystore_base64.txt > ${{ runner.temp }}/keystore.jks
 
       - name: Build AAB
         env:
           RUNNING_ENV: release_workflow
-          DECODED_KEYSTORE_PATH: ${{ secrets.ANDROID_RELEASE_KEYSTORE_PATH }}
+          DECODED_KEYSTORE_PATH: ${{ runner.temp }}/keystore.jks
           RELEASE_KEY_ALIAS: ${{ secrets.ANDROID_RELEASE_KEY_ALIAS }}
           RELEASE_KEY_PASSWORD: ${{ secrets.ANDROID_RELEASE_KEY_PASSWORD }}
           RELEASE_STORE_PASSWORD: ${{ secrets.ANDROID_RELEASE_STORE_PASSWORD }}
           EMERGE_API_TOKEN: ${{ secrets.EMERGE_API_KEY }}
           REAPER_API_KEY: ${{ secrets.REAPER_API_KEY }}
-          ANDROID_DISTRIBUTION_API_KEY: ${{ secrets.ANDROID_DISTRIBUTION_API_KEY}}
+          ANDROID_DISTRIBUTION_API_KEY: ${{ secrets.ANDROID_DISTRIBUTION_API_KEY }}
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
         run: ./gradlew :app:bundleRelease
 
-      - name: Debug path issues
-        run: find .
-
       - name: Convert AAB to APK
-        uses: mukeshsolanki/bundletool-action@v1.0.2
-        with:
-          aabFile: android/app/build/outputs/bundle/release/app-release.aab
-          base64Keystore: ${{ secrets.ANDROID_RELEASE_KEYSTORE_BASE64 }}
-          keystoreAlias: ${{ secrets.ANDROID_RELEASE_KEY_ALIAS }}
-          keyPassword: ${{ secrets.ANDROID_RELEASE_KEY_PASSWORD }}
-          keystorePassword: ${{ secrets.ANDROID_RELEASE_STORE_PASSWORD }}
-          bundletoolVersion: '1.9.0'
+        run: |
+          java -jar /usr/local/bin/bundletool.jar build-apks \
+            --mode=universal \
+            --bundle=./app/build/outputs/bundle/release/app-release.aab \
+            --output=${{ runner.temp }}/app-release.apks \
+            --ks=${{ runner.temp }}/keystore.jks \
+            --ks-pass=pass:${{ secrets.ANDROID_RELEASE_STORE_PASSWORD }} \
+            --ks-key-alias=${{ secrets.ANDROID_RELEASE_KEY_ALIAS }} \
+            --key-pass=pass:${{ secrets.ANDROID_RELEASE_KEY_PASSWORD }}
+          unzip ${{ runner.temp }}/app-release.apks -d ${{ runner.temp }}/apks
 
-      - uses: actions/upload-artifact@v3
+      - name: Upload .apk
+        uses: actions/upload-artifact@v4
         with:
-          name: release-apk
-          path: ${{ steps.convert_aab.outputs.apkPath }}
-
-      # All the below should only run if we are doing a release.
+          path: ${{ runner.temp }}/apks/universal.apk
+          name: hackernews-universal-${{github.sha}}.apk
+          if-no-files-found: error
 
       - name: Add APK to GitHub release
         uses: softprops/action-gh-release@v2
-        if: ${{ startsWith(github.event.release.tag_name, 'android-') }}
         with:
-          name: ${{ github.ref_name }}
           fail_on_unmatched_files: true
           # see https://github.com/softprops/action-gh-release/issues/158
           files: |
-            ${{ steps.convert_aab.outputs.apkPath }}
+            ${{ runner.temp }}/apks/universal.apk
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
-        if: ${{ startsWith(github.event.release.tag_name, 'android-') }}
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-west-1
 
       - name: Extract version from tag
-        if: ${{ startsWith(github.event.release.tag_name, 'android-') }}
         run: echo "VERSION_NAME=$(echo ${{ github.event.release.tag_name }} | sed 's/android-//')" >> $GITHUB_ENV
 
       - name: Upload AAB to S3
-        if: ${{ startsWith(github.event.release.tag_name, 'android-') }}
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

@@ -21,6 +21,8 @@ android {
     versionCode = 10
     versionName = "1.0.1"
 
+    manifestPlaceholders["emerge.distribution.apiKey"] = ""
+
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables {
       useSupportLibrary = true
@@ -55,8 +57,13 @@ android {
       proguardFiles(
         getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
       )
-      val signingConfigName = if (runningEnv == "release_workflow") "release" else "debug"
-      signingConfig = signingConfigs.getByName(signingConfigName)
+      if (runningEnv == "release_workflow") {
+        manifestPlaceholders["emerge.distribution.apiKey"] = ""
+        signingConfig = signingConfigs.getByName("release")
+      } else {
+        manifestPlaceholders["emerge.distribution.apiKey"] = System.getenv("ANDROID_DISTRIBUTION_API_KEY") ?: ""
+        signingConfig = signingConfigs.getByName("debug")
+      }
     }
   }
   buildFeatures {
@@ -151,4 +158,5 @@ dependencies {
   debugImplementation(libs.androidx.ui.test.manifest)
 
   implementation(libs.emerge.reaper)
+  implementation(libs.emerge.distribution)
 }
