@@ -18,8 +18,8 @@ android {
     applicationId = "com.emergetools.hackernews"
     minSdk = 30
     targetSdk = 34
-    versionCode = 10
-    versionName = "1.0.1"
+    versionCode = 12
+    versionName = "1.0.1-internal"
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables {
@@ -135,6 +135,9 @@ dependencies {
   implementation(libs.retrofit.kotlinx.serialization)
   implementation(libs.kotlinx.serialization.json)
   implementation(libs.jsoup)
+
+  implementation(libs.play.review)
+  implementation(libs.play.review.ktx)
 
   implementation(libs.androidx.room)
   implementation(libs.androidx.room.ktx)

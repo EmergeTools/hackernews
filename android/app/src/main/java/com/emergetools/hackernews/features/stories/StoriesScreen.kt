@@ -48,7 +48,6 @@ fun StoriesScreen(
 
   val listState = rememberLazyListState()
   val pullRefreshState = rememberPullToRefreshState()
-
   val shouldLoadMore by remember {
     derivedStateOf {
       listState.atEndOfList()
