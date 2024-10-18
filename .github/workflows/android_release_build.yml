@@ -51,7 +51,7 @@ jobs:
       - name: Convert AAB to APK
         uses: mukeshsolanki/bundletool-action@v1.0.2
         with:
-          aabFile: app/build/outputs/bundle/release/app-release.aab
+          aabFile: ./app/build/outputs/bundle/release/app-release.aab
           base64Keystore: ${{ secrets.ANDROID_RELEASE_KEYSTORE_BASE64 }}
           keystoreAlias: ${{ secrets.ANDROID_RELEASE_KEY_ALIAS }}
           keyPassword: ${{ secrets.ANDROID_RELEASE_KEY_PASSWORD }}
