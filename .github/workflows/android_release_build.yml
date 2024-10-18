@@ -58,7 +58,7 @@ jobs:
           keystorePassword: ${{ secrets.ANDROID_RELEASE_STORE_PASSWORD }}
           bundletoolVersion: '1.9.0'
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: release-apk
           path: ${{ steps.convert_aab.outputs.apkPath }}
