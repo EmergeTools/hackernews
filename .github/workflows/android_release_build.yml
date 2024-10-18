@@ -48,6 +48,9 @@ jobs:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
         run: ./gradlew :app:bundleRelease
 
+      - name: debug
+        run: find .
+
       - name: Convert AAB to APK
         uses: mukeshsolanki/bundletool-action@v1.0.2
         with:
