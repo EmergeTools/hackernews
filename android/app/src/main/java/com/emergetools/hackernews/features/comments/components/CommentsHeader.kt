@@ -225,35 +225,35 @@ fun CommentsHeader(
   }
 }
 
-@PreviewLightDark
-@Composable
-private fun CommentsHeaderPreview() {
-  HackerNewsTheme {
-    Box(
-      modifier = Modifier
-        .background(MaterialTheme.colorScheme.background)
-        .padding(8.dp)
-    ) {
-      CommentsHeader(
-        state = HeaderState.Content(
-          id = 0L,
-          title = "Show HN: A super neat HN client for Android",
-          author = "rikinm",
-          points = 69,
-          epochSeconds = Instant.now().minusSeconds(60 * 60 * 2).epochSecond,
-          body = BodyState("Wassup HN. I just built a sick new Hacker News Android client."),
-          upvoted = false,
-          upvoteUrl = "",
-        ),
-        modifier = Modifier
-          .fillMaxWidth()
-          .wrapContentHeight(),
-        onLikeTapped = {},
-        onToggleBody = {}
-      )
-    }
-  }
-}
+// @PreviewLightDark
+// @Composable
+// private fun CommentsHeaderPreview() {
+//   HackerNewsTheme {
+//     Box(
+//       modifier = Modifier
+//         .background(MaterialTheme.colorScheme.background)
+//         .padding(8.dp)
+//     ) {
+//       CommentsHeader(
+//         state = HeaderState.Content(
+//           id = 0L,
+//           title = "Show HN: A super neat HN client for Android",
+//           author = "rikinm",
+//           points = 69,
+//           epochSeconds = Instant.now().minusSeconds(60 * 60 * 2).epochSecond,
+//           body = BodyState("Wassup HN. I just built a sick new Hacker News Android client."),
+//           upvoted = false,
+//           upvoteUrl = "",
+//         ),
+//         modifier = Modifier
+//           .fillMaxWidth()
+//           .wrapContentHeight(),
+//         onLikeTapped = {},
+//         onToggleBody = {}
+//       )
+//     }
+//   }
+// }
 
 @PreviewLightDark
 @Composable
