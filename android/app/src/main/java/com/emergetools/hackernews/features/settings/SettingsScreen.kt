@@ -1,5 +1,7 @@
 package com.emergetools.hackernews.features.settings
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,11 +25,20 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.startActivity
+import com.emergetools.distribution.Distribution
+import com.emergetools.distribution.UpdateStatus
 import com.emergetools.hackernews.R
 import com.emergetools.hackernews.features.settings.components.BuiltByCard
 import com.emergetools.hackernews.features.settings.components.LoginCard
@@ -40,6 +51,7 @@ import com.emergetools.hackernews.ui.theme.HackerNewsTheme
 import com.emergetools.hackernews.ui.theme.HackerOrange
 import com.emergetools.hackernews.ui.theme.HackerRed
 import com.emergetools.snapshots.annotations.EmergeAppStoreSnapshot
+import kotlinx.coroutines.launch
 
 @Composable
 fun SettingsScreen(
@@ -79,6 +91,11 @@ fun SettingsScreen(
         }
       )
       Spacer(modifier = Modifier.height(8.dp))
+      if (Distribution.isEnabled(LocalContext.current)) {
+        SettingsSectionLabel("Version")
+        VersionCard()
+        Spacer(modifier = Modifier.height(8.dp))
+      }
       SettingsSectionLabel("About")
       BuiltByCard {
         navigation(SettingsNavigation.GoToSettingsLink("https://www.emergetools.com"))
@@ -167,6 +184,52 @@ fun SettingsScreen(
       ) {
         navigation(SettingsNavigation.GoToSettingsLink("https://www.emergetools.com/HackerNewsPrivacyPolicy.html"))
       }
+    }
+  }
+}
+
+@Composable
+private fun VersionCard() {
+  val context = LocalContext.current
+  val scope = rememberCoroutineScope()
+  var isLoading by remember { mutableStateOf(false) }
+  var status by remember { mutableStateOf<UpdateStatus?>(null) }
+  return SettingsCard(
+    leadingIcon = {
+      Icon(
+        modifier = Modifier.width(12.dp),
+        painter = painterResource(R.drawable.ic_settings),
+        contentDescription = null // Purely decorative
+      )
+    },
+    trailingIcon = {
+      Icon(
+        modifier = Modifier.width(12.dp),
+        painter = painterResource(R.drawable.ic_arrow_up_right),
+        tint = MaterialTheme.colorScheme.onSurface,
+        contentDescription = "Link"
+      )
+    },
+    label = when (isLoading) {
+      true -> "Loading..."
+      else -> when (status) {
+        is UpdateStatus.UpToDate -> "Up to date!"
+        is UpdateStatus.Error -> (status as UpdateStatus.Error).message
+        is UpdateStatus.NewRelease -> "New release!"
+        else -> "Check for updates"
+      }
+    }
+  ) {
+    scope.launch {
+      isLoading = true
+      status = null
+      status = Distribution.checkForUpdate(context)
+      val theStatus = status
+      if (theStatus is UpdateStatus.NewRelease) {
+        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(theStatus.info.downloadUrl))
+        context.startActivity(browserIntent)
+      }
+      isLoading = false
     }
   }
 }
