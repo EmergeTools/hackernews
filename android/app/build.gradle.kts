@@ -100,6 +100,12 @@ emerge {
     publishableApiKey.set(System.getenv("REAPER_API_KEY"))
   }
 
+  performance {
+    projectPath.set(":performance")
+    tag.set("oneoff")
+    enabled.set(true)
+  }
+
   vcs {
     gitHub {
       repoName.set("hackernews")
