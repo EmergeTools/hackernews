@@ -9,11 +9,11 @@
 /* Begin PBXBuildFile section */
 		A47309B42AA29D9600201376 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = A47309B32AA29D9600201376 /* SwiftSoup */; };
 		A495B2952BFEA11B00A8A8A9 /* Reaper in Frameworks */ = {isa = PBXBuildFile; productRef = A495B2942BFEA11B00A8A8A9 /* Reaper */; };
+		A4B93C922CCAB6CB00B2A0BA /* HackerNews.xctestplan in Resources */ = {isa = PBXBuildFile; fileRef = A4B93C912CCAB6CB00B2A0BA /* HackerNews.xctestplan */; };
+		A4B93C932CCAB6CB00B2A0BA /* HackerNews.xctestplan in Resources */ = {isa = PBXBuildFile; fileRef = A4B93C912CCAB6CB00B2A0BA /* HackerNews.xctestplan */; };
 		A4D28AEE2C237E2A007F20D0 /* SnapshotPreferences in Frameworks */ = {isa = PBXBuildFile; productRef = A4D28AED2C237E2A007F20D0 /* SnapshotPreferences */; };
 		A4D28AF02C237E2A007F20D0 /* SnapshottingTests in Frameworks */ = {isa = PBXBuildFile; productRef = A4D28AEF2C237E2A007F20D0 /* SnapshottingTests */; };
 		A9DF68FF511E48048B0A703D /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = 673236B0A4D04137A0D80A76 /* Sentry */; };
-		C3AC6AD42CB6E806006BD22D /* HackerNewsPreviewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3AC6AD32CB6E7FD006BD22D /* HackerNewsPreviewTest.swift */; };
-		C3AC6AD62CB6E81B006BD22D /* HackerNewsSnapshotTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3AC6AD52CB6E816006BD22D /* HackerNewsSnapshotTest.swift */; };
 		C3AC6AD92CB6E8F7006BD22D /* SnapshottingTests in Frameworks */ = {isa = PBXBuildFile; productRef = C3AC6AD82CB6E8F7006BD22D /* SnapshottingTests */; };
 /* End PBXBuildFile section */
 
@@ -55,6 +55,7 @@
 		A45C2C7F2A5DDE25009BC030 /* Appfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Appfile; sourceTree = "<group>"; };
 		A45C2C802A5DDE25009BC030 /* Deliverfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Deliverfile; sourceTree = "<group>"; };
 		A45C2C812A5DDE25009BC030 /* Fastfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Fastfile; sourceTree = "<group>"; };
+		A4B93C912CCAB6CB00B2A0BA /* HackerNews.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = HackerNews.xctestplan; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -99,13 +100,13 @@
 		A42705702A4293B10057E439 = {
 			isa = PBXGroup;
 			children = (
-				C3AC6AD72CB6E854006BD22D /* HackerNews.xctestplan */,
 				A45C2C7B2A5DDE25009BC030 /* fastlane */,
 				A4B93C232CCAB22800B2A0BA /* HackerNews */,
 				A4B93BFC2CCAB1A300B2A0BA /* HackerNewsTests */,
 				A4B93C012CCAB1A600B2A0BA /* HackerNewsUITests */,
 				A427057A2A4293B10057E439 /* Products */,
 				A4BED5AB2ACDFDCF001642B3 /* Frameworks */,
+				A4B93C912CCAB6CB00B2A0BA /* HackerNews.xctestplan */,
 			);
 			sourceTree = "<group>";
 		};
@@ -277,6 +278,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A4B93C932CCAB6CB00B2A0BA /* HackerNews.xctestplan in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -284,6 +286,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A4B93C922CCAB6CB00B2A0BA /* HackerNews.xctestplan in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
