@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/swhitty/FlyingFox.git",
       "state" : {
-        "revision" : "ed86fc6d68ec1467aaab3e494b581e66dd7a4512",
-        "version" : "0.12.2"
+        "revision" : "f7829d4aca8cbfecb410a1cce872b1b045224aa1",
+        "version" : "0.16.0"
       }
     },
     {
@@ -43,7 +43,7 @@
       "location" : "https://github.com/EmergeTools/SnapshotPreviews-iOS",
       "state" : {
         "branch" : "main",
-        "revision" : "e5bf73a45a105049a4dacc960011559a78c914b2"
+        "revision" : "fc7a10d6307076565c5a780ca36dee6cb31fcccd"
       }
     },
     {

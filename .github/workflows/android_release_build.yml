@@ -8,9 +8,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    # Only run when the tag begins with the string "android-"
-    if: ${{ startsWith(github.event.release.tag_name, 'android-') }}
-
     defaults:
       run:
         working-directory: ./android
@@ -25,25 +22,56 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
 
+      - name: Install Bundletool
+        run: |
+          wget https://github.com/google/bundletool/releases/download/1.17.0/bundletool-all-1.17.0.jar -O /usr/local/bin/bundletool.jar
+
       - name: Decode Keystore
         env:
           ENCODED_KEYSTORE: ${{ secrets.ANDROID_RELEASE_KEYSTORE_BASE64 }}
-          DECODED_KEYSTORE_PATH: ${{ secrets.ANDROID_RELEASE_KEYSTORE_PATH }}
         run: |
           echo $ENCODED_KEYSTORE > keystore_base64.txt
-          base64 -d keystore_base64.txt > ./app/$DECODED_KEYSTORE_PATH
+          base64 -d keystore_base64.txt > ${{ runner.temp }}/keystore.jks
 
       - name: Build AAB
         env:
           RUNNING_ENV: release_workflow
-          DECODED_KEYSTORE_PATH: ${{ secrets.ANDROID_RELEASE_KEYSTORE_PATH }}
+          DECODED_KEYSTORE_PATH: ${{ runner.temp }}/keystore.jks
           RELEASE_KEY_ALIAS: ${{ secrets.ANDROID_RELEASE_KEY_ALIAS }}
           RELEASE_KEY_PASSWORD: ${{ secrets.ANDROID_RELEASE_KEY_PASSWORD }}
           RELEASE_STORE_PASSWORD: ${{ secrets.ANDROID_RELEASE_STORE_PASSWORD }}
           EMERGE_API_TOKEN: ${{ secrets.EMERGE_API_KEY }}
           REAPER_API_KEY: ${{ secrets.REAPER_API_KEY }}
+          ANDROID_DISTRIBUTION_API_KEY: ${{ secrets.ANDROID_DISTRIBUTION_API_KEY }}
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
         run: ./gradlew :app:bundleRelease
+
+      - name: Convert AAB to APK
+        run: |
+          java -jar /usr/local/bin/bundletool.jar build-apks \
+            --mode=universal \
+            --bundle=./app/build/outputs/bundle/release/app-release.aab \
+            --output=${{ runner.temp }}/app-release.apks \
+            --ks=${{ runner.temp }}/keystore.jks \
+            --ks-pass=pass:${{ secrets.ANDROID_RELEASE_STORE_PASSWORD }} \
+            --ks-key-alias=${{ secrets.ANDROID_RELEASE_KEY_ALIAS }} \
+            --key-pass=pass:${{ secrets.ANDROID_RELEASE_KEY_PASSWORD }}
+          unzip ${{ runner.temp }}/app-release.apks -d ${{ runner.temp }}/apks
+
+      - name: Upload .apk
+        uses: actions/upload-artifact@v4
+        with:
+          path: ${{ runner.temp }}/apks/universal.apk
+          name: hackernews-universal-${{github.sha}}.apk
+          if-no-files-found: error
+
+      - name: Add APK to GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          fail_on_unmatched_files: true
+          # see https://github.com/softprops/action-gh-release/issues/158
+          files: |
+            ${{ runner.temp }}/apks/universal.apk
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4

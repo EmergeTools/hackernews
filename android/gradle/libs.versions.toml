@@ -1,29 +1,30 @@
 [versions]
 agp = "8.5.2"
-kotlin = "2.0.0"
-ksp = "2.0.0-1.0.22"
+kotlin = "2.0.21"
+ksp = "2.0.21-1.0.25"
 coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
-espressoCore = "3.5.1"
-lifecycleRuntimeKtx = "2.8.2"
+espressoCore = "3.6.1"
+lifecycleRuntimeKtx = "2.8.6"
 activityCompose = "1.9.2"
 retrofit = "2.11.0"
 okhttp = "4.12.0"
-kotlinx-serialization-json = "1.6.3"
-viewmodel = "2.8.2"
-navigation = "2.8.0-beta06"
-browser = "1.5.0"
-emergePlugin = "4.0.0"
-emergeSnapshots = "1.2.0"
-emergeReaper = "1.0.0-rc01"
-sentry = "4.10.0"
-shapes = "1.0.0-rc01"
+kotlinx-serialization-json = "1.7.3"
+viewmodel = "2.8.6"
+navigation = "2.8.2"
+browser = "1.8.0"
+emergePlugin = "4.0.2"
+emergeSnapshots = "1.3.0-rc01"
+emergeReaper = "1.0.0-rc02"
+emergeDistribution = "0.0.1"
+sentry = "4.11.0"
+shapes = "1.0.1"
 datastore = "1.1.1"
 room = "2.6.1"
 jsoup = "1.18.1"
 extendedspans = "1.4.0"
-composeBom = "2024.09.02"
+composeBom = "2024.09.03"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -58,6 +59,7 @@ jsoup = { group = "org.jsoup", name = "jsoup", version.ref = "jsoup" }
 emerge-snapshots = { group = "com.emergetools.snapshots", name = "snapshots", version.ref = "emergeSnapshots" }
 emerge-snapshots-annotations = { group = "com.emergetools.snapshots", name = "snapshots-annotations", version.ref = "emergeSnapshots" }
 emerge-reaper = { group = "com.emergetools.reaper", name = "reaper", version.ref = "emergeReaper" }
+emerge-distribution = { group = "com.emergetools.distribution", name = "distribution", version.ref = "emergeDistribution" }
 
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }

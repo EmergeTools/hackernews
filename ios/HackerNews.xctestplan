@@ -1,0 +1,25 @@
+{
+  "configurations" : [
+    {
+      "id" : "233509F3-160B-4EAB-8DC3-FF8736D1BDD8",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : false,
+      "target" : {
+        "containerPath" : "container:HackerNews.xcodeproj",
+        "identifier" : "A42705882A4293B30057E439",
+        "name" : "HackerNewsTests"
+      }
+    }
+  ],
+  "version" : 1
+}
