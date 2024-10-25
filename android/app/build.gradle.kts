@@ -58,10 +58,8 @@ android {
         getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
       )
       if (runningEnv == "release_workflow") {
-        manifestPlaceholders["emerge.distribution.apiKey"] = ""
         signingConfig = signingConfigs.getByName("release")
       } else {
-        manifestPlaceholders["emerge.distribution.apiKey"] = System.getenv("ANDROID_DISTRIBUTION_API_KEY") ?: ""
         signingConfig = signingConfigs.getByName("debug")
       }
     }
@@ -98,6 +96,14 @@ emerge {
       enabledVariants.set(listOf("release"))
     }
     publishableApiKey.set(System.getenv("REAPER_API_KEY"))
+  }
+
+  distribution {
+    // Don't enable distribution on release workflow
+    if (runningEnv != "release_workflow") {
+      enabledVariants.set(listOf("release"))
+    }
+    apiKey.set(System.getenv("ANDROID_DISTRIBUTION_API_KEY") ?: "")
   }
 
   vcs {
