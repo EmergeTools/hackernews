@@ -51,7 +51,7 @@ import java.time.Instant
 
 @PreviewLightDark
 @Composable
-private fun StoryRowPreview() {
+private fun StoryRowPreviewV2() {
   HackerNewsTheme {
     StoryRow(
       item = StoryItem.Content(
