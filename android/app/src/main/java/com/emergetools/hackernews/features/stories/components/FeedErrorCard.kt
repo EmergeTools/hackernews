@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Refresh
-import androidx.compose.material.icons.rounded.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -33,7 +32,7 @@ fun FeedErrorCard(modifier: Modifier = Modifier, onRefresh: () -> Unit) {
     horizontalAlignment = Alignment.CenterHorizontally
   ) {
     Icon(
-      imageVector = Icons.Rounded.Warning,
+      imageVector = Icons.Rounded.Refresh,
       tint = HackerRed,
       contentDescription = "Failed to Load",
     )
