@@ -12,7 +12,7 @@
 		1DF162032A436E7B001A3F76 /* DateUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF162022A436E7B001A3F76 /* DateUtils.swift */; };
 		A40DC1FA2C20D8B60055B920 /* Previews.swift in Sources */ = {isa = PBXBuildFile; fileRef = A40DC1F92C20D8B60055B920 /* Previews.swift */; };
 		A413E8572A8C40E800C0F867 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A413E8562A8C40E800C0F867 /* Extensions.swift */; };
-		A413E8592A8D868500C0F867 /* ThemedButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A413E8582A8D868500C0F867 /* ThemedButtonStyle.swift */; };
+		A413E8592A8D868500C0F867 /* InternalButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A413E8582A8D868500C0F867 /* InternalButtonStyle.swift */; };
 		A423B0682BAE05FB00267DDB /* NetworkDebugger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A423B0672BAE05FB00267DDB /* NetworkDebugger.swift */; };
 		A423B06A2BAE061600267DDB /* Flags.swift in Sources */ = {isa = PBXBuildFile; fileRef = A423B0692BAE061600267DDB /* Flags.swift */; };
 		A427057D2A4293B10057E439 /* HNApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A427057C2A4293B10057E439 /* HNApp.swift */; };
@@ -78,7 +78,7 @@
 		1DF162022A436E7B001A3F76 /* DateUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateUtils.swift; sourceTree = "<group>"; };
 		A40DC1F92C20D8B60055B920 /* Previews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Previews.swift; sourceTree = "<group>"; };
 		A413E8562A8C40E800C0F867 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
-		A413E8582A8D868500C0F867 /* ThemedButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemedButtonStyle.swift; sourceTree = "<group>"; };
+		A413E8582A8D868500C0F867 /* InternalButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternalButtonStyle.swift; sourceTree = "<group>"; };
 		A423B0672BAE05FB00267DDB /* NetworkDebugger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkDebugger.swift; sourceTree = "<group>"; };
 		A423B0692BAE061600267DDB /* Flags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Flags.swift; sourceTree = "<group>"; };
 		A42705792A4293B10057E439 /* HackerNews.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HackerNews.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -172,7 +172,7 @@
 			isa = PBXGroup;
 			children = (
 				1DF161F92A4346F6001A3F76 /* StoryRow.swift */,
-				A413E8582A8D868500C0F867 /* ThemedButtonStyle.swift */,
+				A413E8582A8D868500C0F867 /* InternalButtonStyle.swift */,
 				A434C2DF2A8E75960002F488 /* WebView.swift */,
 				A47309B52AA7D1F600201376 /* CommentRow.swift */,
 			);
@@ -558,7 +558,7 @@
 				1DF162032A436E7B001A3F76 /* DateUtils.swift in Sources */,
 				A413E8572A8C40E800C0F867 /* Extensions.swift in Sources */,
 				A42705A92A4294EB0057E439 /* LoginScreen.swift in Sources */,
-				A413E8592A8D868500C0F867 /* ThemedButtonStyle.swift in Sources */,
+				A413E8592A8D868500C0F867 /* InternalButtonStyle.swift in Sources */,
 				A427057D2A4293B10057E439 /* HNApp.swift in Sources */,
 				A434C2E02A8E75960002F488 /* WebView.swift in Sources */,
 				A49933942AA28B5900DED8B1 /* StoryViewModel.swift in Sources */,

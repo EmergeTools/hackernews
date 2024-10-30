@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct ThemedButtonStyle: ButtonStyle {
+struct InternalButtonStyle: ButtonStyle {
   func makeBody(configuration: Self.Configuration) -> some View {
     configuration.label
       .foregroundColor(.white)
@@ -21,5 +21,5 @@ struct ThemedButtonStyle: ButtonStyle {
 #Preview {
   Button("Test") {
     
-  }.buttonStyle(ThemedButtonStyle())
+  }.buttonStyle(InternalButtonStyle())
 }

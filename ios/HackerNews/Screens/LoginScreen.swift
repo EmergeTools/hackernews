@@ -26,7 +26,7 @@ struct LoginScreen: View {
           await appState.fetchPosts()
         }
       }
-      .buttonStyle(ThemedButtonStyle())
+      .buttonStyle(InternalButtonStyle())
     }
     .navigationBarTitle("Home")
   }
