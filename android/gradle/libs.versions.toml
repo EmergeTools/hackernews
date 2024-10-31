@@ -24,7 +24,7 @@ datastore = "1.1.1"
 room = "2.6.1"
 jsoup = "1.18.1"
 extendedspans = "1.4.0"
-composeBom = "2024.09.03"
+composeBom = "2024.10.01"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
