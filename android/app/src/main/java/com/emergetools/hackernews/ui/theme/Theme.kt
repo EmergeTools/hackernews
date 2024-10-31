@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
 private val LightColorScheme = lightColorScheme(
-  primary = HackerOrange,
+  primary = HackerBlue,
   primaryContainer = HackerOrangeLight,
   background = BackgroundLight,
   surface = SurfaceLight,
@@ -20,7 +20,7 @@ private val LightColorScheme = lightColorScheme(
 )
 
 private val DarkColorScheme = darkColorScheme(
-  primary = HackerOrange,
+  primary = HackerBlue,
   primaryContainer = HackerOrangeLight,
   background = BackgroundDark,
   surface = SurfaceDark,
