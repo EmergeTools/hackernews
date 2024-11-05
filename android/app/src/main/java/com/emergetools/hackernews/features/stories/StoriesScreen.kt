@@ -21,6 +21,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.emergetools.hackernews.features.comments.CommentsDestinations
 import com.emergetools.hackernews.features.stories.components.FeedErrorCard
@@ -63,10 +65,10 @@ fun StoriesScreen(
 
   Column(
     modifier = modifier
-      .graphicsLayer {
-        translationY = 50f * pullRefreshState.distanceFraction
-      }
-      .background(color = MaterialTheme.colorScheme.background),
+        .graphicsLayer {
+            translationY = 50f * pullRefreshState.distanceFraction
+        }
+        .background(color = MaterialTheme.colorScheme.background),
     verticalArrangement = Arrangement.spacedBy(8.dp),
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {
@@ -76,8 +78,8 @@ fun StoriesScreen(
     )
     PullToRefreshBox(
       state = pullRefreshState, modifier = Modifier
-        .fillMaxWidth()
-        .weight(1f), onRefresh = {
+            .fillMaxWidth()
+            .weight(1f), onRefresh = {
         actions(StoriesAction.RefreshItems)
       }, isRefreshing = state.loading == LoadingState.Refreshing
     ) {
@@ -130,32 +132,52 @@ fun StoriesScreen(
   }
 }
 
+class StoriesPreviewProvider : PreviewParameterProvider<List<StoryItem>> {
+  override val values: Sequence<List<StoryItem>>
+    get() = sequenceOf(
+      listOf(
+        StoryItem.Content(
+          id = 1L,
+          title = "Hello There",
+          author = "heyrikin",
+          score = 10,
+          commentCount = 0,
+          epochTimestamp = Instant.now().minusSeconds(60 * 60 * 1).epochSecond,
+          url = ""
+        ),
+      ),
+      listOf(
+        StoryItem.Content(
+          id = 1L,
+          title = "Hello There",
+          author = "heyrikin",
+          score = 10,
+          commentCount = 0,
+          epochTimestamp = Instant.now().minusSeconds(60 * 60 * 1).epochSecond,
+          url = ""
+        ),
+        StoryItem.Content(
+          id = 2L,
+          title = "Hello There 2",
+          author = "rbro112",
+          score = 100,
+          commentCount = 2,
+          epochTimestamp = Instant.now().minusSeconds(60 * 60 * 2).epochSecond,
+          url = ""
+        ),
+      )
+    )
+}
+
 @SnapshotPreview
 @Composable
-private fun StoriesScreenPreview() {
+private fun StoriesScreenPreview(
+  @PreviewParameter(StoriesPreviewProvider::class) stories: List<StoryItem>,
+) {
   HackerNewsTheme {
     StoriesScreen(
       modifier = Modifier.fillMaxSize(), state = StoriesState(
-        stories = listOf(
-          StoryItem.Content(
-            id = 1L,
-            title = "Hello There",
-            author = "heyrikin",
-            score = 10,
-            commentCount = 0,
-            epochTimestamp = Instant.now().minusSeconds(60 * 60 * 1).epochSecond,
-            url = ""
-          ),
-          StoryItem.Content(
-            id = 1L,
-            title = "Hello There",
-            author = "heyrikin",
-            score = 10,
-            commentCount = 0,
-            epochTimestamp = Instant.now().minusSeconds(60 * 60 * 2).epochSecond,
-            url = ""
-          ),
-        )
+        stories = stories,
       ),
       actions = {},
       navigation = {})
