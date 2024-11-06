@@ -18,6 +18,17 @@
 default_platform(:ios)
 
 platform :ios do
+  lane :build_upload_emerge do
+    # NOTE: If you already have a lane setup to build your app, then you can that instead of this and call emerge() after it. 
+    build_app(scheme: ENV["SCHEME_NAME"], export_method: "development")
+    emerge(tag: ENV['EMERGE_BUILD_TYPE'] || "default")
+  end
+
+  desc 'Build and upload snapshot build to Emerge Tools'
+  lane :build_upload_emerge_snapshot do
+    emerge_snapshot(scheme: ENV["SCHEME_NAME"])
+  end
+
   desc 'Load ASC API Key information to use in subsequent lanes'
   lane :load_asc_api_key do
     app_store_connect_api_key(
@@ -149,18 +160,5 @@ platform :ios do
     #   project_slug: 'hackernews-ios',
     #   include_sources: true
     # )
-  end
-
-  desc 'Build and upload to Emerge Tools'
-  lane :build_upload_emerge do
-    load_asc_api_key
-    prepare_signing
-    build_app_for_scheme(build_configuration: 'Release')
-    emerge(tag: ENV['EMERGE_BUILD_TYPE'])
-  end
-
-  desc 'Build and upload snapshot build to Emerge Tools'
-  lane :build_upload_emerge_snapshot do
-    emerge_snapshot(scheme: "HackerNews")
   end
 end

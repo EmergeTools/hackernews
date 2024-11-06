@@ -37,6 +37,7 @@ GEM
       rake (>= 12.0.0, < 14.0.0)
     domain_name (0.6.20240107)
     dotenv (2.8.1)
+    dry-cli (1.2.0)
     emoji_regex (3.2.3)
     excon (0.111.0)
     faraday (1.10.3)
@@ -156,6 +157,7 @@ GEM
     json (2.7.2)
     jwt (2.8.2)
       base64
+    logger (1.6.1)
     mini_magick (4.13.2)
     mini_mime (1.1.5)
     multi_json (1.15.0)
@@ -213,10 +215,13 @@ GEM
 
 PLATFORMS
   arm64-darwin-21
+  arm64-darwin-23
 
 DEPENDENCIES
+  dry-cli
   fastlane
   fastlane-plugin-emerge
+  logger
   xcpretty
 
 BUNDLED WITH
