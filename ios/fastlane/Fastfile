@@ -151,8 +151,16 @@ platform :ios do
     # )
   end
 
+  require 'git'
+
   desc 'Build and upload to Emerge Tools'
   lane :build_upload_emerge do
+    g = Git.open('.')
+    current_sha = g.log[0].parents[1].sha
+    base_sha = g.log[0].parent.sha
+    puts "telkins: Current SHA: #{current_sha}"
+    puts "telkins: Base SHA: #{base_sha}"
+
     load_asc_api_key
     prepare_signing
     build_app_for_scheme(build_configuration: 'Release')
