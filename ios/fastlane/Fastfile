@@ -151,7 +151,7 @@ platform :ios do
     # )
   end
 
-  require 'git'
+  fastlane_require 'git'
 
   desc 'Build and upload to Emerge Tools'
   lane :build_upload_emerge do
