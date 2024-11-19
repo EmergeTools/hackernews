@@ -27,7 +27,7 @@ final class SwiftSnapshotTest: XCTestCase {
 
   override func invokeTest() {
     // Change the record mode when updating tests
-    withSnapshotTesting(record: .never) {
+    withSnapshotTesting(record: .all) {
       super.invokeTest()
     }
   }
@@ -47,13 +47,12 @@ final class SwiftSnapshotTest: XCTestCase {
         as: .image(on: config),
         named: "LoginScreen-\(name)"
       )
+      assertSnapshot(
+        of: view.toVC(),
+        as: .image(on: config, traits: .init(userInterfaceStyle: .dark)),
+        named: "LoginScreen-\(name)-DarkMode"
+      )
     }
-
-    assertSnapshot(
-      of: view.toVC(),
-      as: .image(on: .iPhone12, traits: .init(userInterfaceStyle: .dark)),
-      named: "LoginScreen-DarkMode"
-    )
   }
 
   @MainActor func testPostListScreen() {
@@ -86,12 +85,22 @@ final class SwiftSnapshotTest: XCTestCase {
         as: .image(on: config),
         named: "PostListScreen-Default-\(name)"
       )
+      assertSnapshot(
+        of: defaultView.toVC(),
+        as: .image(on: config, traits: .init(userInterfaceStyle: .dark)),
+        named: "PostListScreen-Default-\(name)-DarkMode"
+      )
 
       // Loading state
       assertSnapshot(
         of: loadingView.toVC(),
         as: .image(on: config),
         named: "PostListScreen-Loading-\(name)"
+      )
+      assertSnapshot(
+        of: loadingView.toVC(),
+        as: .image(on: config, traits: .init(userInterfaceStyle: .dark)),
+        named: "PostListScreen-Loading-\(name)-DarkMode"
       )
 
       // Loaded state with posts
@@ -100,28 +109,12 @@ final class SwiftSnapshotTest: XCTestCase {
         as: .image(on: config),
         named: "PostListScreen-LoadedPosts-\(name)"
       )
+      assertSnapshot(
+        of: loadedView.toVC(),
+        as: .image(on: config, traits: .init(userInterfaceStyle: .dark)),
+        named: "PostListScreen-LoadedPosts-\(name)-DarkMode"
+      )
     }
-
-    // Test dark mode for each state
-    let darkConfigTraits = UITraitCollection.init(userInterfaceStyle: UIUserInterfaceStyle.dark)
-
-    assertSnapshot(
-      of: defaultView.toVC(),
-      as: .image(on: .iPhoneSe, traits: darkConfigTraits),
-      named: "PostListScreen-Default-DarkMode"
-    )
-
-    assertSnapshot(
-      of: loadingView.toVC(),
-      as: .image(on: .iPhone12, traits: darkConfigTraits),
-      named: "PostListScreen-Loading-DarkMode"
-    )
-
-    assertSnapshot(
-      of: loadedView.toVC(),
-      as: .image(on: .iPhone13Pro, traits: darkConfigTraits),
-      named: "PostListScreen-LoadedPosts-DarkMode"
-    )
   }
 }
 
