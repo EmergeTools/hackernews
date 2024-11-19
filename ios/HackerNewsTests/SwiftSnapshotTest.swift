@@ -27,7 +27,7 @@ final class SwiftSnapshotTest: XCTestCase {
 
   override func invokeTest() {
     // Change the record mode when updating tests
-    withSnapshotTesting(record: .all) {
+    withSnapshotTesting(record: .never) {
       super.invokeTest()
     }
   }
