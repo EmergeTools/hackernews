@@ -29,6 +29,36 @@
 		A434C2E02A8E75960002F488 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A434C2DF2A8E75960002F488 /* WebView.swift */; };
 		A47309B42AA29D9600201376 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = A47309B32AA29D9600201376 /* SwiftSoup */; };
 		A47309B62AA7D1F600201376 /* CommentRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47309B52AA7D1F600201376 /* CommentRow.swift */; };
+		A495A6662CED57BB009A2A6B /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = A495A6652CED57BB009A2A6B /* SnapshotTesting */; };
+		A495A6682CED5800009A2A6B /* SwiftSnapshotTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A495A6672CED57FA009A2A6B /* SwiftSnapshotTest.swift */; };
+		A495A66F2CED5A13009A2A6B /* testLoginScreen.LoginScreen-DarkMode.png in Resources */ = {isa = PBXBuildFile; fileRef = A495A6692CED5A13009A2A6B /* testLoginScreen.LoginScreen-DarkMode.png */; };
+		A495A6702CED5A13009A2A6B /* testLoginScreen.LoginScreen-iPhone-SE.png in Resources */ = {isa = PBXBuildFile; fileRef = A495A66C2CED5A13009A2A6B /* testLoginScreen.LoginScreen-iPhone-SE.png */; };
+		A495A6712CED5A13009A2A6B /* testLoginScreen.LoginScreen-iPhone-12.png in Resources */ = {isa = PBXBuildFile; fileRef = A495A66A2CED5A13009A2A6B /* testLoginScreen.LoginScreen-iPhone-12.png */; };
+		A495A6722CED5A13009A2A6B /* testLoginScreen.LoginScreen-iPhone-13-Pro.png in Resources */ = {isa = PBXBuildFile; fileRef = A495A66B2CED5A13009A2A6B /* testLoginScreen.LoginScreen-iPhone-13-Pro.png */; };
+		A495A67F2CED5BE7009A2A6B /* testPostListScreen.PostListScreen-LoadedPosts-iPhone-12.png in Resources */ = {isa = PBXBuildFile; fileRef = A495A6782CED5BE7009A2A6B /* testPostListScreen.PostListScreen-LoadedPosts-iPhone-12.png */; };
+		A495A6802CED5BE7009A2A6B /* testPostListScreen.PostListScreen-Loading-iPhone-SE.png in Resources */ = {isa = PBXBuildFile; fileRef = A495A67E2CED5BE7009A2A6B /* testPostListScreen.PostListScreen-Loading-iPhone-SE.png */; };
+		A495A6812CED5BE7009A2A6B /* testPostListScreen.PostListScreen-LoadedPosts-DarkMode.png in Resources */ = {isa = PBXBuildFile; fileRef = A495A6772CED5BE7009A2A6B /* testPostListScreen.PostListScreen-LoadedPosts-DarkMode.png */; };
+		A495A6822CED5BE7009A2A6B /* testPostListScreen.PostListScreen-Loading-iPhone-13-Pro.png in Resources */ = {isa = PBXBuildFile; fileRef = A495A67D2CED5BE7009A2A6B /* testPostListScreen.PostListScreen-Loading-iPhone-13-Pro.png */; };
+		A495A6832CED5BE7009A2A6B /* testPostListScreen.PostListScreen-Default-iPhone-12.png in Resources */ = {isa = PBXBuildFile; fileRef = A495A6742CED5BE7009A2A6B /* testPostListScreen.PostListScreen-Default-iPhone-12.png */; };
+		A495A6842CED5BE7009A2A6B /* testPostListScreen.PostListScreen-LoadedPosts-iPhone-SE.png in Resources */ = {isa = PBXBuildFile; fileRef = A495A67A2CED5BE7009A2A6B /* testPostListScreen.PostListScreen-LoadedPosts-iPhone-SE.png */; };
+		A495A6852CED5BE7009A2A6B /* testPostListScreen.PostListScreen-Loading-DarkMode.png in Resources */ = {isa = PBXBuildFile; fileRef = A495A67B2CED5BE7009A2A6B /* testPostListScreen.PostListScreen-Loading-DarkMode.png */; };
+		A495A6862CED5BE7009A2A6B /* testPostListScreen.PostListScreen-Default-DarkMode.png in Resources */ = {isa = PBXBuildFile; fileRef = A495A6732CED5BE7009A2A6B /* testPostListScreen.PostListScreen-Default-DarkMode.png */; };
+		A495A6872CED5BE7009A2A6B /* testPostListScreen.PostListScreen-Default-iPhone-SE.png in Resources */ = {isa = PBXBuildFile; fileRef = A495A6762CED5BE7009A2A6B /* testPostListScreen.PostListScreen-Default-iPhone-SE.png */; };
+		A495A6882CED5BE7009A2A6B /* testPostListScreen.PostListScreen-Loading-iPhone-12.png in Resources */ = {isa = PBXBuildFile; fileRef = A495A67C2CED5BE7009A2A6B /* testPostListScreen.PostListScreen-Loading-iPhone-12.png */; };
+		A495A6892CED5BE7009A2A6B /* testPostListScreen.PostListScreen-Default-iPhone-13-Pro.png in Resources */ = {isa = PBXBuildFile; fileRef = A495A6752CED5BE7009A2A6B /* testPostListScreen.PostListScreen-Default-iPhone-13-Pro.png */; };
+		A495A68A2CED5BE7009A2A6B /* testPostListScreen.PostListScreen-LoadedPosts-iPhone-13-Pro.png in Resources */ = {isa = PBXBuildFile; fileRef = A495A6792CED5BE7009A2A6B /* testPostListScreen.PostListScreen-LoadedPosts-iPhone-13-Pro.png */; };
+		A495A6972CED5D36009A2A6B /* testPostListScreen.PostListScreen-Default-iPhone-13-Pro-DarkMode.png in Resources */ = {isa = PBXBuildFile; fileRef = A495A68F2CED5D36009A2A6B /* testPostListScreen.PostListScreen-Default-iPhone-13-Pro-DarkMode.png */; };
+		A495A6982CED5D36009A2A6B /* testPostListScreen.PostListScreen-Loading-iPhone-12-DarkMode.png in Resources */ = {isa = PBXBuildFile; fileRef = A495A6942CED5D36009A2A6B /* testPostListScreen.PostListScreen-Loading-iPhone-12-DarkMode.png */; };
+		A495A6992CED5D36009A2A6B /* testLoginScreen.LoginScreen-iPhone-12-DarkMode.png in Resources */ = {isa = PBXBuildFile; fileRef = A495A68B2CED5D36009A2A6B /* testLoginScreen.LoginScreen-iPhone-12-DarkMode.png */; };
+		A495A69A2CED5D36009A2A6B /* testPostListScreen.PostListScreen-LoadedPosts-iPhone-13-Pro-DarkMode.png in Resources */ = {isa = PBXBuildFile; fileRef = A495A6922CED5D36009A2A6B /* testPostListScreen.PostListScreen-LoadedPosts-iPhone-13-Pro-DarkMode.png */; };
+		A495A69B2CED5D36009A2A6B /* testPostListScreen.PostListScreen-LoadedPosts-iPhone-SE-DarkMode.png in Resources */ = {isa = PBXBuildFile; fileRef = A495A6932CED5D36009A2A6B /* testPostListScreen.PostListScreen-LoadedPosts-iPhone-SE-DarkMode.png */; };
+		A495A69C2CED5D36009A2A6B /* testLoginScreen.LoginScreen-iPhone-13-Pro-DarkMode.png in Resources */ = {isa = PBXBuildFile; fileRef = A495A68C2CED5D36009A2A6B /* testLoginScreen.LoginScreen-iPhone-13-Pro-DarkMode.png */; };
+		A495A69D2CED5D36009A2A6B /* testLoginScreen.LoginScreen-iPhone-SE-DarkMode.png in Resources */ = {isa = PBXBuildFile; fileRef = A495A68D2CED5D36009A2A6B /* testLoginScreen.LoginScreen-iPhone-SE-DarkMode.png */; };
+		A495A69E2CED5D36009A2A6B /* testPostListScreen.PostListScreen-Default-iPhone-12-DarkMode.png in Resources */ = {isa = PBXBuildFile; fileRef = A495A68E2CED5D36009A2A6B /* testPostListScreen.PostListScreen-Default-iPhone-12-DarkMode.png */; };
+		A495A69F2CED5D36009A2A6B /* testPostListScreen.PostListScreen-Default-iPhone-SE-DarkMode.png in Resources */ = {isa = PBXBuildFile; fileRef = A495A6902CED5D36009A2A6B /* testPostListScreen.PostListScreen-Default-iPhone-SE-DarkMode.png */; };
+		A495A6A02CED5D36009A2A6B /* testPostListScreen.PostListScreen-LoadedPosts-iPhone-12-DarkMode.png in Resources */ = {isa = PBXBuildFile; fileRef = A495A6912CED5D36009A2A6B /* testPostListScreen.PostListScreen-LoadedPosts-iPhone-12-DarkMode.png */; };
+		A495A6A12CED5D36009A2A6B /* testPostListScreen.PostListScreen-Loading-iPhone-13-Pro-DarkMode.png in Resources */ = {isa = PBXBuildFile; fileRef = A495A6952CED5D36009A2A6B /* testPostListScreen.PostListScreen-Loading-iPhone-13-Pro-DarkMode.png */; };
+		A495A6A22CED5D36009A2A6B /* testPostListScreen.PostListScreen-Loading-iPhone-SE-DarkMode.png in Resources */ = {isa = PBXBuildFile; fileRef = A495A6962CED5D36009A2A6B /* testPostListScreen.PostListScreen-Loading-iPhone-SE-DarkMode.png */; };
 		A495B2952BFEA11B00A8A8A9 /* Reaper in Frameworks */ = {isa = PBXBuildFile; productRef = A495B2942BFEA11B00A8A8A9 /* Reaper */; };
 		A49933942AA28B5900DED8B1 /* StoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48C0DE92A9819E00034CC0A /* StoryViewModel.swift */; };
 		A49933952AA28B6500DED8B1 /* StoryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48C0DE62A9818A50034CC0A /* StoryScreen.swift */; };
@@ -130,6 +160,35 @@
 		A47309B52AA7D1F600201376 /* CommentRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRow.swift; sourceTree = "<group>"; };
 		A48C0DE62A9818A50034CC0A /* StoryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryScreen.swift; sourceTree = "<group>"; };
 		A48C0DE92A9819E00034CC0A /* StoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryViewModel.swift; sourceTree = "<group>"; };
+		A495A6672CED57FA009A2A6B /* SwiftSnapshotTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftSnapshotTest.swift; sourceTree = "<group>"; };
+		A495A6692CED5A13009A2A6B /* testLoginScreen.LoginScreen-DarkMode.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testLoginScreen.LoginScreen-DarkMode.png"; sourceTree = "<group>"; };
+		A495A66A2CED5A13009A2A6B /* testLoginScreen.LoginScreen-iPhone-12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testLoginScreen.LoginScreen-iPhone-12.png"; sourceTree = "<group>"; };
+		A495A66B2CED5A13009A2A6B /* testLoginScreen.LoginScreen-iPhone-13-Pro.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testLoginScreen.LoginScreen-iPhone-13-Pro.png"; sourceTree = "<group>"; };
+		A495A66C2CED5A13009A2A6B /* testLoginScreen.LoginScreen-iPhone-SE.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testLoginScreen.LoginScreen-iPhone-SE.png"; sourceTree = "<group>"; };
+		A495A6732CED5BE7009A2A6B /* testPostListScreen.PostListScreen-Default-DarkMode.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testPostListScreen.PostListScreen-Default-DarkMode.png"; sourceTree = "<group>"; };
+		A495A6742CED5BE7009A2A6B /* testPostListScreen.PostListScreen-Default-iPhone-12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testPostListScreen.PostListScreen-Default-iPhone-12.png"; sourceTree = "<group>"; };
+		A495A6752CED5BE7009A2A6B /* testPostListScreen.PostListScreen-Default-iPhone-13-Pro.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testPostListScreen.PostListScreen-Default-iPhone-13-Pro.png"; sourceTree = "<group>"; };
+		A495A6762CED5BE7009A2A6B /* testPostListScreen.PostListScreen-Default-iPhone-SE.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testPostListScreen.PostListScreen-Default-iPhone-SE.png"; sourceTree = "<group>"; };
+		A495A6772CED5BE7009A2A6B /* testPostListScreen.PostListScreen-LoadedPosts-DarkMode.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testPostListScreen.PostListScreen-LoadedPosts-DarkMode.png"; sourceTree = "<group>"; };
+		A495A6782CED5BE7009A2A6B /* testPostListScreen.PostListScreen-LoadedPosts-iPhone-12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testPostListScreen.PostListScreen-LoadedPosts-iPhone-12.png"; sourceTree = "<group>"; };
+		A495A6792CED5BE7009A2A6B /* testPostListScreen.PostListScreen-LoadedPosts-iPhone-13-Pro.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testPostListScreen.PostListScreen-LoadedPosts-iPhone-13-Pro.png"; sourceTree = "<group>"; };
+		A495A67A2CED5BE7009A2A6B /* testPostListScreen.PostListScreen-LoadedPosts-iPhone-SE.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testPostListScreen.PostListScreen-LoadedPosts-iPhone-SE.png"; sourceTree = "<group>"; };
+		A495A67B2CED5BE7009A2A6B /* testPostListScreen.PostListScreen-Loading-DarkMode.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testPostListScreen.PostListScreen-Loading-DarkMode.png"; sourceTree = "<group>"; };
+		A495A67C2CED5BE7009A2A6B /* testPostListScreen.PostListScreen-Loading-iPhone-12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testPostListScreen.PostListScreen-Loading-iPhone-12.png"; sourceTree = "<group>"; };
+		A495A67D2CED5BE7009A2A6B /* testPostListScreen.PostListScreen-Loading-iPhone-13-Pro.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testPostListScreen.PostListScreen-Loading-iPhone-13-Pro.png"; sourceTree = "<group>"; };
+		A495A67E2CED5BE7009A2A6B /* testPostListScreen.PostListScreen-Loading-iPhone-SE.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testPostListScreen.PostListScreen-Loading-iPhone-SE.png"; sourceTree = "<group>"; };
+		A495A68B2CED5D36009A2A6B /* testLoginScreen.LoginScreen-iPhone-12-DarkMode.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testLoginScreen.LoginScreen-iPhone-12-DarkMode.png"; sourceTree = "<group>"; };
+		A495A68C2CED5D36009A2A6B /* testLoginScreen.LoginScreen-iPhone-13-Pro-DarkMode.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testLoginScreen.LoginScreen-iPhone-13-Pro-DarkMode.png"; sourceTree = "<group>"; };
+		A495A68D2CED5D36009A2A6B /* testLoginScreen.LoginScreen-iPhone-SE-DarkMode.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testLoginScreen.LoginScreen-iPhone-SE-DarkMode.png"; sourceTree = "<group>"; };
+		A495A68E2CED5D36009A2A6B /* testPostListScreen.PostListScreen-Default-iPhone-12-DarkMode.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testPostListScreen.PostListScreen-Default-iPhone-12-DarkMode.png"; sourceTree = "<group>"; };
+		A495A68F2CED5D36009A2A6B /* testPostListScreen.PostListScreen-Default-iPhone-13-Pro-DarkMode.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testPostListScreen.PostListScreen-Default-iPhone-13-Pro-DarkMode.png"; sourceTree = "<group>"; };
+		A495A6902CED5D36009A2A6B /* testPostListScreen.PostListScreen-Default-iPhone-SE-DarkMode.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testPostListScreen.PostListScreen-Default-iPhone-SE-DarkMode.png"; sourceTree = "<group>"; };
+		A495A6912CED5D36009A2A6B /* testPostListScreen.PostListScreen-LoadedPosts-iPhone-12-DarkMode.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testPostListScreen.PostListScreen-LoadedPosts-iPhone-12-DarkMode.png"; sourceTree = "<group>"; };
+		A495A6922CED5D36009A2A6B /* testPostListScreen.PostListScreen-LoadedPosts-iPhone-13-Pro-DarkMode.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testPostListScreen.PostListScreen-LoadedPosts-iPhone-13-Pro-DarkMode.png"; sourceTree = "<group>"; };
+		A495A6932CED5D36009A2A6B /* testPostListScreen.PostListScreen-LoadedPosts-iPhone-SE-DarkMode.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testPostListScreen.PostListScreen-LoadedPosts-iPhone-SE-DarkMode.png"; sourceTree = "<group>"; };
+		A495A6942CED5D36009A2A6B /* testPostListScreen.PostListScreen-Loading-iPhone-12-DarkMode.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testPostListScreen.PostListScreen-Loading-iPhone-12-DarkMode.png"; sourceTree = "<group>"; };
+		A495A6952CED5D36009A2A6B /* testPostListScreen.PostListScreen-Loading-iPhone-13-Pro-DarkMode.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testPostListScreen.PostListScreen-Loading-iPhone-13-Pro-DarkMode.png"; sourceTree = "<group>"; };
+		A495A6962CED5D36009A2A6B /* testPostListScreen.PostListScreen-Loading-iPhone-SE-DarkMode.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testPostListScreen.PostListScreen-Loading-iPhone-SE-DarkMode.png"; sourceTree = "<group>"; };
 		C3AC6AD32CB6E7FD006BD22D /* HackerNewsPreviewTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HackerNewsPreviewTest.swift; sourceTree = "<group>"; };
 		C3AC6AD52CB6E816006BD22D /* HackerNewsSnapshotTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HackerNewsSnapshotTest.swift; sourceTree = "<group>"; };
 		C3AC6AD72CB6E854006BD22D /* HackerNews.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = HackerNews.xctestplan; sourceTree = "<group>"; };
@@ -151,6 +210,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A495A6662CED57BB009A2A6B /* SnapshotTesting in Frameworks */,
 				C3AC6AD92CB6E8F7006BD22D /* SnapshottingTests in Frameworks */,
 				A4BED5C32AD5E083001642B3 /* (null) in Frameworks */,
 			);
@@ -262,6 +322,8 @@
 		A427058C2A4293B30057E439 /* HackerNewsTests */ = {
 			isa = PBXGroup;
 			children = (
+				A495A66E2CED5A13009A2A6B /* __Snapshots__ */,
+				A495A6672CED57FA009A2A6B /* SwiftSnapshotTest.swift */,
 				A427058D2A4293B30057E439 /* Hacker_NewsTests.swift */,
 				C3AC6AD32CB6E7FD006BD22D /* HackerNewsPreviewTest.swift */,
 				C3AC6AD52CB6E816006BD22D /* HackerNewsSnapshotTest.swift */,
@@ -353,6 +415,49 @@
 				A48C0DE92A9819E00034CC0A /* StoryViewModel.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		A495A66D2CED5A13009A2A6B /* SwiftSnapshotTest */ = {
+			isa = PBXGroup;
+			children = (
+				A495A68B2CED5D36009A2A6B /* testLoginScreen.LoginScreen-iPhone-12-DarkMode.png */,
+				A495A68C2CED5D36009A2A6B /* testLoginScreen.LoginScreen-iPhone-13-Pro-DarkMode.png */,
+				A495A68D2CED5D36009A2A6B /* testLoginScreen.LoginScreen-iPhone-SE-DarkMode.png */,
+				A495A68E2CED5D36009A2A6B /* testPostListScreen.PostListScreen-Default-iPhone-12-DarkMode.png */,
+				A495A68F2CED5D36009A2A6B /* testPostListScreen.PostListScreen-Default-iPhone-13-Pro-DarkMode.png */,
+				A495A6902CED5D36009A2A6B /* testPostListScreen.PostListScreen-Default-iPhone-SE-DarkMode.png */,
+				A495A6912CED5D36009A2A6B /* testPostListScreen.PostListScreen-LoadedPosts-iPhone-12-DarkMode.png */,
+				A495A6922CED5D36009A2A6B /* testPostListScreen.PostListScreen-LoadedPosts-iPhone-13-Pro-DarkMode.png */,
+				A495A6932CED5D36009A2A6B /* testPostListScreen.PostListScreen-LoadedPosts-iPhone-SE-DarkMode.png */,
+				A495A6942CED5D36009A2A6B /* testPostListScreen.PostListScreen-Loading-iPhone-12-DarkMode.png */,
+				A495A6952CED5D36009A2A6B /* testPostListScreen.PostListScreen-Loading-iPhone-13-Pro-DarkMode.png */,
+				A495A6962CED5D36009A2A6B /* testPostListScreen.PostListScreen-Loading-iPhone-SE-DarkMode.png */,
+				A495A6732CED5BE7009A2A6B /* testPostListScreen.PostListScreen-Default-DarkMode.png */,
+				A495A6742CED5BE7009A2A6B /* testPostListScreen.PostListScreen-Default-iPhone-12.png */,
+				A495A6752CED5BE7009A2A6B /* testPostListScreen.PostListScreen-Default-iPhone-13-Pro.png */,
+				A495A6762CED5BE7009A2A6B /* testPostListScreen.PostListScreen-Default-iPhone-SE.png */,
+				A495A6772CED5BE7009A2A6B /* testPostListScreen.PostListScreen-LoadedPosts-DarkMode.png */,
+				A495A6782CED5BE7009A2A6B /* testPostListScreen.PostListScreen-LoadedPosts-iPhone-12.png */,
+				A495A6792CED5BE7009A2A6B /* testPostListScreen.PostListScreen-LoadedPosts-iPhone-13-Pro.png */,
+				A495A67A2CED5BE7009A2A6B /* testPostListScreen.PostListScreen-LoadedPosts-iPhone-SE.png */,
+				A495A67B2CED5BE7009A2A6B /* testPostListScreen.PostListScreen-Loading-DarkMode.png */,
+				A495A67C2CED5BE7009A2A6B /* testPostListScreen.PostListScreen-Loading-iPhone-12.png */,
+				A495A67D2CED5BE7009A2A6B /* testPostListScreen.PostListScreen-Loading-iPhone-13-Pro.png */,
+				A495A67E2CED5BE7009A2A6B /* testPostListScreen.PostListScreen-Loading-iPhone-SE.png */,
+				A495A6692CED5A13009A2A6B /* testLoginScreen.LoginScreen-DarkMode.png */,
+				A495A66A2CED5A13009A2A6B /* testLoginScreen.LoginScreen-iPhone-12.png */,
+				A495A66B2CED5A13009A2A6B /* testLoginScreen.LoginScreen-iPhone-13-Pro.png */,
+				A495A66C2CED5A13009A2A6B /* testLoginScreen.LoginScreen-iPhone-SE.png */,
+			);
+			path = SwiftSnapshotTest;
+			sourceTree = "<group>";
+		};
+		A495A66E2CED5A13009A2A6B /* __Snapshots__ */ = {
+			isa = PBXGroup;
+			children = (
+				A495A66D2CED5A13009A2A6B /* SwiftSnapshotTest */,
+			);
+			path = __Snapshots__;
 			sourceTree = "<group>";
 		};
 		A4BED5AB2ACDFDCF001642B3 /* Frameworks */ = {
@@ -467,6 +572,7 @@
 				995A2BEDEF224F7085D3DB13 /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
 				A495B2932BFEA11B00A8A8A9 /* XCRemoteSwiftPackageReference "Reaper" */,
 				A4D28AEC2C237E2A007F20D0 /* XCRemoteSwiftPackageReference "SnapshotPreviews-iOS" */,
+				A495A6642CED57BB009A2A6B /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
 			);
 			productRefGroup = A427057A2A4293B10057E439 /* Products */;
 			projectDirPath = "";
@@ -493,6 +599,34 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A495A66F2CED5A13009A2A6B /* testLoginScreen.LoginScreen-DarkMode.png in Resources */,
+				A495A6702CED5A13009A2A6B /* testLoginScreen.LoginScreen-iPhone-SE.png in Resources */,
+				A495A6712CED5A13009A2A6B /* testLoginScreen.LoginScreen-iPhone-12.png in Resources */,
+				A495A6722CED5A13009A2A6B /* testLoginScreen.LoginScreen-iPhone-13-Pro.png in Resources */,
+				A495A67F2CED5BE7009A2A6B /* testPostListScreen.PostListScreen-LoadedPosts-iPhone-12.png in Resources */,
+				A495A6802CED5BE7009A2A6B /* testPostListScreen.PostListScreen-Loading-iPhone-SE.png in Resources */,
+				A495A6812CED5BE7009A2A6B /* testPostListScreen.PostListScreen-LoadedPosts-DarkMode.png in Resources */,
+				A495A6822CED5BE7009A2A6B /* testPostListScreen.PostListScreen-Loading-iPhone-13-Pro.png in Resources */,
+				A495A6832CED5BE7009A2A6B /* testPostListScreen.PostListScreen-Default-iPhone-12.png in Resources */,
+				A495A6842CED5BE7009A2A6B /* testPostListScreen.PostListScreen-LoadedPosts-iPhone-SE.png in Resources */,
+				A495A6972CED5D36009A2A6B /* testPostListScreen.PostListScreen-Default-iPhone-13-Pro-DarkMode.png in Resources */,
+				A495A6982CED5D36009A2A6B /* testPostListScreen.PostListScreen-Loading-iPhone-12-DarkMode.png in Resources */,
+				A495A6992CED5D36009A2A6B /* testLoginScreen.LoginScreen-iPhone-12-DarkMode.png in Resources */,
+				A495A69A2CED5D36009A2A6B /* testPostListScreen.PostListScreen-LoadedPosts-iPhone-13-Pro-DarkMode.png in Resources */,
+				A495A69B2CED5D36009A2A6B /* testPostListScreen.PostListScreen-LoadedPosts-iPhone-SE-DarkMode.png in Resources */,
+				A495A69C2CED5D36009A2A6B /* testLoginScreen.LoginScreen-iPhone-13-Pro-DarkMode.png in Resources */,
+				A495A69D2CED5D36009A2A6B /* testLoginScreen.LoginScreen-iPhone-SE-DarkMode.png in Resources */,
+				A495A69E2CED5D36009A2A6B /* testPostListScreen.PostListScreen-Default-iPhone-12-DarkMode.png in Resources */,
+				A495A69F2CED5D36009A2A6B /* testPostListScreen.PostListScreen-Default-iPhone-SE-DarkMode.png in Resources */,
+				A495A6A02CED5D36009A2A6B /* testPostListScreen.PostListScreen-LoadedPosts-iPhone-12-DarkMode.png in Resources */,
+				A495A6A12CED5D36009A2A6B /* testPostListScreen.PostListScreen-Loading-iPhone-13-Pro-DarkMode.png in Resources */,
+				A495A6A22CED5D36009A2A6B /* testPostListScreen.PostListScreen-Loading-iPhone-SE-DarkMode.png in Resources */,
+				A495A6852CED5BE7009A2A6B /* testPostListScreen.PostListScreen-Loading-DarkMode.png in Resources */,
+				A495A6862CED5BE7009A2A6B /* testPostListScreen.PostListScreen-Default-DarkMode.png in Resources */,
+				A495A6872CED5BE7009A2A6B /* testPostListScreen.PostListScreen-Default-iPhone-SE.png in Resources */,
+				A495A6882CED5BE7009A2A6B /* testPostListScreen.PostListScreen-Loading-iPhone-12.png in Resources */,
+				A495A6892CED5BE7009A2A6B /* testPostListScreen.PostListScreen-Default-iPhone-13-Pro.png in Resources */,
+				A495A68A2CED5BE7009A2A6B /* testPostListScreen.PostListScreen-LoadedPosts-iPhone-13-Pro.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -577,6 +711,7 @@
 				A427058E2A4293B30057E439 /* Hacker_NewsTests.swift in Sources */,
 				C3AC6AD62CB6E81B006BD22D /* HackerNewsSnapshotTest.swift in Sources */,
 				C3AC6AD42CB6E806006BD22D /* HackerNewsPreviewTest.swift in Sources */,
+				A495A6682CED5800009A2A6B /* SwiftSnapshotTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -941,6 +1076,14 @@
 				minimumVersion = 2.6.1;
 			};
 		};
+		A495A6642CED57BB009A2A6B /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-snapshot-testing";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.17.6;
+			};
+		};
 		A495B2932BFEA11B00A8A8A9 /* XCRemoteSwiftPackageReference "Reaper" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/EmergeTools/Reaper";
@@ -969,6 +1112,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A47309B22AA29D9600201376 /* XCRemoteSwiftPackageReference "SwiftSoup" */;
 			productName = SwiftSoup;
+		};
+		A495A6652CED57BB009A2A6B /* SnapshotTesting */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A495A6642CED57BB009A2A6B /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
+			productName = SnapshotTesting;
 		};
 		A495B2942BFEA11B00A8A8A9 /* Reaper */ = {
 			isa = XCSwiftPackageProductDependency;
