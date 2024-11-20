@@ -68,7 +68,8 @@ final class SwiftSnapshotTest: XCTestCase {
     // Test loaded state with posts
     let loadedViewModel = AppViewModel()
     loadedViewModel.authState = .loggedIn
-    loadedViewModel.storiesState = .loaded(stories: PreviewHelpers.makeFakeStories())
+    loadedViewModel.storiesState = .loaded(
+      stories: PreviewHelpers.makeFakeStories())
     let loadedView = PostListScreen(appState: loadedViewModel)
 
     let devices = [
