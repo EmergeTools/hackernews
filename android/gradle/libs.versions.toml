@@ -4,8 +4,10 @@ kotlin = "2.0.21"
 ksp = "2.0.21-1.0.28"
 coreKtx = "1.13.1"
 junit = "4.13.2"
-junitVersion = "1.2.1"
-espressoCore = "3.6.1"
+junitVersion = "1.1.5" # This is to match Compose's version
+robolectric = "4.14"
+roborazzi = "1.8.0-alpha-5"
+espressoCore = "3.5.0" # This is to match Compose's version
 lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.9.3"
 retrofit = "2.11.0"
@@ -25,6 +27,7 @@ room = "2.6.1"
 jsoup = "1.18.1"
 extendedspans = "1.4.0"
 composeBom = "2024.11.00"
+uiTestJunit4Android = "1.7.5"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -62,8 +65,13 @@ emerge-reaper = { group = "com.emergetools.reaper", name = "reaper", version.ref
 emerge-distribution = { group = "com.emergetools.distribution", name = "distribution", version.ref = "emergeDistribution" }
 
 junit = { group = "junit", name = "junit", version.ref = "junit" }
+robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
+roborazzi = { group = "io.github.takahirom.roborazzi", name = "roborazzi", version.ref = "roborazzi" }
+roborazzi-compose = { group = "io.github.takahirom.roborazzi", name = "roborazzi-compose", version.ref = "roborazzi" }
+roborazzi-rule = { group = "io.github.takahirom.roborazzi", name = "roborazzi-junit-rule", version.ref = "roborazzi" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+androidx-ui-test-junit4-android = { group = "androidx.compose.ui", name = "ui-test-junit4-android", version.ref = "uiTestJunit4Android" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -73,5 +81,6 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 kotlin-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 emerge = { id = "com.emergetools.android", version.ref = "emergePlugin" }
 sentry = { id = "io.sentry.android.gradle", version.ref = "sentry" }
+roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
 
 
