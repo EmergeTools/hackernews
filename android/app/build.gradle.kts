@@ -6,6 +6,7 @@ plugins {
   alias(libs.plugins.kotlin.ksp)
   alias(libs.plugins.emerge)
   alias(libs.plugins.sentry)
+  alias(libs.plugins.roborazzi)
 }
 
 val runningEnv: String? = System.getenv("RUNNING_ENV")
@@ -81,6 +82,11 @@ android {
       excludes += "/META-INF/{AL2.0,LGPL2.1}"
     }
   }
+  testOptions {
+    unitTests {
+      isIncludeAndroidResources = true
+    }
+  }
 }
 
 composeCompiler {
@@ -145,9 +151,15 @@ dependencies {
 
   implementation(libs.androidx.room)
   implementation(libs.androidx.room.ktx)
+  implementation(libs.androidx.ui.test.junit4.android)
   ksp(libs.androidx.room.compiler)
 
   testImplementation(libs.junit)
+  testImplementation(libs.robolectric)
+  testImplementation(libs.roborazzi)
+  testImplementation(libs.roborazzi.compose)
+  testImplementation(libs.roborazzi.rule)
+
   androidTestImplementation(libs.androidx.junit)
   androidTestImplementation(libs.androidx.espresso.core)
   androidTestImplementation(platform(libs.androidx.compose.bom))
@@ -156,6 +168,7 @@ dependencies {
 
   debugImplementation(libs.androidx.ui.tooling)
   debugImplementation(libs.androidx.ui.test.manifest)
+  debugImplementation(libs.androidx.compose.ui.test.manifest)
 
   implementation(libs.emerge.reaper)
   implementation(libs.emerge.distribution)
