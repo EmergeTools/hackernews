@@ -66,7 +66,7 @@ jobs:
           EMERGE_API_TOKEN: ${{ secrets.EMERGE_API_KEY }}
         run: |
           emerge upload snapshots \
-            --name "HackerNews Swift-Snapshot-Testing" \
+            --name "HackerNews Roborazzi" \
             --id "com.emerge.hackernews.roborazzi" \
             --repo-name "EmergeTools/hackernews" \
             --debug \
