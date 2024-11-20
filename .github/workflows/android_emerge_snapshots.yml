@@ -70,4 +70,5 @@ jobs:
             --id "com.emerge.hackernews.roborazzi" \
             --repo-name "EmergeTools/hackernews" \
             --debug \
-            app/build/outputs/roborazzi
+            --client-library roborazzi \
+            --project-root ./android

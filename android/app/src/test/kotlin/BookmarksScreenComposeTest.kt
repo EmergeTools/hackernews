@@ -1,5 +1,3 @@
-package com.github.takahirom.roborazzi.usage.examples
-
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onRoot
 import com.emergetools.hackernews.features.bookmarks.BookmarksScreen
