@@ -64,4 +64,5 @@ jobs:
             --id "com.emerge.hn.Hacker-News.swiftsnapshottesting" \
             --repo-name "EmergeTools/hackernews" \
             --client-library swift-snapshot-testing \
+            --project-root .
             --debug
