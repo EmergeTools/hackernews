@@ -15,6 +15,7 @@ import org.robolectric.annotation.GraphicsMode
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 @RunWith(RobolectricTestRunner::class)
 class StoryRowComposeTest {
+
   @get:Rule
   val composeRule = createComposeRule()
 
