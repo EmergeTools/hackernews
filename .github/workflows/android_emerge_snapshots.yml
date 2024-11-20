@@ -8,7 +8,7 @@ on:
     paths: [ android/** ]
 
 jobs:
-  build:
+  emerge:
     runs-on: ubuntu-latest
 
     defaults:
@@ -30,3 +30,44 @@ jobs:
           EMERGE_API_TOKEN: ${{ secrets.EMERGE_API_KEY }}
           PR_SHA: ${{ github.event.pull_request.head.sha }}
           PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+
+  roborazzi:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./android
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+
+      - name: Ruby setup
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.2.5
+          bundler-cache: true
+
+      - name: Setup gems
+        run: gem install emerge
+
+      - name: Generate Roborazzi snapshots
+        run: ./gradlew :app:recordRoborazziDebug
+
+      - name: Upload snapshots
+        env:
+          EMERGE_API_TOKEN: ${{ secrets.EMERGE_API_KEY }}
+        run: |
+          emerge upload snapshots \
+            --name "HackerNews Swift-Snapshot-Testing" \
+            --id "com.emerge.hackernews.roborazzi" \
+            --repo-name "EmergeTools/hackernews" \
+            --debug \
+            app/build/outputs/roborazzi
