@@ -168,7 +168,6 @@ dependencies {
 
   debugImplementation(libs.androidx.ui.tooling)
   debugImplementation(libs.androidx.ui.test.manifest)
-  debugImplementation(libs.androidx.compose.ui.test.manifest)
 
   implementation(libs.emerge.reaper)
   implementation(libs.emerge.distribution)
