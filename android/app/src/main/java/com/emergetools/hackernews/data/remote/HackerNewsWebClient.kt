@@ -135,6 +135,8 @@ class HackerNewsWebClient(
       val text = commentElement.select("div.commtext").html()
       val user = commentElement.select("a.hnuser").text()
       val time = commentElement.select("span.age").attr("title")
+        .split(" ")
+        .first()
       val upvoteLink = commentElement.select("a[id^=up_]")
       val url = BASE_WEB_URL + upvoteLink.attr("href")
       val upvoted = upvoteLink.hasClass("nosee")
