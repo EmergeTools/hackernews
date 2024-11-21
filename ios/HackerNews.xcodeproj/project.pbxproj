@@ -42,6 +42,7 @@
 		C3AC6AD42CB6E806006BD22D /* HackerNewsPreviewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3AC6AD32CB6E7FD006BD22D /* HackerNewsPreviewTest.swift */; };
 		C3AC6AD62CB6E81B006BD22D /* HackerNewsSnapshotTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3AC6AD52CB6E816006BD22D /* HackerNewsSnapshotTest.swift */; };
 		C3AC6AD92CB6E8F7006BD22D /* SnapshottingTests in Frameworks */ = {isa = PBXBuildFile; productRef = C3AC6AD82CB6E8F7006BD22D /* SnapshottingTests */; };
+		EC072CAA2CEF02A500D00B8D /* StoryRowV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC072CA92CEF02A500D00B8D /* StoryRowV2.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -136,6 +137,7 @@
 		C3AC6AD32CB6E7FD006BD22D /* HackerNewsPreviewTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HackerNewsPreviewTest.swift; sourceTree = "<group>"; };
 		C3AC6AD52CB6E816006BD22D /* HackerNewsSnapshotTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HackerNewsSnapshotTest.swift; sourceTree = "<group>"; };
 		C3AC6AD72CB6E854006BD22D /* HackerNews.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = HackerNews.xctestplan; sourceTree = "<group>"; };
+		EC072CA92CEF02A500D00B8D /* StoryRowV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryRowV2.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -179,6 +181,7 @@
 				A413E8582A8D868500C0F867 /* ThemedButtonStyle.swift */,
 				A434C2DF2A8E75960002F488 /* WebView.swift */,
 				A47309B52AA7D1F600201376 /* CommentRow.swift */,
+				EC072CA92CEF02A500D00B8D /* StoryRowV2.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -561,6 +564,7 @@
 				A42705AB2A4296BA0057E439 /* PostListScreen.swift in Sources */,
 				A40DC1FA2C20D8B60055B920 /* Previews.swift in Sources */,
 				A427057F2A4293B10057E439 /* ContentView.swift in Sources */,
+				EC072CAA2CEF02A500D00B8D /* StoryRowV2.swift in Sources */,
 				1DF162032A436E7B001A3F76 /* DateUtils.swift in Sources */,
 				A413E8572A8C40E800C0F867 /* Extensions.swift in Sources */,
 				A42705A92A4294EB0057E439 /* LoginScreen.swift in Sources */,
@@ -740,7 +744,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"HackerNews/Preview Content\"";
-				DEVELOPMENT_TEAM = 62J2XHNK9T;
+				DEVELOPMENT_TEAM = LSPBG7SYXK;
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
@@ -762,7 +766,7 @@
 				MARKETING_VERSION = 3.4;
 				OTHER_LDFLAGS = "-fprofile-instr-generate";
 				OTHER_SWIFT_FLAGS = "-profile-generate -profile-coverage-mapping";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.emerge.hn.Hacker-News";
+				PRODUCT_BUNDLE_IDENTIFIER = com.emergetools.hackernews;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
@@ -783,7 +787,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"HackerNews/Preview Content\"";
-				DEVELOPMENT_TEAM = 62J2XHNK9T;
+				DEVELOPMENT_TEAM = LSPBG7SYXK;
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
@@ -803,7 +807,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = "\"$(PROJECT_DIR)/Frameworks/Reaper.xcframework\"";
 				MARKETING_VERSION = 3.4;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.emerge.hn.Hacker-News";
+				PRODUCT_BUNDLE_IDENTIFIER = com.emergetools.hackernews;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
