@@ -8,29 +8,33 @@
 import SwiftUI
 
 struct StoryRowV2: View {
+    @ObservedObject var model: AppViewModel
+    let story: Story
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("@heyrikin")
+            let author = story.by!
+            Text("@\(author)")
                 .foregroundColor(.hnOrange)
                 .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
-            Text("A cool new HN client for iOS")
+            Text(story.title)
                 .font(.headline)
             HStack(spacing: 16) {
                 HStack {
                     Image(systemName: "arrow.up")
                         .foregroundColor(.green)
-                    Text("99")
+                    Text("\(story.score)")
                 }
                 HStack {
                     Image(systemName: "clock")
                         .foregroundColor(.purple)
-                    Text("2h ago")
+                    Text(story.displayableDate)
                 }
                 Spacer()
                 HStack {
                     Image(systemName: "bubble.right.fill")
                         .foregroundColor(.blue)
-                    Text("100")
+                    Text("\(story.commentCount)")
                 }
                 .padding(8)
                 .background(.commentBackground)
@@ -41,6 +45,11 @@ struct StoryRowV2: View {
     }
 }
 
-#Preview {
-    StoryRowV2()
+struct StoryRowV2_Preview: PreviewProvider {
+  static var previews: some View {
+    let fakeStory = PreviewHelpers.makeFakeStory(index: 0, descendants: 3, kids: [1, 2, 3])
+    PreviewVariants {
+      StoryRowV2(model: AppViewModel(), story: fakeStory)
+    }
+  }
 }

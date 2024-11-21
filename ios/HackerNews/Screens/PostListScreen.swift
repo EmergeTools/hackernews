@@ -31,10 +31,9 @@ struct PostListScreen: View {
           NavigationLink(
             value: navigationValue,
             label: {
-              StoryRow(
-                appState: appState,
-                story: story,
-                index: stories.firstIndex(where: { $0.id == story.id })!
+              StoryRowV2(
+                model: appState,
+                story: story
               )
             }
           )
