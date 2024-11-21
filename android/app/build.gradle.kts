@@ -19,7 +19,7 @@ android {
     applicationId = "com.emergetools.hackernews"
     minSdk = 30
     targetSdk = 34
-    versionCode = 11
+    versionCode = 13
     versionName = "1.0.2"
 
     manifestPlaceholders["emerge.distribution.apiKey"] = ""
