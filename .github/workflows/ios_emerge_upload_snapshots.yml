@@ -8,7 +8,7 @@ on:
     paths: [ios/**, .github/workflows/ios*]
 
 jobs:
-  build:
+  upload_emerge_snapshots:
     runs-on: macos-14
 
     defaults:
@@ -35,26 +35,30 @@ jobs:
         run: bundle exec fastlane ios build_upload_emerge_snapshot
         env:
           EMERGE_API_TOKEN: ${{ secrets.EMERGE_API_KEY }}
-  upload_snapshots:
-    runs-on: ubuntu-latest
 
+  upload_swift_snapshot_testing_snapshots:
+    runs-on: macos-14
     defaults:
       run:
         working-directory: ./ios
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
+      - name: Select Xcode version
+        run: sudo xcode-select -s '/Applications/Xcode_15.4.app/Contents/Developer'
+      - name: Generate new snapshots
+        run: |
+          xcodebuild test \
+            -scheme HackerNews \
+            -destination 'platform=iOS Simulator,name=iPhone 14' \
+            -only-testing:HackerNewsTests/SwiftSnapshotTest
       - name: Ruby setup
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.2.5
           bundler-cache: true
-
       - name: Setup gems
         run: gem install emerge
-
       - name: Upload snapshots
         env:
           EMERGE_API_TOKEN: ${{ secrets.EMERGE_API_KEY }}
