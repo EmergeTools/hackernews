@@ -94,3 +94,6 @@ iOSInjectionProject/
 **/.DS_Store
 **/._.DS_Store
 .sentryclirc
+
+# Swift Snapshot Testing
+**/__Snapshots__/**/*.png
