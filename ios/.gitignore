@@ -2,6 +2,9 @@
 #
 # gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
 
+# Swift Snapshot Testing
+**/__Snapshots__/**/*.png
+
 ## User settings
 xcuserdata/
 
@@ -94,6 +97,3 @@ iOSInjectionProject/
 **/.DS_Store
 **/._.DS_Store
 .sentryclirc
-
-# Swift Snapshot Testing
-**/__Snapshots__/**/*.png
