@@ -21,23 +21,26 @@ struct PostListScreen: View {
           .scaleEffect(2)
       case .loaded(let stories):
         List(stories, id: \.id) { story in
-          let navigationValue: AppViewModel.AppNavigation = {
-            if let url = story.makeUrl() {
-              return AppViewModel.AppNavigation.webLink(url: url, title: story.title)
-            } else {
-              return AppViewModel.AppNavigation.storyComments(story: story)
-            }
-          }()
-          NavigationLink(
-            value: navigationValue,
-            label: {
-                StoryRowV2(
-                    model: appState,
-                    story: story
+            let navigationValue: AppViewModel.AppNavigation = {
+                if let url = story.makeUrl() {
+                    return AppViewModel.AppNavigation.webLink(url: url, title: story.title)
+                } else {
+                    return AppViewModel.AppNavigation.storyComments(story: story)
+                }
+            }()
+            
+            StoryRowV2(
+                model: appState,
+                story: story
+            )
+            .background(
+                NavigationLink(
+                    value: navigationValue,
+                    label: {}
                 )
-            }
-          )
-          .listRowBackground(Color.clear)
+                .opacity(0.0)
+            )
+            .listRowBackground(Color.clear)
         }
         .listStyle(.plain)
       }
