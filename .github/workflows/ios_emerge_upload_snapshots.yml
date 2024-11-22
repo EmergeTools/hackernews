@@ -65,7 +65,10 @@ jobs:
             -allowProvisioningUpdates \
             -authenticationKeyPath "$AUTH_KEY_PATH" \
             -authenticationKeyID $APP_STORE_KEY_ID \
-            -authenticationKeyIssuerID $APP_STORE_ISSUER_ID
+            -authenticationKeyIssuerID $APP_STORE_ISSUER_ID \
+            ONLY_ACTIVE_ARCH=YES \
+            TARGETED_DEVICE_FAMILY=1 \
+            SUPPORTS_MACCATALYST=NO
         continue-on-error: true
       - name: Ruby setup
         uses: ruby/setup-ruby@v1
