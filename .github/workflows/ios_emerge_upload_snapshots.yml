@@ -46,12 +46,28 @@ jobs:
         uses: actions/checkout@v4
       - name: Select Xcode version
         run: sudo xcode-select -s '/Applications/Xcode_15.4.app/Contents/Developer'
+      - name: Set up App Store Connect API Key
+        run: |
+          ABSOLUTE_KEY_PATH="$(pwd)/app_store_key.p8"
+          echo "${{ secrets.ASC_PRIVATE_KEY }}" > "$ABSOLUTE_KEY_PATH"
+          echo "AUTH_KEY_PATH=$ABSOLUTE_KEY_PATH" >> $GITHUB_ENV
       - name: Generate new snapshots
+        env:
+          APP_STORE_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          APP_STORE_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
         run: |
           xcodebuild test \
             -scheme HackerNews \
-            -destination 'platform=iOS Simulator,name=iPhone 14' \
-            -only-testing:HackerNewsTests/SwiftSnapshotTest
+            -sdk iphonesimulator \
+            -destination 'platform=iOS Simulator,name=iPhone 15 Pro,OS=18.1' \
+            -only-testing:HackerNewsTests/SwiftSnapshotTest \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$AUTH_KEY_PATH" \
+            -authenticationKeyID $APP_STORE_KEY_ID \
+            -authenticationKeyIssuerID $APP_STORE_ISSUER_ID \
+            ONLY_ACTIVE_ARCH=YES \
+            TARGETED_DEVICE_FAMILY=1 \
+            SUPPORTS_MACCATALYST=NO
         continue-on-error: true
       - name: Ruby setup
         uses: ruby/setup-ruby@v1
