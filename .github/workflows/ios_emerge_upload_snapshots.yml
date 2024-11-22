@@ -46,13 +46,27 @@ jobs:
         uses: actions/checkout@v4
       - name: Select Xcode version
         run: sudo xcode-select -s '/Applications/Xcode_15.4.app/Contents/Developer'
+      - name: Set up App Store Connect API Key
+        run: |
+          echo "${{ secrets.ASC_PRIVATE_KEY }}" > app_store_key.p8
+          export APP_STORE_CONNECT_KEY=$(pwd)/app_store_key.p8
+        env:
+          APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.ASC_PRIVATE_KEY }}
+
       - name: Generate new snapshots
+        env:
+          APP_STORE_CONNECT_KEY: $(pwd)/app_store_key.p8
+          APP_STORE_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          APP_STORE_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
         run: |
           xcodebuild test \
             -scheme HackerNews \
             -destination 'platform=iOS Simulator,name=iPhone 14' \
             -only-testing:HackerNewsTests/SwiftSnapshotTest \
-            -allowProvisioningUpdates
+            -allowProvisioningUpdates \
+            -authenticationKeyPath $APP_STORE_CONNECT_KEY \
+            -authenticationKeyID $APP_STORE_KEY_ID \
+            -authenticationKeyIssuerID $APP_STORE_ISSUER_ID
         continue-on-error: true
       - name: Ruby setup
         uses: ruby/setup-ruby@v1
