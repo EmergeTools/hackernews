@@ -51,7 +51,9 @@ jobs:
           xcodebuild test \
             -scheme HackerNews \
             -destination 'platform=iOS Simulator,name=iPhone 14' \
-            -only-testing:HackerNewsTests/SwiftSnapshotTest
+            -only-testing:HackerNewsTests/SwiftSnapshotTest \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO
         continue-on-error: true
       - name: Ruby setup
         uses: ruby/setup-ruby@v1
