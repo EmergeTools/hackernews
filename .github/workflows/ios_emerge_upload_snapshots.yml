@@ -59,6 +59,7 @@ jobs:
         run: |
           xcodebuild test \
             -scheme HackerNews \
+            -sdk iphonesimulator \
             -destination 'platform=iOS Simulator,name=iPhone 14' \
             -only-testing:HackerNewsTests/SwiftSnapshotTest \
             -allowProvisioningUpdates \
