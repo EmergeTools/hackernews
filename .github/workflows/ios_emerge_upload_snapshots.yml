@@ -55,7 +55,7 @@ jobs:
 
       - name: Generate new snapshots
         env:
-          APP_STORE_CONNECT_KEY: $(pwd)/app_store_key.p8
+          APP_STORE_CONNECT_KEY: ~/app_store_key.p8
           APP_STORE_KEY_ID: ${{ secrets.ASC_KEY_ID }}
           APP_STORE_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
         run: |
