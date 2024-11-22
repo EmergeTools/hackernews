@@ -51,7 +51,8 @@ jobs:
           ABSOLUTE_KEY_PATH="$(pwd)/app_store_key.p8"
           echo "${{ secrets.ASC_PRIVATE_KEY }}" > "$ABSOLUTE_KEY_PATH"
           echo "AUTH_KEY_PATH=$ABSOLUTE_KEY_PATH" >> $GITHUB_ENV
-
+      - name: List available destinations
+        run: xcodebuild -scheme HackerNews -showdestinations
       - name: Generate new snapshots
         env:
           APP_STORE_KEY_ID: ${{ secrets.ASC_KEY_ID }}
