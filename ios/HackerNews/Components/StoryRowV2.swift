@@ -20,36 +20,41 @@ struct StoryRowV2: View {
             Text(story.title)
                 .font(.headline)
             HStack(spacing: 16) {
-                HStack {
+                HStack(spacing: 4) {
                     Image(systemName: "arrow.up")
                         .foregroundColor(.green)
                     Text("\(story.score)")
                 }
-                HStack {
+                HStack(spacing: 4) {
                     Image(systemName: "clock")
                         .foregroundColor(.purple)
                     Text(story.displayableDate)
                 }
                 Spacer()
-                HStack {
-                    Image(systemName: "bubble.right.fill")
-                        .foregroundColor(.blue)
-                    Text("\(story.commentCount)")
+                // Comment Button
+                Button(action: {
+                    print("Pressed comment button for: \(story.id)")
+                    model.navigationPath.append(
+                        AppViewModel.AppNavigation.storyComments(story: story)
+                    )
+                }) {
+                    HStack(spacing: 4) {
+                        Image(systemName: "message.fill")
+                        Text("\(story.commentCount)")
+                    }
                 }
-                .padding(8)
-                .background(.commentBackground)
-                .cornerRadius(.infinity)
+                .buttonStyle(.bordered)
+                .buttonBorderShape(ButtonBorderShape.capsule)
             }
         }
-        .padding()
     }
 }
 
 struct StoryRowV2_Preview: PreviewProvider {
-  static var previews: some View {
-    let fakeStory = PreviewHelpers.makeFakeStory(index: 0, descendants: 3, kids: [1, 2, 3])
-    PreviewVariants {
-      StoryRowV2(model: AppViewModel(), story: fakeStory)
+    static var previews: some View {
+        let fakeStory = PreviewHelpers.makeFakeStory(index: 0, descendants: 3, kids: [1, 2, 3])
+        PreviewVariants {
+            StoryRowV2(model: AppViewModel(), story: fakeStory)
+        }
     }
-  }
 }

@@ -31,10 +31,10 @@ struct PostListScreen: View {
           NavigationLink(
             value: navigationValue,
             label: {
-              StoryRowV2(
-                model: appState,
-                story: story
-              )
+                StoryRowV2(
+                    model: appState,
+                    story: story
+                )
             }
           )
           .listRowBackground(Color.clear)
