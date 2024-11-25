@@ -29,7 +29,7 @@ struct PostListScreen: View {
                 }
             }()
             
-            StoryRowV2(
+            StoryRow(
                 model: appState,
                 story: story
             )
