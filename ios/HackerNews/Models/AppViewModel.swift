@@ -21,10 +21,20 @@ class AppViewModel: ObservableObject {
     case loggedOut
   }
   
+  enum FeedType {
+    case top
+    case new
+  }
+  
+  struct StoriesState {
+    var stories: [Story]
+    var feedType: FeedType = .top
+  }
+  
   enum StoriesListState {
     case notStarted
     case loading
-    case loaded(stories: [Story])
+    case loaded(state: StoriesState)
   }
   
   @Published var authState = AuthState.loggedOut
@@ -46,7 +56,7 @@ class AppViewModel: ObservableObject {
   func fetchPosts() async {
     storiesState = .loading
     let stories = await hnApi.fetchTopStories()
-    storiesState = .loaded(stories: stories)
+    storiesState = .loaded(state: StoriesState(stories: stories))
   }
   
 }

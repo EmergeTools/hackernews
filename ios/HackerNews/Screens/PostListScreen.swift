@@ -19,30 +19,34 @@ struct PostListScreen: View {
         ProgressView()
           .progressViewStyle(CircularProgressViewStyle())
           .scaleEffect(2)
-      case .loaded(let stories):
-        List(stories, id: \.id) { story in
-            let navigationValue: AppViewModel.AppNavigation = {
-                if let url = story.makeUrl() {
-                    return AppViewModel.AppNavigation.webLink(url: url, title: story.title)
-                } else {
-                    return AppViewModel.AppNavigation.storyComments(story: story)
-                }
-            }()
-            
-            StoryRow(
-                model: appState,
-                story: story
-            )
-            .background(
-                NavigationLink(
-                    value: navigationValue,
-                    label: {}
-                )
-                .opacity(0.0)
-            )
-            .listRowBackground(Color.clear)
+      case .loaded(let state):
+        TabView(selection: .constant(0)) {
+          List(state.stories, id: \.id) { story in
+              let navigationValue: AppViewModel.AppNavigation = {
+                  if let url = story.makeUrl() {
+                      return AppViewModel.AppNavigation.webLink(url: url, title: story.title)
+                  } else {
+                      return AppViewModel.AppNavigation.storyComments(story: story)
+                  }
+              }()
+              
+              StoryRow(
+                  model: appState,
+                  story: story
+              )
+              .background(
+                  NavigationLink(
+                      value: navigationValue,
+                      label: {}
+                  )
+                  .opacity(0.0)
+              )
+              .listRowBackground(Color.clear)
+          }
+          .tag(0)
+          .listStyle(.plain)
         }
-        .listStyle(.plain)
+        .tabViewStyle(.page)
       }
     }
     .navigationBarTitle("Hacker News")
@@ -82,6 +86,6 @@ struct PostListScreen: View {
 #Preview("Has posts") {
   let appModel = AppViewModel()
   appModel.authState = .loggedIn
-  appModel.storiesState = .loaded(stories: PreviewHelpers.makeFakeStories())
+  appModel.storiesState = .loaded(state: AppViewModel.StoriesState(stories: PreviewHelpers.makeFakeStories()))
   return PostListScreen(appState: appModel)
 }

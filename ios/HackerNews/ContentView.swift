@@ -51,7 +51,11 @@ struct ContentView_LoggedIn_WithPosts_Previews: PreviewProvider {
   static var previews: some View {
     let appModel = AppViewModel()
     appModel.authState = .loggedIn
-    appModel.storiesState = .loaded(stories: PreviewHelpers.makeFakeStories())
+    appModel.storiesState = .loaded(
+      state: AppViewModel.StoriesState(
+        stories: PreviewHelpers.makeFakeStories()
+      )
+    )
     return PreviewVariants {
       PreviewHelpers.withNavigationView {
         ContentView(appState: appModel)
@@ -64,7 +68,7 @@ struct ContentView_LoggedIn_EmptyPosts_Previews: PreviewProvider {
   static var previews: some View {
     let appModel = AppViewModel()
     appModel.authState = .loggedIn
-    appModel.storiesState = .loaded(stories: [])
+    appModel.storiesState = .loaded(state: AppViewModel.StoriesState(stories: []))
     return PreviewVariants {
       PreviewHelpers.withNavigationView {
         ContentView(appState: appModel)
