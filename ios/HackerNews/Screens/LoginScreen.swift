@@ -15,7 +15,7 @@ struct LoginScreen: View {
   var body: some View {
     VStack(spacing: 20) {
       VStack(alignment: .leading) {
-        Text("Welcome to Hacker News (AGAIN Nico Intentionally Change the snapshot)")
+        Text("Welcome to Hacker News (Nico Intentionally Change the snapshot)")
           .font(.title)
         Text("Login to browse stories")
       }
