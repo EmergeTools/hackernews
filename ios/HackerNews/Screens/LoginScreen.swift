@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 
+// dont change the images
 struct LoginScreen: View {
   
   @ObservedObject var appState: AppViewModel
