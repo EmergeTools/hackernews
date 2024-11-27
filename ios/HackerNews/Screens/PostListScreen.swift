@@ -19,34 +19,53 @@ struct PostListScreen: View {
         ProgressView()
           .progressViewStyle(CircularProgressViewStyle())
           .scaleEffect(2)
+        
       case .loaded(let state):
-        TabView(selection: .constant(0)) {
-          List(state.stories, id: \.id) { story in
-              let navigationValue: AppViewModel.AppNavigation = {
-                  if let url = story.makeUrl() {
-                      return AppViewModel.AppNavigation.webLink(url: url, title: story.title)
-                  } else {
-                      return AppViewModel.AppNavigation.storyComments(story: story)
+        VStack {
+          HStack(spacing: 16) {
+            ForEach(AppViewModel.FeedType.allCases, id: \.self) { feedType in
+              Button(action: {
+                if (feedType != state.feedType) {
+                  Task {
+                    await appState.fetchPosts(feedType: feedType)
                   }
-              }()
-              
-              StoryRow(
-                  model: appState,
-                  story: story
-              )
-              .background(
-                  NavigationLink(
-                      value: navigationValue,
-                      label: {}
-                  )
-                  .opacity(0.0)
-              )
-              .listRowBackground(Color.clear)
+                }
+              }) {
+                Text(feedType.title)
+                  .foregroundColor(feedType == state.feedType ? .hnOrange : .gray)
+                  .fontWeight(feedType == state.feedType ? .bold : .regular)
+                  .font(.system(size: 24))
+              }
+            }
           }
-          .tag(0)
-          .listStyle(.plain)
+          TabView(selection: .constant(0)) {
+            List(state.stories, id: \.id) { story in
+                let navigationValue: AppViewModel.AppNavigation = {
+                    if let url = story.makeUrl() {
+                        return AppViewModel.AppNavigation.webLink(url: url, title: story.title)
+                    } else {
+                        return AppViewModel.AppNavigation.storyComments(story: story)
+                    }
+                }()
+                
+                StoryRow(
+                    model: appState,
+                    story: story
+                )
+                .background(
+                    NavigationLink(
+                        value: navigationValue,
+                        label: {}
+                    )
+                    .opacity(0.0)
+                )
+                .listRowBackground(Color.clear)
+            }
+            .tag(0)
+            .listStyle(.plain)
+          }
+          .tabViewStyle(.page)
         }
-        .tabViewStyle(.page)
       }
     }
     .navigationBarTitle("Hacker News")
@@ -54,7 +73,7 @@ struct PostListScreen: View {
       ToolbarItemGroup(placement: .navigationBarTrailing) {
         Button(action: {
           Task {
-            await appState.fetchPosts()
+            await appState.fetchPosts(feedType: .top)
           }
         }) {
           Image(systemName: "arrow.counterclockwise")

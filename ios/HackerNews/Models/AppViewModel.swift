@@ -21,9 +21,18 @@ class AppViewModel: ObservableObject {
     case loggedOut
   }
   
-  enum FeedType {
+  enum FeedType: CaseIterable {
     case top
     case new
+    
+    var title: String {
+      switch self {
+      case .top:
+        return "Top"
+      case .new:
+        return "New"
+      }
+    }
   }
   
   struct StoriesState {
@@ -53,10 +62,15 @@ class AppViewModel: ObservableObject {
     authState = .loggedOut
   }
   
-  func fetchPosts() async {
+  func fetchPosts(feedType: FeedType) async {
     storiesState = .loading
-    let stories = await hnApi.fetchTopStories()
-    storiesState = .loaded(state: StoriesState(stories: stories))
+    let stories = switch feedType {
+    case .top:
+      await hnApi.fetchTopStories()
+    case .new:
+      await hnApi.fetchNewStories()
+    }
+    storiesState = .loaded(state: StoriesState(stories: stories, feedType: feedType))
   }
   
 }
