@@ -8,6 +8,32 @@
 import Foundation
 import SwiftUI
 
+enum FeedType: CaseIterable {
+  case top
+  case new
+  
+  var title: String {
+    switch self {
+    case .top:
+      return "Top"
+    case .new:
+      return "New"
+    }
+  }
+}
+
+enum StoriesState {
+  case notStarted
+  case loading
+  case loaded(items: [Story])
+}
+
+struct PostListState {
+  var feeds: [FeedType] = FeedType.allCases
+  var storiesState: StoriesState = .notStarted
+  var selectedFeed: FeedType = FeedType.top
+}
+
 @MainActor
 class AppViewModel: ObservableObject {
   
@@ -21,33 +47,9 @@ class AppViewModel: ObservableObject {
     case loggedOut
   }
   
-  enum FeedType: CaseIterable {
-    case top
-    case new
-    
-    var title: String {
-      switch self {
-      case .top:
-        return "Top"
-      case .new:
-        return "New"
-      }
-    }
-  }
-  
-  struct StoriesState {
-    var stories: [Story]
-    var feedType: FeedType = .top
-  }
-  
-  enum StoriesListState {
-    case notStarted
-    case loading
-    case loaded(state: StoriesState)
-  }
   
   @Published var authState = AuthState.loggedOut
-  @Published var storiesState = StoriesListState.notStarted
+  @Published var postListState = PostListState()
   @Published var navigationPath = NavigationPath()
   
   private let hnApi = HNApi()
@@ -63,14 +65,18 @@ class AppViewModel: ObservableObject {
   }
   
   func fetchPosts(feedType: FeedType) async {
-    storiesState = .loading
+    var updated = postListState
+    updated.selectedFeed = feedType
+    updated.storiesState = .loading
+    postListState = updated
+    
     let stories = switch feedType {
     case .top:
       await hnApi.fetchTopStories()
     case .new:
       await hnApi.fetchNewStories()
     }
-    storiesState = .loaded(state: StoriesState(stories: stories, feedType: feedType))
+    updated.storiesState = .loaded(items: stories)
+    postListState = updated
   }
-  
 }

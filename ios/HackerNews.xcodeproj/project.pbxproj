@@ -43,6 +43,7 @@
 		C3AC6AD62CB6E81B006BD22D /* HackerNewsSnapshotTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3AC6AD52CB6E816006BD22D /* HackerNewsSnapshotTest.swift */; };
 		C3AC6AD92CB6E8F7006BD22D /* SnapshottingTests in Frameworks */ = {isa = PBXBuildFile; productRef = C3AC6AD82CB6E8F7006BD22D /* SnapshottingTests */; };
 		EC3B5AAB2CF5472000134B75 /* FeedPagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3B5AAA2CF5472000134B75 /* FeedPagerTest.swift */; };
+		EC3B5AAD2CF7AB7A00134B75 /* FullScreentest.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3B5AAC2CF7AB7A00134B75 /* FullScreentest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -138,6 +139,7 @@
 		C3AC6AD52CB6E816006BD22D /* HackerNewsSnapshotTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HackerNewsSnapshotTest.swift; sourceTree = "<group>"; };
 		C3AC6AD72CB6E854006BD22D /* HackerNews.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = HackerNews.xctestplan; sourceTree = "<group>"; };
 		EC3B5AAA2CF5472000134B75 /* FeedPagerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedPagerTest.swift; sourceTree = "<group>"; };
+		EC3B5AAC2CF7AB7A00134B75 /* FullScreentest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreentest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -213,6 +215,7 @@
 				A42705AA2A4296BA0057E439 /* PostListScreen.swift */,
 				A48C0DE62A9818A50034CC0A /* StoryScreen.swift */,
 				EC3B5AAA2CF5472000134B75 /* FeedPagerTest.swift */,
+				EC3B5AAC2CF7AB7A00134B75 /* FullScreentest.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -560,6 +563,7 @@
 			files = (
 				A423B06A2BAE061600267DDB /* Flags.swift in Sources */,
 				1DF161FA2A4346F6001A3F76 /* StoryRow.swift in Sources */,
+				EC3B5AAD2CF7AB7A00134B75 /* FullScreentest.swift in Sources */,
 				1DF162002A4365A1001A3F76 /* Colors.swift in Sources */,
 				A42705AB2A4296BA0057E439 /* PostListScreen.swift in Sources */,
 				A40DC1FA2C20D8B60055B920 /* Previews.swift in Sources */,
