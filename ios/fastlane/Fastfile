@@ -108,7 +108,7 @@ platform :ios do
     )
 
     # build the app
-    gym(
+    build_ios_app(
       scheme: 'HackerNews',
       output_name: output_name,
       configuration: 'Release',
