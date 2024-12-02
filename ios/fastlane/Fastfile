@@ -17,15 +17,7 @@
 
 default_platform(:ios)
 
-for_platform :ios do
-  app_identifier "com.emerge.hn.Hacker-News"
-  apple_id ENV['APPLE_ID']
-  team_id ENV['APPLE_TEAM_ID']
-  itc_team_id ENV['APPLE_ITC_TEAM_ID']
-end
-
 platform :ios do
-
   desc 'Load ASC API Key information to use in subsequent lanes'
   lane :load_asc_api_key do
     app_store_connect_api_key(
@@ -123,7 +115,8 @@ platform :ios do
         method: export_method,
         provisioningProfiles: {
           bundle_identifier => profile_name
-        }
+        },
+        team_id: ENV['APPLE_TEAM_ID']
       }
     )
   end
