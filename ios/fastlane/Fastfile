@@ -103,7 +103,8 @@ platform :ios do
       code_sign_identity: 'Apple Distribution',
       bundle_identifier: bundle_identifier,
       profile_name: profile_name,
-      build_configurations: ['Release']
+      build_configurations: ['Release'],
+      team_id: ENV['APPLE_TEAM_ID']
     )
 
     # build the app
