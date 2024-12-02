@@ -125,9 +125,11 @@ struct PreviewHelpers {
       type: .comment,
       text: """
         Totally useless commentary:
+        It makes me deeply happy to hear success stories like this for a project that's moving in the correctly opposite direction to that of the rest of the world. It makes me deeply happy to hear success stories like this for a project that's moving in the correctly opposite direction to that of the rest of the world.
 
         Engildification. Of which there should be more!
 
+        My soul was also satisfied by the Sleeping At Night post which, along with the recent "Lie Still in Bed" article, makes for very simple options to attempt to fix sleep (discipline) issues
         """,
       parent: nil,
       kids: nil
