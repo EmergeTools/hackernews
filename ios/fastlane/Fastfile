@@ -111,6 +111,7 @@ platform :ios do
       scheme: 'HackerNews',
       output_name: output_name,
       configuration: 'Release',
+      export_team_id: ENV['APPLE_TEAM_ID'],
       export_options: {
         method: export_method,
         provisioningProfiles: {
