@@ -103,19 +103,22 @@ platform :ios do
       code_sign_identity: 'Apple Distribution',
       bundle_identifier: bundle_identifier,
       profile_name: profile_name,
-      build_configurations: ['Release']
+      build_configurations: ['Release'],
+      team_id: ENV['APPLE_TEAM_ID']
     )
 
     # build the app
-    gym(
+    build_ios_app(
       scheme: 'HackerNews',
       output_name: output_name,
       configuration: 'Release',
+      export_team_id: ENV['APPLE_TEAM_ID'],
       export_options: {
         method: export_method,
         provisioningProfiles: {
           bundle_identifier => profile_name
-        }
+        },
+        team_id: ENV['APPLE_TEAM_ID']
       }
     )
   end
