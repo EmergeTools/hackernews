@@ -2,7 +2,7 @@
 //  SettingsScreen.swift
 //  HackerNews
 //
-//  Created by Rikin Marfatia on 11/22/24.
+//  Created by Rikin Marfatia on 12/3/24.
 //
 
 import Foundation
@@ -10,6 +10,10 @@ import SwiftUI
 
 struct SettingsScreen: View {
   var body: some View {
-    Text("Hello Settings")
+    Text("Settings Screen")
   }
+}
+
+#Preview {
+  SettingsScreen()
 }

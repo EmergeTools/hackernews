@@ -14,7 +14,18 @@ struct ContentView: View {
   var body: some View {
     switch appState.authState {
     case .loggedIn:
-      PostListScreen(appState: appState)
+      TabView {
+        PostListScreen(appState: appState)
+          .tag(1)
+          .tabItem { Label("Feed", systemImage: "list.dash") }
+        BookmarksScreen()
+          .tag(2)
+          .tabItem { Label("Bookmarks", systemImage: "book") }
+        SettingsScreen()
+          .tag(3)
+          .tabItem { Label("Settings", systemImage: "gear") }
+      }
+      .accentColor(.hnOrange)
     case .loggedOut:
       LoginScreen(appState: appState)
     }
