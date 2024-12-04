@@ -24,7 +24,7 @@ struct PostListScreen: View {
             Text(feedType.title)
               .foregroundColor(appState.postListState.selectedFeed == feedType ? .hnOrange : .gray)
               .fontWeight(appState.postListState.selectedFeed == feedType ? .bold : .regular)
-              .font(.title)
+              .font(.title2)
           }
         }
       }

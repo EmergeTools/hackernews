@@ -14,29 +14,25 @@ class HNApi {
   
   init() {}
   
-  func fetchNewStories() async -> [Story] {
-    // make the request for ids
-    let url = URL(string: baseUrl + "newstories.json")!
-    
-    do {
-      let (data, response) = try await URLSession.shared.data(from: url)
-      if Flags.isEnabled(.networkDebugger) {
-        NetworkDebugger.printStats(for: response)
-      }
-      let storyIds = try decoder.decode([Int64].self, from: data)
-      let items = await fetchItems(ids: Array(storyIds.prefix(20)))
-      return items.compactMap { $0 as? Story }
-    } catch {
-      print("Error fetch post IDs: \(error)")
-      return []
-    }
-  }
-  
-  func fetchTopStories() async -> [Story] {
+  func fetchStories(feedType: FeedType) async -> [Story] {
     NotificationCenter.default.post(name: Notification.Name(rawValue: "EmergeMetricStarted"), object: nil, userInfo: [
       "metric": "FETCH_STORIES"
     ])
-    let url = URL(string: baseUrl + "topstories.json")!
+    
+    let feedUrl = switch feedType {
+    case .top:
+      "topstories.json"
+    case .new:
+      "newstories.json"
+    case .best:
+      "beststories.json"
+    case .ask:
+      "askstories.json"
+    case .show:
+      "showstories.json"
+    }
+    
+    let url = URL(string: baseUrl + feedUrl)!
     
     do {
       let (data, response) = try await URLSession.shared.data(from: url)

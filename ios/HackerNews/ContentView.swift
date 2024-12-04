@@ -25,7 +25,6 @@ struct ContentView: View {
           .tag(3)
           .tabItem { Label("Settings", systemImage: "gear") }
       }
-      .accentColor(.hnOrange)
     case .loggedOut:
       LoginScreen(appState: appState)
     }
