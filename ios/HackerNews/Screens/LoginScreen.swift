@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-// dont change the images at alL!!!again again, both should passsss
+// dont change the images at alL!!!again again, both should passssssssss
 struct LoginScreen: View {
   
   @ObservedObject var appState: AppViewModel
