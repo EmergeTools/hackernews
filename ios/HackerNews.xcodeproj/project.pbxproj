@@ -43,6 +43,8 @@
 		C3AC6AD62CB6E81B006BD22D /* HackerNewsSnapshotTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3AC6AD52CB6E816006BD22D /* HackerNewsSnapshotTest.swift */; };
 		C3AC6AD92CB6E8F7006BD22D /* SnapshottingTests in Frameworks */ = {isa = PBXBuildFile; productRef = C3AC6AD82CB6E8F7006BD22D /* SnapshottingTests */; };
 		EC072CAA2CEF02A500D00B8D /* StoryRowV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC072CA92CEF02A500D00B8D /* StoryRowV2.swift */; };
+		EC29FDA72CFFD074007B1AE9 /* BookmarksScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC29FDA62CFFD074007B1AE9 /* BookmarksScreen.swift */; };
+		EC29FDA92CFFD0B5007B1AE9 /* SettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC29FDA82CFFD0B5007B1AE9 /* SettingsScreen.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -138,6 +140,8 @@
 		C3AC6AD52CB6E816006BD22D /* HackerNewsSnapshotTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HackerNewsSnapshotTest.swift; sourceTree = "<group>"; };
 		C3AC6AD72CB6E854006BD22D /* HackerNews.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = HackerNews.xctestplan; sourceTree = "<group>"; };
 		EC072CA92CEF02A500D00B8D /* StoryRowV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryRowV2.swift; sourceTree = "<group>"; };
+		EC29FDA62CFFD074007B1AE9 /* BookmarksScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarksScreen.swift; sourceTree = "<group>"; };
+		EC29FDA82CFFD0B5007B1AE9 /* SettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreen.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -213,6 +217,8 @@
 				A42705A82A4294EB0057E439 /* LoginScreen.swift */,
 				A42705AA2A4296BA0057E439 /* PostListScreen.swift */,
 				A48C0DE62A9818A50034CC0A /* StoryScreen.swift */,
+				EC29FDA62CFFD074007B1AE9 /* BookmarksScreen.swift */,
+				EC29FDA82CFFD0B5007B1AE9 /* SettingsScreen.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -559,6 +565,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A423B06A2BAE061600267DDB /* Flags.swift in Sources */,
+				EC29FDA92CFFD0B5007B1AE9 /* SettingsScreen.swift in Sources */,
 				1DF161FA2A4346F6001A3F76 /* StoryRow.swift in Sources */,
 				1DF162002A4365A1001A3F76 /* Colors.swift in Sources */,
 				A42705AB2A4296BA0057E439 /* PostListScreen.swift in Sources */,
@@ -567,6 +574,7 @@
 				EC072CAA2CEF02A500D00B8D /* StoryRowV2.swift in Sources */,
 				1DF162032A436E7B001A3F76 /* DateUtils.swift in Sources */,
 				A413E8572A8C40E800C0F867 /* Extensions.swift in Sources */,
+				EC29FDA72CFFD074007B1AE9 /* BookmarksScreen.swift in Sources */,
 				A42705A92A4294EB0057E439 /* LoginScreen.swift in Sources */,
 				A413E8592A8D868500C0F867 /* ThemedButtonStyle.swift in Sources */,
 				A427057D2A4293B10057E439 /* HNApp.swift in Sources */,

@@ -23,7 +23,7 @@ struct LoginScreen: View {
       Button("Login") {
         appState.performLogin()
         Task {
-          await appState.fetchPosts()
+          await appState.fetchPosts(feedType: .top)
         }
       }
       .buttonStyle(ThemedButtonStyle())

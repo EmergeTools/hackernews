@@ -62,14 +62,19 @@ final class SwiftSnapshotTest: XCTestCase {
     // Test loading state
     let loadingViewModel = AppViewModel()
     loadingViewModel.authState = .loggedIn
-    loadingViewModel.storiesState = .loading
+    loadingViewModel.postListState = PostListState(
+      storiesState: .loading
+    )
     let loadingView = PostListScreen(appState: loadingViewModel)
 
     // Test loaded state with posts
     let loadedViewModel = AppViewModel()
     loadedViewModel.authState = .loggedIn
-    loadedViewModel.storiesState = .loaded(
-      stories: PreviewHelpers.makeFakeStories())
+    loadedViewModel.postListState = PostListState(
+      storiesState: .loaded(
+        items: PreviewHelpers.makeFakeStories()
+      )
+    )
     let loadedView = PostListScreen(appState: loadedViewModel)
 
     let devices = [
