@@ -14,7 +14,9 @@ class HNApi {
   
   init() {}
   
-  func fetchStories(feedType: FeedType) async -> [Story] {
+  
+  
+  func fetchStories(feedType: FeedType) async -> [Int64] {
     NotificationCenter.default.post(name: Notification.Name(rawValue: "EmergeMetricStarted"), object: nil, userInfo: [
       "metric": "FETCH_STORIES"
     ])
@@ -39,13 +41,13 @@ class HNApi {
       if Flags.isEnabled(.networkDebugger) {
         NetworkDebugger.printStats(for: response)
       }
+      
       let storyIds = try decoder.decode([Int64].self, from: data)
-      let items = await fetchItems(ids: Array(storyIds.prefix(20)))
-
+      
       NotificationCenter.default.post(name: Notification.Name(rawValue: "EmergeMetricEnded"), object: nil, userInfo: [
         "metric": "FETCH_STORIES"
       ])
-      return items.compactMap { $0 as? Story }
+      return storyIds
     } catch {
       print("Error fetching post IDs: \(error)")
       return []
