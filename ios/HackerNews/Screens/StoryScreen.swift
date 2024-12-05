@@ -20,12 +20,21 @@ struct StoryScreen: View {
           .progressViewStyle(CircularProgressViewStyle())
           .scaleEffect(2)
       case .loaded(let comments):
+//        LazyVStack {
+//          ForEach(comments, id: \.id) { flattendComment in CommentRow(comment: flattendComment.comment, level: flattendComment.depth)
+//          }
+//        }
         List(comments, id: \.id) { flattenedComment in
-          CommentRow(comment: flattenedComment.comment, level: flattenedComment.depth)
-            .listRowBackground(Color.clear)
-            .listRowSeparator(.hidden)
+          CommentRow(
+            comment: flattenedComment.comment,
+            level: flattenedComment.depth
+          )
+          .listRowBackground(Color.clear)
+          .listRowSeparator(.hidden)
+          .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
         }
         .listStyle(.plain)
+        .listRowSpacing(4.0)
       }
     }
     .background(HNColors.background)

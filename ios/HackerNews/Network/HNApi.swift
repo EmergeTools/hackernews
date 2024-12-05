@@ -217,6 +217,14 @@ struct Comment: HNItem, Identifiable {
   var replies: [Int64]? {
     kids
   }
+  
+  var displayableDate: String {
+    if ProcessInfo.processInfo.environment["EMERGE_IS_RUNNING_FOR_SNAPSHOTS"] == "1" {
+      return "10 minutes ago"
+    }
+    let date = Date(timeIntervalSince1970: TimeInterval(time))
+    return date.timeAgoDisplay()
+  }
 }
 
 struct Job: HNItem {
