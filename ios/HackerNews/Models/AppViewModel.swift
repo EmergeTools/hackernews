@@ -31,12 +31,6 @@ enum FeedType: CaseIterable {
   }
 }
 
-enum StoriesState {
-  case notStarted
-  case loading
-  case loaded(items: [Story])
-}
-
 /**
  Display State
  needs information for the feed selection
@@ -76,12 +70,13 @@ class AppViewModel: ObservableObject {
     case loggedOut
   }
   
-  
   @Published var authState = AuthState.loggedOut
   @Published var postListState = PostListState()
   @Published var navigationPath = NavigationPath()
   
   private let hnApi = HNApi()
+  private let pageSize = 20
+  private var idsToConsume: [Int64] = []
   
   init() {}
   
@@ -94,12 +89,29 @@ class AppViewModel: ObservableObject {
   }
   
   func fetchPosts(feedType: FeedType) async {
-    var updated = postListState
-    updated.selectedFeed = feedType
-    updated.stories = []
-    postListState = updated
+    postListState.selectedFeed = feedType
+    postListState.stories = []
+    idsToConsume = []
     
-    let storyIds = await hnApi.fetchStories(feedType: feedType)
-    print("Loading Feed: \(feedType) with ids \(storyIds)")
+    idsToConsume = await hnApi.fetchStories(feedType: feedType)
+    print("Feed Items Size: \(idsToConsume.count)")
+    let nextPageIds = Array(idsToConsume[0..<pageSize])
+    idsToConsume.removeFirst(pageSize)
+    
+    print("Page Size: \(nextPageIds.count)")
+
+    postListState.stories += nextPageIds.map { StoryState.loading(id: $0) }
+    
+    // load the page
+    let page = Page(ids: nextPageIds)
+    let items = await hnApi.fetchPage(page: page)
+    postListState.stories = postListState.stories.map { state in
+      let updated = items.first { $0.id == state.id }
+      if (updated != nil && updated!.type == .story) {
+        return .loaded(story: updated as! Story)
+      } else {
+        return state
+      }
+    }
   }
 }

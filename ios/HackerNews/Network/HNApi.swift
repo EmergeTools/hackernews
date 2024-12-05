@@ -7,6 +7,10 @@
 
 import Foundation
 
+struct Page {
+  var ids: [Int64]
+}
+
 class HNApi {
   
   let baseUrl = "https://hacker-news.firebaseio.com/v0/"
@@ -54,6 +58,46 @@ class HNApi {
     }
   }
   
+  func fetchPage(page: Page) async -> [HNItem] {
+    do {
+      return try await withThrowingTaskGroup(of: HNItem.self) { taskGroup in
+        for id in page.ids {
+          taskGroup.addTask {
+            let url = URL(string: "https://hacker-news.firebaseio.com/v0/item/\(id).json")!
+            let (data, response) = try await URLSession.shared.data(from: url)
+            if Flags.isEnabled(.networkDebugger) {
+              NetworkDebugger.printStats(for: response)
+            }
+            let decoder = JSONDecoder()
+            let baseItem = try decoder.decode(BaseItem.self, from: data)
+            
+            switch baseItem.type {
+            case .story:
+              return try decoder.decode(Story.self, from: data)
+            case .comment:
+              return try decoder.decode(Comment.self, from: data)
+            case .job:
+              return try decoder.decode(Job.self, from: data)
+            case .poll:
+              return try decoder.decode(Poll.self, from: data)
+            case .pollopt:
+              return try decoder.decode(Pollopt.self, from: data)
+            }
+          }
+        }
+        
+        var idToItem = [Int64 : HNItem]()
+        for try await result in taskGroup {
+          idToItem[result.id] = result
+        }
+        return page.ids.compactMap { idToItem[$0] }
+      }
+    } catch let error {
+      print("Error loading page: \(error)")
+      return []
+    }
+  }
+  
   func fetchItems(ids: [Int64]) async -> [HNItem] {
     do {
       return try await withThrowingTaskGroup(of: HNItem.self) { taskGroup in
@@ -79,7 +123,7 @@ class HNApi {
             case .comment:
               return try decoder.decode(Comment.self, from: data)
             case .job:
-              return try decoder.decode(Job.self, from: data)
+              return try decoder.decode(Story.self, from: data)
             case .poll:
               return try decoder.decode(Poll.self, from: data)
             case .pollopt:
