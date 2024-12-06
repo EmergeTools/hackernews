@@ -16,6 +16,18 @@ struct StoryRow: View {
     switch state {
     case .loading:
       ProgressView()
+    case .nextPage:
+      HStack {
+        Spacer()
+        Text("Loading Next Page")
+        ProgressView()
+        Spacer()
+      }
+      .onAppear {
+        Task {
+          await model.fetchNextPage()
+        }
+      }
     case .loaded(let story):
       VStack(alignment: .leading, spacing: 8) {
         let author = story.by!

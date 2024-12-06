@@ -55,7 +55,7 @@ class HNApi {
     }
   }
   
-  func fetchPage(page: Page) async -> [HNItem] {
+  func fetchPage(page: Page) async -> [Story] {
     do {
       return try await withThrowingTaskGroup(of: HNItem.self) { taskGroup in
         for id in page.ids {
@@ -87,7 +87,7 @@ class HNApi {
         for try await result in taskGroup {
           idToItem[result.id] = result
         }
-        return page.ids.compactMap { idToItem[$0] }
+        return page.ids.compactMap { idToItem[$0] as? Story }
       }
     } catch let error {
       print("Error loading page: \(error)")

@@ -46,6 +46,7 @@ struct PostListState {
 enum StoryState: Identifiable {
   case loading(id: Int64)
   case loaded(story: Story)
+  case nextPage
 
   var id: Int64 {
     switch self {
@@ -53,6 +54,8 @@ enum StoryState: Identifiable {
       return id
     case .loaded(story: let story):
       return story.id
+    case .nextPage:
+      return Int64.max
     }
   }
 }
@@ -76,7 +79,7 @@ class AppViewModel: ObservableObject {
 
   private let hnApi = HNApi()
   private var pager = Pager()
-  
+
   init() {}
 
   func performLogin() {
@@ -87,7 +90,7 @@ class AppViewModel: ObservableObject {
     authState = .loggedOut
   }
 
-  func fetchPosts(feedType: FeedType) async {
+  func fetchInitialPosts(feedType: FeedType) async {
     postListState.selectedFeed = feedType
     postListState.stories = []
 
@@ -99,7 +102,19 @@ class AppViewModel: ObservableObject {
       postListState.stories = nextPage.ids.map { StoryState.loading(id: $0) }
 
       let items = await hnApi.fetchPage(page: nextPage)
-      postListState.stories = items.map { StoryState.loaded(story: $0 as! Story) }
+      postListState.stories = items.map { StoryState.loaded(story: $0 ) }
+      pager.hasNextPage() ? postListState.stories.append(.nextPage) : ()
     }
+  }
+
+  func fetchNextPage() async {
+    guard pager.hasNextPage() else {
+      return
+    }
+    let nextPage = pager.nextPage()
+    let items = await hnApi.fetchPage(page: nextPage)
+    postListState.stories.removeLast() // remove the loading view
+    postListState.stories += items.map { StoryState.loaded(story: $0) }
+    pager.hasNextPage() ? postListState.stories.append(.nextPage) : ()
   }
 }

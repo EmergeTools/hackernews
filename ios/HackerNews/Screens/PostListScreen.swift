@@ -19,7 +19,7 @@ struct PostListScreen: View {
         ForEach(appState.postListState.feeds, id: \.self) { feedType in
           Button(action: {
             Task {
-              await appState.fetchPosts(feedType: feedType)
+              await appState.fetchInitialPosts(feedType: feedType)
             }
           }) {
             Text(feedType.title)
