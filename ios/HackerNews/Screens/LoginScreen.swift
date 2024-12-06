@@ -15,7 +15,7 @@ struct LoginScreen: View {
   var body: some View {
     VStack(spacing: 20) {
       VStack(alignment: .leading) {
-        Text("Welcome to Hacker News")
+        Text("Welcome to Hacker News, your friend")
           .font(.title)
         Text("Login to browse stories")
       }
@@ -32,3 +32,5 @@ struct LoginScreen: View {
   }
   
 }
+
+// empty comment
