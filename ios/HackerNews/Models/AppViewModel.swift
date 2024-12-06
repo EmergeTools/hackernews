@@ -14,7 +14,7 @@ enum FeedType: CaseIterable {
   case best
   case ask
   case show
-  
+
   var title: String {
     switch self {
     case .top:
@@ -46,7 +46,7 @@ struct PostListState {
 enum StoryState: Identifiable {
   case loading(id: Int64)
   case loaded(story: Story)
-  
+
   var id: Int64 {
     switch self {
     case .loading(id: let id):
@@ -59,59 +59,47 @@ enum StoryState: Identifiable {
 
 @MainActor
 class AppViewModel: ObservableObject {
-  
+
   enum AppNavigation: Codable, Hashable {
     case webLink(url: URL, title: String)
     case storyComments(story: Story)
   }
-  
+
   enum AuthState {
     case loggedIn
     case loggedOut
   }
-  
+
   @Published var authState = AuthState.loggedOut
   @Published var postListState = PostListState()
   @Published var navigationPath = NavigationPath()
-  
+
   private let hnApi = HNApi()
-  private let pageSize = 20
-  private var idsToConsume: [Int64] = []
+  private var pager = Pager()
   
   init() {}
-  
+
   func performLogin() {
     authState = .loggedIn
   }
-  
+
   func performLogout() {
     authState = .loggedOut
   }
-  
+
   func fetchPosts(feedType: FeedType) async {
     postListState.selectedFeed = feedType
     postListState.stories = []
-    idsToConsume = []
-    
-    idsToConsume = await hnApi.fetchStories(feedType: feedType)
-    print("Feed Items Size: \(idsToConsume.count)")
-    let nextPageIds = Array(idsToConsume[0..<pageSize])
-    idsToConsume.removeFirst(pageSize)
-    
-    print("Page Size: \(nextPageIds.count)")
 
-    postListState.stories += nextPageIds.map { StoryState.loading(id: $0) }
-    
-    // load the page
-    let page = Page(ids: nextPageIds)
-    let items = await hnApi.fetchPage(page: page)
-    postListState.stories = postListState.stories.map { state in
-      let updated = items.first { $0.id == state.id }
-      if (updated != nil && updated!.type == .story) {
-        return .loaded(story: updated as! Story)
-      } else {
-        return state
-      }
+    let idsToConsume = await hnApi.fetchStories(feedType: feedType)
+    pager.setIds(idsToConsume)
+
+    if pager.hasNextPage() {
+      let nextPage = pager.nextPage()
+      postListState.stories = nextPage.ids.map { StoryState.loading(id: $0) }
+
+      let items = await hnApi.fetchPage(page: nextPage)
+      postListState.stories = items.map { StoryState.loaded(story: $0 as! Story) }
     }
   }
 }

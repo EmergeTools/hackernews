@@ -7,9 +7,6 @@
 
 import Foundation
 
-struct Page {
-  var ids: [Int64]
-}
 
 class HNApi {
   
