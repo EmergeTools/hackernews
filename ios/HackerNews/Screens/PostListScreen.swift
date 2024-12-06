@@ -14,7 +14,6 @@ struct PostListScreen: View {
   
   var body: some View {
     VStack {
-      // Feed Selection
       HStack(spacing: 16) {
         ForEach(appState.postListState.feeds, id: \.self) { feedType in
           Button(action: {
@@ -31,27 +30,28 @@ struct PostListScreen: View {
       }
       .padding(16)
       
-      // Feed Items
       List(appState.postListState.stories, id: \.id) { storyState in
-//        let navigationValue: AppViewModel.AppNavigation = {
-//          if let url = story.makeUrl() {
-//            return AppViewModel.AppNavigation.webLink(url: url, title: story.title)
-//          } else {
-//            return AppViewModel.AppNavigation.storyComments(story: story)
-//          }
-//        }()
-        
         StoryRow(
           model: appState,
           state: storyState
         )
-//        .background(
-//          NavigationLink(
-//            value: navigationValue,
-//            label: {}
-//          )
-//          .opacity(0.0)
-//        )
+        .background {
+          switch storyState {
+          case .loading, .nextPage:
+            EmptyView()
+          case .loaded(let story):
+            let destination: AppViewModel.AppNavigation = if let url = story.makeUrl() {
+              .webLink(url: url, title: story.title)
+            } else {
+              .storyComments(story: story)
+            }
+            NavigationLink(
+              value: destination,
+              label: {}
+            )
+            .opacity(0.0)
+          }
+        }
         .listRowBackground(Color.clear)
       }
       .tag(0)
