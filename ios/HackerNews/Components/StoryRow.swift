@@ -19,7 +19,6 @@ struct StoryRow: View {
     case .nextPage:
       HStack {
         Spacer()
-        Text("Loading Next Page")
         ProgressView()
         Spacer()
       }
