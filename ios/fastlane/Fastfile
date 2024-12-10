@@ -154,16 +154,29 @@ platform :ios do
     # )
   end
 
+  fastlane_require 'git'
+
   desc 'Build and upload to Emerge Tools'
   lane :build_upload_emerge do
+    g = Git.open('.')
+    head_sha = g.log[0].parents[1].sha
+    base_sha = g.log[0].parent.sha
+    puts "telkins: Head SHA: #{head_sha}"
+    puts "telkins: Base SHA: #{base_sha}"
+
     load_asc_api_key
     prepare_signing
     build_app_for_scheme(build_configuration: 'Release')
-    emerge(tag: ENV['EMERGE_BUILD_TYPE'])
+    emerge(tag: ENV['EMERGE_BUILD_TYPE'], sha: head_sha, base_sha: base_sha)
   end
 
   desc 'Build and upload snapshot build to Emerge Tools'
   lane :build_upload_emerge_snapshot do
-    emerge_snapshot(scheme: "HackerNews")
+    g = Git.open('.')
+    head_sha = g.log[0].parents[1].sha
+    base_sha = g.log[0].parent.sha
+    puts "telkins: Head SHA: #{head_sha}"
+    puts "telkins: Base SHA: #{base_sha}"
+    emerge_snapshot(scheme: "HackerNews", sha: head_sha, base_sha: base_sha)
   end
 end
