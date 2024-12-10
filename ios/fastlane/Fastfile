@@ -156,27 +156,38 @@ platform :ios do
 
   fastlane_require 'git'
 
-  desc 'Build and upload to Emerge Tools'
-  lane :build_upload_emerge do
+  # Add this helper method before the lanes
+  private_lane :get_commit_shas do
     g = Git.open('.')
-    head_sha = g.log[0].parents[1].sha
-    base_sha = g.log[0].parent.sha
+    latest_commit = g.log[0]
+    
+    # if latest_commit.parents.length > 1
+    #   # For merge commits
+    #   head_sha = latest_commit.parents[1].sha
+    #   base_sha = latest_commit.parent.sha
+    # else
+    #   # For regular commits
+    head_sha = latest_commit.sha
+    base_sha = latest_commit.parent.sha
+    # end
+    
     puts "telkins: Head SHA: #{head_sha}"
     puts "telkins: Base SHA: #{base_sha}"
+    return { head_sha: head_sha, base_sha: base_sha }
+  end
 
+  desc 'Build and upload to Emerge Tools'
+  lane :build_upload_emerge do
+    shas = get_commit_shas()
     load_asc_api_key
     prepare_signing
     build_app_for_scheme(build_configuration: 'Release')
-    emerge(tag: ENV['EMERGE_BUILD_TYPE'], sha: head_sha, base_sha: base_sha)
+    emerge(tag: ENV['EMERGE_BUILD_TYPE'], sha: shas[:head_sha], base_sha: shas[:base_sha])
   end
 
   desc 'Build and upload snapshot build to Emerge Tools'
   lane :build_upload_emerge_snapshot do
-    g = Git.open('.')
-    head_sha = g.log[0].parents[1].sha
-    base_sha = g.log[0].parent.sha
-    puts "telkins: Head SHA: #{head_sha}"
-    puts "telkins: Base SHA: #{base_sha}"
-    emerge_snapshot(scheme: "HackerNews", sha: head_sha, base_sha: base_sha)
+    shas = get_commit_shas()
+    emerge_snapshot(scheme: "HackerNews", sha: shas[:head_sha], base_sha: shas[:base_sha])
   end
 end
