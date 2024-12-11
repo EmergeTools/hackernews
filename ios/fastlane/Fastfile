@@ -160,20 +160,76 @@ platform :ios do
   private_lane :get_commit_shas do
     g = Git.open('.')
     latest_commit = g.log[0]
+
+    # puts "Latest commit details:"
+    # puts g.log[0].inspect
+
+    # puts "What about this shit"
+    # puts g.merge_base('maindoesntexist', 'HEAD')
+    # puts g.merge_base('maindoesntexistr', g.current_branch)
+
+    puts "\nFull commit history:"
+    g.log.each_with_index do |commit, index|
+      puts "\nCommit #{index}:"
+      puts "SHA: #{commit.sha}"
+      puts "Message: #{commit.message}"
+      puts "Author: #{commit.author.name}"
+      puts "Date: #{commit.date}"
+      puts "Parent SHAs: #{commit.parents.map(&:sha).join(', ')}" if commit.respond_to?(:parents)
+      puts "---"
+    end
+
+    puts "ok and"
+    puts g.merge_base('origin/main', g.current_branch)
+    puts g.merge_base('origin/main', g.current_branch).first
     
+    
+    puts "\nAvailable branches:"
+    g.branches.each do |branch|
+      puts "- #{branch.name} (#{branch.full})"
+    end
+    
+    puts "\nAvailable remotes:"
+    g.remotes.each do |remote|
+      puts "- #{remote.name}"
+    end
+    
+    puts "\nCurrent branch: #{g.current_branch}"
+    puts "OK BUT THEN"
+    puts latest_commit.parent.sha
+
+    # puts "\nFull commit history:"
+    # g.log.each_with_index do |commit, index|
+    #   puts "\nCommit #{index}:"
+    #   puts "SHA: #{commit.sha}"
+    #   puts "Message: #{commit.message}"
+    #   puts "Author: #{commit.author.name}"
+    #   puts "Date: #{commit.date}"
+    #   puts "Parent SHAs: #{commit.parents.map(&:sha).join(', ')}" if commit.respond_to?(:parents)
+    #   puts "---"
+    # end
+    
+    # puts "\nLatest commit details:"
+    # puts "SHA: #{latest_commit.sha}"
+    # puts "Message: #{latest_commit.message}"
+    # puts "Parent count: #{latest_commit.parents.length if latest_commit.respond_to?(:parents)}"
+    
+
     # if latest_commit.parents.length > 1
     #   # For merge commits
     #   head_sha = latest_commit.parents[1].sha
     #   base_sha = latest_commit.parent.sha
     # else
     #   # For regular commits
-    head_sha = latest_commit.sha
-    base_sha = latest_commit.parent.sha
-    # end
+    is_merge = latest_commit.parents.length > 1
+    head_sha = is_merge ? g.log[0].parents[1].sha : latest_commit.sha
+    base_sha = is_merge ? g.log[0].parents[0].sha : g.merge_base('main', g.current_branch).first.sha
     
-    puts "telkins: Head SHA: #{head_sha}"
-    puts "telkins: Base SHA: #{base_sha}"
-    return { head_sha: head_sha, base_sha: base_sha }
+    puts "stephen: is_merge: #{is_merge}"
+    puts "stephen: Base SHA: #{base_sha}"
+    puts "stephen: Head SHA: #{head_sha}"
+
+    { head_sha: head_sha, base_sha: base_sha }
   end
 
   desc 'Build and upload to Emerge Tools'
