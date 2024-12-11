@@ -18,7 +18,7 @@ jobs:
     steps:
       - name: "Calculate PR depth"
         working-directory: .
-        run: echo "PR_FETCH_DEPTH=$(( ${{ github.event.pull_request.commits }} * 2 ))" >> "${GITHUB_ENV}"
+        run: echo "PR_FETCH_DEPTH=$(( ${{ github.event.pull_request.commits }} + 2 ))" >> "${GITHUB_ENV}"
 
       - name: Checkout
         uses: actions/checkout@v4
