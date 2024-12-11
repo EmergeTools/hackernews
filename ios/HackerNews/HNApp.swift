@@ -18,9 +18,9 @@ struct Hacker_NewsApp: App {
   init() {
     UINavigationBar.appearance().backgroundColor = .clear
     UICollectionView.appearance().backgroundColor = .clear
-    
+    //test
     EMGReaper.sharedInstance().start(withAPIKey: "f77fb081-cfc2-4d15-acb5-18bad59c9376")
-    
+
     SentrySDK.start { options in
         options.dsn = "https://118cff4b239bd3e0ede8fd74aad9bf8f@o497846.ingest.sentry.io/4506027753668608"
 #if DEBUG
