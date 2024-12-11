@@ -25,9 +25,9 @@ jobs:
         with:
           fetch-depth: ${{ env.PR_FETCH_DEPTH }}
 
-      - name: Fetch main
-        run: |
-          git fetch origin main --depth=10
+      # - name: Fetch main
+      #   run: |
+      #     git fetch origin main --depth=10
 
       - name: Select Xcode version
         run: sudo xcode-select -s '/Applications/Xcode_15.4.app/Contents/Developer'
