@@ -1,18 +1,18 @@
 name: Emerge PR iOS Upload (Snapshots)
 
 on:
+  workflow_call:
+    inputs:
+      branch:
+        description: 'Branch to checkout'
+        type: string
+        required: false
+        default: ${{ github.head_ref || github.ref_name }}
   push:
     branches: [main]
   pull_request:
     branches: [main]
     paths: [ios/**, .github/workflows/ios*]
-
-# Add workflow inputs section
-inputs:
-  branch:
-    description: 'Branch to checkout'
-    required: false
-    default: ${{ github.head_ref || github.ref_name }}
 
 jobs:
   upload_emerge_snapshots:
