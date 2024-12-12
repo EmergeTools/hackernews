@@ -18,6 +18,11 @@ struct LoginScreen: View {
         Text("Welcome to Hacker News")
           .font(.title)
         Text("Login to browse stories")
+        Text("Login to browse stories")
+        Text("Login to browse stories")
+        Text("Login to browse stories")
+        Text("Login to browse stories")
+        Text("Login to browse stories")
       }
       
       Button("Login") {
