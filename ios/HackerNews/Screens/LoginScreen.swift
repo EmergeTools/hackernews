@@ -2,8 +2,8 @@
 //  LogInScreen.swift
 //  Hacker News
 //
-//  Created by Trevor Elkins on 6/20/23.
 //
+//  Created by Trevor Elkins on 6/20/23.
 
 import Foundation
 import SwiftUI
