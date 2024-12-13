@@ -28,7 +28,7 @@ struct PostListScreen: View {
           }
         }
       }
-      .padding(16)
+      .padding(8)
       
       List(appState.postListState.stories, id: \.id) { storyState in
         StoryRow(
@@ -57,6 +57,8 @@ struct PostListScreen: View {
       .tag(0)
       .listStyle(.plain)
     }
+    .navigationTitle("")
+    .navigationBarHidden(true)
   }
 }
 
