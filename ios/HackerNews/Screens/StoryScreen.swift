@@ -15,7 +15,10 @@ struct StoryScreen: View {
   var body: some View {
     VStack {
       // Header
-      CommentsHeader(state: storyModel.state.headerState)
+      CommentsHeader(
+        state: storyModel.state.headerState,
+        toggleBody: { storyModel.toggleHeaderBody() }
+      )
 
       // Seperator
       Rectangle()
@@ -48,8 +51,8 @@ struct StoryScreen: View {
       }
       .frame(maxHeight: .infinity)
     }
-    .background(HNColors.background)
     .padding(8.0)
+    .background(HNColors.background)
     .navigationTitle(storyModel.state.headerState.story.title)
     .navigationBarTitleDisplayMode(.inline)
     .toolbarColorScheme(.dark, for: .navigationBar)

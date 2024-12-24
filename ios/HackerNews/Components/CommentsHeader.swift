@@ -10,13 +10,35 @@ import SwiftUI
 
 struct CommentsHeader: View {
   let state: CommentsHeaderState
+  let toggleBody: () -> Void
 
   var body: some View {
     VStack(alignment: .leading) {
+      // title
       Text(state.story.title)
         .font(.title2)
         .fontWeight(.bold)
         .frame(maxWidth: .infinity, alignment: .leading)
+
+      // body
+      if (state.story.text != nil) {
+        VStack(alignment: .leading, spacing: 8.0) {
+          Image(systemName: "chevron.up.chevron.down")
+            .font(.caption2)
+          Text(state.story.text!)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .font(.caption)
+            .lineLimit(state.expanded ? nil : 4)
+        }
+        .padding(8.0)
+        .background(Color.commentBackground)
+        .clipShape(RoundedRectangle(cornerRadius: 8.0, style: .continuous))
+        .onTapGesture {
+          toggleBody()
+        }
+      }
+
+      // actions
       HStack {
         // post author
         let author = state.story.by != nil ? state.story.by! : ""
@@ -55,5 +77,8 @@ struct CommentsHeader: View {
 }
 
 #Preview {
-  CommentsHeader(state: CommentsHeaderState(story: PreviewHelpers.makeFakeStory()))
+  CommentsHeader(
+    state: CommentsHeaderState(story: PreviewHelpers.makeFakeStory()),
+    toggleBody: {}
+  )
 }

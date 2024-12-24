@@ -20,6 +20,8 @@ enum CommentsState {
 
 struct CommentsHeaderState {
   let story: Story
+  var expanded: Bool = false
+  
 }
 
 @MainActor
@@ -35,6 +37,10 @@ class StoryViewModel: ObservableObject {
       headerState: CommentsHeaderState(story: story),
       comments: .notStarted
     )
+  }
+
+  func toggleHeaderBody() {
+    state.headerState.expanded.toggle()
   }
 
 
