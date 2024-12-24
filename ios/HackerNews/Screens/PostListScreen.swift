@@ -18,7 +18,7 @@ struct PostListScreen: View {
         ForEach(appState.postListState.feeds, id: \.self) { feedType in
           Button(action: {
             Task {
-              await appState.fetchPosts(feedType: feedType)
+              await appState.fetchInitialPosts(feedType: feedType)
             }
           }) {
             Text(feedType.title)
@@ -28,64 +28,38 @@ struct PostListScreen: View {
           }
         }
       }
-      .padding(16)
-      switch appState.postListState.storiesState {
-      case .notStarted, .loading:
-        ProgressView()
-          .progressViewStyle(CircularProgressViewStyle())
-          .scaleEffect(2)
-          .frame(maxHeight: .infinity)
-      case .loaded(let items):
-        TabView(selection: .constant(0)) {
-          List(items, id: \.id) { story in
-            let navigationValue: AppViewModel.AppNavigation = {
-              if let url = story.makeUrl() {
-                return AppViewModel.AppNavigation.webLink(url: url, title: story.title)
-              } else {
-                return AppViewModel.AppNavigation.storyComments(story: story)
-              }
-            }()
-            
-            StoryRow(
-              model: appState,
-              story: story
+      .padding(8)
+      
+      List(appState.postListState.stories, id: \.id) { storyState in
+        StoryRow(
+          model: appState,
+          state: storyState
+        )
+        .background {
+          switch storyState {
+          case .loading, .nextPage:
+            EmptyView()
+          case .loaded(let story):
+            let destination: AppViewModel.AppNavigation = if let url = story.makeUrl() {
+              .webLink(url: url, title: story.title)
+            } else {
+              .storyComments(story: story)
+            }
+            NavigationLink(
+              value: destination,
+              label: {}
             )
-            .background(
-              NavigationLink(
-                value: navigationValue,
-                label: {}
-              )
-              .opacity(0.0)
-            )
-            .listRowBackground(Color.clear)
+            .opacity(0.0)
           }
-          .tag(0)
-          .listStyle(.plain)
         }
-        .tabViewStyle(.page)
+        .listRowBackground(Color.clear)
       }
+      .tag(0)
+      .listStyle(.plain)
     }
-//    .navigationBarTitle("Hacker News")
-//    .toolbar {
-//      ToolbarItemGroup(placement: .navigationBarTrailing) {
-//        Button(action: {
-//          Task {
-//            await appState.fetchPosts(feedType: .top)
-//          }
-//        }) {
-//          Image(systemName: "arrow.counterclockwise")
-//            .foregroundColor(.white)
-//        }
-//        Button(action: {
-//          appState.performLogout()
-//        }) {
-//          Image(systemName: "rectangle.portrait.and.arrow.right")
-//            .foregroundColor(.white)
-//        }
-//      }
-//    }
+    .navigationTitle("")
+    .navigationBarHidden(true)
   }
-  
 }
 
 #Preview {
@@ -95,13 +69,18 @@ struct PostListScreen: View {
 #Preview("Loading") {
   let appModel = AppViewModel()
   appModel.authState = .loggedIn
-  appModel.postListState = PostListState(storiesState: .loading)
+  appModel.postListState = PostListState()
+  
   return PostListScreen(appState: appModel)
 }
 
 #Preview("Has posts") {
   let appModel = AppViewModel()
+  let fakeStories = PreviewHelpers
+    .makeFakeStories()
+    .map { StoryState.loaded(story: $0) }
   appModel.authState = .loggedIn
-  appModel.postListState = PostListState(storiesState: .loaded(items: PreviewHelpers.makeFakeStories()))
+  appModel.postListState = PostListState(stories: fakeStories)
+  
   return PostListScreen(appState: appModel)
 }

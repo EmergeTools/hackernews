@@ -63,7 +63,7 @@ final class SwiftSnapshotTest: XCTestCase {
     let loadingViewModel = AppViewModel()
     loadingViewModel.authState = .loggedIn
     loadingViewModel.postListState = PostListState(
-      storiesState: .loading
+      stories: []
     )
     let loadingView = PostListScreen(appState: loadingViewModel)
 
@@ -71,9 +71,7 @@ final class SwiftSnapshotTest: XCTestCase {
     let loadedViewModel = AppViewModel()
     loadedViewModel.authState = .loggedIn
     loadedViewModel.postListState = PostListState(
-      storiesState: .loaded(
-        items: PreviewHelpers.makeFakeStories()
-      )
+      stories: PreviewHelpers.makeFakeStories().map { StoryState.loaded(story: $0) }
     )
     let loadedView = PostListScreen(appState: loadedViewModel)
 
