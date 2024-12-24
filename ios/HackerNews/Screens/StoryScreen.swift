@@ -9,41 +9,44 @@ import Foundation
 import SwiftUI
 
 struct StoryScreen: View {
-  
+
   @ObservedObject var storyModel: StoryViewModel
   
   var body: some View {
-    Group {
-      switch storyModel.state {
-      case .notStarted, .loading:
-        ProgressView()
-          .progressViewStyle(CircularProgressViewStyle())
-          .scaleEffect(2)
-      case .loaded(let comments):
-        VStack {
-          CommentsHeader(
-            story: storyModel.story
-          )
-          Rectangle()
-            .fill()
-            .frame(maxWidth: .infinity, maxHeight: 1)
-          List(comments, id: \.id) { flattenedComment in
-            CommentRow(
-              comment: flattenedComment.comment,
-              level: flattenedComment.depth
-            )
-            .listRowBackground(Color.clear)
-            .listRowSeparator(.hidden)
-            .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
+    VStack {
+      CommentsHeader(
+        story: storyModel.story
+      )
+      Rectangle()
+        .fill()
+        .frame(maxWidth: .infinity, maxHeight: 1)
+      ZStack {
+        switch storyModel.state {
+        case .notStarted, .loading:
+          ProgressView()
+            .progressViewStyle(CircularProgressViewStyle())
+            .scaleEffect(2)
+        case .loaded(let comments):
+          VStack {
+            List(comments, id: \.id) { flattenedComment in
+              CommentRow(
+                comment: flattenedComment.comment,
+                level: flattenedComment.depth
+              )
+              .listRowBackground(Color.clear)
+              .listRowSeparator(.hidden)
+              .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
+            }
+            .padding(EdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 0))
+            .listStyle(.plain)
+            .listRowSpacing(4.0)
           }
-          .padding(EdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 0))
-          .listStyle(.plain)
-          .listRowSpacing(4.0)
         }
-        .padding(8.0)
       }
+      .frame(maxHeight: .infinity)
     }
     .background(HNColors.background)
+    .padding(8.0)
     .navigationTitle(storyModel.story.title)
     .navigationBarTitleDisplayMode(.inline)
     .toolbarColorScheme(.dark, for: .navigationBar)
