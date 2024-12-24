@@ -52,10 +52,7 @@ struct StoryScreen: View {
       .frame(maxHeight: .infinity)
     }
     .padding(8.0)
-    .background(HNColors.background)
     .navigationTitle(storyModel.state.headerState.story.title)
-    .navigationBarTitleDisplayMode(.inline)
-    .toolbarColorScheme(.dark, for: .navigationBar)
     .toolbarBackground(HNColors.orange, for: .navigationBar)
     .toolbarBackground(.visible, for: .navigationBar)
     .toolbar {
