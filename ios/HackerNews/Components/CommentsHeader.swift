@@ -9,21 +9,28 @@ import SwiftUI
 
 
 struct CommentsHeader: View {
+  let story: Story
+
   var body: some View {
     VStack(alignment: .leading) {
-      Text("The journey to save the last known 43-inch Sony CRT")
+      Text(story.title)
         .font(.title2)
         .fontWeight(.bold)
         .frame(maxWidth: .infinity, alignment: .leading)
       HStack {
         // post author
-        Text("@author")
+        let author = story.by != nil ? story.by! : ""
+        Text("@\(author)")
+          .font(.caption)
           .fontWeight(.bold)
           .foregroundColor(Color.hnOrange)
         // post time
         HStack(alignment: .center, spacing: 4.0) {
           Image(systemName: "clock")
-          Text("4h ago")
+            .font(.caption2)
+            .foregroundStyle(.purple)
+          Text(story.displayableDate)
+            .font(.caption)
         }
         Spacer()
         // upvote button
@@ -48,5 +55,5 @@ struct CommentsHeader: View {
 }
 
 #Preview {
-  CommentsHeader()
+  CommentsHeader(story: PreviewHelpers.makeFakeStory())
 }

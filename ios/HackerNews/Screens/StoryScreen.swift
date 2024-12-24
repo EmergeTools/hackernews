@@ -21,9 +21,11 @@ struct StoryScreen: View {
           .scaleEffect(2)
       case .loaded(let comments):
         VStack {
-          CommentsHeader()
+          CommentsHeader(
+            story: storyModel.story
+          )
           Rectangle()
-            .stroke(style: StrokeStyle(lineWidth: 1, dash: [5]))
+            .fill()
             .frame(maxWidth: .infinity, maxHeight: 1)
           List(comments, id: \.id) { flattenedComment in
             CommentRow(

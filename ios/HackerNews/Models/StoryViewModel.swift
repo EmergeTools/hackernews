@@ -7,6 +7,15 @@
 
 import Foundation
 
+struct StoryUiState {
+  let headerState: CommentsHeaderState
+  let comments: [FlattenedComment]
+}
+
+struct CommentsHeaderState {
+  let story: Story
+}
+
 @MainActor
 class StoryViewModel: ObservableObject {
   
