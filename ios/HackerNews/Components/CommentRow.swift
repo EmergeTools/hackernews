@@ -18,7 +18,8 @@ struct CommentRow: View {
       // first row
       HStack {
         // author
-        Text("@\(comment.by!)")
+        let author = comment.by != nil ? comment.by! : ""
+        Text("@\(author)")
           .font(.caption)
           .fontWeight(.bold)
         // time
@@ -51,7 +52,8 @@ struct CommentRow: View {
       }
       
       // Comment Body
-      Text(comment.text!.strippingHTML())
+      let commentText = comment.text != nil ? comment.text! : ""
+      Text(commentText.strippingHTML())
         .font(.caption)
     }
     .padding(8.0)

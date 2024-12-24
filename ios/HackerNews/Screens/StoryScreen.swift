@@ -20,10 +20,6 @@ struct StoryScreen: View {
           .progressViewStyle(CircularProgressViewStyle())
           .scaleEffect(2)
       case .loaded(let comments):
-//        LazyVStack {
-//          ForEach(comments, id: \.id) { flattendComment in CommentRow(comment: flattendComment.comment, level: flattendComment.depth)
-//          }
-//        }
         List(comments, id: \.id) { flattenedComment in
           CommentRow(
             comment: flattenedComment.comment,
@@ -33,6 +29,7 @@ struct StoryScreen: View {
           .listRowSeparator(.hidden)
           .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
         }
+        .padding(EdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 0))
         .listStyle(.plain)
         .listRowSpacing(4.0)
       }
