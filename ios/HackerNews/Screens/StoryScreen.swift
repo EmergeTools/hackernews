@@ -20,18 +20,25 @@ struct StoryScreen: View {
           .progressViewStyle(CircularProgressViewStyle())
           .scaleEffect(2)
       case .loaded(let comments):
-        List(comments, id: \.id) { flattenedComment in
-          CommentRow(
-            comment: flattenedComment.comment,
-            level: flattenedComment.depth
-          )
-          .listRowBackground(Color.clear)
-          .listRowSeparator(.hidden)
-          .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
+        VStack {
+          CommentsHeader()
+          Rectangle()
+            .stroke(style: StrokeStyle(lineWidth: 1, dash: [5]))
+            .frame(maxWidth: .infinity, maxHeight: 1)
+          List(comments, id: \.id) { flattenedComment in
+            CommentRow(
+              comment: flattenedComment.comment,
+              level: flattenedComment.depth
+            )
+            .listRowBackground(Color.clear)
+            .listRowSeparator(.hidden)
+            .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
+          }
+          .padding(EdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 0))
+          .listStyle(.plain)
+          .listRowSpacing(4.0)
         }
-        .padding(EdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 0))
-        .listStyle(.plain)
-        .listRowSpacing(4.0)
+        .padding(8.0)
       }
     }
     .background(HNColors.background)
