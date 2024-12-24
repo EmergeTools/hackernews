@@ -29,7 +29,7 @@ struct PostListScreen: View {
         }
       }
       .padding(8)
-      
+
       List(appState.postListState.stories, id: \.id) { storyState in
         StoryRow(
           model: appState,
@@ -70,7 +70,7 @@ struct PostListScreen: View {
   let appModel = AppViewModel()
   appModel.authState = .loggedIn
   appModel.postListState = PostListState()
-  
+
   return PostListScreen(appState: appModel)
 }
 
@@ -81,6 +81,6 @@ struct PostListScreen: View {
     .map { StoryState.loaded(story: $0) }
   appModel.authState = .loggedIn
   appModel.postListState = PostListState(stories: fakeStories)
-  
+
   return PostListScreen(appState: appModel)
 }
