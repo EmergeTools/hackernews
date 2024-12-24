@@ -14,14 +14,17 @@ struct StoryScreen: View {
   
   var body: some View {
     VStack {
-      CommentsHeader(
-        story: storyModel.story
-      )
+      // Header
+      CommentsHeader(state: storyModel.state.headerState)
+
+      // Seperator
       Rectangle()
         .fill()
         .frame(maxWidth: .infinity, maxHeight: 1)
+
+      // Comments
       ZStack {
-        switch storyModel.state {
+        switch storyModel.state.comments {
         case .notStarted, .loading:
           ProgressView()
             .progressViewStyle(CircularProgressViewStyle())
@@ -47,15 +50,15 @@ struct StoryScreen: View {
     }
     .background(HNColors.background)
     .padding(8.0)
-    .navigationTitle(storyModel.story.title)
+    .navigationTitle(storyModel.state.headerState.story.title)
     .navigationBarTitleDisplayMode(.inline)
     .toolbarColorScheme(.dark, for: .navigationBar)
     .toolbarBackground(HNColors.orange, for: .navigationBar)
     .toolbarBackground(.visible, for: .navigationBar)
     .toolbar {
-      if let url = storyModel.story.makeUrl() {
+      if let url = storyModel.state.headerState.story.makeUrl() {
         ToolbarItemGroup(placement: .navigationBarTrailing) {
-          NavigationLink(value: AppViewModel.AppNavigation.webLink(url: url, title: storyModel.story.title)) {
+          NavigationLink(value: AppViewModel.AppNavigation.webLink(url: url, title: storyModel.state.headerState.story.title)) {
             Image(systemName: "globe")
               .foregroundColor(.white)
           }
@@ -74,7 +77,7 @@ struct StoryScreen_Preview: PreviewProvider {
       PreviewHelpers.makeFakeFlattenedComment()
     ]
     let viewModel = StoryViewModel(story: PreviewHelpers.makeFakeStory(kids: comments.map { $0.comment.id }))
-    viewModel.state = .loaded(comments: comments)
+    viewModel.state.comments = .loaded(comments: comments)
     return PreviewVariants {
       PreviewHelpers.withNavigationView {
         StoryScreen(storyModel: viewModel)

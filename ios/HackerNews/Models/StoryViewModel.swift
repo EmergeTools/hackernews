@@ -8,8 +8,14 @@
 import Foundation
 
 struct StoryUiState {
-  let headerState: CommentsHeaderState
-  let comments: [FlattenedComment]
+  var headerState: CommentsHeaderState
+  var comments: CommentsState
+}
+
+enum CommentsState {
+  case notStarted
+  case loading
+  case loaded(comments: [FlattenedComment])
 }
 
 struct CommentsHeaderState {
@@ -18,23 +24,23 @@ struct CommentsHeaderState {
 
 @MainActor
 class StoryViewModel: ObservableObject {
-  
-  enum StoryState {
-    case notStarted
-    case loading
-    case loaded(comments: [FlattenedComment])
-  }
-  
-  @Published var story: Story
-  @Published var state = StoryState.notStarted
-  
+
+  @Published var state: StoryUiState
+
+  private let story: Story
+
   init(story: Story) {
     self.story = story
+    self.state = StoryUiState(
+      headerState: CommentsHeaderState(story: story),
+      comments: .notStarted
+    )
   }
-  
+
+
   func fetchComments() async {
-    state = .loading
-    
+    state.comments = .loading
+
     var commentsToRequest = story.comments
     var commentsById = [Int64 : Comment]()
     while !commentsToRequest.isEmpty {
@@ -56,8 +62,8 @@ class StoryViewModel: ObservableObject {
       flattened: &flattenedComments,
       commentsById: &commentsById
     )
-    
-    state = .loaded(comments: flattenedComments)
+
+    state.comments = .loaded(comments: flattenedComments)
   }
   
   private func flattenComments(ids: [Int64], depth: Int = 0, flattened: inout [FlattenedComment], commentsById: inout [Int64 : Comment]) {
@@ -69,7 +75,7 @@ class StoryViewModel: ObservableObject {
         print("Could not find comment \(id)")
       }
     }
-  }
+}
 }
 
 struct FlattenedComment: Identifiable {

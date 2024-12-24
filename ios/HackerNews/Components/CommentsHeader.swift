@@ -9,17 +9,17 @@ import SwiftUI
 
 
 struct CommentsHeader: View {
-  let story: Story
+  let state: CommentsHeaderState
 
   var body: some View {
     VStack(alignment: .leading) {
-      Text(story.title)
+      Text(state.story.title)
         .font(.title2)
         .fontWeight(.bold)
         .frame(maxWidth: .infinity, alignment: .leading)
       HStack {
         // post author
-        let author = story.by != nil ? story.by! : ""
+        let author = state.story.by != nil ? state.story.by! : ""
         Text("@\(author)")
           .font(.caption)
           .fontWeight(.bold)
@@ -29,7 +29,7 @@ struct CommentsHeader: View {
           Image(systemName: "clock")
             .font(.caption2)
             .foregroundStyle(.purple)
-          Text(story.displayableDate)
+          Text(state.story.displayableDate)
             .font(.caption)
         }
         Spacer()
@@ -55,5 +55,5 @@ struct CommentsHeader: View {
 }
 
 #Preview {
-  CommentsHeader(story: PreviewHelpers.makeFakeStory())
+  CommentsHeader(state: CommentsHeaderState(story: PreviewHelpers.makeFakeStory()))
 }
