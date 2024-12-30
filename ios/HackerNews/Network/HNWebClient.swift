@@ -25,7 +25,7 @@ struct PostPageResponse {
 struct CommentInfo {
   let id: Int64
   let upvoted: Bool
-  let upvoteUrl: String
+  let upvoteUrl: String?
   let text: String
   let user: String
   let age: String
@@ -42,17 +42,15 @@ class HNWebClient {
       let document: Document = try SwiftSoup.parse(html)
       let commentTree = try document.select("table.comment-tree tr.athing.comtr")
       let comments: [CommentInfo] = try commentTree.map { comment in
-        // get the comment text
         let commentId = try Int64(comment.id(), format: .number)
         let commentLevel = try comment.select("td.ind").attr("indent")
         let commentText = try comment.select("div.commtext").text()
         let commentAuthor = try comment.select("a.hnuser").text()
         let commentDate = try comment.select("span.age").attr("title").split(separator: " ").first!
-        let upvoteLinkElement = try comment.select("a[id^=up_").first()!
-        let upvoteUrl = try upvoteLinkElement.attr("href")
-        let upvoted = upvoteLinkElement.hasClass("nosee")
+        let upvoteLinkElement = try comment.select("a[id^=up_").first()
+        let upvoteUrl = try upvoteLinkElement?.attr("href")
+        let upvoted = upvoteLinkElement?.hasClass("nosee") ?? false
 
-        //2024-12-27T13:59:29 or 2024-09-05T17:48:25.000000Z
         let date = String(commentDate).asDate()
 
         return CommentInfo(

@@ -131,8 +131,8 @@ struct PreviewHelpers {
         My soul was also satisfied by the Sleeping At Night post which, along with the recent "Lie Still in Bed" article, makes for very simple options to attempt to fix sleep (discipline) issues
         """,
       user: "dang",
-      age: "2024-12-27",
-      level: 0
+      age: "10 minutes ago",
+      level: 1
     )
   }
 }
