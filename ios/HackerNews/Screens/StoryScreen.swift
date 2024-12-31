@@ -34,11 +34,8 @@ struct StoryScreen: View {
             .scaleEffect(2)
         case .loaded(let comments):
           VStack {
-            List(comments, id: \.id) { flattenedComment in
-              CommentRow(
-                comment: flattenedComment.comment,
-                level: flattenedComment.depth
-              )
+            List(comments, id: \.id) { commentInfo in
+              CommentRow(comment: commentInfo)
               .listRowBackground(Color.clear)
               .listRowSeparator(.hidden)
               .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
@@ -71,12 +68,12 @@ struct StoryScreen: View {
 struct StoryScreen_Preview: PreviewProvider {
   static var previews: some View {
     let comments = [
-      PreviewHelpers.makeFakeFlattenedComment(),
-      PreviewHelpers.makeFakeFlattenedComment(),
-      PreviewHelpers.makeFakeFlattenedComment(),
-      PreviewHelpers.makeFakeFlattenedComment()
+      PreviewHelpers.makeFakeComment(),
+      PreviewHelpers.makeFakeComment(),
+      PreviewHelpers.makeFakeComment(),
+      PreviewHelpers.makeFakeComment(),
     ]
-    let viewModel = StoryViewModel(story: PreviewHelpers.makeFakeStory(kids: comments.map { $0.comment.id }))
+    let viewModel = StoryViewModel(story: PreviewHelpers.makeFakeStory(kids: comments.map { $0.id }))
     viewModel.state.comments = .loaded(comments: comments)
     return PreviewVariants {
       PreviewHelpers.withNavigationView {

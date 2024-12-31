@@ -9,8 +9,7 @@ import Foundation
 import SwiftUI
 
 struct CommentRow: View {
-  let comment: Comment
-  let level: Int
+  let comment: CommentInfo
   let maxIndentationLevel: Int = 5
   
   var body: some View {
@@ -18,14 +17,13 @@ struct CommentRow: View {
       // first row
       HStack {
         // author
-        let author = comment.by != nil ? comment.by! : ""
-        Text("@\(author)")
+        Text("@\(comment.user)")
           .font(.caption)
           .fontWeight(.bold)
         // time
         HStack(alignment: .center, spacing: 4.0) {
           Image(systemName: "clock")
-          Text(comment.displayableDate)
+          Text(comment.age)
         }
         .font(.caption)
         // collapse/expand
@@ -52,8 +50,7 @@ struct CommentRow: View {
       }
       
       // Comment Body
-      let commentText = comment.text != nil ? comment.text! : ""
-      Text(commentText.strippingHTML())
+      Text(comment.text.strippingHTML())
         .font(.caption)
     }
     .padding(8.0)
@@ -62,7 +59,7 @@ struct CommentRow: View {
     .padding(
       EdgeInsets(
         top: 0,
-        leading: min(CGFloat(level * 20), CGFloat(maxIndentationLevel * 20)),
+        leading: min(CGFloat(comment.level * 20), CGFloat(maxIndentationLevel * 20)),
         bottom: 0,
         trailing: 0)
     )
@@ -72,7 +69,7 @@ struct CommentRow: View {
 struct CommentView_Preview: PreviewProvider {
   static var previews: some View {
     PreviewVariants {
-        CommentRow(comment: PreviewHelpers.makeFakeComment(), level: 0)
+      CommentRow(comment: PreviewHelpers.makeFakeComment())
     }
   }
 }
@@ -81,7 +78,7 @@ struct CommentViewIndentation_Preview: PreviewProvider {
   static var previews: some View {
     Group {
       ForEach(0..<6) { index in
-        CommentRow(comment: PreviewHelpers.makeFakeComment(), level: index)
+        CommentRow(comment: PreviewHelpers.makeFakeComment(level: index))
           .previewLayout(.sizeThatFits)
           .previewDisplayName("Indentation \(index)")
       }

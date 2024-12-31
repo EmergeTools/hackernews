@@ -46,6 +46,7 @@
 		EC0B1C752D1A34110000C3AC /* CommentsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0B1C742D1A34110000C3AC /* CommentsHeader.swift */; };
 		EC29FDA72CFFD074007B1AE9 /* BookmarksScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC29FDA62CFFD074007B1AE9 /* BookmarksScreen.swift */; };
 		EC29FDA92CFFD0B5007B1AE9 /* SettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC29FDA82CFFD0B5007B1AE9 /* SettingsScreen.swift */; };
+		EC70E1612D1DD82B00582023 /* HNWebClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC70E1602D1DD82B00582023 /* HNWebClient.swift */; };
 		ECCE8F262D03815300349733 /* Pager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCE8F252D03815300349733 /* Pager.swift */; };
 /* End PBXBuildFile section */
 
@@ -145,6 +146,7 @@
 		EC0B1C742D1A34110000C3AC /* CommentsHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsHeader.swift; sourceTree = "<group>"; };
 		EC29FDA62CFFD074007B1AE9 /* BookmarksScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarksScreen.swift; sourceTree = "<group>"; };
 		EC29FDA82CFFD0B5007B1AE9 /* SettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreen.swift; sourceTree = "<group>"; };
+		EC70E1602D1DD82B00582023 /* HNWebClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HNWebClient.swift; sourceTree = "<group>"; };
 		ECCE8F252D03815300349733 /* Pager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -213,6 +215,7 @@
 			children = (
 				A42705AC2A429D2E0057E439 /* HNApi.swift */,
 				A423B0672BAE05FB00267DDB /* NetworkDebugger.swift */,
+				EC70E1602D1DD82B00582023 /* HNWebClient.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -585,6 +588,7 @@
 				EC0B1C752D1A34110000C3AC /* CommentsHeader.swift in Sources */,
 				A413E8592A8D868500C0F867 /* ThemedButtonStyle.swift in Sources */,
 				A427057D2A4293B10057E439 /* HNApp.swift in Sources */,
+				EC70E1612D1DD82B00582023 /* HNWebClient.swift in Sources */,
 				A434C2E02A8E75960002F488 /* WebView.swift in Sources */,
 				A49933942AA28B5900DED8B1 /* StoryViewModel.swift in Sources */,
 				A47309B62AA7D1F600201376 /* CommentRow.swift in Sources */,
