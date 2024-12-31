@@ -57,6 +57,11 @@ struct PostListScreen: View {
       .tag(0)
       .listStyle(.plain)
     }
+    .onAppear {
+      Task {
+        await appState.fetchInitialPosts(feedType: .top)
+      }
+    }
     .navigationTitle("")
     .navigationBarHidden(true)
   }
@@ -68,7 +73,6 @@ struct PostListScreen: View {
 
 #Preview("Loading") {
   let appModel = AppViewModel()
-  appModel.authState = .loggedIn
   appModel.postListState = PostListState()
 
   return PostListScreen(appState: appModel)
@@ -79,7 +83,6 @@ struct PostListScreen: View {
   let fakeStories = PreviewHelpers
     .makeFakeStories()
     .map { StoryState.loaded(story: $0) }
-  appModel.authState = .loggedIn
   appModel.postListState = PostListState(stories: fakeStories)
 
   return PostListScreen(appState: appModel)
