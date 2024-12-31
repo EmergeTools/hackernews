@@ -69,7 +69,7 @@ struct CommentRow: View {
 struct CommentView_Preview: PreviewProvider {
   static var previews: some View {
     PreviewVariants {
-        CommentRow(comment: PreviewHelpers.makeFakeComment())
+      CommentRow(comment: PreviewHelpers.makeFakeComment())
     }
   }
 }
@@ -78,7 +78,7 @@ struct CommentViewIndentation_Preview: PreviewProvider {
   static var previews: some View {
     Group {
       ForEach(0..<6) { index in
-        CommentRow(comment: PreviewHelpers.makeFakeComment())
+        CommentRow(comment: PreviewHelpers.makeFakeComment(level: index))
           .previewLayout(.sizeThatFits)
           .previewDisplayName("Indentation \(index)")
       }

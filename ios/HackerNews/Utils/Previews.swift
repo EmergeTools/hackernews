@@ -117,7 +117,7 @@ struct PreviewHelpers {
     )
   }
 
-  static func makeFakeComment() -> CommentInfo {
+  static func makeFakeComment(level: Int = 0) -> CommentInfo {
     CommentInfo(
       id: 1,
       upvoted: false,
@@ -132,7 +132,7 @@ struct PreviewHelpers {
         """,
       user: "dang",
       age: "10 minutes ago",
-      level: 1
+      level: level
     )
   }
 }
