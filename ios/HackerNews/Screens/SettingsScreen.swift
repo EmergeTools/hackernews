@@ -9,8 +9,16 @@ import Foundation
 import SwiftUI
 
 struct SettingsScreen: View {
+  @State var shouldPresentSheet = false
   var body: some View {
-    Text("Settings Screen")
+    VStack {
+      Button("Login") {
+        shouldPresentSheet.toggle()
+      }
+      .sheet(isPresented: $shouldPresentSheet) {
+        LoginScreen()
+      }
+    }
   }
 }
 
