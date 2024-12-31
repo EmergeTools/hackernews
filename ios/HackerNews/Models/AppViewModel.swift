@@ -73,22 +73,11 @@ class AppViewModel: ObservableObject {
     case loggedOut
   }
 
-  @Published var authState = AuthState.loggedOut
   @Published var postListState = PostListState()
   @Published var navigationPath = NavigationPath()
 
   private let hnApi = HNApi()
   private var pager = Pager()
-
-  init() {}
-
-  func performLogin() {
-    authState = .loggedIn
-  }
-
-  func performLogout() {
-    authState = .loggedOut
-  }
 
   func fetchInitialPosts(feedType: FeedType) async {
     postListState.selectedFeed = feedType
