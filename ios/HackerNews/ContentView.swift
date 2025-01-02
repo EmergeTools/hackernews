@@ -32,7 +32,7 @@ struct ContentView: View {
   
 }
 
-struct ContentView_LoggedOut_Previews: PreviewProvider {
+struct ContentView_LoggedOut_Default_Previews: PreviewProvider {
   static var previews: some View {
     let appModel = AppViewModel()
     appModel.authState = .loggedOut
