@@ -8,23 +8,40 @@
 import Foundation
 import SwiftUI
 
+struct LoginState {
+  var username: String = "heyrikin"
+  var password: String = "SSJ4barcelona2024"
+  var status: LoginStatus = .uninitialized
+}
+
+enum LoginStatus {
+  case uninitialized
+  case error
+  case success
+}
+
 struct LoginScreen: View {
-  @State var username: String = ""
-  @State var password: String = ""
+  @ObservedObject var model: AppViewModel
 
   var body: some View {
     VStack(alignment: .center) {
-      Text("Login")
-      TextField(text: $username) {
+      TextField(text: $model.loginState.username) {
         Text("Username")
       }
-      TextField(text: $password) {
+      .autocapitalization(.none)
+      SecureField(text: $model.loginState.password) {
         Text("Password")
+      }
+      .autocapitalization(.none)
+      Button("Login") {
+        Task {
+          await model.login()
+        }
       }
     }
   }
 }
 
 #Preview {
-  LoginScreen()
+  LoginScreen(model: .init())
 }

@@ -32,12 +32,35 @@ struct CommentInfo {
   let level: Int
 }
 
+struct LoginBody: Codable {
+  let acct: String
+  let pw: String
+}
+
 class HNWebClient {
+  private let session = URLSession.shared
+
+  func login(with: LoginBody) async throws -> (Data, URLResponse) {
+    let url = URL(string: LOGIN_URL)!
+    var request = URLRequest(url: url)
+    let formData = ["acct": with.acct, "pw": with.pw]
+    let formString = formData.map { key, value in
+          let escapedKey = key.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? key
+          let escapedValue = value.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? value
+          return "\(escapedKey)=\(escapedValue)"
+      }.joined(separator: "&")
+    request.httpMethod = "POST"
+    request.httpBody = formString.data(using: .utf8)
+
+    return try await session.data(for: request)
+  }
+
   func getStoryPage(id: Int64) async -> PostPage {
     // make request for page
-    let url = URL(string:"\(ITEM_URL)?id=\(id)")
+    let url = URL(string:"\(ITEM_URL)?id=\(id)")!
+    let request = URLRequest(url: url)
     do {
-      let (data, _) = try await URLSession.shared.data(from: url!)
+      let (data, _) = try await session.data(for: request)
       guard let html = String(data: data, encoding: .utf8) else { return .error }
       let document: Document = try SwiftSoup.parse(html)
       let commentTree = try document.select("table.comment-tree tr.athing.comtr")
@@ -51,12 +74,14 @@ class HNWebClient {
         let upvoteUrl = try upvoteLinkElement?.attr("href")
         let upvoted = upvoteLinkElement?.hasClass("nosee") ?? false
 
+        print("DEBUG: upvoteUrl: \(upvoteUrl ?? "")")
+
         let date = String(commentDate).asDate()
 
         return CommentInfo(
           id: commentId,
           upvoted: upvoted,
-          upvoteUrl: upvoteUrl,
+          upvoteUrl: upvoteUrl != nil ? BASE_WEB_URL + upvoteUrl! : nil,
           text: commentText,
           user: commentAuthor,
           age: date?.timeAgoDisplay() ?? "",
@@ -68,5 +93,22 @@ class HNWebClient {
       print("Error fetching post IDs: \(error)")
       return .error
     }
+  }
+
+  func upvoteItem(upvoteUrl: String) async -> Bool {
+    let url = URL(string: upvoteUrl)!
+    do {
+      let (_, response) = try await session.data(from: url)
+      let httpResponse = response as! HTTPURLResponse
+      return httpResponse.isSuccessful()
+    } catch {
+      return false
+    }
+  }
+}
+
+extension HTTPURLResponse {
+  func isSuccessful() -> Bool {
+    return statusCode >= 200 && statusCode < 300
   }
 }

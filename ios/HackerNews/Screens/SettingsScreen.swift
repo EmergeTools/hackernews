@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 
 struct SettingsScreen: View {
+  @ObservedObject var model: AppViewModel
   @State var shouldPresentSheet = false
   var body: some View {
     VStack {
@@ -16,12 +17,12 @@ struct SettingsScreen: View {
         shouldPresentSheet.toggle()
       }
       .sheet(isPresented: $shouldPresentSheet) {
-        LoginScreen()
+        LoginScreen(model: model)
       }
     }
   }
 }
 
 #Preview {
-  SettingsScreen()
+  SettingsScreen(model: AppViewModel())
 }

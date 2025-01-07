@@ -8,22 +8,24 @@
 import Foundation
 import SwiftUI
 
+private let maxIndentationLevel: Int = 5
+
 struct CommentRow: View {
-  let comment: CommentInfo
-  let maxIndentationLevel: Int = 5
-  
+  let state: CommentInfo
+  let likeComment: (CommentInfo) -> Void
+
   var body: some View {
     VStack(alignment: .leading) {
       // first row
       HStack {
         // author
-        Text("@\(comment.user)")
+        Text("@\(state.user)")
           .font(.caption)
           .fontWeight(.bold)
         // time
         HStack(alignment: .center, spacing: 4.0) {
           Image(systemName: "clock")
-          Text(comment.age)
+          Text(state.age)
         }
         .font(.caption)
         // collapse/expand
@@ -32,7 +34,9 @@ struct CommentRow: View {
         // space between
         Spacer()
         // upvote
-        Button(action: {}) {
+        Button(action: {
+          likeComment(state)
+        }) {
           Image(systemName: "arrow.up")
             .font(.caption2)
         }
@@ -50,7 +54,7 @@ struct CommentRow: View {
       }
       
       // Comment Body
-      Text(comment.text.strippingHTML())
+      Text(state.text.strippingHTML())
         .font(.caption)
     }
     .padding(8.0)
@@ -59,7 +63,7 @@ struct CommentRow: View {
     .padding(
       EdgeInsets(
         top: 0,
-        leading: min(CGFloat(comment.level * 20), CGFloat(maxIndentationLevel * 20)),
+        leading: min(CGFloat(state.level * 20), CGFloat(maxIndentationLevel * 20)),
         bottom: 0,
         trailing: 0)
     )
@@ -69,7 +73,10 @@ struct CommentRow: View {
 struct CommentView_Preview: PreviewProvider {
   static var previews: some View {
     PreviewVariants {
-      CommentRow(comment: PreviewHelpers.makeFakeComment())
+      CommentRow(
+        state: PreviewHelpers.makeFakeComment(),
+        likeComment: {_ in}
+      )
     }
   }
 }
@@ -78,7 +85,10 @@ struct CommentViewIndentation_Preview: PreviewProvider {
   static var previews: some View {
     Group {
       ForEach(0..<6) { index in
-        CommentRow(comment: PreviewHelpers.makeFakeComment(level: index))
+        CommentRow(
+          state: PreviewHelpers.makeFakeComment(level: index),
+          likeComment: {_ in}
+        )
           .previewLayout(.sizeThatFits)
           .previewDisplayName("Indentation \(index)")
       }

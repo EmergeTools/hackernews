@@ -9,17 +9,17 @@ import SwiftUI
 
 struct ContentView: View {
 
-  @ObservedObject var appState: AppViewModel
+  @ObservedObject var model: AppViewModel
 
   var body: some View {
     TabView {
-      PostListScreen(appState: appState)
+      PostListScreen(model: model)
         .tag(1)
         .tabItem { Label("Feed", systemImage: "list.dash") }
       BookmarksScreen()
         .tag(2)
         .tabItem { Label("Bookmarks", systemImage: "book") }
-      SettingsScreen()
+      SettingsScreen(model: model)
         .tag(3)
         .tabItem { Label("Settings", systemImage: "gear") }
     }
@@ -32,7 +32,7 @@ struct ContentView_LoggedIn_Loading_Previews: PreviewProvider {
     appModel.postListState = PostListState(stories: [])
     return PreviewVariants {
       PreviewHelpers.withNavigationView {
-        ContentView(appState: appModel)
+        ContentView(model: appModel)
       }
     }
   }
@@ -49,7 +49,7 @@ struct ContentView_LoggedIn_WithPosts_Previews: PreviewProvider {
 
     return PreviewVariants {
       PreviewHelpers.withNavigationView {
-        ContentView(appState: appModel)
+        ContentView(model: appModel)
       }
     }
   }
@@ -61,7 +61,7 @@ struct ContentView_LoggedIn_EmptyPosts_Previews: PreviewProvider {
     appModel.postListState = PostListState(stories: [])
     return PreviewVariants {
       PreviewHelpers.withNavigationView {
-        ContentView(appState: appModel)
+        ContentView(model: appModel)
       }
     }
   }

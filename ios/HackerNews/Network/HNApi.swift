@@ -9,13 +9,11 @@ import Foundation
 
 
 class HNApi {
-  
-  let baseUrl = "https://hacker-news.firebaseio.com/v0/"
-  let decoder = JSONDecoder()
-  
+  private let baseUrl = "https://hacker-news.firebaseio.com/v0/"
+  private let decoder = JSONDecoder()
+  private let session = URLSession.shared
+
   init() {}
-  
-  
   
   func fetchStories(feedType: FeedType) async -> [Int64] {
     NotificationCenter.default.post(name: Notification.Name(rawValue: "EmergeMetricStarted"), object: nil, userInfo: [

@@ -35,7 +35,14 @@ struct StoryScreen: View {
         case .loaded(let comments):
           VStack {
             List(comments, id: \.id) { commentInfo in
-              CommentRow(comment: commentInfo)
+              CommentRow(
+                state: commentInfo,
+                likeComment: { info in
+                  Task {
+                    await storyModel.likeComment(comment: info)
+                  }
+                }
+              )
               .listRowBackground(Color.clear)
               .listRowSeparator(.hidden)
               .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
