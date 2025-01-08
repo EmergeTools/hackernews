@@ -27,20 +27,23 @@ struct LoginScreen: View {
 
   var body: some View {
     VStack(spacing: 8) {
+
+      Image(systemName: "bolt.horizontal.circle.fill")
+        .foregroundStyle(HNColors.orange)
+        .font(.system(size: 64))
+
+      Spacer()
+        .frame(maxHeight: 16)
+
       TextField("Username", text: $model.loginState.username)
-        .padding()
-        .overlay(
-          RoundedRectangle(cornerRadius: 6)
-            .stroke(Color.secondary.opacity(0.5))
-        )
+        .textFieldStyle(.roundedBorder)
         .autocapitalization(.none)
 
       SecureField("Password", text: $model.loginState.password)
-        .padding()
-        .overlay(
-          RoundedRectangle(cornerRadius: 6)
-            .stroke(Color.secondary.opacity(0.5))
-        )
+        .textFieldStyle(.roundedBorder)
+
+      Spacer()
+        .frame(maxHeight: 16)
 
       Button(
         action: {
@@ -50,14 +53,15 @@ struct LoginScreen: View {
         },
         label: {
           Text("Login")
-            .padding(8)
+            .frame(maxWidth: .infinity)
         }
       )
       .buttonStyle(.borderedProminent)
-      .buttonBorderShape(.capsule)
       .disabled(model.loginState.username.isEmpty || model.loginState.password.isEmpty)
     }
-    .padding(16)
+    .frame(maxWidth: .infinity, maxHeight: .infinity)
+    .padding(32)
+    .background(HNColors.background)
   }
 }
 
