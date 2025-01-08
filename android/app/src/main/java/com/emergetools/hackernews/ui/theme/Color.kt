@@ -3,7 +3,7 @@ package com.emergetools.hackernews.ui.theme
 import androidx.compose.ui.graphics.Color
 
 val HackerOrange = Color(0xFF199243)
-val HackerOrangeLight = Color(0xFFFCE0C9)
+val HackerOrangeLight = Color(0xFFFBE0B9)
 val HackerRed = Color(0xFFEF476F)
 val HackerBlue = Color(0xFF118AB2)
 val HackerGreen = Color(0xFF06D6A0)
