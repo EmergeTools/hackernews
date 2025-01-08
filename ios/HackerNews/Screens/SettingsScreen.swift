@@ -12,16 +12,20 @@ struct SettingsScreen: View {
   @ObservedObject var model: AppViewModel
   @State var shouldPresentSheet = false
   var body: some View {
-    VStack {
-      Button("Login") {
+    List {
+      HStack {
+        Text("Login")
+      }
+      .onTapGesture {
         shouldPresentSheet.toggle()
       }
-      .sheet(isPresented: $shouldPresentSheet) {
-        LoginScreen(model: model)
-      }
+    }
+    .sheet(isPresented: $shouldPresentSheet) {
+      LoginScreen(model: model)
     }
   }
 }
+
 
 #Preview {
   SettingsScreen(model: AppViewModel())

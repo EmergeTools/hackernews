@@ -9,8 +9,8 @@ import Foundation
 import SwiftUI
 
 struct LoginState {
-  var username: String = "heyrikin"
-  var password: String = "SSJ4barcelona2024"
+  var username: String = ""
+  var password: String = ""
   var status: LoginStatus = .uninitialized
 }
 
@@ -24,7 +24,7 @@ struct LoginScreen: View {
   @ObservedObject var model: AppViewModel
 
   var body: some View {
-    VStack(alignment: .center) {
+    List {
       TextField(text: $model.loginState.username) {
         Text("Username")
       }
