@@ -1,34 +1,47 @@
 //
-//  LogInScreen.swift
-//  Hacker News
+//  LoginScreen.swift
+//  HackerNews
 //
-//  Created by Trevor Elkins on 6/20/23.
+//  Created by Rikin Marfatia on 12/30/24.
 //
 
 import Foundation
 import SwiftUI
 
+struct LoginState {
+  var username: String = ""
+  var password: String = ""
+  var status: LoginStatus = .uninitialized
+}
+
+enum LoginStatus {
+  case uninitialized
+  case error
+  case success
+}
+
 struct LoginScreen: View {
-  
-  @ObservedObject var appState: AppViewModel
-  
+  @ObservedObject var model: AppViewModel
+
   var body: some View {
-    VStack(spacing: 20) {
-      VStack(alignment: .leading) {
-        Text("Welcome to Hacker News")
-          .font(.title)
-        Text("Login to browse stories")
+    List {
+      TextField(text: $model.loginState.username) {
+        Text("Username")
       }
-      
+      .autocapitalization(.none)
+      SecureField(text: $model.loginState.password) {
+        Text("Password")
+      }
+      .autocapitalization(.none)
       Button("Login") {
-        appState.performLogin()
         Task {
-          await appState.fetchInitialPosts(feedType: .top)
+          await model.login()
         }
       }
-      .buttonStyle(ThemedButtonStyle())
     }
-    .navigationBarTitle("Home")
   }
-  
+}
+
+#Preview {
+  LoginScreen(model: .init())
 }

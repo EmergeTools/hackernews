@@ -31,6 +31,7 @@ class StoryViewModel: ObservableObject {
   private let story: Story
 
   private let webClient = HNWebClient()
+  private let cookieStorage = HTTPCookieStorage.shared
 
   init(story: Story) {
     self.story = story
@@ -53,6 +54,20 @@ class StoryViewModel: ObservableObject {
       state.comments = .loaded(comments: data.comments)
     case .error:
       state.comments = .loaded(comments: [])
+    }
+  }
+
+  private func isLoggedIn() -> Bool {
+    return cookieStorage.cookies?.isEmpty == false
+  }
+
+  func likeComment(comment: CommentInfo) async {
+    print("DEBUG: like comment clicked for \(comment.id)")
+    if (isLoggedIn()) {
+      let success = await webClient.upvoteItem(upvoteUrl: comment.upvoteUrl!)
+      print("DEBUG: upvoted comment \(success)")
+    } else {
+      // navigate to login modal
     }
   }
 }

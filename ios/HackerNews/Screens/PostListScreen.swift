@@ -10,29 +10,29 @@ import SwiftUI
 
 struct PostListScreen: View {
   
-  @ObservedObject var appState: AppViewModel
+  @ObservedObject var model: AppViewModel
   
   var body: some View {
     VStack {
       HStack(spacing: 16) {
-        ForEach(appState.postListState.feeds, id: \.self) { feedType in
+        ForEach(model.postListState.feeds, id: \.self) { feedType in
           Button(action: {
             Task {
-              await appState.fetchInitialPosts(feedType: feedType)
+              await model.fetchInitialPosts(feedType: feedType)
             }
           }) {
             Text(feedType.title)
-              .foregroundColor(appState.postListState.selectedFeed == feedType ? .hnOrange : .gray)
-              .fontWeight(appState.postListState.selectedFeed == feedType ? .bold : .regular)
+              .foregroundColor(model.postListState.selectedFeed == feedType ? .hnOrange : .gray)
+              .fontWeight(model.postListState.selectedFeed == feedType ? .bold : .regular)
               .font(.title2)
           }
         }
       }
       .padding(8)
 
-      List(appState.postListState.stories, id: \.id) { storyState in
+      List(model.postListState.stories, id: \.id) { storyState in
         StoryRow(
-          model: appState,
+          model: model,
           state: storyState
         )
         .background {
@@ -57,21 +57,25 @@ struct PostListScreen: View {
       .tag(0)
       .listStyle(.plain)
     }
+    .onAppear {
+      Task {
+        await model.fetchInitialPosts(feedType: .top)
+      }
+    }
     .navigationTitle("")
     .navigationBarHidden(true)
   }
 }
 
 #Preview {
-  PostListScreen(appState: AppViewModel())
+  PostListScreen(model: AppViewModel())
 }
 
 #Preview("Loading") {
   let appModel = AppViewModel()
-  appModel.authState = .loggedIn
   appModel.postListState = PostListState()
 
-  return PostListScreen(appState: appModel)
+  return PostListScreen(model: appModel)
 }
 
 #Preview("Has posts") {
@@ -79,8 +83,7 @@ struct PostListScreen: View {
   let fakeStories = PreviewHelpers
     .makeFakeStories()
     .map { StoryState.loaded(story: $0) }
-  appModel.authState = .loggedIn
   appModel.postListState = PostListState(stories: fakeStories)
 
-  return PostListScreen(appState: appModel)
+  return PostListScreen(model: appModel)
 }

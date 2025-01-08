@@ -32,48 +32,23 @@ final class SwiftSnapshotTest: XCTestCase {
     }
   }
 
-  func testLoginScreen() {
-    let view = LoginScreen(appState: appViewModel)
-
-    let devices = [
-      ("iPhone SE", ViewImageConfig.iPhoneSe),
-      ("iPhone 12", ViewImageConfig.iPhone12),
-      ("iPhone 13 Pro", ViewImageConfig.iPhone13Pro),
-    ]
-
-    for (name, config) in devices {
-      assertSnapshot(
-        of: view.toVC(),
-        as: .image(on: config),
-        named: "LoginScreen-\(name)"
-      )
-      assertSnapshot(
-        of: view.toVC(),
-        as: .image(on: config, traits: .init(userInterfaceStyle: .dark)),
-        named: "LoginScreen-\(name)-DarkMode"
-      )
-    }
-  }
-
   @MainActor func testPostListScreen() {
     // Test default state
-    let defaultView = PostListScreen(appState: appViewModel)
+    let defaultView = PostListScreen(model: appViewModel)
 
     // Test loading state
     let loadingViewModel = AppViewModel()
-    loadingViewModel.authState = .loggedIn
     loadingViewModel.postListState = PostListState(
       stories: []
     )
-    let loadingView = PostListScreen(appState: loadingViewModel)
+    let loadingView = PostListScreen(model: loadingViewModel)
 
     // Test loaded state with posts
     let loadedViewModel = AppViewModel()
-    loadedViewModel.authState = .loggedIn
     loadedViewModel.postListState = PostListState(
       stories: PreviewHelpers.makeFakeStories().map { StoryState.loaded(story: $0) }
     )
-    let loadedView = PostListScreen(appState: loadedViewModel)
+    let loadedView = PostListScreen(model: loadedViewModel)
 
     let devices = [
       ("iPhone SE", ViewImageConfig.iPhoneSe),

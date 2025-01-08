@@ -7,7 +7,6 @@
 
 import Reaper
 import Sentry
-
 import SwiftUI
 
 @main
@@ -39,7 +38,7 @@ struct Hacker_NewsApp: App {
           HNColors.background
             .ignoresSafeArea()
 
-          ContentView(appState: appState)
+          ContentView(model: appState)
         }
         .toolbarColorScheme(.dark, for: .navigationBar)
         .toolbarBackground(HNColors.orange, for: .navigationBar)

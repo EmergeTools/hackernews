@@ -8,38 +8,20 @@
 import SwiftUI
 
 struct ContentView: View {
-  
-  @ObservedObject var appState: AppViewModel
-  
-  var body: some View {
-    switch appState.authState {
-    case .loggedIn:
-      TabView {
-        PostListScreen(appState: appState)
-          .tag(1)
-          .tabItem { Label("Feed", systemImage: "list.dash") }
-        BookmarksScreen()
-          .tag(2)
-          .tabItem { Label("Bookmarks", systemImage: "book") }
-        SettingsScreen()
-          .tag(3)
-          .tabItem { Label("Settings", systemImage: "gear") }
-      }
-    case .loggedOut:
-      LoginScreen(appState: appState)
-    }
-  }
-  
-}
 
-struct ContentView_LoggedOut_Previews: PreviewProvider {
-  static var previews: some View {
-    let appModel = AppViewModel()
-    appModel.authState = .loggedOut
-    return PreviewVariants {
-      PreviewHelpers.withNavigationView {
-        ContentView(appState: appModel)
-      }
+  @ObservedObject var model: AppViewModel
+
+  var body: some View {
+    TabView {
+      PostListScreen(model: model)
+        .tag(1)
+        .tabItem { Label("Feed", systemImage: "list.dash") }
+      BookmarksScreen()
+        .tag(2)
+        .tabItem { Label("Bookmarks", systemImage: "book") }
+      SettingsScreen(model: model)
+        .tag(3)
+        .tabItem { Label("Settings", systemImage: "gear") }
     }
   }
 }
@@ -47,11 +29,10 @@ struct ContentView_LoggedOut_Previews: PreviewProvider {
 struct ContentView_LoggedIn_Loading_Previews: PreviewProvider {
   static var previews: some View {
     let appModel = AppViewModel()
-    appModel.authState = .loggedIn
     appModel.postListState = PostListState(stories: [])
     return PreviewVariants {
       PreviewHelpers.withNavigationView {
-        ContentView(appState: appModel)
+        ContentView(model: appModel)
       }
     }
   }
@@ -63,13 +44,12 @@ struct ContentView_LoggedIn_WithPosts_Previews: PreviewProvider {
     let fakeStories = PreviewHelpers
       .makeFakeStories()
       .map { StoryState.loaded(story: $0) }
-    
-    appModel.authState = .loggedIn
+
     appModel.postListState = PostListState(stories: fakeStories)
-    
+
     return PreviewVariants {
       PreviewHelpers.withNavigationView {
-        ContentView(appState: appModel)
+        ContentView(model: appModel)
       }
     }
   }
@@ -78,11 +58,10 @@ struct ContentView_LoggedIn_WithPosts_Previews: PreviewProvider {
 struct ContentView_LoggedIn_EmptyPosts_Previews: PreviewProvider {
   static var previews: some View {
     let appModel = AppViewModel()
-    appModel.authState = .loggedIn
     appModel.postListState = PostListState(stories: [])
     return PreviewVariants {
       PreviewHelpers.withNavigationView {
-        ContentView(appState: appModel)
+        ContentView(model: appModel)
       }
     }
   }

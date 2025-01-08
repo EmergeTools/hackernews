@@ -73,35 +73,29 @@ class AppViewModel: ObservableObject {
     case loggedOut
   }
 
-  @Published var authState = AuthState.loggedOut
+  @Published var loginState = LoginState()
   @Published var postListState = PostListState()
   @Published var navigationPath = NavigationPath()
 
-  private let hnApi = HNApi()
+  private let api = HNApi()
+  private let webClient = HNWebClient()
   private var pager = Pager()
 
-  init() {}
-
-  func performLogin() {
-    authState = .loggedIn
-  }
-
-  func performLogout() {
-    authState = .loggedOut
+  init() {
   }
 
   func fetchInitialPosts(feedType: FeedType) async {
     postListState.selectedFeed = feedType
     postListState.stories = []
 
-    let idsToConsume = await hnApi.fetchStories(feedType: feedType)
+    let idsToConsume = await api.fetchStories(feedType: feedType)
     pager.setIds(idsToConsume)
 
     if pager.hasNextPage() {
       let nextPage = pager.nextPage()
       postListState.stories = nextPage.ids.map { StoryState.loading(id: $0) }
 
-      let items = await hnApi.fetchPage(page: nextPage)
+      let items = await api.fetchPage(page: nextPage)
       postListState.stories = items.map { StoryState.loaded(story: $0 ) }
       pager.hasNextPage() ? postListState.stories.append(.nextPage) : ()
     }
@@ -112,9 +106,21 @@ class AppViewModel: ObservableObject {
       return
     }
     let nextPage = pager.nextPage()
-    let items = await hnApi.fetchPage(page: nextPage)
+    let items = await api.fetchPage(page: nextPage)
     postListState.stories.removeLast() // remove the loading view
     postListState.stories += items.map { StoryState.loaded(story: $0) }
     pager.hasNextPage() ? postListState.stories.append(.nextPage) : ()
+  }
+
+  func login() async {
+    let body = LoginBody(acct: loginState.username, pw: loginState.password)
+    do {
+      let (data, response) = try await webClient.login(with: body)
+      let htmlString = String(data: data, encoding: .utf8)!
+      print("HTML: ", htmlString)
+
+    } catch {
+      print("Error:", error)
+    }
   }
 }

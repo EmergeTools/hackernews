@@ -23,7 +23,6 @@
 		A42705982A4293B30057E439 /* Hacker_NewsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A42705972A4293B30057E439 /* Hacker_NewsUITests.swift */; };
 		A427059A2A4293B30057E439 /* Hacker_NewsUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A42705992A4293B30057E439 /* Hacker_NewsUITestsLaunchTests.swift */; };
 		A42705A72A42949D0057E439 /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A42705A62A42949D0057E439 /* AppViewModel.swift */; };
-		A42705A92A4294EB0057E439 /* LoginScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A42705A82A4294EB0057E439 /* LoginScreen.swift */; };
 		A42705AB2A4296BA0057E439 /* PostListScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A42705AA2A4296BA0057E439 /* PostListScreen.swift */; };
 		A42705AD2A429D2E0057E439 /* HNApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = A42705AC2A429D2E0057E439 /* HNApi.swift */; };
 		A434C2E02A8E75960002F488 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A434C2DF2A8E75960002F488 /* WebView.swift */; };
@@ -47,6 +46,7 @@
 		EC29FDA72CFFD074007B1AE9 /* BookmarksScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC29FDA62CFFD074007B1AE9 /* BookmarksScreen.swift */; };
 		EC29FDA92CFFD0B5007B1AE9 /* SettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC29FDA82CFFD0B5007B1AE9 /* SettingsScreen.swift */; };
 		EC70E1612D1DD82B00582023 /* HNWebClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC70E1602D1DD82B00582023 /* HNWebClient.swift */; };
+		EC882BB22D23A8A70065FEC0 /* LoginScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC882BB12D23A8A70065FEC0 /* LoginScreen.swift */; };
 		ECCE8F262D03815300349733 /* Pager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCE8F252D03815300349733 /* Pager.swift */; };
 /* End PBXBuildFile section */
 
@@ -100,7 +100,6 @@
 		A42705972A4293B30057E439 /* Hacker_NewsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hacker_NewsUITests.swift; sourceTree = "<group>"; };
 		A42705992A4293B30057E439 /* Hacker_NewsUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hacker_NewsUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		A42705A62A42949D0057E439 /* AppViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewModel.swift; sourceTree = "<group>"; };
-		A42705A82A4294EB0057E439 /* LoginScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginScreen.swift; sourceTree = "<group>"; };
 		A42705AA2A4296BA0057E439 /* PostListScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListScreen.swift; sourceTree = "<group>"; };
 		A42705AC2A429D2E0057E439 /* HNApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HNApi.swift; sourceTree = "<group>"; };
 		A434C2DF2A8E75960002F488 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
@@ -147,6 +146,7 @@
 		EC29FDA62CFFD074007B1AE9 /* BookmarksScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarksScreen.swift; sourceTree = "<group>"; };
 		EC29FDA82CFFD0B5007B1AE9 /* SettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreen.swift; sourceTree = "<group>"; };
 		EC70E1602D1DD82B00582023 /* HNWebClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HNWebClient.swift; sourceTree = "<group>"; };
+		EC882BB12D23A8A70065FEC0 /* LoginScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginScreen.swift; sourceTree = "<group>"; };
 		ECCE8F252D03815300349733 /* Pager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -223,11 +223,11 @@
 		A413E8552A8C3E0A00C0F867 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
-				A42705A82A4294EB0057E439 /* LoginScreen.swift */,
 				A42705AA2A4296BA0057E439 /* PostListScreen.swift */,
 				A48C0DE62A9818A50034CC0A /* StoryScreen.swift */,
 				EC29FDA62CFFD074007B1AE9 /* BookmarksScreen.swift */,
 				EC29FDA82CFFD0B5007B1AE9 /* SettingsScreen.swift */,
+				EC882BB12D23A8A70065FEC0 /* LoginScreen.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -578,13 +578,13 @@
 				1DF161FA2A4346F6001A3F76 /* StoryRow.swift in Sources */,
 				1DF162002A4365A1001A3F76 /* Colors.swift in Sources */,
 				A42705AB2A4296BA0057E439 /* PostListScreen.swift in Sources */,
+				EC882BB22D23A8A70065FEC0 /* LoginScreen.swift in Sources */,
 				A40DC1FA2C20D8B60055B920 /* Previews.swift in Sources */,
 				A427057F2A4293B10057E439 /* ContentView.swift in Sources */,
 				EC072CAA2CEF02A500D00B8D /* StoryRowV2.swift in Sources */,
 				1DF162032A436E7B001A3F76 /* DateUtils.swift in Sources */,
 				A413E8572A8C40E800C0F867 /* Extensions.swift in Sources */,
 				EC29FDA72CFFD074007B1AE9 /* BookmarksScreen.swift in Sources */,
-				A42705A92A4294EB0057E439 /* LoginScreen.swift in Sources */,
 				EC0B1C752D1A34110000C3AC /* CommentsHeader.swift in Sources */,
 				A413E8592A8D868500C0F867 /* ThemedButtonStyle.swift in Sources */,
 				A427057D2A4293B10057E439 /* HNApp.swift in Sources */,
