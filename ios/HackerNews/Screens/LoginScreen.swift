@@ -26,21 +26,38 @@ struct LoginScreen: View {
   @ObservedObject var model: AppViewModel
 
   var body: some View {
-    List {
-      TextField(text: $model.loginState.username) {
-        Text("Username")
-      }
-      .autocapitalization(.none)
-      SecureField(text: $model.loginState.password) {
-        Text("Password")
-      }
-      .autocapitalization(.none)
-      Button("Login") {
-        Task {
-          await model.login()
+    VStack(spacing: 8) {
+      TextField("Username", text: $model.loginState.username)
+        .padding()
+        .overlay(
+          RoundedRectangle(cornerRadius: 6)
+            .stroke(Color.secondary.opacity(0.5))
+        )
+        .autocapitalization(.none)
+
+      SecureField("Password", text: $model.loginState.password)
+        .padding()
+        .overlay(
+          RoundedRectangle(cornerRadius: 6)
+            .stroke(Color.secondary.opacity(0.5))
+        )
+
+      Button(
+        action: {
+          Task {
+            await model.login()
+          }
+        },
+        label: {
+          Text("Login")
+            .padding(8)
         }
-      }
+      )
+      .buttonStyle(.borderedProminent)
+      .buttonBorderShape(.capsule)
+      .disabled(model.loginState.username.isEmpty || model.loginState.password.isEmpty)
     }
+    .padding(16)
   }
 }
 
