@@ -81,6 +81,9 @@ class AppViewModel: ObservableObject {
   private let webClient = HNWebClient()
   private var pager = Pager()
 
+  init() {
+  }
+
   func fetchInitialPosts(feedType: FeedType) async {
     postListState.selectedFeed = feedType
     postListState.stories = []

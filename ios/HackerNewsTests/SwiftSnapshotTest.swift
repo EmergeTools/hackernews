@@ -34,21 +34,21 @@ final class SwiftSnapshotTest: XCTestCase {
 
   @MainActor func testPostListScreen() {
     // Test default state
-    let defaultView = PostListScreen(appState: appViewModel)
+    let defaultView = PostListScreen(model: appViewModel)
 
     // Test loading state
     let loadingViewModel = AppViewModel()
     loadingViewModel.postListState = PostListState(
       stories: []
     )
-    let loadingView = PostListScreen(appState: loadingViewModel)
+    let loadingView = PostListScreen(model: loadingViewModel)
 
     // Test loaded state with posts
     let loadedViewModel = AppViewModel()
     loadedViewModel.postListState = PostListState(
       stories: PreviewHelpers.makeFakeStories().map { StoryState.loaded(story: $0) }
     )
-    let loadedView = PostListScreen(appState: loadedViewModel)
+    let loadedView = PostListScreen(model: loadedViewModel)
 
     let devices = [
       ("iPhone SE", ViewImageConfig.iPhoneSe),
