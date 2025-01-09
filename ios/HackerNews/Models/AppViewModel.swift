@@ -60,6 +60,11 @@ enum StoryState: Identifiable {
   }
 }
 
+enum AuthState {
+  case loggedIn
+  case loggedOut
+}
+
 @MainActor
 class AppViewModel: ObservableObject {
 
@@ -68,20 +73,18 @@ class AppViewModel: ObservableObject {
     case storyComments(story: Story)
   }
 
-  enum AuthState {
-    case loggedIn
-    case loggedOut
-  }
-
-  @Published var loginState = LoginState()
+  @Published var showLoginSheet: Bool
+  @Published var authState: AuthState = .loggedOut
   @Published var postListState = PostListState()
   @Published var navigationPath = NavigationPath()
 
   private let api = HNApi()
   private let webClient = HNWebClient()
   private var pager = Pager()
+  private let cookieStorage = HTTPCookieStorage.shared
 
-  init() {
+  init(showLogin: Bool = false) {
+    self.showLoginSheet = showLogin
   }
 
   func fetchInitialPosts(feedType: FeedType) async {
@@ -112,15 +115,28 @@ class AppViewModel: ObservableObject {
     pager.hasNextPage() ? postListState.stories.append(.nextPage) : ()
   }
 
-  func login() async {
-    let body = LoginBody(acct: loginState.username, pw: loginState.password)
-    do {
-      let (data, response) = try await webClient.login(with: body)
-      let htmlString = String(data: data, encoding: .utf8)!
-      print("HTML: ", htmlString)
+  private func isLoggedIn() -> Bool {
+    return cookieStorage.cookies?.isEmpty == false
+  }
 
-    } catch {
-      print("Error:", error)
+  func loginRowTapped() {
+    if (authState == .loggedOut) {
+      showLoginSheet = true
+    } else {
+      authState = .loggedOut
+    }
+  }
+
+  func loginTapped(username: String, password: String) async {
+    let status = await webClient.login(acct: username, pw: password   )
+    print("Login Status: \(status)")
+    switch status {
+    case .success:
+      showLoginSheet = false
+      authState = .loggedIn
+    case .error:
+      print("Login failed")
+      authState = .loggedOut
     }
   }
 }

@@ -40,10 +40,10 @@ struct LoginBody: Codable {
 class HNWebClient {
   private let session = URLSession.shared
 
-  func login(with: LoginBody) async throws -> (Data, URLResponse) {
+  func login(acct: String, pw: String) async -> LoginStatus {
     let url = URL(string: LOGIN_URL)!
     var request = URLRequest(url: url)
-    let formData = ["acct": with.acct, "pw": with.pw]
+    let formData = ["acct": acct, "pw": pw]
     let formString = formData.map { key, value in
           let escapedKey = key.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? key
           let escapedValue = value.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? value
@@ -52,7 +52,16 @@ class HNWebClient {
     request.httpMethod = "POST"
     request.httpBody = formString.data(using: .utf8)
 
-    return try await session.data(for: request)
+    do {
+      let (data, _) = try await session.data(for: request)
+      let html = String(data: data, encoding: .utf8)!
+      print("Login HTML: ", html)
+      let document = try SwiftSoup.parse(html)
+      let failed = try document.select("b").first()?.text() == "Login"
+      return failed ? .error : .success
+    } catch {
+      return .error
+    }
   }
 
   func getStoryPage(id: Int64) async -> PostPage {
@@ -73,9 +82,6 @@ class HNWebClient {
         let upvoteLinkElement = try comment.select("a[id^=up_").first()
         let upvoteUrl = try upvoteLinkElement?.attr("href")
         let upvoted = upvoteLinkElement?.hasClass("nosee") ?? false
-
-        print("DEBUG: upvoteUrl: \(upvoteUrl ?? "")")
-
         let date = String(commentDate).asDate()
 
         return CommentInfo(

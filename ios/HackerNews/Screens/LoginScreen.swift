@@ -11,11 +11,9 @@ import SwiftUI
 struct LoginState {
   var username: String = ""
   var password: String = ""
-  var status: LoginStatus = .uninitialized
 }
 
 enum LoginStatus {
-  case uninitialized
   case error
   case success
 }
@@ -24,6 +22,7 @@ struct LoginScreen: View {
   @State var username: String = ""
   @State var password: String = ""
   @ObservedObject var model: AppViewModel
+  @State var loginState = LoginState()
 
   var body: some View {
     VStack(spacing: 8) {
@@ -35,11 +34,11 @@ struct LoginScreen: View {
       Spacer()
         .frame(maxHeight: 16)
 
-      TextField("Username", text: $model.loginState.username)
+      TextField("Username", text: $loginState.username)
         .textFieldStyle(.roundedBorder)
         .autocapitalization(.none)
 
-      SecureField("Password", text: $model.loginState.password)
+      SecureField("Password", text: $loginState.password)
         .textFieldStyle(.roundedBorder)
 
       Spacer()
@@ -48,7 +47,10 @@ struct LoginScreen: View {
       Button(
         action: {
           Task {
-            await model.login()
+            await model.loginTapped(
+              username: loginState.username,
+              password: loginState.password
+            )
           }
         },
         label: {
@@ -57,7 +59,7 @@ struct LoginScreen: View {
         }
       )
       .buttonStyle(.borderedProminent)
-      .disabled(model.loginState.username.isEmpty || model.loginState.password.isEmpty)
+      .disabled(loginState.username.isEmpty || loginState.password.isEmpty)
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .padding(32)
