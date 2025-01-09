@@ -73,8 +73,8 @@ class AppViewModel: ObservableObject {
     case storyComments(story: Story)
   }
 
-  @Published var showLoginSheet: Bool
-  @Published var authState: AuthState = .loggedOut
+  @Published var authState: AuthState
+  @Published var showLoginSheet: Bool = false
   @Published var postListState = PostListState()
   @Published var navigationPath = NavigationPath()
 
@@ -83,8 +83,8 @@ class AppViewModel: ObservableObject {
   private var pager = Pager()
   private let cookieStorage = HTTPCookieStorage.shared
 
-  init(showLogin: Bool = false) {
-    self.showLoginSheet = showLogin
+  init() {
+    authState = self.cookieStorage.cookies?.isEmpty == true ? .loggedOut : .loggedIn
   }
 
   func fetchInitialPosts(feedType: FeedType) async {
@@ -123,6 +123,7 @@ class AppViewModel: ObservableObject {
     if (authState == .loggedOut) {
       showLoginSheet = true
     } else {
+      cookieStorage.removeCookies()
       authState = .loggedOut
     }
   }

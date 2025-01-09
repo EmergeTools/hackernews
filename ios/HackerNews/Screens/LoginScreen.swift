@@ -19,8 +19,6 @@ enum LoginStatus {
 }
 
 struct LoginScreen: View {
-  @State var username: String = ""
-  @State var password: String = ""
   @ObservedObject var model: AppViewModel
   @State var loginState = LoginState()
 

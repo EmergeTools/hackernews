@@ -62,4 +62,8 @@ struct Hacker_NewsApp: App {
       }
     }
   }
+
+  func isLoggedIn() -> AuthState {
+    return HTTPCookieStorage.shared.cookies?.isEmpty == true ? .loggedOut : .loggedIn
+  }
 }

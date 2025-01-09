@@ -118,3 +118,9 @@ extension HTTPURLResponse {
     return statusCode >= 200 && statusCode < 300
   }
 }
+
+extension HTTPCookieStorage {
+  func removeCookies() {
+    self.removeCookies(since: Date(timeIntervalSince1970: 0))
+  }
+}

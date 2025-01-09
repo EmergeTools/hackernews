@@ -18,6 +18,13 @@ struct SettingsScreen: View {
           .fill(model.authState == AuthState.loggedIn ? Color.green : Color.red)
           .frame(width: 6)
         Text(model.authState == AuthState.loggedIn ? "Logout" : "Login")
+        Spacer()
+        Image(systemName: "message.fill")
+          .font(.system(size: 12))
+          .foregroundStyle(model.authState == AuthState.loggedIn ? Color.blue : Color.gray)
+        Image(systemName: "arrow.up")
+          .font(.system(size: 12))
+          .foregroundStyle(model.authState == AuthState.loggedIn ? Color.green : Color.gray)
       }
       .onTapGesture {
         model.loginRowTapped()
