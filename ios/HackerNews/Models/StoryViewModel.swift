@@ -62,10 +62,8 @@ class StoryViewModel: ObservableObject {
   }
 
   func likeComment(comment: CommentInfo) async {
-    print("DEBUG: like comment clicked for \(comment.id)")
     if (isLoggedIn()) {
       let success = await webClient.upvoteItem(upvoteUrl: comment.upvoteUrl!)
-      print("DEBUG: upvoted comment \(success)")
     } else {
       // navigate to login modal
     }

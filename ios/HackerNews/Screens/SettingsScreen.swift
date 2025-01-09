@@ -10,17 +10,28 @@ import SwiftUI
 
 struct SettingsScreen: View {
   @ObservedObject var model: AppViewModel
-  @State var shouldPresentSheet = false
+
   var body: some View {
     List {
       HStack {
-        Text("Login")
+        Circle()
+          .fill(model.authState == AuthState.loggedIn ? Color.green : Color.red)
+          .frame(width: 6)
+        Text(model.authState == AuthState.loggedIn ? "Logout" : "Login")
+        Spacer()
+        Image(systemName: "message.fill")
+          .font(.system(size: 12))
+          .foregroundStyle(model.authState == AuthState.loggedIn ? Color.blue : Color.gray)
+        Image(systemName: "arrow.up")
+          .font(.system(size: 12))
+          .foregroundStyle(model.authState == AuthState.loggedIn ? Color.green : Color.gray)
       }
       .onTapGesture {
-        shouldPresentSheet.toggle()
+        model.loginRowTapped()
       }
     }
-    .sheet(isPresented: $shouldPresentSheet) {
+    .navigationTitle("Settings")
+    .sheet(isPresented: $model.showLoginSheet) {
       LoginScreen(model: model)
     }
   }

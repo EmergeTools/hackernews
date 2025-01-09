@@ -44,9 +44,10 @@ struct ContentView_LoggedIn_WithPosts_Previews: PreviewProvider {
     let fakeStories = PreviewHelpers
       .makeFakeStories()
       .map { StoryState.loaded(story: $0) }
-
+    
+    appModel.authState = .loggedIn
     appModel.postListState = PostListState(stories: fakeStories)
-
+    
     return PreviewVariants {
       PreviewHelpers.withNavigationView {
         ContentView(model: appModel)
