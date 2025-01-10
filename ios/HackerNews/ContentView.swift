@@ -13,14 +13,11 @@ struct ContentView: View {
 
   var body: some View {
     TabView {
-      PostListScreen(model: model)
-        .tag(1)
+      FeedScreen(model: model)
         .tabItem { Label("Feed", systemImage: "list.dash") }
       BookmarksScreen()
-        .tag(2)
         .tabItem { Label("Bookmarks", systemImage: "book") }
       SettingsScreen(model: model)
-        .tag(3)
         .tabItem { Label("Settings", systemImage: "gear") }
     }
   }
@@ -29,7 +26,7 @@ struct ContentView: View {
 struct ContentView_LoggedIn_Loading_Previews: PreviewProvider {
   static var previews: some View {
     let appModel = AppViewModel()
-    appModel.postListState = PostListState(stories: [])
+    appModel.feedState = FeedState(stories: [])
     return PreviewVariants {
       PreviewHelpers.withNavigationView {
         ContentView(model: appModel)
@@ -46,7 +43,7 @@ struct ContentView_LoggedIn_WithPosts_Previews: PreviewProvider {
       .map { StoryState.loaded(story: $0) }
     
     appModel.authState = .loggedIn
-    appModel.postListState = PostListState(stories: fakeStories)
+    appModel.feedState = FeedState(stories: fakeStories)
     
     return PreviewVariants {
       PreviewHelpers.withNavigationView {
@@ -59,7 +56,7 @@ struct ContentView_LoggedIn_WithPosts_Previews: PreviewProvider {
 struct ContentView_LoggedIn_EmptyPosts_Previews: PreviewProvider {
   static var previews: some View {
     let appModel = AppViewModel()
-    appModel.postListState = PostListState(stories: [])
+    appModel.feedState = FeedState(stories: [])
     return PreviewVariants {
       PreviewHelpers.withNavigationView {
         ContentView(model: appModel)
