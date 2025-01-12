@@ -20,17 +20,18 @@ struct CommentRow: View {
       HStack {
         // author
         Text("@\(state.user)")
-          .font(.caption)
-          .fontWeight(.bold)
+          .font(.custom("IBMPlexMono-Bold", size: 12))
         // time
         HStack(alignment: .center, spacing: 4.0) {
           Image(systemName: "clock")
+            .font(.system(size: 12))
           Text(state.age)
+            .font(.custom("IBMPlexSans-Medium", size: 12))
         }
         .font(.caption)
         // collapse/expand
         Image(systemName: "chevron.up.chevron.down")
-          .font(.caption)
+          .font(.system(size: 12))
         // space between
         Spacer()
         // upvote
@@ -38,27 +39,21 @@ struct CommentRow: View {
           likeComment(state)
         }) {
           Image(systemName: "arrow.up")
-            .font(.caption2)
+            .font(.system(size: 12))
+            .padding(.horizontal, 8)
+            .padding(.vertical, 4)
         }
-        .padding(
-          EdgeInsets(
-            top: 4.0,
-            leading: 8.0,
-            bottom: 4.0,
-            trailing: 8.0
-          )
-        )
-        .background(HNColors.background)
-        .foregroundStyle(.black)
+        .background(.surface.opacity(0.6))
+        .foregroundStyle(.onBackground)
         .clipShape(Capsule())
       }
       
       // Comment Body
       Text(state.text.strippingHTML())
-        .font(.caption)
+        .font(.custom("IBMPlexMono-Regular", size: 12))
     }
     .padding(8.0)
-    .background(HNColors.commentBackground)
+    .background(.surface)
     .clipShape(RoundedRectangle(cornerRadius: 16.0))
     .padding(
       EdgeInsets(
