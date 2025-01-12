@@ -14,11 +14,17 @@ struct ContentView: View {
   var body: some View {
     TabView {
       FeedScreen(model: model)
-        .tabItem { Label("Feed", systemImage: "list.dash") }
+        .tabItem {
+          Image(systemName: "list.dash")
+        }
       BookmarksScreen()
-        .tabItem { Label("Bookmarks", systemImage: "book") }
+        .tabItem {
+          Image(systemName: "book")
+        }
       SettingsScreen(model: model)
-        .tabItem { Label("Settings", systemImage: "gear") }
+        .tabItem {
+          Image(systemName: "gear")
+        }
     }
   }
 }

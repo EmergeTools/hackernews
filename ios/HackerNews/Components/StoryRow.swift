@@ -15,13 +15,9 @@ struct StoryRow: View {
   var body: some View {
     switch state {
     case .loading:
-      ProgressView()
+      StoryRowLoadingState()
     case .nextPage:
-      HStack {
-        Spacer()
-        ProgressView()
-        Spacer()
-      }
+      StoryRowLoadingState()
       .onAppear {
         Task {
           await model.fetchNextPage()
@@ -75,6 +71,56 @@ struct StoryRow: View {
   }
 }
 
+struct StoryRowLoadingState: View {
+  var body: some View {
+    VStack(alignment: .leading, spacing: 8) {
+      Text("@humdinger")
+        .font(.custom("IBMPlexMono-Bold", size: 12))
+        .foregroundColor(.hnOrange)
+        .redacted(reason: .placeholder)
+      Text("Some Short Title")
+        .font(.custom("IBMPlexMono-Bold", size: 16))
+        .redacted(reason: .placeholder)
+      HStack(spacing: 16) {
+        HStack(spacing: 4) {
+          Image(systemName: "arrow.up")
+            .font(.system(size: 12))
+            .foregroundColor(.green)
+            .redacted(reason: .placeholder)
+          Text("99")
+            .font(.custom("IBMPlexSans-Medium", size: 12))
+            .redacted(reason: .placeholder)
+        }
+        HStack(spacing: 4) {
+          Image(systemName: "clock")
+            .font(.system(size: 12))
+            .foregroundColor(.purple)
+            .redacted(reason: .placeholder)
+          Text("2h ago")
+            .font(.custom("IBMPlexSans-Medium", size: 12))
+            .redacted(reason: .placeholder)
+        }
+        Spacer()
+        // Comment Button
+        Button(action: {}) {
+          HStack(spacing: 4) {
+            Image(systemName: "message.fill")
+              .font(.system(size: 12))
+              .foregroundStyle(.blue)
+            Text("45")
+              .font(.custom("IBMPlexSans-Medium", size: 12))
+              .foregroundStyle(.black)
+          }
+        }
+        .disabled(true)
+        .buttonStyle(.bordered)
+        .buttonBorderShape(ButtonBorderShape.capsule)
+        .redacted(reason: .placeholder)
+      }
+    }
+  }
+}
+
 struct StoryRow_Preview: PreviewProvider {
   static var previews: some View {
     let fakeStory = PreviewHelpers.makeFakeStory(index: 0, descendants: 3, kids: [1, 2, 3])
@@ -83,3 +129,12 @@ struct StoryRow_Preview: PreviewProvider {
     }
   }
 }
+
+struct StoryRowLoadingState_Preview: PreviewProvider {
+  static var previews: some View {
+    PreviewVariants {
+      StoryRowLoadingState()
+    }
+  }
+}
+
