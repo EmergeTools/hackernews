@@ -15,7 +15,7 @@ struct ContentView: View {
     TabView {
       FeedScreen(model: model)
         .tabItem {
-          Image(systemName: "list.dash")
+          Image(systemName: "newspaper.fill")
         }
       BookmarksScreen()
         .tabItem {
@@ -26,6 +26,7 @@ struct ContentView: View {
           Image(systemName: "gear")
         }
     }
+    .accentColor(.hnOrange)
   }
 }
 
