@@ -11,7 +11,7 @@ import SwiftUI
 struct FeedScreen: View {
   
   @ObservedObject var model: AppViewModel
-  
+
   var body: some View {
     ScrollView {
       LazyVStack(spacing: 8) {
@@ -22,32 +22,31 @@ struct FeedScreen: View {
             model: model,
             state: storyState
           )
-          .background {
+          .padding(.horizontal, 8)
+          .onTapGesture {
             switch storyState {
             case .loading, .nextPage:
-              EmptyView()
+              print("Hello")
             case .loaded(let story):
               let destination: AppViewModel.AppNavigation = if let url = story.makeUrl() {
                 .webLink(url: url, title: story.title)
               } else {
                 .storyComments(story: story)
               }
-              NavigationLink(
-                value: destination,
-                label: {}
-              )
-              .opacity(0.0)
+              model.navigationPath.append(destination)
             }
           }
+          Rectangle()
+            .fill(Color.gray.opacity(0.3))
+            .frame(height: 1)
         }
       }
-      .padding(16)
     }
     .overlay {
       ZStack {
         Color.clear
           .background(.ultraThinMaterial)
-          .containerShape(.rect(cornerRadius: 16, style: .continuous))
+          .containerShape(.rect(cornerRadius: 24, style: .continuous))
 
         HStack(spacing: 16) {
           ForEach(model.feedState.feeds, id: \.self) { feedType in
@@ -57,20 +56,15 @@ struct FeedScreen: View {
               }
             }) {
               Text(feedType.title)
+                .font(.custom("IBMPlexMono-Bold", size: 24))
+                .scaleEffect(model.feedState.selectedFeed == feedType ? 1.0 : 0.8)
                 .foregroundColor(model.feedState.selectedFeed == feedType ? .hnOrange : .gray)
-                .fontWeight(model.feedState.selectedFeed == feedType ? .bold : .regular)
-                .font(.title2)
             }
           }
         }
       }
       .frame(height: 60)
       .frame(maxHeight: .infinity, alignment: .top)
-    }
-    .onAppear {
-      Task {
-        await model.fetchInitialPosts(feedType: .top)
-      }
     }
   }
 }

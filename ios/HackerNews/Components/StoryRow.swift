@@ -11,7 +11,7 @@ import SwiftUI
 struct StoryRow: View {
   @ObservedObject var model: AppViewModel
   let state: StoryState
-  
+
   var body: some View {
     switch state {
     case .loading:
@@ -31,20 +31,24 @@ struct StoryRow: View {
       VStack(alignment: .leading, spacing: 8) {
         let author = story.by!
         Text("@\(author)")
+          .font(.custom("IBMPlexMono-Bold", size: 12))
           .foregroundColor(.hnOrange)
-          .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
         Text(story.title)
-          .font(.headline)
+          .font(.custom("IBMPlexMono-Bold", size: 16))
         HStack(spacing: 16) {
           HStack(spacing: 4) {
             Image(systemName: "arrow.up")
+              .font(.system(size: 12))
               .foregroundColor(.green)
             Text("\(story.score)")
+              .font(.custom("IBMPlexSans-Medium", size: 12))
           }
           HStack(spacing: 4) {
             Image(systemName: "clock")
+              .font(.system(size: 12))
               .foregroundColor(.purple)
             Text(story.displayableDate)
+              .font(.custom("IBMPlexSans-Medium", size: 12))
           }
           Spacer()
           // Comment Button
@@ -56,7 +60,11 @@ struct StoryRow: View {
           }) {
             HStack(spacing: 4) {
               Image(systemName: "message.fill")
+                .font(.system(size: 12))
+                .foregroundStyle(.blue)
               Text("\(story.commentCount)")
+                .font(.custom("IBMPlexSans-Medium", size: 12))
+                .foregroundStyle(.black)
             }
           }
           .buttonStyle(.bordered)
