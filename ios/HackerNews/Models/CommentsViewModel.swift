@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct StoryUiState {
+struct CommentsUiState {
   var headerState: CommentsHeaderState
   var comments: CommentsState
 }
@@ -18,15 +18,16 @@ enum CommentsState {
   case loaded(comments: [CommentInfo])
 }
 
-struct CommentsHeaderState {
+    struct CommentsHeaderState {
   let story: Story
   var expanded: Bool = false
+  var upvoteLink: String? = nil
 }
 
 @MainActor
-class StoryViewModel: ObservableObject {
+class CommentsViewModel: ObservableObject {
 
-  @Published var state: StoryUiState
+  @Published var state: CommentsUiState
 
   private let story: Story
 
@@ -35,7 +36,7 @@ class StoryViewModel: ObservableObject {
 
   init(story: Story) {
     self.story = story
-    self.state = StoryUiState(
+    self.state = CommentsUiState(
       headerState: CommentsHeaderState(story: story),
       comments: .notStarted
     )
