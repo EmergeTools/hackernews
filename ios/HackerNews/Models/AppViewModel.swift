@@ -76,9 +76,17 @@ class AppViewModel: ObservableObject {
   private let webClient = HNWebClient()
   private var pager = Pager()
   private let cookieStorage = HTTPCookieStorage.shared
+  private var loadingTask: Task<Void, Never>?
 
   init() {
     authState = self.cookieStorage.cookies?.isEmpty == true ? .loggedOut : .loggedIn
+    loadingTask = Task {
+      await fetchInitialPosts(feedType: .top)
+    }
+  }
+
+  deinit {
+    loadingTask?.cancel()
   }
 
   func fetchInitialPosts(feedType: FeedType) async {
