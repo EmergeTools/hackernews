@@ -18,11 +18,11 @@ struct StoryRow: View {
       StoryRowLoadingState()
     case .nextPage:
       StoryRowLoadingState()
-      .onAppear {
-        Task {
-          await model.fetchNextPage()
+        .onAppear {
+          Task {
+            await model.fetchNextPage()
+          }
         }
-      }
     case .loaded(let story):
       VStack(alignment: .leading, spacing: 8) {
         let author = story.by!
