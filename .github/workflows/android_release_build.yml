@@ -2,7 +2,7 @@ name: Android Release Build
 
 on:
   release:
-    types: [ published ]
+    types: [published]
 
 jobs:
   build:
@@ -19,8 +19,11 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
-          distribution: 'adopt'
+          java-version: "17"
+          distribution: "adopt"
+
+      - name: Setup Gradle build action
+        uses: actions/setup-gradle@v4
 
       - name: Install Bundletool
         run: |
