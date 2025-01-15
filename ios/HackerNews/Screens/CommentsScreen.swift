@@ -10,7 +10,7 @@ import SwiftUI
 
 struct CommentsScreen: View {
 
-  @ObservedObject var storyModel: CommentsViewModel
+  @ObservedObject var model: CommentsViewModel
 
   var body: some View {
     ScrollView {
@@ -20,8 +20,8 @@ struct CommentsScreen: View {
 
         // Header
         CommentsHeader(
-          state: storyModel.state.headerState,
-          toggleBody: { storyModel.toggleHeaderBody() }
+          state: model.state.headerState,
+          toggleBody: { model.toggleHeaderBody() }
         )
 
         // Line Seperator
@@ -35,7 +35,7 @@ struct CommentsScreen: View {
           .frame(height: 8)
 
         // Comments
-        switch storyModel.state.comments {
+        switch model.state.comments {
         case .notStarted, .loading:
           ProgressView()
             .progressViewStyle(CircularProgressViewStyle())
@@ -46,7 +46,7 @@ struct CommentsScreen: View {
               state: commentInfo,
               likeComment: { info in
                 Task {
-                  await storyModel.likeComment(comment: info)
+                  await model.likeComment(comment: info)
                 }
               }
             )
@@ -56,7 +56,9 @@ struct CommentsScreen: View {
       .padding(8)
     }
     .overlay(alignment: .topLeading) {
-      Button(action: {}) {
+      Button(action: {
+        model.goBack()
+      }) {
         Image(systemName: "arrow.left")
           .foregroundStyle(.onBackground)
           .padding(8)
@@ -76,11 +78,14 @@ struct StoryScreen_Preview: PreviewProvider {
       PreviewHelpers.makeFakeComment(),
       PreviewHelpers.makeFakeComment(),
     ]
-    let viewModel = CommentsViewModel(story: PreviewHelpers.makeFakeStory(kids: comments.map { $0.id }))
+    let viewModel = CommentsViewModel(
+      story: PreviewHelpers.makeFakeStory(kids: comments.map { $0.id }),
+      path: .constant(NavigationPath())
+    )
     viewModel.state.comments = .loaded(comments: comments)
     return PreviewVariants {
       PreviewHelpers.withNavigationView {
-        CommentsScreen(storyModel: viewModel)
+        CommentsScreen(model: viewModel)
       }
     }
   }

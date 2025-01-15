@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 struct CommentsUiState {
   var headerState: CommentsHeaderState
@@ -30,12 +31,14 @@ class CommentsViewModel: ObservableObject {
   @Published var state: CommentsUiState
 
   private let story: Story
+  private var path: Binding<NavigationPath>
 
   private let webClient = HNWebClient()
   private let cookieStorage = HTTPCookieStorage.shared
 
-  init(story: Story) {
+  init(story: Story, path: Binding<NavigationPath>) {
     self.story = story
+    self.path = path
     self.state = CommentsUiState(
       headerState: CommentsHeaderState(story: story),
       comments: .notStarted
@@ -56,6 +59,10 @@ class CommentsViewModel: ObservableObject {
     case .error:
       state.comments = .loaded(comments: [])
     }
+  }
+
+  func goBack() {
+    path.wrappedValue.removeLast()
   }
 
   private func isLoggedIn() -> Bool {
