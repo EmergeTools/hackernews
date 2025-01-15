@@ -91,7 +91,7 @@ fun SettingsScreen(
         }
       )
       Spacer(modifier = Modifier.height(8.dp))
-      if (Distribution.isEnabled(LocalContext.current)) {
+      if (Distribution.isEnabled()) {
         SettingsSectionLabel("Version")
         VersionCard()
         Spacer(modifier = Modifier.height(8.dp))

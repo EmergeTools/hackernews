@@ -60,9 +60,11 @@ android {
       )
       if (runningEnv == "release_workflow") {
         manifestPlaceholders["emerge.distribution.apiKey"] = ""
+        manifestPlaceholders["emerge.distribution.tag"] = "release"
         signingConfig = signingConfigs.getByName("release")
       } else {
         manifestPlaceholders["emerge.distribution.apiKey"] = System.getenv("ANDROID_DISTRIBUTION_API_KEY") ?: ""
+        manifestPlaceholders["emerge.distribution.tag"] = ""
         signingConfig = signingConfigs.getByName("debug")
       }
     }
