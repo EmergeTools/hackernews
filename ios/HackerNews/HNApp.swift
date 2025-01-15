@@ -40,9 +40,6 @@ struct Hacker_NewsApp: App {
 
           ContentView(model: appState)
         }
-        .toolbarColorScheme(.dark, for: .navigationBar)
-        .toolbarBackground(HNColors.orange, for: .navigationBar)
-        .toolbarBackground(.visible, for: .navigationBar)
         .navigationDestination(for: AppViewModel.AppNavigation.self) { appNavigation in
           switch appNavigation {
           case .webLink(let url, let title):

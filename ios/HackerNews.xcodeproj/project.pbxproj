@@ -23,7 +23,7 @@
 		A42705982A4293B30057E439 /* Hacker_NewsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A42705972A4293B30057E439 /* Hacker_NewsUITests.swift */; };
 		A427059A2A4293B30057E439 /* Hacker_NewsUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A42705992A4293B30057E439 /* Hacker_NewsUITestsLaunchTests.swift */; };
 		A42705A72A42949D0057E439 /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A42705A62A42949D0057E439 /* AppViewModel.swift */; };
-		A42705AB2A4296BA0057E439 /* PostListScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A42705AA2A4296BA0057E439 /* PostListScreen.swift */; };
+		A42705AB2A4296BA0057E439 /* FeedScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A42705AA2A4296BA0057E439 /* FeedScreen.swift */; };
 		A42705AD2A429D2E0057E439 /* HNApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = A42705AC2A429D2E0057E439 /* HNApi.swift */; };
 		A434C2E02A8E75960002F488 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A434C2DF2A8E75960002F488 /* WebView.swift */; };
 		A47309B42AA29D9600201376 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = A47309B32AA29D9600201376 /* SwiftSoup */; };
@@ -48,6 +48,10 @@
 		EC70E1612D1DD82B00582023 /* HNWebClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC70E1602D1DD82B00582023 /* HNWebClient.swift */; };
 		EC882BB22D23A8A70065FEC0 /* LoginScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC882BB12D23A8A70065FEC0 /* LoginScreen.swift */; };
 		ECCE8F262D03815300349733 /* Pager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCE8F252D03815300349733 /* Pager.swift */; };
+		ECE608562D338B3E008B1618 /* ibm_plex_sans_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECE608532D338B3E008B1618 /* ibm_plex_sans_medium.ttf */; };
+		ECE608572D338B3E008B1618 /* ibm_plex_sans_bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECE608522D338B3E008B1618 /* ibm_plex_sans_bold.ttf */; };
+		ECE608582D338B3E008B1618 /* ibm_plex_sans_regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECE608542D338B3E008B1618 /* ibm_plex_sans_regular.ttf */; };
+		ECE608592D338B3E008B1618 /* unbounded.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECE608552D338B3E008B1618 /* unbounded.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -100,7 +104,7 @@
 		A42705972A4293B30057E439 /* Hacker_NewsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hacker_NewsUITests.swift; sourceTree = "<group>"; };
 		A42705992A4293B30057E439 /* Hacker_NewsUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hacker_NewsUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		A42705A62A42949D0057E439 /* AppViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewModel.swift; sourceTree = "<group>"; };
-		A42705AA2A4296BA0057E439 /* PostListScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListScreen.swift; sourceTree = "<group>"; };
+		A42705AA2A4296BA0057E439 /* FeedScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedScreen.swift; sourceTree = "<group>"; };
 		A42705AC2A429D2E0057E439 /* HNApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HNApi.swift; sourceTree = "<group>"; };
 		A434C2DF2A8E75960002F488 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		A435EF3D2C08F2A9005BF473 /* HackerNews.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HackerNews.entitlements; sourceTree = "<group>"; };
@@ -148,6 +152,10 @@
 		EC70E1602D1DD82B00582023 /* HNWebClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HNWebClient.swift; sourceTree = "<group>"; };
 		EC882BB12D23A8A70065FEC0 /* LoginScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginScreen.swift; sourceTree = "<group>"; };
 		ECCE8F252D03815300349733 /* Pager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pager.swift; sourceTree = "<group>"; };
+		ECE608522D338B3E008B1618 /* ibm_plex_sans_bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = ibm_plex_sans_bold.ttf; sourceTree = "<group>"; };
+		ECE608532D338B3E008B1618 /* ibm_plex_sans_medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = ibm_plex_sans_medium.ttf; sourceTree = "<group>"; };
+		ECE608542D338B3E008B1618 /* ibm_plex_sans_regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = ibm_plex_sans_regular.ttf; sourceTree = "<group>"; };
+		ECE608552D338B3E008B1618 /* unbounded.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = unbounded.ttf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -223,7 +231,7 @@
 		A413E8552A8C3E0A00C0F867 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
-				A42705AA2A4296BA0057E439 /* PostListScreen.swift */,
+				A42705AA2A4296BA0057E439 /* FeedScreen.swift */,
 				A48C0DE62A9818A50034CC0A /* StoryScreen.swift */,
 				EC29FDA62CFFD074007B1AE9 /* BookmarksScreen.swift */,
 				EC29FDA82CFFD0B5007B1AE9 /* SettingsScreen.swift */,
@@ -242,6 +250,7 @@
 				A42705962A4293B30057E439 /* HackerNewsUITests */,
 				A427057A2A4293B10057E439 /* Products */,
 				A4BED5AB2ACDFDCF001642B3 /* Frameworks */,
+				ECE608492D338A43008B1618 /* Font */,
 			);
 			sourceTree = "<group>";
 		};
@@ -385,6 +394,17 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		ECE608492D338A43008B1618 /* Font */ = {
+			isa = PBXGroup;
+			children = (
+				ECE608522D338B3E008B1618 /* ibm_plex_sans_bold.ttf */,
+				ECE608532D338B3E008B1618 /* ibm_plex_sans_medium.ttf */,
+				ECE608542D338B3E008B1618 /* ibm_plex_sans_regular.ttf */,
+				ECE608552D338B3E008B1618 /* unbounded.ttf */,
+			);
+			path = Font;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -508,6 +528,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ECE608562D338B3E008B1618 /* ibm_plex_sans_medium.ttf in Resources */,
+				ECE608572D338B3E008B1618 /* ibm_plex_sans_bold.ttf in Resources */,
+				ECE608582D338B3E008B1618 /* ibm_plex_sans_regular.ttf in Resources */,
+				ECE608592D338B3E008B1618 /* unbounded.ttf in Resources */,
 				A42705842A4293B20057E439 /* Preview Assets.xcassets in Resources */,
 				A42705812A4293B20057E439 /* Assets.xcassets in Resources */,
 			);
@@ -577,7 +601,7 @@
 				EC29FDA92CFFD0B5007B1AE9 /* SettingsScreen.swift in Sources */,
 				1DF161FA2A4346F6001A3F76 /* StoryRow.swift in Sources */,
 				1DF162002A4365A1001A3F76 /* Colors.swift in Sources */,
-				A42705AB2A4296BA0057E439 /* PostListScreen.swift in Sources */,
+				A42705AB2A4296BA0057E439 /* FeedScreen.swift in Sources */,
 				EC882BB22D23A8A70065FEC0 /* LoginScreen.swift in Sources */,
 				A40DC1FA2C20D8B60055B920 /* Previews.swift in Sources */,
 				A427057F2A4293B10057E439 /* ContentView.swift in Sources */,

@@ -4,5 +4,12 @@
 <dict>
 	<key>LSMinimumSystemVersion</key>
 	<string>14.0</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>ibm_plex_sans_regular.ttf</string>
+		<string>ibm_plex_sans_medium.ttf</string>
+		<string>ibm_plex_sans_bold.ttf</string>
+		<string>unbounded.ttf</string>
+	</array>
 </dict>
 </plist>
