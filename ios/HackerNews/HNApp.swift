@@ -52,7 +52,7 @@ struct Hacker_NewsApp: App {
             CommentsScreen(model: model)
               .navigationBarBackButtonHidden()
               .task {
-                await model.fetchComments()
+                await model.fetchPage()
               }
           }
         }

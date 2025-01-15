@@ -19,6 +19,7 @@ enum PostPage {
 }
 
 struct PostPageResponse {
+  let postInfo: PostInfo
   let comments: [CommentInfo]
 }
 
@@ -30,6 +31,12 @@ struct CommentInfo {
   let user: String
   let age: String
   let level: Int
+}
+
+struct PostInfo {
+  let id: Int64
+  let upvoted: Bool
+  let upvoteUrl: String
 }
 
 struct LoginBody: Codable {
@@ -72,6 +79,17 @@ class HNWebClient {
       let (data, _) = try await session.data(for: request)
       guard let html = String(data: data, encoding: .utf8) else { return .error }
       let document: Document = try SwiftSoup.parse(html)
+      // Post Info
+      let postUpvoteLinkElement = try document.select("#up_\(id)").first()
+      let upvoteUrl = try postUpvoteLinkElement?.attr("href") ?? ""
+      let upvoted = postUpvoteLinkElement?.hasClass("nosee") ?? false
+      let postInfo = PostInfo(
+        id: id,
+        upvoted: upvoted,
+        upvoteUrl: !upvoteUrl.isEmpty ? BASE_WEB_URL + upvoteUrl : ""
+      )
+
+      // Comment Info
       let commentTree = try document.select("table.comment-tree tr.athing.comtr")
       let comments: [CommentInfo] = try commentTree.map { comment in
         let commentId = try Int64(comment.id(), format: .number)
@@ -94,7 +112,7 @@ class HNWebClient {
           level: Int(commentLevel)!
         )
       }
-      return .success(data: PostPageResponse(comments: comments))
+      return .success(data: PostPageResponse(postInfo: postInfo, comments: comments))
     } catch {
       print("Error fetching post IDs: \(error)")
       return .error
