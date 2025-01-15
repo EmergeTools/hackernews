@@ -23,6 +23,7 @@ android {
     versionName = "1.0.2"
 
     manifestPlaceholders["emerge.distribution.apiKey"] = ""
+    manifestPlaceholders["emerge.distribution.tag"] = ""
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables {
@@ -64,7 +65,6 @@ android {
         signingConfig = signingConfigs.getByName("release")
       } else {
         manifestPlaceholders["emerge.distribution.apiKey"] = System.getenv("ANDROID_DISTRIBUTION_API_KEY") ?: ""
-        manifestPlaceholders["emerge.distribution.tag"] = ""
         signingConfig = signingConfigs.getByName("debug")
       }
     }
