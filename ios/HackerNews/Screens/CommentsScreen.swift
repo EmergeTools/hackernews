@@ -21,6 +21,11 @@ struct CommentsScreen: View {
         // Header
         CommentsHeader(
           state: model.state.headerState,
+          likePost: { upvoted, url in
+            Task {
+              await model.likePost(upvoted: upvoted, url: url)
+            }
+          },
           toggleBody: { model.toggleHeaderBody() }
         )
 

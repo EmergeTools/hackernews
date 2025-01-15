@@ -1,5 +1,5 @@
 //
-//  PostItemViewModel.swift
+//  CommentsViewModel.swift
 //  Hacker News
 //
 //  Created by Trevor Elkins on 8/24/23.
@@ -19,10 +19,11 @@ enum CommentsState {
   case loaded(comments: [CommentInfo])
 }
 
-    struct CommentsHeaderState {
+struct CommentsHeaderState {
   let story: Story
   var expanded: Bool = false
-  var upvoteLink: String? = nil
+  var upvoteLink: String = ""
+  var upvoted: Bool = false
 }
 
 @MainActor
@@ -49,12 +50,13 @@ class CommentsViewModel: ObservableObject {
     state.headerState.expanded.toggle()
   }
 
-
-  func fetchComments() async {
+  func fetchPage() async {
     state.comments = .loading
     let page = await webClient.getStoryPage(id: story.id)
     switch page {
     case .success(let data):
+      state.headerState.upvoted = data.postInfo.upvoted
+      state.headerState.upvoteLink = data.postInfo.upvoteUrl
       state.comments = .loaded(comments: data.comments)
     case .error:
       state.comments = .loaded(comments: [])
@@ -69,8 +71,23 @@ class CommentsViewModel: ObservableObject {
     return cookieStorage.cookies?.isEmpty == false
   }
 
+  func likePost(upvoted: Bool, url: String) async {
+    if (isLoggedIn()) {
+      print("Like Post: \(url)")
+      guard !url.isEmpty || upvoted else { return }
+      state.headerState.upvoted = true
+      let success = await webClient.upvoteItem(upvoteUrl: url)
+      if !success {
+        state.headerState.upvoted = false
+      }
+    } else {
+      // navigate to login modal
+    }
+  }
+
   func likeComment(comment: CommentInfo) async {
     if (isLoggedIn()) {
+      print("Like Comment: \(comment.upvoteUrl ?? "")")
       let success = await webClient.upvoteItem(upvoteUrl: comment.upvoteUrl!)
     } else {
       // navigate to login modal
