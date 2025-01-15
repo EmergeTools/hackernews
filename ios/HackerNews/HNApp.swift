@@ -48,8 +48,8 @@ struct Hacker_NewsApp: App {
               .navigationTitle(title)
               .navigationBarTitleDisplayMode(.inline)
           case .storyComments(let story):
-            let model = CommentsViewModel(story: story)
-            CommentsScreen(storyModel: model)
+            let model = CommentsViewModel(story: story, path: $appState.navigationPath)
+            CommentsScreen(model: model)
               .navigationBarBackButtonHidden()
               .task {
                 await model.fetchComments()
