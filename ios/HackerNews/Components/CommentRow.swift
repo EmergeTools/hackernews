@@ -11,9 +11,9 @@ import SwiftUI
 private let maxIndentationLevel: Int = 5
 
 struct CommentRow: View {
-  let state: CommentInfo
-  let likeComment: (CommentInfo) -> Void
-  let toggleComment: () -> Void = {}
+  let state: CommentState
+  let likeComment: (CommentState) -> Void
+  let toggleComment: () -> Void
 
   var body: some View {
     VStack(alignment: .leading) {
@@ -48,10 +48,12 @@ struct CommentRow: View {
         .foregroundStyle(state.upvoted ? .green : .onBackground)
         .clipShape(Capsule())
       }
-      
+
       // Comment Body
-      Text(state.text.strippingHTML())
-        .font(.custom("IBMPlexMono-Regular", size: 12))
+      if (!state.hidden) {
+        Text(state.text.strippingHTML())
+          .font(.custom("IBMPlexMono-Regular", size: 12))
+      }
     }
     .padding(8.0)
     .background(.surface)
@@ -74,7 +76,8 @@ struct CommentView_Preview: PreviewProvider {
     PreviewVariants {
       CommentRow(
         state: PreviewHelpers.makeFakeComment(),
-        likeComment: {_ in}
+        likeComment: {_ in},
+        toggleComment: {}
       )
     }
   }
@@ -86,7 +89,8 @@ struct CommentViewIndentation_Preview: PreviewProvider {
       ForEach(0..<6) { index in
         CommentRow(
           state: PreviewHelpers.makeFakeComment(level: index),
-          likeComment: {_ in}
+          likeComment: {_ in},
+          toggleComment: {}
         )
           .previewLayout(.sizeThatFits)
           .previewDisplayName("Indentation \(index)")

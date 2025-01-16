@@ -16,7 +16,33 @@ struct CommentsUiState {
 enum CommentsState {
   case notStarted
   case loading
-  case loaded(comments: [CommentInfo])
+  case loaded(comments: [CommentState])
+}
+
+struct CommentState {
+  let id: Int64
+  var upvoted: Bool
+  let upvoteUrl: String
+  let text: String
+  let user: String
+  let age: String
+  let level: Int
+  var hidden: Bool
+}
+
+extension CommentInfo {
+  func toCommentState() -> CommentState {
+    return CommentState(
+      id: self.id,
+      upvoted: self.upvoted,
+      upvoteUrl: self.upvoteUrl,
+      text: self.text,
+      user: self.user,
+      age: self.age,
+      level: self.level,
+      hidden: false
+    )
+  }
 }
 
 struct CommentsHeaderState {
@@ -46,10 +72,6 @@ class CommentsViewModel: ObservableObject {
     )
   }
 
-  func toggleHeaderBody() {
-    state.headerState.expanded.toggle()
-  }
-
   func fetchPage() async {
     state.comments = .loading
     let page = await webClient.getStoryPage(id: story.id)
@@ -57,18 +79,18 @@ class CommentsViewModel: ObservableObject {
     case .success(let data):
       state.headerState.upvoted = data.postInfo.upvoted
       state.headerState.upvoteLink = data.postInfo.upvoteUrl
-      state.comments = .loaded(comments: data.comments)
+      state.comments = .loaded(comments: data.comments.map { $0.toCommentState() })
     case .error:
       state.comments = .loaded(comments: [])
     }
   }
 
-  func goBack() {
-    path.wrappedValue.removeLast()
-  }
-
   private func isLoggedIn() -> Bool {
     return cookieStorage.cookies?.isEmpty == false
+  }
+
+  func goBack() {
+    path.wrappedValue.removeLast()
   }
 
   func likePost(upvoted: Bool, url: String) async {
@@ -82,23 +104,56 @@ class CommentsViewModel: ObservableObject {
     }
   }
 
-  func likeComment(commentInfo: CommentInfo) async {
+  func likeComment(data: CommentState) async {
     if (isLoggedIn()) {
       guard case .loaded(let comments) = state.comments else { return }
-      guard !commentInfo.upvoteUrl.isEmpty || commentInfo.upvoted else { return }
-      var updated = commentInfo
+      guard !data.upvoteUrl.isEmpty || data.upvoted else { return }
+      var updated = data
       updated.upvoted = true
       state.comments = .loaded(comments: comments.map { comment in
-        if (commentInfo.id == comment.id) {
+        if (data.id == comment.id) {
           updated
         } else {
           comment
         }
       })
-      print("Like Comment: \(commentInfo.upvoteUrl)")
-      await webClient.upvoteItem(upvoteUrl: commentInfo.upvoteUrl)
+      print("Like Comment: \(data.upvoteUrl)")
+      await webClient.upvoteItem(upvoteUrl: data.upvoteUrl)
     } else {
       // navigate to login modal
+    }
+  }
+
+  func toggleHeaderBody() {
+    state.headerState.expanded.toggle()
+  }
+
+  func toggleComment(commentId: Int64) {
+    if case .loaded(let comments) = state.comments {
+      var updates: [CommentState] = []
+
+      let parentIndex = comments.firstIndex { $0.id == commentId }!
+      var parent = comments[parentIndex]
+      parent.hidden.toggle()
+      updates.append(parent)
+
+      let parentLevel = parent.level
+      var currentIndex = parentIndex+1
+      while currentIndex < comments.count {
+        var child = comments[currentIndex]
+        if (child.level <= parentLevel) {
+          break
+        }
+        child.hidden = parent.hidden
+        updates.append(child)
+        currentIndex += 1
+      }
+
+      state.comments = .loaded(
+        comments: comments.map { old in
+          updates.first { $0.id == old.id } ?? old
+        }
+      )
     }
   }
 }

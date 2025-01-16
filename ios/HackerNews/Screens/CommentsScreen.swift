@@ -49,13 +49,16 @@ struct CommentsScreen: View {
             .progressViewStyle(CircularProgressViewStyle())
             .scaleEffect(2)
         case .loaded(let comments):
-          ForEach(comments, id: \.id) { commentInfo in
+          ForEach(comments, id: \.id) { commentState in
             CommentRow(
-              state: commentInfo,
-              likeComment: { info in
+              state: commentState,
+              likeComment: { state in
                 Task {
-                  await model.likeComment(commentInfo: info)
+                  await model.likeComment(data: state)
                 }
+              },
+              toggleComment: {
+                model.toggleComment(commentId: commentState.id)
               }
             )
           }
