@@ -19,17 +19,24 @@ enum PostPage {
 }
 
 struct PostPageResponse {
+  let postInfo: PostInfo
   let comments: [CommentInfo]
 }
 
 struct CommentInfo {
   let id: Int64
-  let upvoted: Bool
-  let upvoteUrl: String?
+  var upvoted: Bool
+  let upvoteUrl: String
   let text: String
   let user: String
   let age: String
   let level: Int
+}
+
+struct PostInfo {
+  let id: Int64
+  let upvoted: Bool
+  let upvoteUrl: String
 }
 
 struct LoginBody: Codable {
@@ -72,6 +79,17 @@ class HNWebClient {
       let (data, _) = try await session.data(for: request)
       guard let html = String(data: data, encoding: .utf8) else { return .error }
       let document: Document = try SwiftSoup.parse(html)
+      // Post Info
+      let postUpvoteLinkElement = try document.select("#up_\(id)").first()
+      let upvoteUrl = try postUpvoteLinkElement?.attr("href") ?? ""
+      let upvoted = postUpvoteLinkElement?.hasClass("nosee") ?? false
+      let postInfo = PostInfo(
+        id: id,
+        upvoted: upvoted,
+        upvoteUrl: !upvoteUrl.isEmpty ? BASE_WEB_URL + upvoteUrl : ""
+      )
+
+      // Comment Info
       let commentTree = try document.select("table.comment-tree tr.athing.comtr")
       let comments: [CommentInfo] = try commentTree.map { comment in
         let commentId = try Int64(comment.id(), format: .number)
@@ -80,21 +98,21 @@ class HNWebClient {
         let commentAuthor = try comment.select("a.hnuser").text()
         let commentDate = try comment.select("span.age").attr("title").split(separator: " ").first!
         let upvoteLinkElement = try comment.select("a[id^=up_").first()
-        let upvoteUrl = try upvoteLinkElement?.attr("href")
+        let upvoteUrl = try upvoteLinkElement?.attr("href") ?? ""
         let upvoted = upvoteLinkElement?.hasClass("nosee") ?? false
         let date = String(commentDate).asDate()
 
         return CommentInfo(
           id: commentId,
           upvoted: upvoted,
-          upvoteUrl: upvoteUrl != nil ? BASE_WEB_URL + upvoteUrl! : nil,
+          upvoteUrl: !upvoteUrl.isEmpty ? BASE_WEB_URL + upvoteUrl : "",
           text: commentText,
           user: commentAuthor,
           age: date?.timeAgoDisplay() ?? "",
           level: Int(commentLevel)!
         )
       }
-      return .success(data: PostPageResponse(comments: comments))
+      return .success(data: PostPageResponse(postInfo: postInfo, comments: comments))
     } catch {
       print("Error fetching post IDs: \(error)")
       return .error

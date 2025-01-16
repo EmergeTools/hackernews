@@ -11,8 +11,9 @@ import SwiftUI
 private let maxIndentationLevel: Int = 5
 
 struct CommentRow: View {
-  let state: CommentInfo
-  let likeComment: (CommentInfo) -> Void
+  let state: CommentState
+  let likeComment: (CommentState) -> Void
+  let toggleComment: () -> Void
 
   var body: some View {
     VStack(alignment: .leading) {
@@ -20,17 +21,18 @@ struct CommentRow: View {
       HStack {
         // author
         Text("@\(state.user)")
-          .font(.caption)
-          .fontWeight(.bold)
+          .font(.custom("IBMPlexMono-Bold", size: 12))
         // time
         HStack(alignment: .center, spacing: 4.0) {
           Image(systemName: "clock")
+            .font(.system(size: 12))
           Text(state.age)
+            .font(.custom("IBMPlexSans-Medium", size: 12))
         }
         .font(.caption)
         // collapse/expand
         Image(systemName: "chevron.up.chevron.down")
-          .font(.caption)
+          .font(.system(size: 12))
         // space between
         Spacer()
         // upvote
@@ -38,28 +40,27 @@ struct CommentRow: View {
           likeComment(state)
         }) {
           Image(systemName: "arrow.up")
-            .font(.caption2)
+            .font(.system(size: 12))
+            .padding(.horizontal, 8)
+            .padding(.vertical, 4)
         }
-        .padding(
-          EdgeInsets(
-            top: 4.0,
-            leading: 8.0,
-            bottom: 4.0,
-            trailing: 8.0
-          )
-        )
-        .background(HNColors.background)
-        .foregroundStyle(.black)
+        .background(state.upvoted ? .green.opacity(0.2) : .white.opacity(0.2))
+        .foregroundStyle(state.upvoted ? .green : .onBackground)
         .clipShape(Capsule())
       }
-      
+
       // Comment Body
-      Text(state.text.strippingHTML())
-        .font(.caption)
+      if (!state.hidden) {
+        Text(state.text.strippingHTML())
+          .font(.custom("IBMPlexMono-Regular", size: 12))
+      }
     }
     .padding(8.0)
-    .background(HNColors.commentBackground)
+    .background(.surface)
     .clipShape(RoundedRectangle(cornerRadius: 16.0))
+    .onTapGesture {
+      toggleComment()
+    }
     .padding(
       EdgeInsets(
         top: 0,
@@ -75,7 +76,8 @@ struct CommentView_Preview: PreviewProvider {
     PreviewVariants {
       CommentRow(
         state: PreviewHelpers.makeFakeComment(),
-        likeComment: {_ in}
+        likeComment: {_ in},
+        toggleComment: {}
       )
     }
   }
@@ -87,7 +89,8 @@ struct CommentViewIndentation_Preview: PreviewProvider {
       ForEach(0..<6) { index in
         CommentRow(
           state: PreviewHelpers.makeFakeComment(level: index),
-          likeComment: {_ in}
+          likeComment: {_ in},
+          toggleComment: {}
         )
           .previewLayout(.sizeThatFits)
           .previewDisplayName("Indentation \(index)")
