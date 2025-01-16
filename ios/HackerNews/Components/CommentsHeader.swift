@@ -10,7 +10,7 @@ import SwiftUI
 
 struct CommentsHeader: View {
   let state: CommentsHeaderState
-  let likePost: (Bool, String) -> Void
+  let likePost: () -> Void
   let toggleBody: () -> Void
 
   var body: some View {
@@ -37,9 +37,7 @@ struct CommentsHeader: View {
         }
         Spacer()
         // upvote button
-        Button(action: {
-          likePost(state.upvoted, state.upvoteLink)
-        }) {
+        Button(action: { likePost() }) {
           Image(systemName: "arrow.up")
             .font(.system(size: 12))
             .padding(.horizontal, 8)
@@ -73,7 +71,7 @@ struct CommentsHeader: View {
 #Preview {
   CommentsHeader(
     state: CommentsHeaderState(story: PreviewHelpers.makeFakeStory()),
-    likePost: {_,_ in},
+    likePost: {},
     toggleBody: {}
   )
 }
