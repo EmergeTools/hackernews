@@ -76,19 +76,27 @@ class CommentsViewModel: ObservableObject {
       print("Like Post: \(url)")
       guard !url.isEmpty || upvoted else { return }
       state.headerState.upvoted = true
-      let success = await webClient.upvoteItem(upvoteUrl: url)
-      if !success {
-        state.headerState.upvoted = false
-      }
+      await webClient.upvoteItem(upvoteUrl: url)
     } else {
       // navigate to login modal
     }
   }
 
-  func likeComment(comment: CommentInfo) async {
+  func likeComment(commentInfo: CommentInfo) async {
     if (isLoggedIn()) {
-      print("Like Comment: \(comment.upvoteUrl ?? "")")
-      let success = await webClient.upvoteItem(upvoteUrl: comment.upvoteUrl!)
+      guard case .loaded(let comments) = state.comments else { return }
+      guard !commentInfo.upvoteUrl.isEmpty || commentInfo.upvoted else { return }
+      var updated = commentInfo
+      updated.upvoted = true
+      state.comments = .loaded(comments: comments.map { comment in
+        if (commentInfo.id == comment.id) {
+          updated
+        } else {
+          comment
+        }
+      })
+      print("Like Comment: \(commentInfo.upvoteUrl)")
+      await webClient.upvoteItem(upvoteUrl: commentInfo.upvoteUrl)
     } else {
       // navigate to login modal
     }

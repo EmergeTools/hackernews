@@ -25,8 +25,8 @@ struct PostPageResponse {
 
 struct CommentInfo {
   let id: Int64
-  let upvoted: Bool
-  let upvoteUrl: String?
+  var upvoted: Bool
+  let upvoteUrl: String
   let text: String
   let user: String
   let age: String
@@ -98,14 +98,14 @@ class HNWebClient {
         let commentAuthor = try comment.select("a.hnuser").text()
         let commentDate = try comment.select("span.age").attr("title").split(separator: " ").first!
         let upvoteLinkElement = try comment.select("a[id^=up_").first()
-        let upvoteUrl = try upvoteLinkElement?.attr("href")
+        let upvoteUrl = try upvoteLinkElement?.attr("href") ?? ""
         let upvoted = upvoteLinkElement?.hasClass("nosee") ?? false
         let date = String(commentDate).asDate()
 
         return CommentInfo(
           id: commentId,
           upvoted: upvoted,
-          upvoteUrl: upvoteUrl != nil ? BASE_WEB_URL + upvoteUrl! : nil,
+          upvoteUrl: !upvoteUrl.isEmpty ? BASE_WEB_URL + upvoteUrl : "",
           text: commentText,
           user: commentAuthor,
           age: date?.timeAgoDisplay() ?? "",

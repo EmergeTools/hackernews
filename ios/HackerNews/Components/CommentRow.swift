@@ -13,6 +13,7 @@ private let maxIndentationLevel: Int = 5
 struct CommentRow: View {
   let state: CommentInfo
   let likeComment: (CommentInfo) -> Void
+  let toggleComment: () -> Void = {}
 
   var body: some View {
     VStack(alignment: .leading) {
@@ -43,8 +44,8 @@ struct CommentRow: View {
             .padding(.horizontal, 8)
             .padding(.vertical, 4)
         }
-        .background(.surface.opacity(0.6))
-        .foregroundStyle(.onBackground)
+        .background(state.upvoted ? .green.opacity(0.2) : .white.opacity(0.2))
+        .foregroundStyle(state.upvoted ? .green : .onBackground)
         .clipShape(Capsule())
       }
       
@@ -55,6 +56,9 @@ struct CommentRow: View {
     .padding(8.0)
     .background(.surface)
     .clipShape(RoundedRectangle(cornerRadius: 16.0))
+    .onTapGesture {
+      toggleComment()
+    }
     .padding(
       EdgeInsets(
         top: 0,

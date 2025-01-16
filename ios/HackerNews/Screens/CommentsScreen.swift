@@ -21,9 +21,12 @@ struct CommentsScreen: View {
         // Header
         CommentsHeader(
           state: model.state.headerState,
-          likePost: { upvoted, url in
+          likePost: {
             Task {
-              await model.likePost(upvoted: upvoted, url: url)
+              await model.likePost(
+                upvoted: model.state.headerState.upvoted,
+                url: model.state.headerState.upvoteLink
+              )
             }
           },
           toggleBody: { model.toggleHeaderBody() }
@@ -51,7 +54,7 @@ struct CommentsScreen: View {
               state: commentInfo,
               likeComment: { info in
                 Task {
-                  await model.likeComment(comment: info)
+                  await model.likeComment(commentInfo: info)
                 }
               }
             )
