@@ -22,20 +22,7 @@ struct FeedScreen: View {
             model: model,
             state: storyState
           )
-          .padding(.horizontal, 8)
-          .onTapGesture {
-            switch storyState {
-            case .loading, .nextPage:
-              print("Hello")
-            case .loaded(let story):
-              let destination: AppViewModel.AppNavigation = if let url = story.makeUrl() {
-                .webLink(url: url, title: story.title)
-              } else {
-                .storyComments(story: story)
-              }
-              model.navigationPath.append(destination)
-            }
-          }
+          // Line
           Rectangle()
             .fill(Color.gray.opacity(0.3))
             .frame(height: 1)
@@ -70,21 +57,21 @@ struct FeedScreen: View {
 }
 
 #Preview {
-  FeedScreen(model: AppViewModel())
+  FeedScreen(model: AppViewModel(bookmarkStore: FakeBookmarkDataStore()))
 }
 
 #Preview("Loading") {
-  let appModel = AppViewModel()
+  let appModel = AppViewModel(bookmarkStore: FakeBookmarkDataStore())
   appModel.feedState = FeedState()
 
   return FeedScreen(model: appModel)
 }
 
 #Preview("Has posts") {
-  let appModel = AppViewModel()
+  let appModel = AppViewModel(bookmarkStore: FakeBookmarkDataStore())
   let fakeStories = PreviewHelpers
     .makeFakeStories()
-    .map { StoryState.loaded(story: $0) }
+    .map { StoryState.loaded(content: $0.toStoryContent()) }
   appModel.feedState = FeedState(stories: fakeStories)
 
   return FeedScreen(model: appModel)

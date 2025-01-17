@@ -17,7 +17,7 @@ final class SwiftSnapshotTest: XCTestCase {
 
   @MainActor override func setUp() {
     super.setUp()
-    appViewModel = AppViewModel()
+    appViewModel = AppViewModel(bookmarkStore: FakeBookmarkDataStore())
   }
 
   override func tearDown() {
@@ -37,16 +37,16 @@ final class SwiftSnapshotTest: XCTestCase {
     let defaultView = FeedScreen(model: appViewModel)
 
     // Test loading state
-    let loadingViewModel = AppViewModel()
+    let loadingViewModel = AppViewModel(bookmarkStore: FakeBookmarkDataStore())
     loadingViewModel.feedState = FeedState(
       stories: []
     )
     let loadingView = FeedScreen(model: loadingViewModel)
 
     // Test loaded state with posts
-    let loadedViewModel = AppViewModel()
+    let loadedViewModel = AppViewModel(bookmarkStore: FakeBookmarkDataStore())
     loadedViewModel.feedState = FeedState(
-      stories: PreviewHelpers.makeFakeStories().map { StoryState.loaded(story: $0) }
+      stories: PreviewHelpers.makeFakeStories().map { StoryState.loaded(content: $0.toStoryContent()) }
     )
     let loadedView = FeedScreen(model: loadedViewModel)
 

@@ -23,48 +23,77 @@ struct StoryRow: View {
             await model.fetchNextPage()
           }
         }
-    case .loaded(let story):
+    case .loaded(let content):
       VStack(alignment: .leading, spacing: 8) {
-        let author = story.by!
-        Text("@\(author)")
-          .font(.custom("IBMPlexMono-Bold", size: 12))
-          .foregroundColor(.hnOrange)
-        Text(story.title)
+        let author = content.author!
+        HStack {
+          Text("@\(author)")
+            .font(.custom("IBMPlexMono-Bold", size: 12))
+            .foregroundColor(.hnOrange)
+          Spacer()
+          if (content.bookmarked) {
+            Image(systemName: "book.fill")
+              .font(.system(size: 12))
+              .foregroundStyle(.hnOrange)
+          }
+        }
+        Text(content.title)
           .font(.custom("IBMPlexMono-Bold", size: 16))
         HStack(spacing: 16) {
           HStack(spacing: 4) {
             Image(systemName: "arrow.up")
               .font(.system(size: 12))
               .foregroundColor(.green)
-            Text("\(story.score)")
+            Text("\(content.score)")
               .font(.custom("IBMPlexSans-Medium", size: 12))
           }
           HStack(spacing: 4) {
             Image(systemName: "clock")
               .font(.system(size: 12))
               .foregroundColor(.purple)
-            Text(story.displayableDate)
+            Text(content.relativeDate())
               .font(.custom("IBMPlexSans-Medium", size: 12))
           }
           Spacer()
           // Comment Button
           Button(action: {
-            print("Pressed comment button for: \(story.id)")
+            print("Pressed comment button for: \(content.id)")
             model.navigationPath.append(
-              AppViewModel.AppNavigation.storyComments(story: story)
+              AppViewModel.AppNavigation.storyComments(story: content.toStory())
             )
           }) {
             HStack(spacing: 4) {
               Image(systemName: "message.fill")
                 .font(.system(size: 12))
                 .foregroundStyle(.blue)
-              Text("\(story.commentCount)")
+              Text("\(content.commentCount)")
                 .font(.custom("IBMPlexSans-Medium", size: 12))
                 .foregroundStyle(.black)
             }
           }
           .buttonStyle(.bordered)
           .buttonBorderShape(ButtonBorderShape.capsule)
+        }
+      }
+      .padding(.horizontal, 8)
+      .onTapGesture {
+        switch state {
+        case .loading, .nextPage:
+          print("Hello")
+        case .loaded(let content):
+          let destination: AppViewModel.AppNavigation = if let url = content.makeUrl() {
+            .webLink(url: url, title: content.title)
+          } else {
+            .storyComments(story: content.toStory())
+          }
+          print("Navigating to \(destination)")
+          model.navigationPath.append(destination)
+        }
+      }
+      .onLongPressGesture {
+        if case .loaded(var content) = state {
+          content.bookmarked.toggle()
+          model.toggleBookmark(content)
         }
       }
     }
@@ -125,7 +154,9 @@ struct StoryRow_Preview: PreviewProvider {
   static var previews: some View {
     let fakeStory = PreviewHelpers.makeFakeStory(index: 0, descendants: 3, kids: [1, 2, 3])
     PreviewVariants {
-      StoryRow(model: AppViewModel(), state: .loaded(story: fakeStory))
+      StoryRow(model: AppViewModel(
+        bookmarkStore: FakeBookmarkDataStore()
+      ), state: .loaded(content: fakeStory.toStoryContent()))
     }
   }
 }

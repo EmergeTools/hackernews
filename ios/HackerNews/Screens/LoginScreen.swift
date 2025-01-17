@@ -66,5 +66,5 @@ struct LoginScreen: View {
 }
 
 #Preview {
-  LoginScreen(model: .init())
+  LoginScreen(model: AppViewModel(bookmarkStore: FakeBookmarkDataStore()))
 }

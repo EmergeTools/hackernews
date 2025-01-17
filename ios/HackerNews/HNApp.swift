@@ -8,10 +8,11 @@
 import Reaper
 import Sentry
 import SwiftUI
+import SwiftData
 
 @main
 struct Hacker_NewsApp: App {
-  @StateObject private var appModel = AppViewModel()
+  @StateObject private var appModel = AppViewModel(bookmarkStore: LiveBookmarksDataStore.shared)
 
   init() {
     UINavigationBar.appearance().backgroundColor = .clear
