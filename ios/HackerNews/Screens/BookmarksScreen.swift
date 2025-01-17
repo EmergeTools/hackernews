@@ -12,23 +12,36 @@ struct BookmarksScreen: View {
   @ObservedObject var model: AppViewModel
 
   var body: some View {
-    ScrollView {
-      LazyVStack(spacing: 8) {
-        Spacer()
-          .frame(height: 60)
-        ForEach(model.bookmarks, id: \.id) { bookmark in
-          StoryRow(
-            model: model,
-            state: .loaded(content: bookmark.toStoryContent())
-          )
+    Group {
+      if (model.bookmarks.isEmpty) {
+        ZStack {
+          Text("Long press a story to bookmark it.")
+            .font(.custom("IBMPlexSans-Medium", size: 18))
+        }
+      } else {
+        ScrollView {
+          LazyVStack(spacing: 8) {
+            Spacer()
+              .frame(height: 60)
+            ForEach(model.bookmarks, id: \.id) { bookmark in
+              StoryRow(
+                model: model,
+                state: .loaded(content: bookmark.toStoryContent())
+              )
 
-          // Line
-          Rectangle()
-            .fill(Color.gray.opacity(0.3))
-            .frame(height: 1)
+              // Line
+              Rectangle()
+                .fill(Color.gray.opacity(0.3))
+                .frame(height: 1)
+            }
+          }
         }
       }
     }
+    .frame(
+      maxWidth: .infinity,
+      maxHeight: .infinity
+    )
     .overlay {
       ZStack(alignment: .leading) {
         Color.clear
