@@ -110,7 +110,8 @@ emerge {
 
   vcs {
     gitHub {
-      repoName.set("hackernews")
+      // System.getenv override is for integration tests from the emerge-android repository
+      repoName.set(System.getenv("INTEGRATION_TEST_REPO_NAME") ?: "hackernews")
       repoOwner.set("EmergeTools")
     }
   }
