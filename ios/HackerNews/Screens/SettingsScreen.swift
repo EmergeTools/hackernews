@@ -27,13 +27,10 @@ struct SettingsScreen: View {
           .foregroundStyle(model.authState == AuthState.loggedIn ? Color.green : Color.gray)
       }
       .onTapGesture {
-        model.loginRowTapped()
+        model.gotoLogin()
       }
     }
     .navigationTitle("Settings")
-    .sheet(isPresented: $model.showLoginSheet) {
-      LoginScreen(model: model)
-    }
   }
 }
 

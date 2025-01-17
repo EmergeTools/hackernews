@@ -11,8 +11,7 @@ import SwiftUI
 
 @main
 struct Hacker_NewsApp: App {
-
-  @StateObject private var appState = AppViewModel()
+  @StateObject private var appModel = AppViewModel()
 
   init() {
     UINavigationBar.appearance().backgroundColor = .clear
@@ -33,12 +32,12 @@ struct Hacker_NewsApp: App {
 
   var body: some Scene {
     WindowGroup {
-      NavigationStack(path: $appState.navigationPath) {
+      NavigationStack(path: $appModel.navigationPath) {
         ZStack {
           HNColors.background
             .ignoresSafeArea()
 
-          ContentView(model: appState)
+          ContentView(model: appModel)
         }
         .navigationDestination(for: AppViewModel.AppNavigation.self) { appNavigation in
           switch appNavigation {
@@ -48,19 +47,22 @@ struct Hacker_NewsApp: App {
               .navigationTitle(title)
               .navigationBarTitleDisplayMode(.inline)
           case .storyComments(let story):
-            let model = StoryViewModel(story: story)
-            StoryScreen(storyModel: model)
-              .background(.clear)
-              .task {
-                await model.fetchComments()
+            let commentModel = CommentsViewModel(story: story, auth: appModel.authState) { destination in
+              switch destination {
+              case .back:
+                appModel.backPressed()
+              case .login:
+                appModel.gotoLogin()
               }
+            }
+            CommentsScreen(model: commentModel)
+              .navigationBarBackButtonHidden()
           }
+        }
+        .sheet(isPresented: $appModel.showLoginSheet) {
+          LoginScreen(model: appModel)
         }
       }
     }
-  }
-
-  func isLoggedIn() -> AuthState {
-    return HTTPCookieStorage.shared.cookies?.isEmpty == true ? .loggedOut : .loggedIn
   }
 }
