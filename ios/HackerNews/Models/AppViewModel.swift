@@ -117,11 +117,16 @@ class AppViewModel: ObservableObject {
     pager.hasNextPage() ? feedState.stories.append(.nextPage) : ()
   }
 
+
   private func isLoggedIn() -> Bool {
     return cookieStorage.cookies?.isEmpty == false
   }
 
-  func loginRowTapped() {
+  func backPressed() {
+    navigationPath.removeLast()
+  }
+
+  func gotoLogin() {
     if (authState == .loggedOut) {
       showLoginSheet = true
     } else {

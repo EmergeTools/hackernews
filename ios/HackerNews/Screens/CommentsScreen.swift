@@ -29,7 +29,9 @@ struct CommentsScreen: View {
               )
             }
           },
-          toggleBody: { model.toggleHeaderBody() }
+          toggleBody: {
+            model.toggleHeaderBody()
+          }
         )
 
         // Line Seperator
@@ -72,31 +74,50 @@ struct CommentsScreen: View {
       }) {
         Image(systemName: "arrow.left")
           .foregroundStyle(.onBackground)
-          .padding(8)
+          .padding(16)
       }
       .background(.ultraThinMaterial)
       .clipShape(Circle())
       .padding(8)
     }
+    .overlay(alignment: .bottom) {
+      if (model.state.postCommentState != nil) {
+        CommentComposer(
+          state: Binding(
+            get: { model.state.postCommentState! },
+            set: { model.state.postCommentState = $0}
+          ),
+          goToLogin: {
+            model.goToLogin()
+          },
+          sendComment: {
+            Task {
+              await model.sendComment()
+            }
+          }
+        )
+      }
+    }
   }
-}
 
-struct StoryScreen_Preview: PreviewProvider {
-  static var previews: some View {
-    let comments = [
-      PreviewHelpers.makeFakeComment(),
-      PreviewHelpers.makeFakeComment(),
-      PreviewHelpers.makeFakeComment(),
-      PreviewHelpers.makeFakeComment(),
-    ]
-    let viewModel = CommentsViewModel(
-      story: PreviewHelpers.makeFakeStory(kids: comments.map { $0.id }),
-      path: .constant(NavigationPath())
-    )
-    viewModel.state.comments = .loaded(comments: comments)
-    return PreviewVariants {
-      PreviewHelpers.withNavigationView {
-        CommentsScreen(model: viewModel)
+  struct StoryScreen_Preview: PreviewProvider {
+    static var previews: some View {
+      let comments = [
+        PreviewHelpers.makeFakeComment(),
+        PreviewHelpers.makeFakeComment(),
+        PreviewHelpers.makeFakeComment(),
+        PreviewHelpers.makeFakeComment(),
+      ]
+      let viewModel = CommentsViewModel(
+        story: PreviewHelpers.makeFakeStory(kids: comments.map { $0.id }),
+        auth: .loggedIn,
+        navigation: {_ in}
+      )
+      viewModel.state.comments = .loaded(comments: comments)
+      return PreviewVariants {
+        PreviewHelpers.withNavigationView {
+          CommentsScreen(model: viewModel)
+        }
       }
     }
   }
