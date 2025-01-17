@@ -22,27 +22,7 @@ struct FeedScreen: View {
             model: model,
             state: storyState
           )
-          .padding(.horizontal, 8)
-          .onTapGesture {
-            switch storyState {
-            case .loading, .nextPage:
-              print("Hello")
-            case .loaded(let content):
-              let destination: AppViewModel.AppNavigation = if let url = content.makeUrl() {
-                .webLink(url: url, title: content.title)
-              } else {
-                .storyComments(story: content.toStory())
-              }
-              print("Navigating to \(destination)")
-              model.navigationPath.append(destination)
-            }
-          }
-          .onLongPressGesture {
-            if case .loaded(var content) = storyState {
-              content.bookmarked.toggle()
-              model.toggleBookmark(content)
-            }
-          }
+          // Line
           Rectangle()
             .fill(Color.gray.opacity(0.3))
             .frame(height: 1)

@@ -78,6 +78,22 @@ extension Story {
   }
 }
 
+extension Bookmark {
+  func toStoryContent() -> StoryContent {
+    return StoryContent(
+      id: uid,
+      title: title,
+      author: by,
+      body: text,
+      score: score,
+      commentCount: descendants,
+      timestamp: time,
+      url: url,
+      bookmarked: true
+    )
+  }
+}
+
 extension StoryContent {
   func toStory() -> Story {
     return Story(
@@ -130,11 +146,11 @@ class AppViewModel: ObservableObject {
   @Published var showLoginSheet: Bool = false
   @Published var feedState = FeedState()
   @Published var navigationPath = NavigationPath()
+  @Published var bookmarks: [Bookmark]
 
   private let bookmarkStore: BookmarksDataStore
   private let api = HNApi()
   private let webClient = HNWebClient()
-  private let bookmarks: [Bookmark]
 
   private var pager = Pager()
   private let cookieStorage = HTTPCookieStorage.shared
@@ -166,7 +182,7 @@ class AppViewModel: ObservableObject {
 
       let items = await api.fetchPage(page: nextPage)
       feedState.stories = items.map { story in
-        let bookmarked = self.bookmarks.contains(where: { $0.id == story.id })
+        let bookmarked = bookmarkStore.containsBookmark(with: story.id)
         return .loaded(content: story.toStoryContent(bookmarked: bookmarked))
       }
       pager.hasNextPage() ? feedState.stories.append(.nextPage) : ()
@@ -181,10 +197,14 @@ class AppViewModel: ObservableObject {
     let items = await api.fetchPage(page: nextPage)
     feedState.stories.removeLast() // remove the loading view
     feedState.stories += items.map { story in
-      let bookmarked = self.bookmarks.contains(where: { $0.id == story.id })
+      let bookmarked = bookmarkStore.containsBookmark(with: story.id)
       return .loaded(content: story.toStoryContent(bookmarked: bookmarked))
     }
     pager.hasNextPage() ? feedState.stories.append(.nextPage) : ()
+  }
+
+  func fetchBookmarks() {
+    bookmarks = bookmarkStore.fetchBookmarks()
   }
 
 
@@ -220,8 +240,10 @@ class AppViewModel: ObservableObject {
 
     if item.bookmarked {
       bookmarkStore.addBookmark(item.toBookmark())
+      bookmarks = bookmarkStore.fetchBookmarks()
     } else {
       bookmarkStore.removeBookmark(with: item.id)
+      bookmarks = bookmarkStore.fetchBookmarks()
     }
   }
 

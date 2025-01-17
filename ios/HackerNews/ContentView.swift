@@ -17,7 +17,10 @@ struct ContentView: View {
         .tabItem {
           Image(systemName: "newspaper.fill")
         }
-      BookmarksScreen()
+      BookmarksScreen(model: model)
+        .onAppear {
+          model.fetchBookmarks()
+        }
         .tabItem {
           Image(systemName: "book")
         }

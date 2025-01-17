@@ -10,27 +10,30 @@ import SwiftData
 
 @Model
 class Bookmark {
-  var id: Int64
+  var uid: Int64
   var by: String?
   var time: Int64
   var title: String
+  var text: String?
   var url: String?
   var score: Int
   var descendants: Int
 
   init(
-    id: Int64,
+    uid: Int64,
     by: String?,
     time: Int64,
     title: String,
+    text: String?,
     url: String?,
     score: Int,
     descendants: Int
   ) {
-    self.id = id
+    self.uid = uid
     self.by = by
     self.time = time
     self.title = title
+    self.text = text
     self.url = url
     self.score = score
     self.descendants = descendants
@@ -40,10 +43,11 @@ class Bookmark {
 extension StoryContent {
   func toBookmark() -> Bookmark {
     return Bookmark(
-      id: id,
+      uid: id,
       by: author,
       time: timestamp,
       title: title,
+      text: body,
       url: url,
       score: score,
       descendants: commentCount
@@ -55,6 +59,7 @@ protocol BookmarksDataStore {
   func fetchBookmarks() -> [Bookmark]
   func addBookmark(_ bookmark: Bookmark)
   func removeBookmark(with id: Int64)
+  func containsBookmark(with id: Int64) -> Bool
 }
 
 class LiveBookmarksDataStore: BookmarksDataStore {
@@ -91,8 +96,17 @@ class LiveBookmarksDataStore: BookmarksDataStore {
     do {
       try modelContext.delete(
         model: Bookmark.self,
-        where: #Predicate { bookmark in bookmark.id == id}
+        where: #Predicate { bookmark in bookmark.uid == id}
       )
+    } catch {
+      fatalError(error.localizedDescription)
+    }
+  }
+
+  func containsBookmark(with id: Int64) -> Bool {
+    do {
+      let bookmarks = try modelContext.fetch(FetchDescriptor<Bookmark>(predicate: #Predicate { bookmark in bookmark.uid == id}))
+      return !bookmarks.isEmpty
     } catch {
       fatalError(error.localizedDescription)
     }
@@ -108,5 +122,9 @@ struct FakeBookmarkDataStore: BookmarksDataStore {
   }
 
   func removeBookmark(with id: Int64) {
+  }
+
+  func containsBookmark(with id: Int64) -> Bool {
+    return false
   }
 }
