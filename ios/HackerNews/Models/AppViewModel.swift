@@ -31,13 +31,7 @@ enum FeedType: CaseIterable {
   }
 }
 
-/**
- Display State
- needs information for the feed selection
- needs a list of Stories for the feed
- the feed items can have their own loading state
- */
-struct PostListState {
+struct FeedState {
   var feeds: [FeedType] = FeedType.allCases
   var selectedFeed: FeedType = FeedType.top
   var stories: [StoryState] = []
@@ -75,32 +69,40 @@ class AppViewModel: ObservableObject {
 
   @Published var authState: AuthState
   @Published var showLoginSheet: Bool = false
-  @Published var postListState = PostListState()
+  @Published var feedState = FeedState()
   @Published var navigationPath = NavigationPath()
 
   private let api = HNApi()
   private let webClient = HNWebClient()
   private var pager = Pager()
   private let cookieStorage = HTTPCookieStorage.shared
+  private var loadingTask: Task<Void, Never>?
 
   init() {
     authState = self.cookieStorage.cookies?.isEmpty == true ? .loggedOut : .loggedIn
+    loadingTask = Task {
+      await fetchInitialPosts(feedType: .top)
+    }
+  }
+
+  deinit {
+    loadingTask?.cancel()
   }
 
   func fetchInitialPosts(feedType: FeedType) async {
-    postListState.selectedFeed = feedType
-    postListState.stories = []
+    feedState.selectedFeed = feedType
+    feedState.stories = []
 
     let idsToConsume = await api.fetchStories(feedType: feedType)
     pager.setIds(idsToConsume)
 
     if pager.hasNextPage() {
       let nextPage = pager.nextPage()
-      postListState.stories = nextPage.ids.map { StoryState.loading(id: $0) }
+      feedState.stories = nextPage.ids.map { StoryState.loading(id: $0) }
 
       let items = await api.fetchPage(page: nextPage)
-      postListState.stories = items.map { StoryState.loaded(story: $0 ) }
-      pager.hasNextPage() ? postListState.stories.append(.nextPage) : ()
+      feedState.stories = items.map { StoryState.loaded(story: $0 ) }
+      pager.hasNextPage() ? feedState.stories.append(.nextPage) : ()
     }
   }
 
@@ -110,9 +112,9 @@ class AppViewModel: ObservableObject {
     }
     let nextPage = pager.nextPage()
     let items = await api.fetchPage(page: nextPage)
-    postListState.stories.removeLast() // remove the loading view
-    postListState.stories += items.map { StoryState.loaded(story: $0) }
-    pager.hasNextPage() ? postListState.stories.append(.nextPage) : ()
+    feedState.stories.removeLast() // remove the loading view
+    feedState.stories += items.map { StoryState.loaded(story: $0) }
+    pager.hasNextPage() ? feedState.stories.append(.nextPage) : ()
   }
 
   private func isLoggedIn() -> Bool {

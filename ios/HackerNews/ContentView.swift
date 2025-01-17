@@ -13,23 +13,27 @@ struct ContentView: View {
 
   var body: some View {
     TabView {
-      PostListScreen(model: model)
-        .tag(1)
-        .tabItem { Label("Feed", systemImage: "list.dash") }
+      FeedScreen(model: model)
+        .tabItem {
+          Image(systemName: "newspaper.fill")
+        }
       BookmarksScreen()
-        .tag(2)
-        .tabItem { Label("Bookmarks", systemImage: "book") }
+        .tabItem {
+          Image(systemName: "book")
+        }
       SettingsScreen(model: model)
-        .tag(3)
-        .tabItem { Label("Settings", systemImage: "gear") }
+        .tabItem {
+          Image(systemName: "gear")
+        }
     }
+    .accentColor(.hnOrange)
   }
 }
 
 struct ContentView_LoggedIn_Loading_Previews: PreviewProvider {
   static var previews: some View {
     let appModel = AppViewModel()
-    appModel.postListState = PostListState(stories: [])
+    appModel.feedState = FeedState(stories: [])
     return PreviewVariants {
       PreviewHelpers.withNavigationView {
         ContentView(model: appModel)
@@ -46,7 +50,7 @@ struct ContentView_LoggedIn_WithPosts_Previews: PreviewProvider {
       .map { StoryState.loaded(story: $0) }
     
     appModel.authState = .loggedIn
-    appModel.postListState = PostListState(stories: fakeStories)
+    appModel.feedState = FeedState(stories: fakeStories)
     
     return PreviewVariants {
       PreviewHelpers.withNavigationView {
@@ -59,7 +63,7 @@ struct ContentView_LoggedIn_WithPosts_Previews: PreviewProvider {
 struct ContentView_LoggedIn_EmptyPosts_Previews: PreviewProvider {
   static var previews: some View {
     let appModel = AppViewModel()
-    appModel.postListState = PostListState(stories: [])
+    appModel.feedState = FeedState(stories: [])
     return PreviewVariants {
       PreviewHelpers.withNavigationView {
         ContentView(model: appModel)
