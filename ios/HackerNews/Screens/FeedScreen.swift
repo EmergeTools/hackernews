@@ -27,12 +27,13 @@ struct FeedScreen: View {
             switch storyState {
             case .loading, .nextPage:
               print("Hello")
-            case .loaded(let story):
-              let destination: AppViewModel.AppNavigation = if let url = story.makeUrl() {
-                .webLink(url: url, title: story.title)
+            case .loaded(let content):
+              let destination: AppViewModel.AppNavigation = if let url = content.makeUrl() {
+                .webLink(url: url, title: content.title)
               } else {
-                .storyComments(story: story)
+                .storyComments(story: content.toStory())
               }
+              print("Navigating to \(destination)")
               model.navigationPath.append(destination)
             }
           }
@@ -70,21 +71,21 @@ struct FeedScreen: View {
 }
 
 #Preview {
-  FeedScreen(model: AppViewModel())
+  FeedScreen(model: AppViewModel(bookmarkStore: FakeBookmarkDataStore()))
 }
 
 #Preview("Loading") {
-  let appModel = AppViewModel()
+  let appModel = AppViewModel(bookmarkStore: FakeBookmarkDataStore())
   appModel.feedState = FeedState()
 
   return FeedScreen(model: appModel)
 }
 
 #Preview("Has posts") {
-  let appModel = AppViewModel()
+  let appModel = AppViewModel(bookmarkStore: FakeBookmarkDataStore())
   let fakeStories = PreviewHelpers
     .makeFakeStories()
-    .map { StoryState.loaded(story: $0) }
+    .map { StoryState.loaded(content: $0.toStoryContent()) }
   appModel.feedState = FeedState(stories: fakeStories)
 
   return FeedScreen(model: appModel)

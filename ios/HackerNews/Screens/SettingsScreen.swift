@@ -36,5 +36,5 @@ struct SettingsScreen: View {
 
 
 #Preview {
-  SettingsScreen(model: AppViewModel())
+  SettingsScreen(model: AppViewModel(bookmarkStore: FakeBookmarkDataStore()))
 }
