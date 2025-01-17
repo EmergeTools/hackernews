@@ -37,6 +37,12 @@ struct FeedScreen: View {
               model.navigationPath.append(destination)
             }
           }
+          .onLongPressGesture {
+            if case .loaded(var content) = storyState {
+              content.bookmarked.toggle()
+              model.toggleBookmark(content)
+            }
+          }
           Rectangle()
             .fill(Color.gray.opacity(0.3))
             .frame(height: 1)

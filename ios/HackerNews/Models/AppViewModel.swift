@@ -167,7 +167,7 @@ class AppViewModel: ObservableObject {
       let items = await api.fetchPage(page: nextPage)
       feedState.stories = items.map { story in
         let bookmarked = self.bookmarks.contains(where: { $0.id == story.id })
-        return .loaded(content: story.toStoryContent())
+        return .loaded(content: story.toStoryContent(bookmarked: bookmarked))
       }
       pager.hasNextPage() ? feedState.stories.append(.nextPage) : ()
     }
@@ -182,7 +182,7 @@ class AppViewModel: ObservableObject {
     feedState.stories.removeLast() // remove the loading view
     feedState.stories += items.map { story in
       let bookmarked = self.bookmarks.contains(where: { $0.id == story.id })
-      return .loaded(content: story.toStoryContent())
+      return .loaded(content: story.toStoryContent(bookmarked: bookmarked))
     }
     pager.hasNextPage() ? feedState.stories.append(.nextPage) : ()
   }

@@ -26,9 +26,17 @@ struct StoryRow: View {
     case .loaded(let content):
       VStack(alignment: .leading, spacing: 8) {
         let author = content.author!
-        Text("@\(author)")
-          .font(.custom("IBMPlexMono-Bold", size: 12))
-          .foregroundColor(.hnOrange)
+        HStack {
+          Text("@\(author)")
+            .font(.custom("IBMPlexMono-Bold", size: 12))
+            .foregroundColor(.hnOrange)
+          Spacer()
+          if (content.bookmarked) {
+            Image(systemName: "book.fill")
+              .font(.system(size: 12))
+              .foregroundStyle(.hnOrange)
+          }
+        }
         Text(content.title)
           .font(.custom("IBMPlexMono-Bold", size: 16))
         HStack(spacing: 16) {
