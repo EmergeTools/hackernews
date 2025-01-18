@@ -41,6 +41,7 @@ struct SettingsScreen: View {
 
             },
             action: {
+              model.openLink(url: URL(string: "https://www.twitter.com/emergetools")!)
 
             }
           )
@@ -59,7 +60,7 @@ struct SettingsScreen: View {
 
             },
             action: {
-
+              model.openLink(url: URL(string: "https://www.twitter.com/heyrikin")!)
             }
           )
 
@@ -77,7 +78,7 @@ struct SettingsScreen: View {
 
             },
             action: {
-
+              model.openLink(url: URL(string: "https://forms.gle/YYno9sUehE5xuKAq9")!)
             }
           )
 
@@ -95,7 +96,7 @@ struct SettingsScreen: View {
 
             },
             action: {
-
+              model.openLink(url: URL(string: "https://www.emergetools.com/HackerNewsPrivacyPolicy.html")!  )
             }
           )
         }
