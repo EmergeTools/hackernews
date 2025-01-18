@@ -25,7 +25,7 @@ struct LoginScreen: View {
   var body: some View {
     VStack(spacing: 8) {
 
-      Image(systemName: "bolt.horizontal.circle.fill")
+      Image(systemName: "person.crop.circle.fill")
         .foregroundStyle(HNColors.orange)
         .font(.system(size: 64))
 
@@ -45,14 +45,15 @@ struct LoginScreen: View {
       Button(
         action: {
           Task {
-            await model.loginTapped(
+            await model.loginSubmit(
               username: loginState.username,
               password: loginState.password
             )
           }
         },
         label: {
-          Text("Login")
+          Text("Submit")
+            .font(.custom("IBMPlexMono-Bold", size: 16))
             .frame(maxWidth: .infinity)
         }
       )
@@ -61,7 +62,7 @@ struct LoginScreen: View {
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .padding(32)
-    .background(HNColors.background)
+    .background(Color.background)
   }
 }
 

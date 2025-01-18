@@ -49,6 +49,8 @@
 		EC882BB22D23A8A70065FEC0 /* LoginScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC882BB12D23A8A70065FEC0 /* LoginScreen.swift */; };
 		ECC0BC8C2D39CDCB00ABB263 /* CommentComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC0BC8B2D39CDCB00ABB263 /* CommentComposer.swift */; };
 		ECC0BC8F2D3A34A600ABB263 /* Bookmarks.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC0BC8E2D3A34A600ABB263 /* Bookmarks.swift */; };
+		ECC0BC912D3B1FEC00ABB263 /* LoginRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC0BC902D3B1FEC00ABB263 /* LoginRow.swift */; };
+		ECC0BC932D3B268C00ABB263 /* SettingsRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC0BC922D3B268C00ABB263 /* SettingsRow.swift */; };
 		ECCE8F262D03815300349733 /* Pager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCE8F252D03815300349733 /* Pager.swift */; };
 		ECE608562D338B3E008B1618 /* ibm_plex_sans_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECE608532D338B3E008B1618 /* ibm_plex_sans_medium.ttf */; };
 		ECE608572D338B3E008B1618 /* ibm_plex_sans_bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECE608522D338B3E008B1618 /* ibm_plex_sans_bold.ttf */; };
@@ -155,6 +157,8 @@
 		EC882BB12D23A8A70065FEC0 /* LoginScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginScreen.swift; sourceTree = "<group>"; };
 		ECC0BC8B2D39CDCB00ABB263 /* CommentComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentComposer.swift; sourceTree = "<group>"; };
 		ECC0BC8E2D3A34A600ABB263 /* Bookmarks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bookmarks.swift; sourceTree = "<group>"; };
+		ECC0BC902D3B1FEC00ABB263 /* LoginRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRow.swift; sourceTree = "<group>"; };
+		ECC0BC922D3B268C00ABB263 /* SettingsRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRow.swift; sourceTree = "<group>"; };
 		ECCE8F252D03815300349733 /* Pager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pager.swift; sourceTree = "<group>"; };
 		ECE608522D338B3E008B1618 /* ibm_plex_sans_bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = ibm_plex_sans_bold.ttf; sourceTree = "<group>"; };
 		ECE608532D338B3E008B1618 /* ibm_plex_sans_medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = ibm_plex_sans_medium.ttf; sourceTree = "<group>"; };
@@ -206,6 +210,8 @@
 				EC072CA92CEF02A500D00B8D /* StoryRowV2.swift */,
 				EC0B1C742D1A34110000C3AC /* CommentsHeader.swift */,
 				ECC0BC8B2D39CDCB00ABB263 /* CommentComposer.swift */,
+				ECC0BC902D3B1FEC00ABB263 /* LoginRow.swift */,
+				ECC0BC922D3B268C00ABB263 /* SettingsRow.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -628,12 +634,14 @@
 				A427057D2A4293B10057E439 /* HNApp.swift in Sources */,
 				EC70E1612D1DD82B00582023 /* HNWebClient.swift in Sources */,
 				A434C2E02A8E75960002F488 /* WebView.swift in Sources */,
+				ECC0BC932D3B268C00ABB263 /* SettingsRow.swift in Sources */,
 				A49933942AA28B5900DED8B1 /* CommentsViewModel.swift in Sources */,
 				A47309B62AA7D1F600201376 /* CommentRow.swift in Sources */,
 				A49933952AA28B6500DED8B1 /* CommentsScreen.swift in Sources */,
 				A42705A72A42949D0057E439 /* AppViewModel.swift in Sources */,
 				ECC0BC8F2D3A34A600ABB263 /* Bookmarks.swift in Sources */,
 				A42705AD2A429D2E0057E439 /* HNApi.swift in Sources */,
+				ECC0BC912D3B1FEC00ABB263 /* LoginRow.swift in Sources */,
 				ECC0BC8C2D39CDCB00ABB263 /* CommentComposer.swift in Sources */,
 				A423B0682BAE05FB00267DDB /* NetworkDebugger.swift in Sources */,
 				ECCE8F262D03815300349733 /* Pager.swift in Sources */,
