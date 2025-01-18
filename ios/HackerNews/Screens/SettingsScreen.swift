@@ -12,25 +12,110 @@ struct SettingsScreen: View {
   @ObservedObject var model: AppViewModel
 
   var body: some View {
-    List {
-      HStack {
-        Circle()
-          .fill(model.authState == AuthState.loggedIn ? Color.green : Color.red)
-          .frame(width: 6)
-        Text(model.authState == AuthState.loggedIn ? "Logout" : "Login")
+    ScrollView {
+      LazyVStack(spacing: 8) {
         Spacer()
-        Image(systemName: "message.fill")
-          .font(.system(size: 12))
-          .foregroundStyle(model.authState == AuthState.loggedIn ? Color.blue : Color.gray)
-        Image(systemName: "arrow.up")
-          .font(.system(size: 12))
-          .foregroundStyle(model.authState == AuthState.loggedIn ? Color.green : Color.gray)
+          .frame(height: 68)
+        VStack(alignment: .leading, spacing: 4) {
+          Text("Profile")
+            .font(.custom("IBMPlexSans-Medium", size: 12))
+          LoginRow(loggedIn: model.authState == AuthState.loggedIn) {
+            model.gotoLogin()
+          }
+        }
+        
+        VStack(alignment: .leading, spacing: 4) {
+          Text("About")
+            .font(.custom("IBMPlexSans-Medium", size: 12))
+          SettingsRow(
+            text: "Follow Emerge",
+            leadingIcon: {
+              Image(systemName: "bird.fill")
+                .font(.system(size: 12))
+                .foregroundStyle(.blue)
+            },
+            trailingIcon: {
+              Image(systemName: "arrow.up.right")
+                .font(.system(size: 12))
+                .foregroundStyle(.onBackground)
+
+            },
+            action: {
+              model.openLink(url: URL(string: "https://www.twitter.com/emergetools")!)
+
+            }
+          )
+
+          SettingsRow(
+            text: "Follow Supergooey",
+            leadingIcon: {
+              Image(systemName: "bird.fill")
+                .font(.system(size: 12))
+                .foregroundStyle(.blue)
+            },
+            trailingIcon: {
+              Image(systemName: "arrow.up.right")
+                .font(.system(size: 12))
+                .foregroundStyle(.onBackground)
+
+            },
+            action: {
+              model.openLink(url: URL(string: "https://www.twitter.com/heyrikin")!)
+            }
+          )
+
+          SettingsRow(
+            text: "Send Feedback",
+            leadingIcon: {
+              Image(systemName: "exclamationmark.triangle.fill")
+                .font(.system(size: 12))
+                .foregroundStyle(.yellow)
+            },
+            trailingIcon: {
+              Image(systemName: "arrow.up.right")
+                .font(.system(size: 12))
+                .foregroundStyle(.onBackground)
+
+            },
+            action: {
+              model.openLink(url: URL(string: "https://forms.gle/YYno9sUehE5xuKAq9")!)
+            }
+          )
+
+          SettingsRow(
+            text: "Privacy Policy",
+            leadingIcon: {
+              Image(systemName: "lock.fill")
+                .font(.system(size: 12))
+                .foregroundStyle(.hnRed)
+            },
+            trailingIcon: {
+              Image(systemName: "arrow.up.right")
+                .font(.system(size: 12))
+                .foregroundStyle(.onBackground)
+
+            },
+            action: {
+              model.openLink(url: URL(string: "https://www.emergetools.com/HackerNewsPrivacyPolicy.html")!  )
+            }
+          )
+        }
       }
-      .onTapGesture {
-        model.gotoLogin()
-      }
+      .padding(.horizontal, 8)
     }
-    .navigationTitle("Settings")
+    .overlay {
+      ZStack(alignment: .leading) {
+        Color.clear
+          .background(.ultraThinMaterial)
+          .containerShape(.rect(cornerRadius: 24, style: .continuous))
+
+        Text("Settings")
+          .font(.custom("IBMPlexMono-Bold", size: 24))
+          .padding(.horizontal, 16)
+      }
+      .frame(height: 60)
+      .frame(maxHeight: .infinity, alignment: .top)
+    }
   }
 }
 
