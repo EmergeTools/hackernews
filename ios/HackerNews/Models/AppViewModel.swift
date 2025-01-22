@@ -225,6 +225,10 @@ class AppViewModel: ObservableObject {
     }
   }
 
+  func openLink(url: URL) {
+    navigationPath.append(AppNavigation.webLink(url: url, title: ""))
+  }
+
   func toggleBookmark(_ item: StoryContent) {
     feedState.stories = feedState.stories.map { current in
       if case .loaded(let content) = current {
@@ -247,7 +251,7 @@ class AppViewModel: ObservableObject {
     }
   }
 
-  func loginTapped(username: String, password: String) async {
+  func loginSubmit(username: String, password: String) async {
     let status = await webClient.login(acct: username, pw: password   )
     print("Login Status: \(status)")
     switch status {
