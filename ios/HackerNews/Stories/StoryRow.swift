@@ -25,10 +25,7 @@ struct StoryRow: View {
         }
     case .loaded(let content):
       Button {
-        switch state {
-        case .loading, .nextPage:
-          print("Hello")
-        case .loaded(let content):
+        if case .loaded(let content) = state {
           let destination: AppViewModel.AppNavigation =
             if let url = content.makeUrl() {
               .webLink(url: url, title: content.title)
@@ -90,15 +87,9 @@ struct StoryRow: View {
             .buttonBorderShape(ButtonBorderShape.capsule)
           }
         }
-        .padding(.horizontal, 8)
+        .padding(.all, 8)
       }
       .buttonStyle(StoryRowButtonStyle())
-      .onLongPressGesture {
-        if case .loaded(var content) = state {
-          content.bookmarked.toggle()
-          model.toggleBookmark(content)
-        }
-      }
     }
   }
 }
@@ -149,7 +140,7 @@ struct StoryRowLoadingState: View {
         .redacted(reason: .placeholder)
       }
     }
-    .padding(.horizontal, 8)
+    .padding(.all, 8)
   }
 }
 

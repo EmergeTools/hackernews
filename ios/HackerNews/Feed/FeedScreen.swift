@@ -13,23 +13,36 @@ struct FeedScreen: View {
   @Binding var model: AppViewModel
 
   var body: some View {
-    ScrollView {
-      LazyVStack(spacing: 8) {
-        Spacer()
-          .frame(height: 60)
-        ForEach(model.feedState.stories, id: \.id) { storyState in
+    List {
+      ForEach(model.feedState.stories, id: \.id) { storyState in
+        VStack(spacing: 0) {
           StoryRow(
             model: $model,
             state: storyState
           )
-          // Line
-          Rectangle()
-            .fill(Color.gray.opacity(0.3))
-            .frame(height: 1)
+        }
+        .listRowInsets(EdgeInsets())
+        .listRowSeparatorTint(Color.gray.opacity(0.3))
+        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+          if case .loaded(var content) = storyState {
+            Button {
+              content.bookmarked.toggle()
+              model.toggleBookmark(content)
+            } label: {
+              Label(
+                content.bookmarked ? "Remove Bookmark" : "Bookmark",
+                systemImage: content.bookmarked ? "book.fill" : "book"
+              )
+            }
+            .tint(.orange)
+          }
         }
       }
+      .listRowBackground(Color.clear)
     }
-    .overlay {
+    .listStyle(.plain)
+    .scrollContentBackground(.hidden)
+    .safeAreaInset(edge: .top) {
       ZStack {
         Color.clear
           .background(.ultraThinMaterial)
@@ -51,7 +64,6 @@ struct FeedScreen: View {
         }
       }
       .frame(height: 60)
-      .frame(maxHeight: .infinity, alignment: .top)
     }
   }
 }
