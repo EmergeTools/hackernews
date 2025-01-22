@@ -147,6 +147,7 @@ struct StoryRowLoadingState: View {
         .redacted(reason: .placeholder)
       }
     }
+    .padding(.horizontal, 8)
   }
 }
 

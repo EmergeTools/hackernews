@@ -96,6 +96,7 @@ class HNWebClient {
     }
   }
 
+  @discardableResult
   func upvoteItem(upvoteUrl: String) async -> Bool {
     let url = URL(string: upvoteUrl)!
     do {
