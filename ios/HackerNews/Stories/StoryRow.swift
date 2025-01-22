@@ -65,11 +65,10 @@ struct StoryRow: View {
             HStack(spacing: 4) {
               Image(systemName: "message.fill")
                 .font(.system(size: 12))
-                .foregroundStyle(.blue)
               Text("\(content.commentCount)")
                 .font(.ibmPlexSans(.medium, size: 12))
-                .foregroundStyle(.black)
             }
+            .foregroundStyle(.blue)
           }
           .buttonStyle(.bordered)
           .buttonBorderShape(ButtonBorderShape.capsule)
@@ -136,11 +135,10 @@ struct StoryRowLoadingState: View {
           HStack(spacing: 4) {
             Image(systemName: "message.fill")
               .font(.system(size: 12))
-              .foregroundStyle(.blue)
             Text("45")
               .font(.ibmPlexSans(.medium, size: 12))
-              .foregroundStyle(.black)
           }
+          .foregroundStyle(.blue)
         }
         .disabled(true)
         .buttonStyle(.bordered)

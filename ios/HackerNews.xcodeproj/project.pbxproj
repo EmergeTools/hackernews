@@ -465,7 +465,6 @@
 				A42705762A4293B10057E439 /* Frameworks */,
 				A42705772A4293B10057E439 /* Resources */,
 				A42705AE2A44C35D0057E439 /* Strip Symbols */,
-				F52059CED4FD476981550295 /* Upload Debug Symbols to Sentry */,
 				A4D28AE92C237BAE007F20D0 /* Embed Frameworks */,
 			);
 			buildRules = (
@@ -622,22 +621,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "#!/bin/bash\nset -e\n\nif [ \"Release\" = \"${CONFIGURATION}\" ]; then\n  # Path to the app directory\n  APP_DIR_PATH=\"${BUILT_PRODUCTS_DIR}/${EXECUTABLE_FOLDER_PATH}\"\n  # Strip main binary\n  strip -rSTx \"${APP_DIR_PATH}/${EXECUTABLE_NAME}\"\n  # Path to the Frameworks directory\n  APP_FRAMEWORKS_DIR=\"${APP_DIR_PATH}/Frameworks\"\n\n  # Strip symbols from frameworks, if Frameworks/ exists at all\n  # ... as long as the framework is NOT signed by Apple\n  if [ -d \"${APP_FRAMEWORKS_DIR}\" ]\n  then\n    find \"${APP_FRAMEWORKS_DIR}\" -type f -perm +111 -maxdepth 2 -mindepth 2 -exec bash -c '\n    codesign -v -R=\"anchor apple\" \"{}\" &> /dev/null ||\n    (\n        echo \"Stripping {}\" &&\n        if [ -w \"{}\" ]; then\n            strip -rSTx \"{}\"\n        else\n            echo \"Warning: No write permission for {}\"\n        fi\n    )\n    ' \\;\n  fi\nfi\n";
-		};
-		F52059CED4FD476981550295 /* Upload Debug Symbols to Sentry */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
-			);
-			name = "Upload Debug Symbols to Sentry";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# This script is responsable to upload debug symbols and source context for Sentry.\nif which sentry-cli >/dev/null; then\nexport SENTRY_ORG=emerge-tools\nexport SENTRY_PROJECT=hackernews-ios\nERROR=$(sentry-cli debug-files upload --include-sources \"$DWARF_DSYM_FOLDER_PATH\" 2>&1 >/dev/null)\nif [ ! $? -eq 0 ]; then\necho \"warning: sentry-cli - $ERROR\"\nfi\nelse\necho \"warning: sentry-cli not installed, download from https://github.com/getsentry/sentry-cli/releases\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
