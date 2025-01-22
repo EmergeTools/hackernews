@@ -18,7 +18,7 @@ struct SettingsRow<Leading: View, Trailing: View>: View {
     HStack(alignment: .center, spacing: 8) {
       leadingIcon()
       Text(text)
-        .font(.custom("IBMPlexMono-Bold", size: 16))
+        .font(.ibmPlexMono(.bold, size: 16))
       Spacer()
       trailingIcon()
     }

@@ -21,13 +21,13 @@ struct CommentRow: View {
       HStack {
         // author
         Text("@\(state.user)")
-          .font(.custom("IBMPlexMono-Bold", size: 12))
+          .font(.ibmPlexMono(.bold, size: 12))
         // time
         HStack(alignment: .center, spacing: 4.0) {
           Image(systemName: "clock")
             .font(.system(size: 12))
           Text(state.age)
-            .font(.custom("IBMPlexSans-Medium", size: 12))
+            .font(.ibmPlexSans(.medium, size: 12))
         }
         .font(.caption)
         // collapse/expand
@@ -50,9 +50,9 @@ struct CommentRow: View {
       }
 
       // Comment Body
-      if (!state.hidden) {
+      if !state.hidden {
         Text(state.text.strippingHTML())
-          .font(.custom("IBMPlexMono-Regular", size: 12))
+          .font(.ibmPlexMono(.regular, size: 12))
       }
     }
     .padding(8.0)
@@ -76,7 +76,7 @@ struct CommentView_Preview: PreviewProvider {
     PreviewVariants {
       CommentRow(
         state: PreviewHelpers.makeFakeComment(),
-        likeComment: {_ in},
+        likeComment: { _ in },
         toggleComment: {}
       )
     }
@@ -89,11 +89,11 @@ struct CommentViewIndentation_Preview: PreviewProvider {
       ForEach(0..<6) { index in
         CommentRow(
           state: PreviewHelpers.makeFakeComment(level: index),
-          likeComment: {_ in},
+          likeComment: { _ in },
           toggleComment: {}
         )
-          .previewLayout(.sizeThatFits)
-          .previewDisplayName("Indentation \(index)")
+        .previewLayout(.sizeThatFits)
+        .previewDisplayName("Indentation \(index)")
       }
     }
   }

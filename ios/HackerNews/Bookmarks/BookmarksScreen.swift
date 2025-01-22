@@ -13,10 +13,10 @@ struct BookmarksScreen: View {
 
   var body: some View {
     Group {
-      if (model.bookmarks.isEmpty) {
+      if model.bookmarks.isEmpty {
         ZStack {
           Text("Long press a story to bookmark it.")
-            .font(.custom("IBMPlexSans-Medium", size: 18))
+            .font(.ibmPlexSans(.medium, size: 18))
         }
       } else {
         ScrollView {
@@ -49,7 +49,7 @@ struct BookmarksScreen: View {
           .containerShape(.rect(cornerRadius: 24, style: .continuous))
 
         Text("Bookmarks")
-          .font(.custom("IBMPlexMono-Bold", size: 24))
+          .font(.ibmPlexMono(.bold, size: 24))
           .padding(.horizontal, 16)
       }
       .frame(height: 60)

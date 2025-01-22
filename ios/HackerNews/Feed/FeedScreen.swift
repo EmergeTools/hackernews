@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct FeedScreen: View {
-  
+
   @ObservedObject var model: AppViewModel
 
   var body: some View {
@@ -43,7 +43,7 @@ struct FeedScreen: View {
               }
             }) {
               Text(feedType.title)
-                .font(.custom("IBMPlexMono-Bold", size: 24))
+                .font(.ibmPlexMono(.bold, size: 24))
                 .scaleEffect(model.feedState.selectedFeed == feedType ? 1.0 : 0.8)
                 .foregroundColor(model.feedState.selectedFeed == feedType ? .hnOrange : .gray)
             }
@@ -69,7 +69,8 @@ struct FeedScreen: View {
 
 #Preview("Has posts") {
   let appModel = AppViewModel(bookmarkStore: FakeBookmarkDataStore())
-  let fakeStories = PreviewHelpers
+  let fakeStories =
+    PreviewHelpers
     .makeFakeStories()
     .map { StoryState.loaded(content: $0.toStoryContent()) }
   appModel.feedState = FeedState(stories: fakeStories)

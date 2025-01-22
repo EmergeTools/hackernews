@@ -17,7 +17,7 @@ struct CommentComposer: View {
         Image(systemName: "message.fill")
           .font(.system(size: 12))
         Text("Add a comment")
-          .font(.custom("IBMPlexSans-Medium", size: 12))
+          .font(.ibmPlexSans(.medium, size: 12))
       }
       TextField(
         "Words of wisdom",
@@ -48,7 +48,7 @@ struct CommentComposer: View {
         )
     }
     .onTapGesture {
-      if (AuthState.loggedOut == state.loggedIn) {
+      if AuthState.loggedOut == state.loggedIn {
         goToLogin()
       }
     }
