@@ -50,6 +50,7 @@ struct CommentsScreen: View {
           ProgressView()
             .progressViewStyle(CircularProgressViewStyle())
             .scaleEffect(2)
+            .padding(24)
         case .loaded(let comments):
           ForEach(comments, id: \.id) { commentState in
             CommentRow(
@@ -81,11 +82,11 @@ struct CommentsScreen: View {
       .padding(8)
     }
     .overlay(alignment: .bottom) {
-      if (model.state.postCommentState != nil) {
+      if model.state.postCommentState != nil {
         CommentComposer(
           state: Binding(
             get: { model.state.postCommentState! },
-            set: { model.state.postCommentState = $0}
+            set: { model.state.postCommentState = $0 }
           ),
           goToLogin: {
             model.goToLogin()
@@ -111,7 +112,7 @@ struct CommentsScreen: View {
       let viewModel = CommentsViewModel(
         story: PreviewHelpers.makeFakeStory(kids: comments.map { $0.id }),
         auth: .loggedIn,
-        navigation: {_ in}
+        navigation: { _ in }
       )
       viewModel.state.comments = .loaded(comments: comments)
       return PreviewVariants {
