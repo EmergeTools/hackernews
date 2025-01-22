@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import SwiftData
 
 enum FeedType: CaseIterable {
   case top
@@ -37,17 +38,91 @@ struct FeedState {
   var stories: [StoryState] = []
 }
 
+struct StoryContent {
+  var id: Int64
+  var title: String
+  var author: String?
+  var body: String?
+  var score: Int
+  var commentCount: Int
+  var timestamp: Int64
+  var url: String?
+  var bookmarked: Bool = false
+
+  func relativeDate() -> String {
+    let date = Date(timeIntervalSince1970: TimeInterval(timestamp))
+    return date.timeAgoDisplay()
+  }
+
+  func makeUrl() -> URL? {
+    guard let url = url else {
+      return nil
+    }
+    return URL(string: url)
+  }
+}
+
+extension Story {
+  func toStoryContent(bookmarked: Bool = false) -> StoryContent {
+    return StoryContent(
+      id: id,
+      title: title,
+      author: by,
+      body: text,
+      score: score,
+      commentCount: descendants,
+      timestamp: time,
+      url: url,
+      bookmarked: bookmarked
+    )
+  }
+}
+
+extension Bookmark {
+  func toStoryContent() -> StoryContent {
+    return StoryContent(
+      id: uid,
+      title: title,
+      author: by,
+      body: text,
+      score: score,
+      commentCount: descendants,
+      timestamp: time,
+      url: url,
+      bookmarked: true
+    )
+  }
+}
+
+extension StoryContent {
+  func toStory() -> Story {
+    return Story(
+      id: id,
+      by: author,
+      time: timestamp,
+      type: .story,
+      title: title,
+      text: body,
+      url: url,
+      score: score,
+      descendants: commentCount,
+      kids: []
+    )
+  }
+
+}
+
 enum StoryState: Identifiable {
   case loading(id: Int64)
-  case loaded(story: Story)
+  case loaded(content: StoryContent)
   case nextPage
 
   var id: Int64 {
     switch self {
     case .loading(id: let id):
       return id
-    case .loaded(story: let story):
-      return story.id
+    case .loaded(content: let content):
+      return content.id
     case .nextPage:
       return Int64.max
     }
@@ -71,14 +146,19 @@ class AppViewModel: ObservableObject {
   @Published var showLoginSheet: Bool = false
   @Published var feedState = FeedState()
   @Published var navigationPath = NavigationPath()
+  @Published var bookmarks: [Bookmark]
 
+  private let bookmarkStore: BookmarksDataStore
   private let api = HNApi()
   private let webClient = HNWebClient()
+
   private var pager = Pager()
   private let cookieStorage = HTTPCookieStorage.shared
   private var loadingTask: Task<Void, Never>?
 
-  init() {
+  init(bookmarkStore: BookmarksDataStore) {
+    self.bookmarkStore = bookmarkStore
+    self.bookmarks = bookmarkStore.fetchBookmarks()
     authState = self.cookieStorage.cookies?.isEmpty == true ? .loggedOut : .loggedIn
     loadingTask = Task {
       await fetchInitialPosts(feedType: .top)
@@ -101,7 +181,10 @@ class AppViewModel: ObservableObject {
       feedState.stories = nextPage.ids.map { StoryState.loading(id: $0) }
 
       let items = await api.fetchPage(page: nextPage)
-      feedState.stories = items.map { StoryState.loaded(story: $0 ) }
+      feedState.stories = items.map { story in
+        let bookmarked = bookmarkStore.containsBookmark(with: story.id)
+        return .loaded(content: story.toStoryContent(bookmarked: bookmarked))
+      }
       pager.hasNextPage() ? feedState.stories.append(.nextPage) : ()
     }
   }
@@ -113,8 +196,15 @@ class AppViewModel: ObservableObject {
     let nextPage = pager.nextPage()
     let items = await api.fetchPage(page: nextPage)
     feedState.stories.removeLast() // remove the loading view
-    feedState.stories += items.map { StoryState.loaded(story: $0) }
+    feedState.stories += items.map { story in
+      let bookmarked = bookmarkStore.containsBookmark(with: story.id)
+      return .loaded(content: story.toStoryContent(bookmarked: bookmarked))
+    }
     pager.hasNextPage() ? feedState.stories.append(.nextPage) : ()
+  }
+
+  func fetchBookmarks() {
+    bookmarks = bookmarkStore.fetchBookmarks()
   }
 
 
@@ -132,6 +222,28 @@ class AppViewModel: ObservableObject {
     } else {
       cookieStorage.removeCookies()
       authState = .loggedOut
+    }
+  }
+
+  func toggleBookmark(_ item: StoryContent) {
+    feedState.stories = feedState.stories.map { current in
+      if case .loaded(let content) = current {
+        if content.id == item.id {
+          return .loaded(content: item)
+        } else {
+          return current
+        }
+      } else {
+        return current
+      }
+    }
+
+    if item.bookmarked {
+      bookmarkStore.addBookmark(item.toBookmark())
+      bookmarks = bookmarkStore.fetchBookmarks()
+    } else {
+      bookmarkStore.removeBookmark(with: item.id)
+      bookmarks = bookmarkStore.fetchBookmarks()
     }
   }
 

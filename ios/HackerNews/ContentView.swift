@@ -17,7 +17,10 @@ struct ContentView: View {
         .tabItem {
           Image(systemName: "newspaper.fill")
         }
-      BookmarksScreen()
+      BookmarksScreen(model: model)
+        .onAppear {
+          model.fetchBookmarks()
+        }
         .tabItem {
           Image(systemName: "book")
         }
@@ -32,7 +35,7 @@ struct ContentView: View {
 
 struct ContentView_LoggedIn_Loading_Previews: PreviewProvider {
   static var previews: some View {
-    let appModel = AppViewModel()
+    let appModel = AppViewModel(bookmarkStore: FakeBookmarkDataStore())
     appModel.feedState = FeedState(stories: [])
     return PreviewVariants {
       PreviewHelpers.withNavigationView {
@@ -44,10 +47,10 @@ struct ContentView_LoggedIn_Loading_Previews: PreviewProvider {
 
 struct ContentView_LoggedIn_WithPosts_Previews: PreviewProvider {
   static var previews: some View {
-    let appModel = AppViewModel()
+    let appModel = AppViewModel(bookmarkStore: FakeBookmarkDataStore())
     let fakeStories = PreviewHelpers
       .makeFakeStories()
-      .map { StoryState.loaded(story: $0) }
+      .map { StoryState.loaded(content: $0.toStoryContent()) }
     
     appModel.authState = .loggedIn
     appModel.feedState = FeedState(stories: fakeStories)
@@ -62,7 +65,7 @@ struct ContentView_LoggedIn_WithPosts_Previews: PreviewProvider {
 
 struct ContentView_LoggedIn_EmptyPosts_Previews: PreviewProvider {
   static var previews: some View {
-    let appModel = AppViewModel()
+    let appModel = AppViewModel(bookmarkStore: FakeBookmarkDataStore())
     appModel.feedState = FeedState(stories: [])
     return PreviewVariants {
       PreviewHelpers.withNavigationView {

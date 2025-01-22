@@ -171,7 +171,7 @@ struct Story: HNItem, Codable, Hashable {
   let score: Int
   let descendants: Int
   let kids: [Int64]?
-  
+
   var comments: [Int64] {
     return kids ?? []
   }
