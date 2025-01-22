@@ -53,7 +53,7 @@ struct LoginScreen: View {
         },
         label: {
           Text("Submit")
-            .font(.custom("IBMPlexMono-Bold", size: 16))
+            .font(.ibmPlexMono(.bold, size: 16))
             .frame(maxWidth: .infinity)
         }
       )

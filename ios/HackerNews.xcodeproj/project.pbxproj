@@ -25,6 +25,7 @@
 		A42705AB2A4296BA0057E439 /* FeedScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A42705AA2A4296BA0057E439 /* FeedScreen.swift */; };
 		A42705AD2A429D2E0057E439 /* HNApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = A42705AC2A429D2E0057E439 /* HNApi.swift */; };
 		A434C2E02A8E75960002F488 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A434C2DF2A8E75960002F488 /* WebView.swift */; };
+		A439A8EC2D4194B100452940 /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = A439A8EB2D4194B100452940 /* Font.swift */; };
 		A47309B42AA29D9600201376 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = A47309B32AA29D9600201376 /* SwiftSoup */; };
 		A47309B62AA7D1F600201376 /* CommentRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47309B52AA7D1F600201376 /* CommentRow.swift */; };
 		A495A6662CED57BB009A2A6B /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = A495A6652CED57BB009A2A6B /* SnapshotTesting */; };
@@ -109,6 +110,7 @@
 		A42705AC2A429D2E0057E439 /* HNApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HNApi.swift; sourceTree = "<group>"; };
 		A434C2DF2A8E75960002F488 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		A435EF3D2C08F2A9005BF473 /* HackerNews.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = HackerNews.entitlements; path = ../HackerNews.entitlements; sourceTree = "<group>"; };
+		A439A8EB2D4194B100452940 /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
 		A45C2C7D2A5DDE25009BC030 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 		A45C2C7E2A5DDE25009BC030 /* Pluginfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Pluginfile; sourceTree = "<group>"; };
 		A45C2C7F2A5DDE25009BC030 /* Appfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Appfile; sourceTree = "<group>"; };
@@ -203,8 +205,9 @@
 				1DF162022A436E7B001A3F76 /* DateUtils.swift */,
 				A413E8562A8C40E800C0F867 /* Extensions.swift */,
 				A423B0692BAE061600267DDB /* Flags.swift */,
-				A40DC1F92C20D8B60055B920 /* Previews.swift */,
+				A439A8EB2D4194B100452940 /* Font.swift */,
 				ECCE8F252D03815300349733 /* Pager.swift */,
+				A40DC1F92C20D8B60055B920 /* Previews.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -666,6 +669,7 @@
 				ECC0BC8F2D3A34A600ABB263 /* Bookmarks.swift in Sources */,
 				A42705AD2A429D2E0057E439 /* HNApi.swift in Sources */,
 				ECC0BC912D3B1FEC00ABB263 /* LoginRow.swift in Sources */,
+				A439A8EC2D4194B100452940 /* Font.swift in Sources */,
 				ECC0BC8C2D39CDCB00ABB263 /* CommentComposer.swift in Sources */,
 				A423B0682BAE05FB00267DDB /* NetworkDebugger.swift in Sources */,
 				ECCE8F262D03815300349733 /* Pager.swift in Sources */,

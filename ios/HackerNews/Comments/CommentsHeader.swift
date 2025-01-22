@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 struct CommentsHeader: View {
   let state: CommentsHeaderState
   let likePost: () -> Void
@@ -17,7 +16,7 @@ struct CommentsHeader: View {
     VStack(alignment: .leading) {
       // title
       Text(state.story.title)
-        .font(.custom("IBMPlexMono-Bold", size: 16))
+        .font(.ibmPlexMono(.bold, size: 16))
         .frame(maxWidth: .infinity, alignment: .leading)
 
       // actions
@@ -25,7 +24,7 @@ struct CommentsHeader: View {
         // post author
         let author = state.story.by != nil ? state.story.by! : ""
         Text("@\(author)")
-          .font(.custom("IBMPlexMono-Bold", size: 12))
+          .font(.ibmPlexMono(.bold, size: 12))
           .foregroundStyle(.hnOrange)
         // post time
         HStack(alignment: .center, spacing: 4.0) {
@@ -33,7 +32,7 @@ struct CommentsHeader: View {
             .font(.system(size: 12))
             .foregroundStyle(.purple)
           Text(state.story.displayableDate)
-            .font(.custom("IBMPlexSans-Medium", size: 12))
+            .font(.ibmPlexSans(.medium, size: 12))
         }
         Spacer()
         // upvote button
@@ -48,12 +47,12 @@ struct CommentsHeader: View {
         .clipShape(Capsule())
       }
       // body
-      if (state.story.text != nil) {
+      if state.story.text != nil {
         VStack(alignment: .leading, spacing: 8.0) {
           Image(systemName: "chevron.up.chevron.down")
             .font(.caption2)
           Text(state.story.text!)
-            .font(.custom("IBMPlexMono-Regular", size: 12))
+            .font(.ibmPlexMono(.regular, size: 12))
             .frame(maxWidth: .infinity, alignment: .leading)
             .lineLimit(state.expanded ? nil : 4)
         }

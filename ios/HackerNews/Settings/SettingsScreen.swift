@@ -18,15 +18,15 @@ struct SettingsScreen: View {
           .frame(height: 68)
         VStack(alignment: .leading, spacing: 4) {
           Text("Profile")
-            .font(.custom("IBMPlexSans-Medium", size: 12))
+            .font(.ibmPlexSans(.medium, size: 12))
           LoginRow(loggedIn: model.authState == AuthState.loggedIn) {
             model.gotoLogin()
           }
         }
-        
+
         VStack(alignment: .leading, spacing: 4) {
           Text("About")
-            .font(.custom("IBMPlexSans-Medium", size: 12))
+            .font(.ibmPlexSans(.medium, size: 12))
           SettingsRow(
             text: "Follow Emerge",
             leadingIcon: {
@@ -96,7 +96,8 @@ struct SettingsScreen: View {
 
             },
             action: {
-              model.openLink(url: URL(string: "https://www.emergetools.com/HackerNewsPrivacyPolicy.html")!  )
+              model.openLink(
+                url: URL(string: "https://www.emergetools.com/HackerNewsPrivacyPolicy.html")!)
             }
           )
         }
@@ -110,7 +111,7 @@ struct SettingsScreen: View {
           .containerShape(.rect(cornerRadius: 24, style: .continuous))
 
         Text("Settings")
-          .font(.custom("IBMPlexMono-Bold", size: 24))
+          .font(.ibmPlexMono(.bold, size: 24))
           .padding(.horizontal, 16)
       }
       .frame(height: 60)
@@ -118,7 +119,6 @@ struct SettingsScreen: View {
     }
   }
 }
-
 
 #Preview {
   SettingsScreen(model: AppViewModel(bookmarkStore: FakeBookmarkDataStore()))

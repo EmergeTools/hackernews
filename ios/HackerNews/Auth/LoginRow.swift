@@ -20,7 +20,7 @@ struct LoginRow: View {
           width: 8
         )
       Text(loginText())
-        .font(.custom("IBMPlexMono-Bold", size: 16))
+        .font(.ibmPlexMono(.bold, size: 16))
       Spacer()
       Image(systemName: "message.fill")
         .font(.system(size: 12))
@@ -58,4 +58,3 @@ struct LoginRow: View {
 #Preview {
   LoginRow(loggedIn: true, tapped: {})
 }
-
