@@ -12,7 +12,7 @@ import SwiftData
 
 @main
 struct Hacker_NewsApp: App {
-  @StateObject private var appModel = AppViewModel(bookmarkStore: LiveBookmarksDataStore.shared)
+  @State private var appModel = AppViewModel(bookmarkStore: LiveBookmarksDataStore.shared)
 
   init() {
     UINavigationBar.appearance().backgroundColor = .clear
@@ -38,7 +38,7 @@ struct Hacker_NewsApp: App {
           HNColors.background
             .ignoresSafeArea()
 
-          ContentView(model: appModel)
+          ContentView(model: $appModel)
         }
         .navigationDestination(for: AppViewModel.AppNavigation.self) { appNavigation in
           switch appNavigation {
@@ -61,7 +61,7 @@ struct Hacker_NewsApp: App {
           }
         }
         .sheet(isPresented: $appModel.showLoginSheet) {
-          LoginScreen(model: appModel)
+          LoginScreen(model: $appModel)
         }
       }
     }

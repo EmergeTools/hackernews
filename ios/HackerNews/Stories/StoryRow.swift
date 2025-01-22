@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct StoryRow: View {
-  @ObservedObject var model: AppViewModel
+  @Binding var model: AppViewModel
   let state: StoryState
 
   var body: some View {
@@ -152,12 +152,14 @@ struct StoryRowLoadingState: View {
 
 struct StoryRow_Preview: PreviewProvider {
   static var previews: some View {
-    let fakeStory = PreviewHelpers.makeFakeStory(index: 0, descendants: 3, kids: [1, 2, 3])
+    let fakeStory = PreviewHelpers.makeFakeStory(
+      index: 0, descendants: 3, kids: [1, 2, 3])
+    @State var model = AppViewModel(
+      bookmarkStore: FakeBookmarkDataStore()
+    )
     PreviewVariants {
       StoryRow(
-        model: AppViewModel(
-          bookmarkStore: FakeBookmarkDataStore()
-        ), state: .loaded(content: fakeStory.toStoryContent()))
+        model: $model, state: .loaded(content: fakeStory.toStoryContent()))
     }
   }
 }

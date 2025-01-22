@@ -6,8 +6,8 @@
 //
 
 import Foundation
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 enum FeedType: CaseIterable {
   case top
@@ -119,9 +119,9 @@ enum StoryState: Identifiable {
 
   var id: Int64 {
     switch self {
-    case .loading(id: let id):
+    case .loading(let id):
       return id
-    case .loaded(content: let content):
+    case .loaded(let content):
       return content.id
     case .nextPage:
       return Int64.max
@@ -134,19 +134,19 @@ enum AuthState {
   case loggedOut
 }
 
-@MainActor
-class AppViewModel: ObservableObject {
+@Observable @MainActor
+final class AppViewModel {
 
   enum AppNavigation: Codable, Hashable {
     case webLink(url: URL, title: String)
     case storyComments(story: Story)
   }
 
-  @Published var authState: AuthState
-  @Published var showLoginSheet: Bool = false
-  @Published var feedState = FeedState()
-  @Published var navigationPath = NavigationPath()
-  @Published var bookmarks: [Bookmark]
+  var authState: AuthState
+  var showLoginSheet: Bool = false
+  var feedState = FeedState()
+  var navigationPath = NavigationPath()
+  var bookmarks: [Bookmark]
 
   private let bookmarkStore: BookmarksDataStore
   private let api = HNApi()
@@ -154,7 +154,7 @@ class AppViewModel: ObservableObject {
 
   private var pager = Pager()
   private let cookieStorage = HTTPCookieStorage.shared
-  private var loadingTask: Task<Void, Never>?
+  @ObservationIgnored private var loadingTask: Task<Void, Never>?
 
   init(bookmarkStore: BookmarksDataStore) {
     self.bookmarkStore = bookmarkStore
@@ -195,7 +195,7 @@ class AppViewModel: ObservableObject {
     }
     let nextPage = pager.nextPage()
     let items = await api.fetchPage(page: nextPage)
-    feedState.stories.removeLast() // remove the loading view
+    feedState.stories.removeLast()  // remove the loading view
     feedState.stories += items.map { story in
       let bookmarked = bookmarkStore.containsBookmark(with: story.id)
       return .loaded(content: story.toStoryContent(bookmarked: bookmarked))
@@ -207,7 +207,6 @@ class AppViewModel: ObservableObject {
     bookmarks = bookmarkStore.fetchBookmarks()
   }
 
-
   private func isLoggedIn() -> Bool {
     return cookieStorage.cookies?.isEmpty == false
   }
@@ -217,7 +216,7 @@ class AppViewModel: ObservableObject {
   }
 
   func gotoLogin() {
-    if (authState == .loggedOut) {
+    if authState == .loggedOut {
       showLoginSheet = true
     } else {
       cookieStorage.removeCookies()
@@ -252,7 +251,7 @@ class AppViewModel: ObservableObject {
   }
 
   func loginSubmit(username: String, password: String) async {
-    let status = await webClient.login(acct: username, pw: password   )
+    let status = await webClient.login(acct: username, pw: password)
     print("Login Status: \(status)")
     switch status {
     case .success:

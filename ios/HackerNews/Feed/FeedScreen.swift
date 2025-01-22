@@ -10,7 +10,7 @@ import SwiftUI
 
 struct FeedScreen: View {
 
-  @ObservedObject var model: AppViewModel
+  @Binding var model: AppViewModel
 
   var body: some View {
     ScrollView {
@@ -19,7 +19,7 @@ struct FeedScreen: View {
           .frame(height: 60)
         ForEach(model.feedState.stories, id: \.id) { storyState in
           StoryRow(
-            model: model,
+            model: $model,
             state: storyState
           )
           // Line
@@ -57,23 +57,24 @@ struct FeedScreen: View {
 }
 
 #Preview {
-  FeedScreen(model: AppViewModel(bookmarkStore: FakeBookmarkDataStore()))
+  @Previewable @State var model = AppViewModel(bookmarkStore: FakeBookmarkDataStore())
+  FeedScreen(model: $model)
 }
 
 #Preview("Loading") {
-  let appModel = AppViewModel(bookmarkStore: FakeBookmarkDataStore())
+  @Previewable @State var appModel = AppViewModel(bookmarkStore: FakeBookmarkDataStore())
   appModel.feedState = FeedState()
 
-  return FeedScreen(model: appModel)
+  return FeedScreen(model: $appModel)
 }
 
 #Preview("Has posts") {
-  let appModel = AppViewModel(bookmarkStore: FakeBookmarkDataStore())
+  @Previewable @State var appModel = AppViewModel(bookmarkStore: FakeBookmarkDataStore())
   let fakeStories =
     PreviewHelpers
     .makeFakeStories()
     .map { StoryState.loaded(content: $0.toStoryContent()) }
   appModel.feedState = FeedState(stories: fakeStories)
 
-  return FeedScreen(model: appModel)
+  return FeedScreen(model: $appModel)
 }

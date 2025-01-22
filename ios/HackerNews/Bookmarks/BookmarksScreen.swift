@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct BookmarksScreen: View {
-  @ObservedObject var model: AppViewModel
+  @Binding var model: AppViewModel
 
   var body: some View {
     Group {
@@ -25,7 +25,7 @@ struct BookmarksScreen: View {
               .frame(height: 60)
             ForEach(model.bookmarks, id: \.id) { bookmark in
               StoryRow(
-                model: model,
+                model: $model,
                 state: .loaded(content: bookmark.toStoryContent())
               )
 
@@ -59,7 +59,9 @@ struct BookmarksScreen: View {
 }
 
 #Preview {
+  @Previewable @State var model = AppViewModel(
+    bookmarkStore: FakeBookmarkDataStore())
   BookmarksScreen(
-    model: AppViewModel(bookmarkStore: FakeBookmarkDataStore())
+    model: $model
   )
 }
