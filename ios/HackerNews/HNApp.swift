@@ -22,11 +22,6 @@ struct Hacker_NewsApp: App {
     
     SentrySDK.start { options in
         options.dsn = "https://118cff4b239bd3e0ede8fd74aad9bf8f@o497846.ingest.sentry.io/4506027753668608"
-#if DEBUG
-        options.debug = true
-#else
-        options.debug = false
-#endif
         options.enableTracing = true
     }
   }

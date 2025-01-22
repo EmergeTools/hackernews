@@ -24,58 +24,7 @@ struct StoryRow: View {
           }
         }
     case .loaded(let content):
-      VStack(alignment: .leading, spacing: 8) {
-        let author = content.author!
-        HStack {
-          Text("@\(author)")
-            .font(.ibmPlexMono(.bold, size: 12))
-            .foregroundColor(.hnOrange)
-          Spacer()
-          if content.bookmarked {
-            Image(systemName: "book.fill")
-              .font(.system(size: 12))
-              .foregroundStyle(.hnOrange)
-          }
-        }
-        Text(content.title)
-          .font(.ibmPlexMono(.bold, size: 16))
-        HStack(spacing: 16) {
-          HStack(spacing: 4) {
-            Image(systemName: "arrow.up")
-              .font(.system(size: 12))
-              .foregroundColor(.green)
-            Text("\(content.score)")
-              .font(.ibmPlexSans(.medium, size: 12))
-          }
-          HStack(spacing: 4) {
-            Image(systemName: "clock")
-              .font(.system(size: 12))
-              .foregroundColor(.purple)
-            Text(content.relativeDate())
-              .font(.ibmPlexSans(.medium, size: 12))
-          }
-          Spacer()
-          // Comment Button
-          Button(action: {
-            print("Pressed comment button for: \(content.id)")
-            model.navigationPath.append(
-              AppViewModel.AppNavigation.storyComments(story: content.toStory())
-            )
-          }) {
-            HStack(spacing: 4) {
-              Image(systemName: "message.fill")
-                .font(.system(size: 12))
-              Text("\(content.commentCount)")
-                .font(.ibmPlexSans(.medium, size: 12))
-            }
-            .foregroundStyle(.blue)
-          }
-          .buttonStyle(.bordered)
-          .buttonBorderShape(ButtonBorderShape.capsule)
-        }
-      }
-      .padding(.horizontal, 8)
-      .onTapGesture {
+      Button {
         switch state {
         case .loading, .nextPage:
           print("Hello")
@@ -89,7 +38,61 @@ struct StoryRow: View {
           print("Navigating to \(destination)")
           model.navigationPath.append(destination)
         }
+      } label: {
+        VStack(alignment: .leading, spacing: 8) {
+          let author = content.author!
+          HStack {
+            Text("@\(author)")
+              .font(.ibmPlexMono(.bold, size: 12))
+              .foregroundColor(.hnOrange)
+            Spacer()
+            if content.bookmarked {
+              Image(systemName: "book.fill")
+                .font(.system(size: 12))
+                .foregroundStyle(.hnOrange)
+            }
+          }
+          Text(content.title)
+            .font(.ibmPlexMono(.bold, size: 16))
+          HStack(spacing: 16) {
+            HStack(spacing: 4) {
+              Image(systemName: "arrow.up")
+                .font(.system(size: 12))
+                .foregroundColor(.green)
+              Text("\(content.score)")
+                .font(.ibmPlexSans(.medium, size: 12))
+            }
+            HStack(spacing: 4) {
+              Image(systemName: "clock")
+                .font(.system(size: 12))
+                .foregroundColor(.purple)
+              Text(content.relativeDate())
+                .font(.ibmPlexSans(.medium, size: 12))
+            }
+            Spacer()
+            // Comment Button
+            Button(action: {
+              print("Pressed comment button for: \(content.id)")
+              model.navigationPath.append(
+                AppViewModel.AppNavigation.storyComments(
+                  story: content.toStory())
+              )
+            }) {
+              HStack(spacing: 4) {
+                Image(systemName: "message.fill")
+                  .font(.system(size: 12))
+                Text("\(content.commentCount)")
+                  .font(.ibmPlexSans(.medium, size: 12))
+              }
+              .foregroundStyle(.blue)
+            }
+            .buttonStyle(.bordered)
+            .buttonBorderShape(ButtonBorderShape.capsule)
+          }
+        }
+        .padding(.horizontal, 8)
       }
+      .buttonStyle(StoryRowButtonStyle())
       .onLongPressGesture {
         if case .loaded(var content) = state {
           content.bookmarked.toggle()
@@ -147,6 +150,15 @@ struct StoryRowLoadingState: View {
       }
     }
     .padding(.horizontal, 8)
+  }
+}
+
+private struct StoryRowButtonStyle: ButtonStyle {
+  func makeBody(configuration: Configuration) -> some View {
+    configuration.label
+      .background(Color.gray.opacity(configuration.isPressed ? 0.1 : 0))
+      .scaleEffect(configuration.isPressed ? 0.98 : 1.0)
+      .animation(.easeInOut(duration: 0.1), value: configuration.isPressed)
   }
 }
 
