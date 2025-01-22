@@ -137,3 +137,19 @@ struct PreviewHelpers {
     )
   }
 }
+
+struct FakeBookmarkDataStore: BookmarksDataStore {
+  func fetchBookmarks() -> [Bookmark] {
+    return []
+  }
+  
+  func addBookmark(_ bookmark: Bookmark) {
+  }
+
+  func removeBookmark(with id: Int64) {
+  }
+
+  func containsBookmark(with id: Int64) -> Bool {
+    return false
+  }
+}
