@@ -12,7 +12,7 @@ import SwiftData
 
 @main
 struct Hacker_NewsApp: App {
-  @StateObject private var appModel = AppViewModel(bookmarkStore: LiveBookmarksDataStore.shared)
+  @State private var appModel = AppViewModel(bookmarkStore: LiveBookmarksDataStore.shared)
 
   init() {
     UINavigationBar.appearance().backgroundColor = .clear
@@ -22,11 +22,6 @@ struct Hacker_NewsApp: App {
     
     SentrySDK.start { options in
         options.dsn = "https://118cff4b239bd3e0ede8fd74aad9bf8f@o497846.ingest.sentry.io/4506027753668608"
-#if DEBUG
-        options.debug = true
-#else
-        options.debug = false
-#endif
         options.enableTracing = true
     }
   }
@@ -38,7 +33,7 @@ struct Hacker_NewsApp: App {
           HNColors.background
             .ignoresSafeArea()
 
-          ContentView(model: appModel)
+          ContentView(model: $appModel)
         }
         .navigationDestination(for: AppViewModel.AppNavigation.self) { appNavigation in
           switch appNavigation {
@@ -61,7 +56,7 @@ struct Hacker_NewsApp: App {
           }
         }
         .sheet(isPresented: $appModel.showLoginSheet) {
-          LoginScreen(model: appModel)
+          LoginScreen(model: $appModel)
         }
       }
     }

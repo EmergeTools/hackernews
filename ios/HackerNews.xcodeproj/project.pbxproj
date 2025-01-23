@@ -109,8 +109,8 @@
 		A42705AA2A4296BA0057E439 /* FeedScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedScreen.swift; sourceTree = "<group>"; };
 		A42705AC2A429D2E0057E439 /* HNApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HNApi.swift; sourceTree = "<group>"; };
 		A434C2DF2A8E75960002F488 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
-		A435EF3D2C08F2A9005BF473 /* HackerNews.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = HackerNews.entitlements; path = ../HackerNews.entitlements; sourceTree = "<group>"; };
 		A439A8EB2D4194B100452940 /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
+		A439A8ED2D429E2500452940 /* HackerNews.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HackerNews.entitlements; sourceTree = "<group>"; };
 		A45C2C7D2A5DDE25009BC030 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 		A45C2C7E2A5DDE25009BC030 /* Pluginfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Pluginfile; sourceTree = "<group>"; };
 		A45C2C7F2A5DDE25009BC030 /* Appfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Appfile; sourceTree = "<group>"; };
@@ -216,8 +216,8 @@
 			isa = PBXGroup;
 			children = (
 				A42705AC2A429D2E0057E439 /* HNApi.swift */,
-				A423B0672BAE05FB00267DDB /* NetworkDebugger.swift */,
 				EC70E1602D1DD82B00582023 /* HNWebClient.swift */,
+				A423B0672BAE05FB00267DDB /* NetworkDebugger.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -257,7 +257,6 @@
 				1DF162042A436E8D001A3F76 /* Network */,
 				A439A8E72D418D1100452940 /* Settings */,
 				A439A8E42D418CC900452940 /* Stories */,
-				A439A8E22D418C9A00452940 /* Supporting Files */,
 				1DF162012A436E6E001A3F76 /* Utils */,
 				A439A8E62D418D0300452940 /* Web */,
 				A42705A62A42949D0057E439 /* AppViewModel.swift */,
@@ -265,6 +264,8 @@
 				A427057C2A4293B10057E439 /* HNApp.swift */,
 				A42705802A4293B20057E439 /* Assets.xcassets */,
 				A42705832A4293B20057E439 /* Preview Assets.xcassets */,
+				A45C2CBB2A5F0A41009BC030 /* Hacker-News-Info.plist */,
+				A439A8ED2D429E2500452940 /* HackerNews.entitlements */,
 			);
 			path = HackerNews;
 			sourceTree = "<group>";
@@ -289,23 +290,14 @@
 			path = HackerNewsUITests;
 			sourceTree = "<group>";
 		};
-		A439A8E22D418C9A00452940 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				A435EF3D2C08F2A9005BF473 /* HackerNews.entitlements */,
-				A45C2CBB2A5F0A41009BC030 /* Hacker-News-Info.plist */,
-			);
-			path = "Supporting Files";
-			sourceTree = "<group>";
-		};
 		A439A8E32D418CB500452940 /* Comments */ = {
 			isa = PBXGroup;
 			children = (
-				A48C0DE92A9819E00034CC0A /* CommentsViewModel.swift */,
-				A48C0DE62A9818A50034CC0A /* CommentsScreen.swift */,
+				ECC0BC8B2D39CDCB00ABB263 /* CommentComposer.swift */,
 				A47309B52AA7D1F600201376 /* CommentRow.swift */,
 				EC0B1C742D1A34110000C3AC /* CommentsHeader.swift */,
-				ECC0BC8B2D39CDCB00ABB263 /* CommentComposer.swift */,
+				A48C0DE62A9818A50034CC0A /* CommentsScreen.swift */,
+				A48C0DE92A9819E00034CC0A /* CommentsViewModel.swift */,
 			);
 			path = Comments;
 			sourceTree = "<group>";
@@ -465,7 +457,6 @@
 				A42705762A4293B10057E439 /* Frameworks */,
 				A42705772A4293B10057E439 /* Resources */,
 				A42705AE2A44C35D0057E439 /* Strip Symbols */,
-				F52059CED4FD476981550295 /* Upload Debug Symbols to Sentry */,
 				A4D28AE92C237BAE007F20D0 /* Embed Frameworks */,
 			);
 			buildRules = (
@@ -622,22 +613,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "#!/bin/bash\nset -e\n\nif [ \"Release\" = \"${CONFIGURATION}\" ]; then\n  # Path to the app directory\n  APP_DIR_PATH=\"${BUILT_PRODUCTS_DIR}/${EXECUTABLE_FOLDER_PATH}\"\n  # Strip main binary\n  strip -rSTx \"${APP_DIR_PATH}/${EXECUTABLE_NAME}\"\n  # Path to the Frameworks directory\n  APP_FRAMEWORKS_DIR=\"${APP_DIR_PATH}/Frameworks\"\n\n  # Strip symbols from frameworks, if Frameworks/ exists at all\n  # ... as long as the framework is NOT signed by Apple\n  if [ -d \"${APP_FRAMEWORKS_DIR}\" ]\n  then\n    find \"${APP_FRAMEWORKS_DIR}\" -type f -perm +111 -maxdepth 2 -mindepth 2 -exec bash -c '\n    codesign -v -R=\"anchor apple\" \"{}\" &> /dev/null ||\n    (\n        echo \"Stripping {}\" &&\n        if [ -w \"{}\" ]; then\n            strip -rSTx \"{}\"\n        else\n            echo \"Warning: No write permission for {}\"\n        fi\n    )\n    ' \\;\n  fi\nfi\n";
-		};
-		F52059CED4FD476981550295 /* Upload Debug Symbols to Sentry */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
-			);
-			name = "Upload Debug Symbols to Sentry";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# This script is responsable to upload debug symbols and source context for Sentry.\nif which sentry-cli >/dev/null; then\nexport SENTRY_ORG=emerge-tools\nexport SENTRY_PROJECT=hackernews-ios\nERROR=$(sentry-cli debug-files upload --include-sources \"$DWARF_DSYM_FOLDER_PATH\" 2>&1 >/dev/null)\nif [ ! $? -eq 0 ]; then\necho \"warning: sentry-cli - $ERROR\"\nfi\nelse\necho \"warning: sentry-cli not installed, download from https://github.com/getsentry/sentry-cli/releases\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

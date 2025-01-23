@@ -10,26 +10,39 @@ import SwiftUI
 
 struct FeedScreen: View {
 
-  @ObservedObject var model: AppViewModel
+  @Binding var model: AppViewModel
 
   var body: some View {
-    ScrollView {
-      LazyVStack(spacing: 8) {
-        Spacer()
-          .frame(height: 60)
-        ForEach(model.feedState.stories, id: \.id) { storyState in
+    List {
+      ForEach(model.feedState.stories, id: \.id) { storyState in
+        VStack(spacing: 0) {
           StoryRow(
-            model: model,
+            model: $model,
             state: storyState
           )
-          // Line
-          Rectangle()
-            .fill(Color.gray.opacity(0.3))
-            .frame(height: 1)
+        }
+        .listRowInsets(EdgeInsets())
+        .listRowSeparatorTint(Color.gray.opacity(0.3))
+        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+          if case .loaded(var content) = storyState {
+            Button {
+              content.bookmarked.toggle()
+              model.toggleBookmark(content)
+            } label: {
+              Label(
+                content.bookmarked ? "Remove Bookmark" : "Bookmark",
+                systemImage: content.bookmarked ? "book.fill" : "book"
+              )
+            }
+            .tint(.orange)
+          }
         }
       }
+      .listRowBackground(Color.clear)
     }
-    .overlay {
+    .listStyle(.plain)
+    .scrollContentBackground(.hidden)
+    .safeAreaInset(edge: .top) {
       ZStack {
         Color.clear
           .background(.ultraThinMaterial)
@@ -51,29 +64,29 @@ struct FeedScreen: View {
         }
       }
       .frame(height: 60)
-      .frame(maxHeight: .infinity, alignment: .top)
     }
   }
 }
 
 #Preview {
-  FeedScreen(model: AppViewModel(bookmarkStore: FakeBookmarkDataStore()))
+  @Previewable @State var model = AppViewModel(bookmarkStore: FakeBookmarkDataStore())
+  FeedScreen(model: $model)
 }
 
 #Preview("Loading") {
-  let appModel = AppViewModel(bookmarkStore: FakeBookmarkDataStore())
+  @Previewable @State var appModel = AppViewModel(bookmarkStore: FakeBookmarkDataStore())
   appModel.feedState = FeedState()
 
-  return FeedScreen(model: appModel)
+  return FeedScreen(model: $appModel)
 }
 
 #Preview("Has posts") {
-  let appModel = AppViewModel(bookmarkStore: FakeBookmarkDataStore())
+  @Previewable @State var appModel = AppViewModel(bookmarkStore: FakeBookmarkDataStore())
   let fakeStories =
     PreviewHelpers
     .makeFakeStories()
     .map { StoryState.loaded(content: $0.toStoryContent()) }
   appModel.feedState = FeedState(stories: fakeStories)
 
-  return FeedScreen(model: appModel)
+  return FeedScreen(model: $appModel)
 }

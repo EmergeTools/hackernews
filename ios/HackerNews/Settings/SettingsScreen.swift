@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct SettingsScreen: View {
-  @ObservedObject var model: AppViewModel
+  @Binding var model: AppViewModel
 
   var body: some View {
     ScrollView {
@@ -121,5 +121,6 @@ struct SettingsScreen: View {
 }
 
 #Preview {
-  SettingsScreen(model: AppViewModel(bookmarkStore: FakeBookmarkDataStore()))
+  @Previewable @State var model = AppViewModel(bookmarkStore: FakeBookmarkDataStore())
+  SettingsScreen(model: $model)
 }

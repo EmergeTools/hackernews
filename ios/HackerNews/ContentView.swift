@@ -9,22 +9,22 @@ import SwiftUI
 
 struct ContentView: View {
 
-  @ObservedObject var model: AppViewModel
+  @Binding var model: AppViewModel
 
   var body: some View {
     TabView {
-      FeedScreen(model: model)
+      FeedScreen(model: $model)
         .tabItem {
           Image(systemName: "newspaper.fill")
         }
-      BookmarksScreen(model: model)
+      BookmarksScreen(model: $model)
         .onAppear {
           model.fetchBookmarks()
         }
         .tabItem {
           Image(systemName: "book")
         }
-      SettingsScreen(model: model)
+      SettingsScreen(model: $model)
         .tabItem {
           Image(systemName: "gear")
         }
@@ -35,11 +35,11 @@ struct ContentView: View {
 
 struct ContentView_LoggedIn_Loading_Previews: PreviewProvider {
   static var previews: some View {
-    let appModel = AppViewModel(bookmarkStore: FakeBookmarkDataStore())
+    @Previewable @State var appModel = AppViewModel(bookmarkStore: FakeBookmarkDataStore())
     appModel.feedState = FeedState(stories: [])
     return PreviewVariants {
       PreviewHelpers.withNavigationView {
-        ContentView(model: appModel)
+        ContentView(model: $appModel)
       }
     }
   }
@@ -47,7 +47,7 @@ struct ContentView_LoggedIn_Loading_Previews: PreviewProvider {
 
 struct ContentView_LoggedIn_WithPosts_Previews: PreviewProvider {
   static var previews: some View {
-    let appModel = AppViewModel(bookmarkStore: FakeBookmarkDataStore())
+    @Previewable @State var appModel = AppViewModel(bookmarkStore: FakeBookmarkDataStore())
     let fakeStories = PreviewHelpers
       .makeFakeStories()
       .map { StoryState.loaded(content: $0.toStoryContent()) }
@@ -57,7 +57,7 @@ struct ContentView_LoggedIn_WithPosts_Previews: PreviewProvider {
     
     return PreviewVariants {
       PreviewHelpers.withNavigationView {
-        ContentView(model: appModel)
+        ContentView(model: $appModel)
       }
     }
   }
@@ -65,11 +65,11 @@ struct ContentView_LoggedIn_WithPosts_Previews: PreviewProvider {
 
 struct ContentView_LoggedIn_EmptyPosts_Previews: PreviewProvider {
   static var previews: some View {
-    let appModel = AppViewModel(bookmarkStore: FakeBookmarkDataStore())
+    @Previewable @State var appModel = AppViewModel(bookmarkStore: FakeBookmarkDataStore())
     appModel.feedState = FeedState(stories: [])
     return PreviewVariants {
       PreviewHelpers.withNavigationView {
-        ContentView(model: appModel)
+        ContentView(model: $appModel)
       }
     }
   }

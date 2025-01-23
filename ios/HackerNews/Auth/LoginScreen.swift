@@ -19,7 +19,7 @@ enum LoginStatus {
 }
 
 struct LoginScreen: View {
-  @ObservedObject var model: AppViewModel
+  @Binding var model: AppViewModel
   @State var loginState = LoginState()
 
   var body: some View {
@@ -67,5 +67,8 @@ struct LoginScreen: View {
 }
 
 #Preview {
-  LoginScreen(model: AppViewModel(bookmarkStore: FakeBookmarkDataStore()))
+  @Previewable @State var model = AppViewModel(
+    bookmarkStore: FakeBookmarkDataStore()
+  )
+  LoginScreen(model: $model)
 }
