@@ -1,7 +1,31 @@
 {
   "images" : [
     {
-      "filename" : "Emerge-Avatar Optimized.heic",
+      "filename" : "Primary-Light@2x.png",
+      "idiom" : "universal",
+      "platform" : "ios",
+      "size" : "1024x1024"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "Primary-Dark@2x.png",
+      "idiom" : "universal",
+      "platform" : "ios",
+      "size" : "1024x1024"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "tinted"
+        }
+      ],
+      "filename" : "Primary-Tinted@2x.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
