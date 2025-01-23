@@ -1,4 +1,4 @@
-app_identifier("com.emerge.hn.Hacker-News") # The bundle identifier of your app
+app_identifier("com.emergetools.hackernews") # The bundle identifier of your app
 apple_id(ENV['APPLE_ID']) # Your Apple Developer Portal username
 
 itc_team_id(ENV['APPLE_ITC_TEAM_ID']) # App Store Connect Team ID
