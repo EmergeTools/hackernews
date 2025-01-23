@@ -32,7 +32,7 @@ platform :ios do
   desc 'Generate build number based on number of commits'
   lane :generate_build_number do
     # Deterministically set the build number based on the number of commits
-    build_number = number_of_commits(all: true)
+    build_number = number_of_commits()
 
     increment_build_number(
       build_number: build_number
