@@ -13,18 +13,6 @@ import XCTest
 
 final class SwiftSnapshotTest: XCTestCase {
 
-  var appViewModel: AppViewModel!
-
-  @MainActor override func setUp() {
-    super.setUp()
-    appViewModel = AppViewModel(bookmarkStore: FakeBookmarkDataStore())
-  }
-
-  override func tearDown() {
-    appViewModel = nil
-    super.tearDown()
-  }
-
   override func invokeTest() {
     // Always record new snapshots
     withSnapshotTesting(record: .all) {
@@ -33,22 +21,23 @@ final class SwiftSnapshotTest: XCTestCase {
   }
 
   @MainActor func testPostListScreen() {
+    @State var appViewModel = AppViewModel(bookmarkStore: FakeBookmarkDataStore())
     // Test default state
-    let defaultView = FeedScreen(model: appViewModel)
+    let defaultView = FeedScreen(model: $appViewModel)
 
     // Test loading state
-    let loadingViewModel = AppViewModel(bookmarkStore: FakeBookmarkDataStore())
+    @State var loadingViewModel = AppViewModel(bookmarkStore: FakeBookmarkDataStore())
     loadingViewModel.feedState = FeedState(
       stories: []
     )
-    let loadingView = FeedScreen(model: loadingViewModel)
+    let loadingView = FeedScreen(model: $loadingViewModel)
 
     // Test loaded state with posts
-    let loadedViewModel = AppViewModel(bookmarkStore: FakeBookmarkDataStore())
+    @State var loadedViewModel = AppViewModel(bookmarkStore: FakeBookmarkDataStore())
     loadedViewModel.feedState = FeedState(
       stories: PreviewHelpers.makeFakeStories().map { StoryState.loaded(content: $0.toStoryContent()) }
     )
-    let loadedView = FeedScreen(model: loadedViewModel)
+    let loadedView = FeedScreen(model: $loadedViewModel)
 
     let devices = [
       ("iPhone SE", ViewImageConfig.iPhoneSe),
