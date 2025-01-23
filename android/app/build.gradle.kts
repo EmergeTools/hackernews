@@ -13,12 +13,12 @@ val runningEnv: String? = System.getenv("RUNNING_ENV")
 
 android {
   namespace = "com.emergetools.hackernews"
-  compileSdk = 34
+  compileSdk = 35
 
   defaultConfig {
     applicationId = "com.emergetools.hackernews"
     minSdk = 30
-    targetSdk = 34
+    targetSdk = 35
     versionCode = 13
     versionName = "1.0.2"
 
