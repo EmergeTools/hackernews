@@ -20,8 +20,8 @@ struct CommentsHeader: View {
         Text(state.story.title)
           .font(.ibmPlexMono(.bold, size: 16))
           .frame(maxWidth: .infinity, alignment: .leading)
-          .foregroundStyle(.primary)
       }
+      .buttonStyle(.plain)
 
       // actions
       HStack {
