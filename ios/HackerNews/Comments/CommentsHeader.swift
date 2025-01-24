@@ -35,6 +35,16 @@ struct CommentsHeader: View {
             .font(.ibmPlexSans(.medium, size: 12))
         }
         Spacer()
+        // share button
+        ShareLink(item: state.story.url ?? "") {
+          Image(systemName: "square.and.arrow.up")
+            .font(.system(size: 12))
+            .padding(.horizontal, 8)
+            .padding(.vertical, 4)
+        }
+        .background(.surface)
+        .foregroundStyle(.onBackground)
+        .clipShape(Capsule())
         // upvote button
         Button(action: { likePost() }) {
           Image(systemName: "arrow.up")
