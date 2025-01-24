@@ -57,6 +57,8 @@ struct Hacker_NewsApp: App {
         }
         .sheet(isPresented: $appModel.showLoginSheet) {
           LoginScreen(model: $appModel)
+            .presentationDetents([.medium])
+            .presentationCornerRadius(24)
         }
       }
     }

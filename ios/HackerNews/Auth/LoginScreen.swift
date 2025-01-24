@@ -33,11 +33,23 @@ struct LoginScreen: View {
         .frame(maxHeight: 16)
 
       TextField("Username", text: $loginState.username)
-        .textFieldStyle(.roundedBorder)
-        .autocapitalization(.none)
+        .textInputAutocapitalization(.none)
+        .padding()
+        .background(Color.background)
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .overlay(
+          RoundedRectangle(cornerRadius: 12)
+            .stroke(Color.background.opacity(0.5), lineWidth: 1)
+        )
 
       SecureField("Password", text: $loginState.password)
-        .textFieldStyle(.roundedBorder)
+        .padding()
+        .background(Color.background)
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .overlay(
+          RoundedRectangle(cornerRadius: 12)
+            .stroke(Color.background.opacity(0.5), lineWidth: 1)
+        )
 
       Spacer()
         .frame(maxHeight: 16)
@@ -55,6 +67,7 @@ struct LoginScreen: View {
           Text("Submit")
             .font(.ibmPlexMono(.bold, size: 16))
             .frame(maxWidth: .infinity)
+            .frame(height: 40)
         }
       )
       .buttonStyle(.borderedProminent)
@@ -62,7 +75,7 @@ struct LoginScreen: View {
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .padding(32)
-    .background(Color.background)
+    .background(.surface)
   }
 }
 
