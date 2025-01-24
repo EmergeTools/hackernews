@@ -195,7 +195,9 @@ final class AppViewModel {
     }
     let nextPage = pager.nextPage()
     let items = await api.fetchPage(page: nextPage)
-    feedState.stories.removeLast()  // remove the loading view
+    if !feedState.stories.isEmpty {
+      feedState.stories.removeLast()  // remove the loading view
+    }
     feedState.stories += items.map { story in
       let bookmarked = bookmarkStore.containsBookmark(with: story.id)
       return .loaded(content: story.toStoryContent(bookmarked: bookmarked))
