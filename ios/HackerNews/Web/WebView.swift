@@ -7,9 +7,12 @@
 
 import Foundation
 import SwiftUI
+import UIKit
 import WebKit
 
 struct WebViewContainer: View {
+  @Environment(\.openURL) var openURL
+
   let url: URL
   let title: String
 
@@ -19,6 +22,19 @@ struct WebViewContainer: View {
       .navigationTitle(title)
       .toolbarBackground(.visible, for: .navigationBar)
       .toolbarBackground(Color(UIColor.systemBackground), for: .navigationBar)
+      .toolbar {
+        ToolbarItem(placement: .topBarTrailing) {
+          Menu {
+            Button {
+              openURL(url)
+            } label: {
+              Label("Open in browser", systemImage: "safari")
+            }
+          } label: {
+            Image(systemName: "ellipsis")
+          }
+        }
+      }
   }
 }
 
