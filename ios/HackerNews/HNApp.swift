@@ -49,6 +49,8 @@ struct Hacker_NewsApp: App {
                 appModel.backPressed()
               case .login:
                 appModel.gotoLogin()
+              case let .website(url):
+                appModel.openLink(url: url)
               }
             }
             CommentsScreen(model: commentModel)

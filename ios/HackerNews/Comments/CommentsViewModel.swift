@@ -77,12 +77,14 @@ extension CommentFormData {
 enum CommentsDestination {
   case back
   case login
+  case website(url: URL)
 }
 
 @MainActor
-class CommentsViewModel: ObservableObject {
+@Observable
+class CommentsViewModel {
 
-  @Published var state: CommentsUiState
+  var state: CommentsUiState
 
   private let story: Story
   private let navigation: (_ to: CommentsDestination) -> Void
@@ -195,6 +197,11 @@ class CommentsViewModel: ObservableObject {
 
   func goToLogin() {
     navigation(.login)
+  }
+  
+  func goToWebsite() {
+    guard let url = story.makeUrl() else { return }
+    navigation(.website(url: url))
   }
 
   func updateComment(text: String) {
