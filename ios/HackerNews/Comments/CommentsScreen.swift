@@ -84,7 +84,7 @@ struct CommentsScreen: View {
       .clipShape(Circle())
       .padding(8)
     }
-    .overlay(alignment: .bottom) {
+    .safeAreaInset(edge: .bottom) {
       if model.state.postCommentState != nil {
         CommentComposer(
           state: Binding(
