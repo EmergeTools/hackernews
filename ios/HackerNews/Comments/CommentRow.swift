@@ -63,7 +63,7 @@ struct CommentRow: View {
           Text(state.text.strippingHTML())
             .font(.ibmPlexMono(.regular, size: 12))
         }
-        .padding(EdgeInsets(top: -4, leading: 8, bottom: 8, trailing: 8))
+        .padding(EdgeInsets(top: -2, leading: 8, bottom: 8, trailing: 8))
         .transition(
           .asymmetric(
             insertion: .move(edge: .top).combined(with: .opacity),
