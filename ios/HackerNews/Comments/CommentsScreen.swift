@@ -10,7 +10,7 @@ import SwiftUI
 
 struct CommentsScreen: View {
 
-  @ObservedObject var model: CommentsViewModel
+  @State var model: CommentsViewModel
 
   var body: some View {
     ScrollView {
@@ -31,6 +31,9 @@ struct CommentsScreen: View {
           },
           toggleBody: {
             model.toggleHeaderBody()
+          },
+          onTitleTap: {
+            model.goToWebsite()
           }
         )
 
@@ -109,7 +112,7 @@ struct CommentsScreen: View {
         PreviewHelpers.makeFakeComment(),
         PreviewHelpers.makeFakeComment(),
       ]
-      let viewModel = CommentsViewModel(
+      @Previewable @State var viewModel = CommentsViewModel(
         story: PreviewHelpers.makeFakeStory(kids: comments.map { $0.id }),
         auth: .loggedIn,
         navigation: { _ in }

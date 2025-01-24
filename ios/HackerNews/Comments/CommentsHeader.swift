@@ -11,13 +11,17 @@ struct CommentsHeader: View {
   let state: CommentsHeaderState
   let likePost: () -> Void
   let toggleBody: () -> Void
+  let onTitleTap: () -> Void
 
   var body: some View {
     VStack(alignment: .leading) {
-      // title
-      Text(state.story.title)
-        .font(.ibmPlexMono(.bold, size: 16))
-        .frame(maxWidth: .infinity, alignment: .leading)
+      // title - wrap in Button
+      Button(action: onTitleTap) {
+        Text(state.story.title)
+          .font(.ibmPlexMono(.bold, size: 16))
+          .frame(maxWidth: .infinity, alignment: .leading)
+      }
+      .buttonStyle(.plain)
 
       // actions
       HStack {
@@ -81,6 +85,7 @@ struct CommentsHeader: View {
   CommentsHeader(
     state: CommentsHeaderState(story: PreviewHelpers.makeFakeStory()),
     likePost: {},
-    toggleBody: {}
+    toggleBody: {},
+    onTitleTap: {}
   )
 }
