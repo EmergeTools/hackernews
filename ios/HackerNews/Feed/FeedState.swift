@@ -1,6 +1,6 @@
 struct FeedState {
   let feeds = FeedType.allCases
-  
+
   var selectedFeed: FeedType
   private var storiesByFeed: [FeedType: [StoryState]] = [:]
 
@@ -18,5 +18,18 @@ struct FeedState {
 
   mutating func setStories(_ stories: [StoryState], for feedType: FeedType) {
     storiesByFeed[feedType] = stories
+  }
+
+  func needsToLoadStories(for feedType: FeedType) -> Bool {
+    let stories = storiesForFeed(feedType)
+    if stories.isEmpty { return true }
+
+    // Check if all stories are in loading state
+    return stories.allSatisfy { story in
+      if case .loading = story {
+        return true
+      }
+      return false
+    }
   }
 }

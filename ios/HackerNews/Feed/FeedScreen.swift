@@ -47,14 +47,10 @@ struct FeedScreen: View {
           FeedListView(model: $model, stories: model.feedState.storiesForFeed(feedType))
             .tag(feedType)
             .onChange(of: model.feedState.selectedFeed) { oldValue, newValue in
-              if model.feedState.storiesForFeed(newValue).isEmpty {
-                isAnimating = true
+              if model.feedState.needsToLoadStories(for: newValue) {
                 Task {
                   try? await Task.sleep(for: .milliseconds(300))
-                  if isAnimating {
-                    await model.fetchInitialPosts(feedType: newValue)
-                    isAnimating = false
-                  }
+                  await model.fetchInitialPosts(feedType: newValue)
                 }
               }
             }
