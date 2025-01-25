@@ -14,7 +14,8 @@ struct CommentRow: View {
   let state: CommentState
   let likeComment: (CommentState) -> Void
   let toggleComment: () -> Void
-  
+
+  @Environment(Theme.self) private var theme
   @State private var isPressed = false
 
   var body: some View {
@@ -24,13 +25,13 @@ struct CommentRow: View {
         Group {
           // author
           Text("@\(state.user)")
-            .font(.ibmPlexMono(.bold, size: 12))
+            .font(theme.userMonoFont(size: 12, weight: .bold))
           // time
           HStack(alignment: .center, spacing: 4.0) {
             Image(systemName: "clock")
               .font(.system(size: 12))
             Text(state.age)
-              .font(.ibmPlexSans(.medium, size: 12))
+              .font(theme.userSansFont(size: 12, weight: .medium))
           }
           .font(.caption)
           // collapse/expand
@@ -55,13 +56,13 @@ struct CommentRow: View {
       }
       .padding(8)
       .background(isPressed ? .surface.opacity(0.85) : .surface)
-      .zIndex(1) // Ensure header stays on top
+      .zIndex(1)  // Ensure header stays on top
 
       // Comment Body
       if !state.hidden {
         VStack(alignment: .leading) {
           Text(state.text.strippingHTML())
-            .font(.ibmPlexMono(.regular, size: 12))
+            .font(theme.userMonoFont(size: 12, weight: .regular))
         }
         .padding(EdgeInsets(top: -3, leading: 8, bottom: 8, trailing: 8))
         .transition(

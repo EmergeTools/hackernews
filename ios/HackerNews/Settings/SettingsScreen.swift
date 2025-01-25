@@ -10,6 +10,7 @@ import SwiftUI
 
 struct SettingsScreen: View {
   @Binding var model: AppViewModel
+  @Environment(Theme.self) private var theme
 
   var body: some View {
     ScrollView {
@@ -99,6 +100,40 @@ struct SettingsScreen: View {
               model.openLink(
                 url: URL(string: "https://www.emergetools.com/HackerNewsPrivacyPolicy.html")!)
             }
+          )
+        }
+
+        VStack(alignment: .leading, spacing: 4) {
+          @Bindable var theme = theme
+          Text("Appearance")
+            .font(.ibmPlexSans(.medium, size: 12))
+
+          SettingsRow(
+            text: "Use System Font",
+            leadingIcon: {
+              Image(systemName: "textformat")
+                .font(.system(size: 12))
+                .foregroundStyle(.purple)
+            },
+            trailingIcon: {
+              Toggle("", isOn: $theme.useSystemFont)
+                .labelsHidden()
+            },
+            action: {}
+          )
+
+          SettingsRow(
+            text: "Always Use Sans-Serif Font",
+            leadingIcon: {
+              Image(systemName: "textformat.size")
+                .font(.system(size: 12))
+                .foregroundStyle(.orange)
+            },
+            trailingIcon: {
+              Toggle("", isOn: $theme.alwaysUseSans)
+                .labelsHidden()
+            },
+            action: {}
           )
         }
       }

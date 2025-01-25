@@ -10,6 +10,7 @@ import SwiftUI
 
 struct StoryRow: View {
   @Binding var model: AppViewModel
+  @Environment(Theme.self) private var theme
   let state: StoryState
 
   var body: some View {
@@ -40,7 +41,7 @@ struct StoryRow: View {
           let author = content.author!
           HStack {
             Text("@\(author)")
-              .font(.ibmPlexMono(.bold, size: 12))
+              .font(theme.userMonoFont(size: 12, weight: .bold))
               .foregroundColor(.hnOrange)
             Spacer()
             if content.bookmarked {
@@ -50,21 +51,21 @@ struct StoryRow: View {
             }
           }
           Text(content.title)
-            .font(.ibmPlexMono(.bold, size: 16))
+            .font(theme.userMonoFont(size: 16, weight: .bold))
           HStack(spacing: 16) {
             HStack(spacing: 4) {
               Image(systemName: "arrow.up")
                 .font(.system(size: 12))
                 .foregroundColor(.green)
               Text("\(content.score)")
-                .font(.ibmPlexSans(.medium, size: 12))
+                .font(theme.userSansFont(size: 12, weight: .medium))
             }
             HStack(spacing: 4) {
               Image(systemName: "clock")
                 .font(.system(size: 12))
                 .foregroundColor(.purple)
               Text(content.relativeDate())
-                .font(.ibmPlexSans(.medium, size: 12))
+                .font(theme.userSansFont(size: 12, weight: .medium))
             }
             Spacer()
             // Comment Button
@@ -79,7 +80,7 @@ struct StoryRow: View {
                 Image(systemName: "message.fill")
                   .font(.system(size: 12))
                 Text("\(content.commentCount)")
-                  .font(.ibmPlexSans(.medium, size: 12))
+                  .font(theme.userSansFont(size: 12, weight: .medium))
               }
               .foregroundStyle(.blue)
             }
@@ -95,14 +96,15 @@ struct StoryRow: View {
 }
 
 struct StoryRowLoadingState: View {
+  @Environment(Theme.self) private var theme
   var body: some View {
     VStack(alignment: .leading, spacing: 8) {
       Text("@humdinger")
-        .font(.ibmPlexMono(.bold, size: 12))
+        .font(theme.userMonoFont(size: 12, weight: .bold))
         .foregroundColor(.hnOrange)
         .redacted(reason: .placeholder)
       Text("Some Short Title")
-        .font(.ibmPlexMono(.bold, size: 16))
+        .font(theme.userMonoFont(size: 16, weight: .bold))
         .redacted(reason: .placeholder)
       HStack(spacing: 16) {
         HStack(spacing: 4) {
@@ -111,7 +113,9 @@ struct StoryRowLoadingState: View {
             .foregroundColor(.green)
             .redacted(reason: .placeholder)
           Text("99")
-            .font(.ibmPlexSans(.medium, size: 12))
+            .font(
+              theme.userSansFont(size: 12, weight: .medium)
+            )
             .redacted(reason: .placeholder)
         }
         HStack(spacing: 4) {
@@ -120,7 +124,7 @@ struct StoryRowLoadingState: View {
             .foregroundColor(.purple)
             .redacted(reason: .placeholder)
           Text("2h ago")
-            .font(.ibmPlexSans(.medium, size: 12))
+            .font(theme.userSansFont(size: 12, weight: .medium))
             .redacted(reason: .placeholder)
         }
         Spacer()
@@ -130,7 +134,7 @@ struct StoryRowLoadingState: View {
             Image(systemName: "message.fill")
               .font(.system(size: 12))
             Text("45")
-              .font(.ibmPlexSans(.medium, size: 12))
+              .font(theme.userSansFont(size: 12, weight: .medium))
           }
           .foregroundStyle(.blue)
         }
