@@ -6,10 +6,15 @@ final class Theme {
   private static let useSystemFontKey = "useSystemFont"
   private static let useMonospacedKey = "useMonospaced"
   private static let commentFontSizeKey = "commentFontSize"
+  private static let titleFontSizeKey = "titleFontSize"
 
   static let defaultCommentFontSize: Double = 12
   static let minCommentFontSize: Double = 10
   static let maxCommentFontSize: Double = 18
+
+  static let defaultTitleFontSize: Double = 16
+  static let minTitleFontSize: Double = 14
+  static let maxTitleFontSize: Double = 22
 
   var useSystemFont: Bool {
     didSet {
@@ -35,6 +40,16 @@ final class Theme {
 
   var commentFontSizeText: String {
     String(format: "%.1f", commentFontSize)
+  }
+
+  var titleFontSize: Double {
+    didSet {
+      let clamped = titleFontSize.clamped(to: Self.minTitleFontSize...Self.maxTitleFontSize)
+      if clamped != titleFontSize {
+        titleFontSize = clamped
+      }
+      UserDefaults.standard.set(titleFontSize, forKey: Self.titleFontSizeKey)
+    }
   }
 
   // Semantic font functions
@@ -105,6 +120,17 @@ final class Theme {
     }
   }
 
+  func titleFont() -> Font {
+    if useSystemFont {
+      return .system(
+        size: titleFontSize, weight: .bold,
+        design: useMonospaced ? .monospaced : .default)
+    }
+    return useMonospaced
+      ? .ibmPlexMono(.bold, size: titleFontSize)
+      : .ibmPlexSans(.bold, size: titleFontSize)
+  }
+
   init() {
     self.useSystemFont = UserDefaults.standard.bool(forKey: Self.useSystemFontKey)
     self.useMonospaced =
@@ -112,6 +138,9 @@ final class Theme {
     self.commentFontSize =
       UserDefaults.standard.object(forKey: Self.commentFontSizeKey) as? Double
       ?? Self.defaultCommentFontSize
+    self.titleFontSize =
+      UserDefaults.standard.object(forKey: Self.titleFontSizeKey) as? Double
+      ?? Self.defaultTitleFontSize
   }
 }
 

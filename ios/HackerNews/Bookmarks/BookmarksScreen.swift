@@ -15,14 +15,12 @@ struct BookmarksScreen: View {
     Group {
       if model.bookmarks.isEmpty {
         ZStack {
-          Text("Swipe a story to bookmark it.")
+          Text("Long-press a story to bookmark it.")
             .font(.ibmPlexSans(.medium, size: 18))
         }
       } else {
         ScrollView {
           LazyVStack(spacing: 8) {
-            Spacer()
-              .frame(height: 60)
             ForEach(model.bookmarks, id: \.id) { bookmark in
               StoryRow(
                 model: $model,
@@ -42,7 +40,7 @@ struct BookmarksScreen: View {
       maxWidth: .infinity,
       maxHeight: .infinity
     )
-    .overlay {
+    .safeAreaInset(edge: .top) {
       ZStack(alignment: .leading) {
         Color.clear
           .background(.ultraThinMaterial)
@@ -53,7 +51,6 @@ struct BookmarksScreen: View {
           .padding(.horizontal, 16)
       }
       .frame(height: 60)
-      .frame(maxHeight: .infinity, alignment: .top)
     }
   }
 }

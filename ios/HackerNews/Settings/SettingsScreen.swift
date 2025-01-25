@@ -15,8 +15,6 @@ struct SettingsScreen: View {
   var body: some View {
     ScrollView {
       LazyVStack(spacing: 8) {
-        Spacer()
-          .frame(height: 68)
         VStack(alignment: .leading, spacing: 4) {
           Text("Profile")
             .font(.ibmPlexSans(.medium, size: 12))
@@ -155,11 +153,31 @@ struct SettingsScreen: View {
             action: {}
           )
           .animation(.smooth, value: theme.commentFontSize)
+
+          SettingsRow(
+            text: "Title Font Size (\(String(format: "%.1f", theme.titleFontSize))pt)",
+            leadingIcon: {
+              Image(systemName: "text.alignleft")
+                .font(.system(size: 12))
+                .foregroundStyle(.green)
+            },
+            trailingIcon: {
+              Stepper(
+                "",
+                value: $theme.titleFontSize,
+                in: Theme.minTitleFontSize...Theme.maxTitleFontSize,
+                step: 0.5
+              )
+              .labelsHidden()
+            },
+            action: {}
+          )
+          .animation(.smooth, value: theme.titleFontSize)
         }
       }
       .padding(.horizontal, 8)
     }
-    .overlay {
+    .safeAreaInset(edge: .top) {
       ZStack(alignment: .leading) {
         Color.clear
           .background(.ultraThinMaterial)
@@ -170,7 +188,6 @@ struct SettingsScreen: View {
           .padding(.horizontal, 16)
       }
       .frame(height: 60)
-      .frame(maxHeight: .infinity, alignment: .top)
     }
   }
 }

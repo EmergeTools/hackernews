@@ -51,7 +51,10 @@ struct StoryRow: View {
             }
           }
           Text(content.title)
-            .font(theme.userMonoFont(size: 16, weight: .bold))
+            .font(theme.titleFont())
+            .lineLimit(2)
+            .multilineTextAlignment(.leading)
+            .fixedSize(horizontal: false, vertical: true)
           HStack(spacing: 16) {
             HStack(spacing: 4) {
               Image(systemName: "arrow.up")
