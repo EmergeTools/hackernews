@@ -13,7 +13,7 @@ import UIKit
 /// While not the most elegant or ideal solution, it significantly enhances the navigation user experience.
 ///
 /// Note: This is intended as a temporary fix and should be removed once Apple adds proper support
-/// for interactive pop gestures in NavigationStacks. Please refer to PR #TBD for more details.
+/// for interactive pop gestures in NavigationStacks. Please refer to PR #327 for more details.
 extension UINavigationController: @retroactive UIGestureRecognizerDelegate {
   override open func viewDidLoad() {
     super.viewDidLoad()
