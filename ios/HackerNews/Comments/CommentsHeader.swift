@@ -61,11 +61,11 @@ struct CommentsHeader: View {
         .clipShape(Capsule())
       }
       // body
-      if state.story.text != nil {
+      if let text = state.story.text {
         VStack(alignment: .leading, spacing: 8.0) {
           Image(systemName: "chevron.up.chevron.down")
             .font(.caption2)
-          Text(state.story.text!)
+          Text(text.strippingHTML())
             .font(.ibmPlexMono(.regular, size: 12))
             .frame(maxWidth: .infinity, alignment: .leading)
             .lineLimit(state.expanded ? nil : 4)

@@ -14,53 +14,68 @@ struct CommentRow: View {
   let state: CommentState
   let likeComment: (CommentState) -> Void
   let toggleComment: () -> Void
+  
+  @State private var isPressed = false
 
   var body: some View {
-    VStack(alignment: .leading) {
+    VStack(alignment: .leading, spacing: 0) {
       // first row
       HStack {
-        // author
-        Text("@\(state.user)")
-          .font(.ibmPlexMono(.bold, size: 12))
-        // time
-        HStack(alignment: .center, spacing: 4.0) {
-          Image(systemName: "clock")
+        Group {
+          // author
+          Text("@\(state.user)")
+            .font(.ibmPlexMono(.bold, size: 12))
+          // time
+          HStack(alignment: .center, spacing: 4.0) {
+            Image(systemName: "clock")
+              .font(.system(size: 12))
+            Text(state.age)
+              .font(.ibmPlexSans(.medium, size: 12))
+          }
+          .font(.caption)
+          // collapse/expand
+          Image(systemName: "chevron.up.chevron.down")
             .font(.system(size: 12))
-          Text(state.age)
-            .font(.ibmPlexSans(.medium, size: 12))
+            .rotationEffect(.degrees(state.hidden ? 180 : 0))
+          // space between
+          Spacer()
+          // upvote
+          Button(action: {
+            likeComment(state)
+          }) {
+            Image(systemName: "arrow.up")
+              .font(.system(size: 12))
+              .padding(.horizontal, 8)
+              .padding(.vertical, 4)
+          }
+          .background(state.upvoted ? .green.opacity(0.2) : .white.opacity(0.2))
+          .foregroundStyle(state.upvoted ? .green : .onBackground)
+          .clipShape(Capsule())
         }
-        .font(.caption)
-        // collapse/expand
-        Image(systemName: "chevron.up.chevron.down")
-          .font(.system(size: 12))
-        // space between
-        Spacer()
-        // upvote
-        Button(action: {
-          likeComment(state)
-        }) {
-          Image(systemName: "arrow.up")
-            .font(.system(size: 12))
-            .padding(.horizontal, 8)
-            .padding(.vertical, 4)
-        }
-        .background(state.upvoted ? .green.opacity(0.2) : .white.opacity(0.2))
-        .foregroundStyle(state.upvoted ? .green : .onBackground)
-        .clipShape(Capsule())
       }
+      .padding(8)
+      .background(isPressed ? .surface.opacity(0.85) : .surface)
+      .zIndex(1) // Ensure header stays on top
 
       // Comment Body
       if !state.hidden {
-        Text(state.text.strippingHTML())
-          .font(.ibmPlexMono(.regular, size: 12))
+        VStack(alignment: .leading) {
+          Text(state.text.strippingHTML())
+            .font(.ibmPlexMono(.regular, size: 12))
+        }
+        .padding(EdgeInsets(top: -3, leading: 8, bottom: 8, trailing: 8))
+        .transition(
+          .asymmetric(
+            insertion: .move(edge: .top).combined(with: .opacity),
+            removal: .move(edge: .top).combined(with: .opacity)
+          )
+        )
       }
     }
-    .padding(8.0)
-    .background(.surface)
+    .background(isPressed ? .surface.opacity(0.85) : .surface)
     .clipShape(RoundedRectangle(cornerRadius: 16.0))
-    .onTapGesture {
-      toggleComment()
-    }
+    .animation(.spring(duration: 0.3), value: state.hidden)
+    .simultaneousGesture(makeCommentGesture())
     .padding(
       EdgeInsets(
         top: 0,
@@ -68,6 +83,27 @@ struct CommentRow: View {
         bottom: 0,
         trailing: 0)
     )
+  }
+}
+
+extension CommentRow {
+  fileprivate func makeCommentGesture() -> some Gesture {
+    DragGesture(minimumDistance: 0)
+      .onChanged { value in
+        // Only show press effect if we haven't moved far
+        if abs(value.translation.height) < 2 && abs(value.translation.width) < 2 {
+          isPressed = true
+        } else {
+          isPressed = false
+        }
+      }
+      .onEnded { value in
+        isPressed = false
+        // Trigger tap if it was a small movement (effectively a tap)
+        if abs(value.translation.height) < 2 && abs(value.translation.width) < 2 {
+          toggleComment()
+        }
+      }
   }
 }
 
