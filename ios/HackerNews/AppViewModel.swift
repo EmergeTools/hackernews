@@ -32,12 +32,6 @@ enum FeedType: CaseIterable {
   }
 }
 
-struct FeedState {
-  var feeds: [FeedType] = FeedType.allCases
-  var selectedFeed: FeedType = FeedType.top
-  var stories: [StoryState] = []
-}
-
 struct StoryContent {
   var id: Int64
   var title: String
@@ -171,21 +165,25 @@ final class AppViewModel {
 
   func fetchInitialPosts(feedType: FeedType) async {
     feedState.selectedFeed = feedType
-    feedState.stories = []
+    feedState.setStories([], for: feedType)
 
     let idsToConsume = await api.fetchStories(feedType: feedType)
     pager.setIds(idsToConsume)
 
     if pager.hasNextPage() {
       let nextPage = pager.nextPage()
-      feedState.stories = nextPage.ids.map { StoryState.loading(id: $0) }
+      let loadingStates = nextPage.ids.map { StoryState.loading(id: $0) }
+      feedState.setStories(loadingStates, for: feedType)
 
       let items = await api.fetchPage(page: nextPage)
-      feedState.stories = items.map { story in
+      var newStories = items.map { story in
         let bookmarked = bookmarkStore.containsBookmark(with: story.id)
-        return .loaded(content: story.toStoryContent(bookmarked: bookmarked))
+        return StoryState.loaded(content: story.toStoryContent(bookmarked: bookmarked))
       }
-      pager.hasNextPage() ? feedState.stories.append(.nextPage) : ()
+      if pager.hasNextPage() {
+        newStories.append(.nextPage)
+      }
+      feedState.setStories(newStories, for: feedType)
     }
   }
 
@@ -195,14 +193,22 @@ final class AppViewModel {
     }
     let nextPage = pager.nextPage()
     let items = await api.fetchPage(page: nextPage)
-    if !feedState.stories.isEmpty {
-      feedState.stories.removeLast()  // remove the loading view
+
+    var currentStories = feedState.storiesForFeed(feedState.selectedFeed)
+    if !currentStories.isEmpty {
+      currentStories.removeLast()  // remove the loading view
     }
-    feedState.stories += items.map { story in
-      let bookmarked = bookmarkStore.containsBookmark(with: story.id)
-      return .loaded(content: story.toStoryContent(bookmarked: bookmarked))
+
+    var newStories =
+      currentStories
+      + items.map { story in
+        let bookmarked = bookmarkStore.containsBookmark(with: story.id)
+        return .loaded(content: story.toStoryContent(bookmarked: bookmarked))
+      }
+    if pager.hasNextPage() {
+      newStories.append(.nextPage)
     }
-    pager.hasNextPage() ? feedState.stories.append(.nextPage) : ()
+    feedState.setStories(newStories, for: feedState.selectedFeed)
   }
 
   func fetchBookmarks() {
@@ -231,17 +237,16 @@ final class AppViewModel {
   }
 
   func toggleBookmark(_ item: StoryContent) {
-    feedState.stories = feedState.stories.map { current in
+    let currentStories = feedState.storiesForFeed(feedState.selectedFeed)
+    let updatedStories = currentStories.map { current in
       if case .loaded(let content) = current {
         if content.id == item.id {
-          return .loaded(content: item)
-        } else {
-          return current
+          return StoryState.loaded(content: item)
         }
-      } else {
-        return current
       }
+      return current
     }
+    feedState.setStories(updatedStories, for: feedState.selectedFeed)
 
     if item.bookmarked {
       bookmarkStore.addBookmark(item.toBookmark())
