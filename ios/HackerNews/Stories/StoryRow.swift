@@ -170,6 +170,7 @@ struct StoryRow_Preview: PreviewProvider {
     PreviewVariants {
       StoryRow(
         model: $model, state: .loaded(content: fakeStory.toStoryContent()))
+      .environment(Theme())
     }
   }
 }
@@ -178,6 +179,7 @@ struct StoryRowLoadingState_Preview: PreviewProvider {
   static var previews: some View {
     PreviewVariants {
       StoryRowLoadingState()
+        .environment(Theme())
     }
   }
 }

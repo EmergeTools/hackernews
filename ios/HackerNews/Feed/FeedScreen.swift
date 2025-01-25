@@ -126,6 +126,7 @@ private struct FeedListView: View {
   @Previewable @State var model = AppViewModel(
     bookmarkStore: FakeBookmarkDataStore())
   FeedScreen(model: $model)
+    .environment(Theme())
 }
 
 #Preview("Loading") {
@@ -134,6 +135,7 @@ private struct FeedListView: View {
   appModel.feedState = FeedState()
 
   return FeedScreen(model: $appModel)
+    .environment(Theme())
 }
 
 #Preview("Has posts") {
@@ -146,4 +148,5 @@ private struct FeedListView: View {
   appModel.feedState = FeedState(stories: fakeStories)
 
   return FeedScreen(model: $appModel)
+    .environment(Theme())
 }

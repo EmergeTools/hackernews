@@ -40,6 +40,7 @@ struct ContentView_LoggedIn_Loading_Previews: PreviewProvider {
     return PreviewVariants {
       PreviewHelpers.withNavigationView {
         ContentView(model: $appModel)
+          .environment(Theme())
       }
     }
   }
@@ -58,6 +59,7 @@ struct ContentView_LoggedIn_WithPosts_Previews: PreviewProvider {
     return PreviewVariants {
       PreviewHelpers.withNavigationView {
         ContentView(model: $appModel)
+          .environment(Theme())
       }
     }
   }
@@ -70,6 +72,7 @@ struct ContentView_LoggedIn_EmptyPosts_Previews: PreviewProvider {
     return PreviewVariants {
       PreviewHelpers.withNavigationView {
         ContentView(model: $appModel)
+          .environment(Theme())
       }
     }
   }

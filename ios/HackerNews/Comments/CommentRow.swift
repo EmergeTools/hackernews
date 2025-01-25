@@ -116,6 +116,7 @@ struct CommentView_Preview: PreviewProvider {
         likeComment: { _ in },
         toggleComment: {}
       )
+      .environment(Theme())
     }
   }
 }
@@ -129,6 +130,7 @@ struct CommentViewIndentation_Preview: PreviewProvider {
           likeComment: { _ in },
           toggleComment: {}
         )
+        .environment(Theme())
         .previewLayout(.sizeThatFits)
         .previewDisplayName("Indentation \(index)")
       }
