@@ -14,7 +14,7 @@ struct FeedScreen: View {
   @State private var isAnimating = false
 
   var body: some View {
-    VStack(spacing: 0) {
+    VStack(spacing: 4) {
       // Feed type selector header
       ZStack {
         Color.clear
@@ -68,7 +68,7 @@ struct FeedScreen: View {
 // New view to contain the list portion
 private struct FeedListView: View {
   @Binding var model: AppViewModel
-  let stories: [StoryState]  // Now takes stories as a parameter
+  let stories: [StoryState]
 
   var body: some View {
     List {
@@ -120,6 +120,7 @@ private struct FeedListView: View {
     .listStyle(.plain)
     .scrollContentBackground(.hidden)
     .refreshable {
+      try? await Task.sleep(for: .milliseconds(300))
       await model.fetchInitialPosts(feedType: model.feedState.selectedFeed)
     }
   }

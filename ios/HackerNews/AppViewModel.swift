@@ -165,7 +165,14 @@ final class AppViewModel {
 
   func fetchInitialPosts(feedType: FeedType) async {
     feedState.selectedFeed = feedType
-    feedState.setStories([], for: feedType)
+
+    // If no existing content, show loading states immediately
+    if feedState.storiesForFeed(feedType).isEmpty {
+      let loadingStates = (0..<10).map { i in
+        StoryState.loading(id: Int64(i))
+      }
+      feedState.setStories(loadingStates, for: feedType)
+    }
 
     let idsToConsume = await api.fetchStories(feedType: feedType)
     pager.setIds(idsToConsume)
