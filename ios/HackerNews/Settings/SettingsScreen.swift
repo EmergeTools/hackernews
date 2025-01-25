@@ -123,18 +123,38 @@ struct SettingsScreen: View {
           )
 
           SettingsRow(
-            text: "Always Use Sans-Serif Font",
+            text: "Use Monospaced Font",
             leadingIcon: {
               Image(systemName: "textformat.size")
                 .font(.system(size: 12))
                 .foregroundStyle(.orange)
             },
             trailingIcon: {
-              Toggle("", isOn: $theme.alwaysUseSans)
+              Toggle("", isOn: $theme.useMonospaced)
                 .labelsHidden()
             },
             action: {}
           )
+
+          SettingsRow(
+            text: "Comment Font Size (\(String(format: "%.1f", theme.commentFontSize))pt)",
+            leadingIcon: {
+              Image(systemName: "text.bubble")
+                .font(.system(size: 12))
+                .foregroundStyle(.blue)
+            },
+            trailingIcon: {
+              Stepper(
+                "",
+                value: $theme.commentFontSize,
+                in: Theme.minCommentFontSize...Theme.maxCommentFontSize,
+                step: 0.5
+              )
+              .labelsHidden()
+            },
+            action: {}
+          )
+          .animation(.smooth, value: theme.commentFontSize)
         }
       }
       .padding(.horizontal, 8)

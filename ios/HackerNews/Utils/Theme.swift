@@ -5,6 +5,11 @@ import SwiftUI
 final class Theme {
   private static let useSystemFontKey = "useSystemFont"
   private static let useMonospacedKey = "useMonospaced"
+  private static let commentFontSizeKey = "commentFontSize"
+
+  static let defaultCommentFontSize: Double = 12
+  static let minCommentFontSize: Double = 10
+  static let maxCommentFontSize: Double = 18
 
   var useSystemFont: Bool {
     didSet {
@@ -18,38 +23,85 @@ final class Theme {
     }
   }
 
+  var commentFontSize: Double {
+    didSet {
+      let clamped = commentFontSize.clamped(to: Self.minCommentFontSize...Self.maxCommentFontSize)
+      if clamped != commentFontSize {
+        commentFontSize = clamped
+      }
+      UserDefaults.standard.set(commentFontSize, forKey: Self.commentFontSizeKey)
+    }
+  }
+
+  var commentFontSizeText: String {
+    String(format: "%.1f", commentFontSize)
+  }
+
+  // Semantic font functions
+  func commentTextFont() -> Font {
+    if useSystemFont {
+      return .system(
+        size: commentFontSize, weight: .regular,
+        design: useMonospaced ? .monospaced : .default)
+    }
+    return useMonospaced
+      ? .ibmPlexMono(.regular, size: commentFontSize)
+      : .ibmPlexSans(.regular, size: commentFontSize)
+  }
+
+  func commentAuthorFont() -> Font {
+    if useSystemFont {
+      return .system(
+        size: commentFontSize, weight: .bold,
+        design: useMonospaced ? .monospaced : .default)
+    }
+    return useMonospaced
+      ? .ibmPlexMono(.bold, size: commentFontSize) : .ibmPlexSans(.bold, size: commentFontSize)
+  }
+
+  func commentMetadataFont() -> Font {
+    if useSystemFont {
+      return .system(
+        size: commentFontSize, weight: .medium,
+        design: useMonospaced ? .monospaced : .default)
+    }
+    return useMonospaced
+      ? .ibmPlexMono(.medium, size: commentFontSize) : .ibmPlexSans(.medium, size: commentFontSize)
+  }
+
+  // Keep these for backward compatibility
   func userMonoFont(size: CGFloat, weight: Font.Weight = .regular) -> Font {
     if useSystemFont {
-      return Font.system(size: size, weight: weight, design: .monospaced)
+      return .system(size: size, weight: weight, design: .monospaced)
     }
     if !useMonospaced {
       return userSansFont(size: size, weight: weight)
     }
     switch weight {
     case .regular:
-      return Font.ibmPlexMono(.regular, size: size)
+      return .ibmPlexMono(.regular, size: size)
     case .bold:
-      return Font.ibmPlexMono(.bold, size: size)
+      return .ibmPlexMono(.bold, size: size)
     case .medium:
-      return Font.ibmPlexMono(.medium, size: size)
+      return .ibmPlexMono(.medium, size: size)
     default:
-      return Font.ibmPlexMono(.regular, size: size)
+      return .ibmPlexMono(.regular, size: size)
     }
   }
 
   func userSansFont(size: CGFloat, weight: Font.Weight = .regular) -> Font {
     if useSystemFont {
-      return Font.system(size: size, weight: weight, design: .monospaced)
+      return .system(size: size, weight: weight, design: .default)
     }
     switch weight {
     case .regular:
-      return Font.ibmPlexSans(.regular, size: size)
+      return .ibmPlexSans(.regular, size: size)
     case .bold:
-      return Font.ibmPlexSans(.bold, size: size)
+      return .ibmPlexSans(.bold, size: size)
     case .medium:
-      return Font.ibmPlexSans(.medium, size: size)
+      return .ibmPlexSans(.medium, size: size)
     default:
-      return Font.ibmPlexSans(.regular, size: size)
+      return .ibmPlexSans(.regular, size: size)
     }
   }
 
@@ -57,5 +109,14 @@ final class Theme {
     self.useSystemFont = UserDefaults.standard.bool(forKey: Self.useSystemFontKey)
     self.useMonospaced =
       UserDefaults.standard.object(forKey: Self.useMonospacedKey) as? Bool ?? true
+    self.commentFontSize =
+      UserDefaults.standard.object(forKey: Self.commentFontSizeKey) as? Double
+      ?? Self.defaultCommentFontSize
+  }
+}
+
+extension Double {
+  fileprivate func clamped(to range: ClosedRange<Double>) -> Double {
+    min(max(self, range.lowerBound), range.upperBound)
   }
 }
