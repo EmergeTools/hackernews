@@ -52,7 +52,6 @@ final class Theme {
     }
   }
 
-  // Semantic font functions
   func commentTextFont() -> Font {
     if useSystemFont {
       return .system(
@@ -84,7 +83,6 @@ final class Theme {
       ? .ibmPlexMono(.medium, size: commentFontSize) : .ibmPlexSans(.medium, size: commentFontSize)
   }
 
-  // Keep these for backward compatibility
   func userMonoFont(size: CGFloat, weight: Font.Weight = .regular) -> Font {
     if useSystemFont {
       return .system(size: size, weight: weight, design: .monospaced)

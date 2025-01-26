@@ -24,6 +24,7 @@ final class SwiftSnapshotTest: XCTestCase {
     @State var appViewModel = AppViewModel(bookmarkStore: FakeBookmarkDataStore())
     // Test default state
     let defaultView = FeedScreen(model: $appViewModel)
+      .environment(Theme())
 
     // Test loading state
     @State var loadingViewModel = AppViewModel(bookmarkStore: FakeBookmarkDataStore())
@@ -31,6 +32,7 @@ final class SwiftSnapshotTest: XCTestCase {
       stories: []
     )
     let loadingView = FeedScreen(model: $loadingViewModel)
+      .environment(Theme())
 
     // Test loaded state with posts
     @State var loadedViewModel = AppViewModel(bookmarkStore: FakeBookmarkDataStore())
@@ -38,6 +40,7 @@ final class SwiftSnapshotTest: XCTestCase {
       stories: PreviewHelpers.makeFakeStories().map { StoryState.loaded(content: $0.toStoryContent()) }
     )
     let loadedView = FeedScreen(model: $loadedViewModel)
+      .environment(Theme())
 
     let devices = [
       ("iPhone SE", ViewImageConfig.iPhoneSe),
