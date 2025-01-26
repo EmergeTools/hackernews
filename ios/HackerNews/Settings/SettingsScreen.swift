@@ -195,4 +195,5 @@ struct SettingsScreen: View {
 #Preview {
   @Previewable @State var model = AppViewModel(bookmarkStore: FakeBookmarkDataStore())
   SettingsScreen(model: $model)
+    .environment(Theme())
 }
