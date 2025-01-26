@@ -166,22 +166,18 @@ final class AppViewModel {
   func fetchInitialPosts(feedType: FeedType) async {
     feedState.selectedFeed = feedType
 
-    // If no existing content, show loading states immediately
-    if feedState.storiesForFeed(feedType).isEmpty {
-      let loadingStates = (0..<10).map { i in
-        StoryState.loading(id: Int64(i))
-      }
-      feedState.setStories(loadingStates, for: feedType)
+    // Show initial loading states
+    let loadingStates = (0..<10).map { i in
+      StoryState.loading(id: Int64(i))
     }
+    feedState.setStories(loadingStates, for: feedType)
 
+    // Fetch and set up the IDs
     let idsToConsume = await api.fetchStories(feedType: feedType)
     pager.setIds(idsToConsume)
 
     if pager.hasNextPage() {
       let nextPage = pager.nextPage()
-      let loadingStates = nextPage.ids.map { StoryState.loading(id: $0) }
-      feedState.setStories(loadingStates, for: feedType)
-
       let items = await api.fetchPage(page: nextPage)
       var newStories = items.map { story in
         let bookmarked = bookmarkStore.containsBookmark(with: story.id)
