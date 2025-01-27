@@ -146,7 +146,7 @@ final class AppViewModel {
   private let api = HNApi()
   private let webClient = HNWebClient()
 
-  private var pager = Pager()
+  private var pagers: [FeedType: Pager] = [:]
   private let cookieStorage = HTTPCookieStorage.shared
   @ObservationIgnored private var loadingTask: Task<Void, Never>?
 
@@ -168,18 +168,21 @@ final class AppViewModel {
   func fetchInitialPosts(feedType: FeedType) async {
     feedState.selectedFeed = feedType
 
-    // Show initial loading states
     let loadingStates = (0..<10).map { i in
       StoryState.loading(id: Int64(i))
     }
     feedState.setStories(loadingStates, for: feedType)
 
-    // Fetch and set up the IDs
+    var pager = Pager()
+
     let idsToConsume = await api.fetchStories(feedType: feedType)
     pager.setIds(idsToConsume)
+    pagers[feedType] = pager
 
     if pager.hasNextPage() {
       let nextPage = pager.nextPage()
+      pagers[feedType] = pager
+
       let items = await api.fetchPage(page: nextPage)
       var newStories = items.map { story in
         let bookmarked = bookmarkStore.containsBookmark(with: story.id)
@@ -193,16 +196,27 @@ final class AppViewModel {
   }
 
   func fetchNextPage() async {
-    guard pager.hasNextPage() else {
+    guard var pager = pagers[feedState.selectedFeed],
+      pager.hasNextPage()
+    else {
       return
     }
+
     let nextPage = pager.nextPage()
+    // Store the updated pager back in the dictionary
+    pagers[feedState.selectedFeed] = pager
+
     let items = await api.fetchPage(page: nextPage)
 
-    var currentStories = feedState.storiesForFeed(feedState.selectedFeed)
-    if !currentStories.isEmpty {
-      currentStories.removeLast()  // remove the loading view
-    }
+    let currentStories = feedState.storiesForFeed(feedState.selectedFeed)
+      .filter {
+        switch $0 {
+        case .loaded(content: _):
+          return true
+        default:
+          return false
+        }
+      }
 
     var newStories =
       currentStories
