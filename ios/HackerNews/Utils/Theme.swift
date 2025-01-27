@@ -51,44 +51,29 @@ final class Theme {
       UserDefaults.standard.set(titleFontSize, forKey: Self.titleFontSizeKey)
     }
   }
-
-  func commentTextFont() -> Font {
-    if useSystemFont {
-      return .system(
-        size: commentFontSize, weight: .regular,
-        design: useMonospaced ? .monospaced : .default)
-    }
-    return useMonospaced
-      ? .ibmPlexMono(.regular, size: commentFontSize)
-      : .ibmPlexSans(.regular, size: commentFontSize)
+  
+  var titleFont: Font {
+    userMonoFont(size: titleFontSize, weight: .bold)
   }
 
-  func commentAuthorFont() -> Font {
-    if useSystemFont {
-      return .system(
-        size: commentFontSize, weight: .bold,
-        design: useMonospaced ? .monospaced : .default)
-    }
-    return useMonospaced
-      ? .ibmPlexMono(.bold, size: commentFontSize) : .ibmPlexSans(.bold, size: commentFontSize)
+  var commentTextFont: Font {
+    userMonoFont(size: commentFontSize, weight: .regular)
   }
 
-  func commentMetadataFont() -> Font {
-    if useSystemFont {
-      return .system(
-        size: commentFontSize, weight: .medium,
-        design: useMonospaced ? .monospaced : .default)
-    }
-    return useMonospaced
-      ? .ibmPlexMono(.medium, size: commentFontSize) : .ibmPlexSans(.medium, size: commentFontSize)
+  var commentAuthorFont: Font {
+    userMonoFont(size: commentFontSize, weight: .bold)
+  }
+
+  var commentMetadataFont: Font {
+    userSansFont(size: commentFontSize, weight: .medium)
   }
 
   func userMonoFont(size: CGFloat, weight: Font.Weight = .regular) -> Font {
-    if useSystemFont {
-      return .system(size: size, weight: weight, design: .monospaced)
-    }
     if !useMonospaced {
       return userSansFont(size: size, weight: weight)
+    }
+    if useSystemFont {
+      return .system(size: size, weight: weight, design: .default)
     }
     switch weight {
     case .regular:
@@ -118,19 +103,8 @@ final class Theme {
     }
   }
 
-  func titleFont() -> Font {
-    if useSystemFont {
-      return .system(
-        size: titleFontSize, weight: .bold,
-        design: useMonospaced ? .monospaced : .default)
-    }
-    return useMonospaced
-      ? .ibmPlexMono(.bold, size: titleFontSize)
-      : .ibmPlexSans(.bold, size: titleFontSize)
-  }
-
   init() {
-    self.useSystemFont = UserDefaults.standard.bool(forKey: Self.useSystemFontKey)
+    self.useSystemFont = UserDefaults.standard.object(forKey: Self.useSystemFontKey) as? Bool ?? false
     self.useMonospaced =
       UserDefaults.standard.object(forKey: Self.useMonospacedKey) as? Bool ?? true
     self.commentFontSize =

@@ -25,13 +25,13 @@ struct CommentRow: View {
         Group {
           // author
           Text("@\(state.user)")
-            .font(theme.commentAuthorFont())
+            .font(theme.commentAuthorFont)
           // time
           HStack(alignment: .center, spacing: 4.0) {
             Image(systemName: "clock")
               .font(.system(size: 12))
             Text(state.age)
-              .font(theme.commentMetadataFont())
+              .font(theme.commentMetadataFont)
           }
           .font(.caption)
           // collapse/expand
@@ -62,7 +62,7 @@ struct CommentRow: View {
       if !state.hidden {
         VStack(alignment: .leading) {
           Text(state.text.strippingHTML())
-            .font(theme.commentTextFont())
+            .font(theme.commentTextFont)
         }
         .padding(EdgeInsets(top: -3, leading: 8, bottom: 8, trailing: 8))
         .transition(

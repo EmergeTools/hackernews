@@ -51,7 +51,7 @@ struct StoryRow: View {
             }
           }
           Text(content.title)
-            .font(theme.titleFont())
+            .font(theme.titleFont)
             .lineLimit(2)
             .multilineTextAlignment(.leading)
             .fixedSize(horizontal: false, vertical: true)
