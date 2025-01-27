@@ -35,8 +35,11 @@ struct ContentView: View {
 
 struct ContentView_LoggedIn_Loading_Previews: PreviewProvider {
   static var previews: some View {
-    @Previewable @State var appModel = AppViewModel(bookmarkStore: FakeBookmarkDataStore())
-    appModel.feedState = FeedState(stories: [])
+    @Previewable @State var appModel = AppViewModel(
+      bookmarkStore: FakeBookmarkDataStore(),
+      shouldFetchPosts: false)
+    let fakeStories = PreviewHelpers.makeFakeLoadingStories()
+    appModel.feedState = FeedState(stories: fakeStories)
     return PreviewVariants {
       PreviewHelpers.withNavigationView {
         ContentView(model: $appModel)
@@ -48,14 +51,17 @@ struct ContentView_LoggedIn_Loading_Previews: PreviewProvider {
 
 struct ContentView_LoggedIn_WithPosts_Previews: PreviewProvider {
   static var previews: some View {
-    @Previewable @State var appModel = AppViewModel(bookmarkStore: FakeBookmarkDataStore())
-    let fakeStories = PreviewHelpers
+    @Previewable @State var appModel = AppViewModel(
+      bookmarkStore: FakeBookmarkDataStore(),
+      shouldFetchPosts: false)
+    let fakeStories =
+      PreviewHelpers
       .makeFakeStories()
       .map { StoryState.loaded(content: $0.toStoryContent()) }
-    
+
     appModel.authState = .loggedIn
     appModel.feedState = FeedState(stories: fakeStories)
-    
+
     return PreviewVariants {
       PreviewHelpers.withNavigationView {
         ContentView(model: $appModel)
@@ -67,7 +73,9 @@ struct ContentView_LoggedIn_WithPosts_Previews: PreviewProvider {
 
 struct ContentView_LoggedIn_EmptyPosts_Previews: PreviewProvider {
   static var previews: some View {
-    @Previewable @State var appModel = AppViewModel(bookmarkStore: FakeBookmarkDataStore())
+    @Previewable @State var appModel = AppViewModel(
+      bookmarkStore: FakeBookmarkDataStore(),
+      shouldFetchPosts: false)
     appModel.feedState = FeedState(stories: [])
     return PreviewVariants {
       PreviewHelpers.withNavigationView {

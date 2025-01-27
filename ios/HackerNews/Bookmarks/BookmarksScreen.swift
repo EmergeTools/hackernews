@@ -57,7 +57,9 @@ struct BookmarksScreen: View {
 
 #Preview {
   @Previewable @State var model = AppViewModel(
-    bookmarkStore: FakeBookmarkDataStore())
+    bookmarkStore: FakeBookmarkDataStore(),
+    shouldFetchPosts: false
+  )
   BookmarksScreen(
     model: $model
   )

@@ -21,23 +21,31 @@ final class SwiftSnapshotTest: XCTestCase {
   }
 
   @MainActor func testPostListScreen() {
-    @State var appViewModel = AppViewModel(bookmarkStore: FakeBookmarkDataStore())
+    @State var appViewModel = AppViewModel(
+      bookmarkStore: FakeBookmarkDataStore(),
+      shouldFetchPosts: false)
     // Test default state
     let defaultView = FeedScreen(model: $appViewModel)
       .environment(Theme())
 
     // Test loading state
-    @State var loadingViewModel = AppViewModel(bookmarkStore: FakeBookmarkDataStore())
+    @State var loadingViewModel = AppViewModel(
+      bookmarkStore: FakeBookmarkDataStore(),
+      shouldFetchPosts: false)
     loadingViewModel.feedState = FeedState(
-      stories: []
+      stories: PreviewHelpers.makeFakeLoadingStories()
     )
     let loadingView = FeedScreen(model: $loadingViewModel)
       .environment(Theme())
 
     // Test loaded state with posts
-    @State var loadedViewModel = AppViewModel(bookmarkStore: FakeBookmarkDataStore())
+    @State var loadedViewModel = AppViewModel(
+      bookmarkStore: FakeBookmarkDataStore(),
+      shouldFetchPosts: false)
     loadedViewModel.feedState = FeedState(
-      stories: PreviewHelpers.makeFakeStories().map { StoryState.loaded(content: $0.toStoryContent()) }
+      stories: PreviewHelpers.makeFakeStories().map {
+        StoryState.loaded(content: $0.toStoryContent())
+      }
     )
     let loadedView = FeedScreen(model: $loadedViewModel)
       .environment(Theme())

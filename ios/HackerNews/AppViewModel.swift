@@ -150,12 +150,14 @@ final class AppViewModel {
   private let cookieStorage = HTTPCookieStorage.shared
   @ObservationIgnored private var loadingTask: Task<Void, Never>?
 
-  init(bookmarkStore: BookmarksDataStore) {
+  init(bookmarkStore: BookmarksDataStore, shouldFetchPosts: Bool = true) {
     self.bookmarkStore = bookmarkStore
     self.bookmarks = bookmarkStore.fetchBookmarks()
     authState = self.cookieStorage.cookies?.isEmpty == true ? .loggedOut : .loggedIn
-    loadingTask = Task {
-      await fetchInitialPosts(feedType: .top)
+    if shouldFetchPosts {
+      loadingTask = Task {
+        await fetchInitialPosts(feedType: .top)
+      }
     }
   }
 

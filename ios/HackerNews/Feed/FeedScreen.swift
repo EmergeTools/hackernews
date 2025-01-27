@@ -44,16 +44,18 @@ struct FeedScreen: View {
       // Page view for feeds
       TabView(selection: $model.feedState.selectedFeed) {
         ForEach(model.feedState.feeds, id: \.self) { feedType in
-          FeedListView(model: $model, stories: model.feedState.storiesForFeed(feedType))
-            .tag(feedType)
-            .onChange(of: model.feedState.selectedFeed) { oldValue, newValue in
-              if model.feedState.needsToLoadStories(for: newValue) {
-                Task {
-                  try? await Task.sleep(for: .milliseconds(300))
-                  await model.fetchInitialPosts(feedType: newValue)
-                }
+          FeedListView(
+            model: $model, stories: model.feedState.storiesForFeed(feedType)
+          )
+          .tag(feedType)
+          .onChange(of: model.feedState.selectedFeed) { oldValue, newValue in
+            if model.feedState.needsToLoadStories(for: newValue) {
+              Task {
+                try? await Task.sleep(for: .milliseconds(300))
+                await model.fetchInitialPosts(feedType: newValue)
               }
             }
+          }
         }
       }
       .tabViewStyle(.page(indexDisplayMode: .never))
@@ -124,14 +126,16 @@ private struct FeedListView: View {
 
 #Preview {
   @Previewable @State var model = AppViewModel(
-    bookmarkStore: FakeBookmarkDataStore())
+    bookmarkStore: FakeBookmarkDataStore(),
+    shouldFetchPosts: false)
   FeedScreen(model: $model)
     .environment(Theme())
 }
 
 #Preview("Loading") {
   @Previewable @State var appModel = AppViewModel(
-    bookmarkStore: FakeBookmarkDataStore())
+    bookmarkStore: FakeBookmarkDataStore(),
+    shouldFetchPosts: false)
   appModel.feedState = FeedState()
 
   return FeedScreen(model: $appModel)
@@ -140,7 +144,8 @@ private struct FeedListView: View {
 
 #Preview("Has posts") {
   @Previewable @State var appModel = AppViewModel(
-    bookmarkStore: FakeBookmarkDataStore())
+    bookmarkStore: FakeBookmarkDataStore(),
+    shouldFetchPosts: false)
   let fakeStories =
     PreviewHelpers
     .makeFakeStories()

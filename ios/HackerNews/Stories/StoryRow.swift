@@ -165,11 +165,13 @@ struct StoryRow_Preview: PreviewProvider {
     let fakeStory = PreviewHelpers.makeFakeStory(
       index: 0, descendants: 3, kids: [1, 2, 3])
     @State var model = AppViewModel(
-      bookmarkStore: FakeBookmarkDataStore()
+      bookmarkStore: FakeBookmarkDataStore(),
+      shouldFetchPosts: false
     )
     PreviewVariants {
       StoryRow(
-        model: $model, state: .loaded(content: fakeStory.toStoryContent()))
+        model: $model, state: .loaded(content: fakeStory.toStoryContent())
+      )
       .environment(Theme())
     }
   }

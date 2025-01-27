@@ -40,7 +40,8 @@ struct SettingsScreen: View {
 
             },
             action: {
-              model.openLink(url: URL(string: "https://www.twitter.com/emergetools")!)
+              model.openLink(
+                url: URL(string: "https://www.twitter.com/emergetools")!)
 
             }
           )
@@ -59,7 +60,8 @@ struct SettingsScreen: View {
 
             },
             action: {
-              model.openLink(url: URL(string: "https://www.twitter.com/heyrikin")!)
+              model.openLink(
+                url: URL(string: "https://www.twitter.com/heyrikin")!)
             }
           )
 
@@ -77,7 +79,8 @@ struct SettingsScreen: View {
 
             },
             action: {
-              model.openLink(url: URL(string: "https://forms.gle/YYno9sUehE5xuKAq9")!)
+              model.openLink(
+                url: URL(string: "https://forms.gle/YYno9sUehE5xuKAq9")!)
             }
           )
 
@@ -96,7 +99,10 @@ struct SettingsScreen: View {
             },
             action: {
               model.openLink(
-                url: URL(string: "https://www.emergetools.com/HackerNewsPrivacyPolicy.html")!)
+                url: URL(
+                  string:
+                    "https://www.emergetools.com/HackerNewsPrivacyPolicy.html")!
+              )
             }
           )
         }
@@ -135,7 +141,8 @@ struct SettingsScreen: View {
           )
 
           SettingsRow(
-            text: "Comment Font Size (\(String(format: "%.1f", theme.commentFontSize))pt)",
+            text:
+              "Comment Font Size (\(String(format: "%.1f", theme.commentFontSize))pt)",
             leadingIcon: {
               Image(systemName: "text.bubble")
                 .font(.system(size: 12))
@@ -155,7 +162,8 @@ struct SettingsScreen: View {
           .animation(.smooth, value: theme.commentFontSize)
 
           SettingsRow(
-            text: "Title Font Size (\(String(format: "%.1f", theme.titleFontSize))pt)",
+            text:
+              "Title Font Size (\(String(format: "%.1f", theme.titleFontSize))pt)",
             leadingIcon: {
               Image(systemName: "text.alignleft")
                 .font(.system(size: 12))
@@ -193,7 +201,9 @@ struct SettingsScreen: View {
 }
 
 #Preview {
-  @Previewable @State var model = AppViewModel(bookmarkStore: FakeBookmarkDataStore())
+  @Previewable @State var model = AppViewModel(
+    bookmarkStore: FakeBookmarkDataStore(),
+    shouldFetchPosts: false)
   SettingsScreen(model: $model)
     .environment(Theme())
 }
