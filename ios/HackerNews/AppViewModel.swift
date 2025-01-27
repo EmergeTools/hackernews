@@ -188,10 +188,12 @@ final class AppViewModel {
         let bookmarked = bookmarkStore.containsBookmark(with: story.id)
         return StoryState.loaded(content: story.toStoryContent(bookmarked: bookmarked))
       }
-      if pager.hasNextPage() {
-        newStories.append(.nextPage)
+      if !newStories.isEmpty {
+        if pager.hasNextPage() {
+          newStories.append(.nextPage)
+        }
+        feedState.setStories(newStories, for: feedType)
       }
-      feedState.setStories(newStories, for: feedType)
     }
   }
 
@@ -203,7 +205,6 @@ final class AppViewModel {
     }
 
     let nextPage = pager.nextPage()
-    // Store the updated pager back in the dictionary
     pagers[feedState.selectedFeed] = pager
 
     let items = await api.fetchPage(page: nextPage)
