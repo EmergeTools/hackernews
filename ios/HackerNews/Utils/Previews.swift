@@ -99,6 +99,10 @@ struct PreviewHelpers {
       makeFakeStory(index: index)
     }
   }
+  
+  static func makeFakeLoadingStories() -> [StoryState] {
+    return (0..<10).map { index in StoryState.loading(id: index) }
+  }
 
   static func makeFakeStory(
     index: Int64 = 0, descendants: Int = 0, kids: [Int64]? = nil

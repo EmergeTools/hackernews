@@ -103,25 +103,26 @@ struct CommentsScreen: View {
       }
     }
   }
+}
 
-  struct StoryScreen_Preview: PreviewProvider {
-    static var previews: some View {
-      let comments = [
-        PreviewHelpers.makeFakeComment(),
-        PreviewHelpers.makeFakeComment(),
-        PreviewHelpers.makeFakeComment(),
-        PreviewHelpers.makeFakeComment(),
-      ]
-      @Previewable @State var viewModel = CommentsViewModel(
-        story: PreviewHelpers.makeFakeStory(kids: comments.map { $0.id }),
-        auth: .loggedIn,
-        navigation: { _ in }
-      )
-      viewModel.state.comments = .loaded(comments: comments)
-      return PreviewVariants {
-        PreviewHelpers.withNavigationView {
-          CommentsScreen(model: viewModel)
-        }
+struct StoryScreen_Preview: PreviewProvider {
+  static var previews: some View {
+    let comments = [
+      PreviewHelpers.makeFakeComment(),
+      PreviewHelpers.makeFakeComment(),
+      PreviewHelpers.makeFakeComment(),
+      PreviewHelpers.makeFakeComment(),
+    ]
+    @Previewable @State var viewModel = CommentsViewModel(
+      story: PreviewHelpers.makeFakeStory(kids: comments.map { $0.id }),
+      auth: .loggedIn,
+      navigation: { _ in }
+    )
+    viewModel.state.comments = .loaded(comments: comments)
+    return PreviewVariants {
+      PreviewHelpers.withNavigationView {
+        CommentsScreen(model: viewModel)
+          .environment(Theme())
       }
     }
   }

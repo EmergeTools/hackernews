@@ -13,6 +13,7 @@ import SwiftUI
 @main
 struct Hacker_NewsApp: App {
   @State private var appModel = AppViewModel(bookmarkStore: LiveBookmarksDataStore.shared)
+  @State private var theme = Theme()
 
   init() {
     UINavigationBar.appearance().backgroundColor = .clear
@@ -63,6 +64,7 @@ struct Hacker_NewsApp: App {
             .presentationCornerRadius(24)
         }
       }
+      .environment(theme)
     }
   }
 }

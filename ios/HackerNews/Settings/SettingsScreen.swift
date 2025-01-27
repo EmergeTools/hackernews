@@ -10,12 +10,11 @@ import SwiftUI
 
 struct SettingsScreen: View {
   @Binding var model: AppViewModel
+  @Environment(Theme.self) private var theme
 
   var body: some View {
     ScrollView {
       LazyVStack(spacing: 8) {
-        Spacer()
-          .frame(height: 68)
         VStack(alignment: .leading, spacing: 4) {
           Text("Profile")
             .font(.ibmPlexSans(.medium, size: 12))
@@ -41,7 +40,8 @@ struct SettingsScreen: View {
 
             },
             action: {
-              model.openLink(url: URL(string: "https://www.twitter.com/emergetools")!)
+              model.openLink(
+                url: URL(string: "https://www.twitter.com/emergetools")!)
 
             }
           )
@@ -60,7 +60,8 @@ struct SettingsScreen: View {
 
             },
             action: {
-              model.openLink(url: URL(string: "https://www.twitter.com/heyrikin")!)
+              model.openLink(
+                url: URL(string: "https://www.twitter.com/heyrikin")!)
             }
           )
 
@@ -78,7 +79,8 @@ struct SettingsScreen: View {
 
             },
             action: {
-              model.openLink(url: URL(string: "https://forms.gle/YYno9sUehE5xuKAq9")!)
+              model.openLink(
+                url: URL(string: "https://forms.gle/YYno9sUehE5xuKAq9")!)
             }
           )
 
@@ -97,14 +99,93 @@ struct SettingsScreen: View {
             },
             action: {
               model.openLink(
-                url: URL(string: "https://www.emergetools.com/HackerNewsPrivacyPolicy.html")!)
+                url: URL(
+                  string:
+                    "https://www.emergetools.com/HackerNewsPrivacyPolicy.html")!
+              )
             }
           )
+        }
+
+        VStack(alignment: .leading, spacing: 4) {
+          @Bindable var theme = theme
+          Text("Appearance")
+            .font(.ibmPlexSans(.medium, size: 12))
+
+          SettingsRow(
+            text: "Use System Font",
+            leadingIcon: {
+              Image(systemName: "textformat")
+                .font(.system(size: 12))
+                .foregroundStyle(.purple)
+            },
+            trailingIcon: {
+              Toggle("", isOn: $theme.useSystemFont)
+                .labelsHidden()
+            },
+            action: {}
+          )
+
+          SettingsRow(
+            text: "Use Monospaced Font",
+            leadingIcon: {
+              Image(systemName: "textformat.size")
+                .font(.system(size: 12))
+                .foregroundStyle(.orange)
+            },
+            trailingIcon: {
+              Toggle("", isOn: $theme.useMonospaced)
+                .labelsHidden()
+            },
+            action: {}
+          )
+
+          SettingsRow(
+            text:
+              "Comment Font Size (\(String(format: "%.1f", theme.commentFontSize))pt)",
+            leadingIcon: {
+              Image(systemName: "text.bubble")
+                .font(.system(size: 12))
+                .foregroundStyle(.blue)
+            },
+            trailingIcon: {
+              Stepper(
+                "",
+                value: $theme.commentFontSize,
+                in: Theme.minCommentFontSize...Theme.maxCommentFontSize,
+                step: 0.5
+              )
+              .labelsHidden()
+            },
+            action: {}
+          )
+          .animation(.smooth, value: theme.commentFontSize)
+
+          SettingsRow(
+            text:
+              "Title Font Size (\(String(format: "%.1f", theme.titleFontSize))pt)",
+            leadingIcon: {
+              Image(systemName: "text.alignleft")
+                .font(.system(size: 12))
+                .foregroundStyle(.green)
+            },
+            trailingIcon: {
+              Stepper(
+                "",
+                value: $theme.titleFontSize,
+                in: Theme.minTitleFontSize...Theme.maxTitleFontSize,
+                step: 0.5
+              )
+              .labelsHidden()
+            },
+            action: {}
+          )
+          .animation(.smooth, value: theme.titleFontSize)
         }
       }
       .padding(.horizontal, 8)
     }
-    .overlay {
+    .safeAreaInset(edge: .top) {
       ZStack(alignment: .leading) {
         Color.clear
           .background(.ultraThinMaterial)
@@ -115,12 +196,14 @@ struct SettingsScreen: View {
           .padding(.horizontal, 16)
       }
       .frame(height: 60)
-      .frame(maxHeight: .infinity, alignment: .top)
     }
   }
 }
 
 #Preview {
-  @Previewable @State var model = AppViewModel(bookmarkStore: FakeBookmarkDataStore())
+  @Previewable @State var model = AppViewModel(
+    bookmarkStore: FakeBookmarkDataStore(),
+    shouldFetchPosts: false)
   SettingsScreen(model: $model)
+    .environment(Theme())
 }
