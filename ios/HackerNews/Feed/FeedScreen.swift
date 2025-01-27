@@ -14,7 +14,7 @@ struct FeedScreen: View {
   @State private var isAnimating = false
 
   var body: some View {
-    VStack(spacing: 4) {
+    VStack(spacing: 8) {
       // Feed type selector header
       ZStack {
         Color.clear
