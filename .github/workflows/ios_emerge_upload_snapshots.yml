@@ -56,7 +56,8 @@ jobs:
           ruby-version: 3.2.5
           bundler-cache: true
       - name: Install gems
-        run: gem install xcpretty emerge
+        run: |
+          gem install erb xcpretty emerge
       - name: Set up App Store Connect API Key
         run: |
           ABSOLUTE_KEY_PATH="$(pwd)/app_store_key.p8"
