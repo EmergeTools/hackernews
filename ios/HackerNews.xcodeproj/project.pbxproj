@@ -19,7 +19,6 @@
 		ECE608562D338B3E008B1618 /* ibm_plex_sans_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECE608532D338B3E008B1618 /* ibm_plex_sans_medium.ttf */; };
 		ECE608572D338B3E008B1618 /* ibm_plex_sans_bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECE608522D338B3E008B1618 /* ibm_plex_sans_bold.ttf */; };
 		ECE608582D338B3E008B1618 /* ibm_plex_sans_regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECE608542D338B3E008B1618 /* ibm_plex_sans_regular.ttf */; };
-		ECE608592D338B3E008B1618 /* unbounded.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECE608552D338B3E008B1618 /* unbounded.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,7 +88,6 @@
 		ECE608522D338B3E008B1618 /* ibm_plex_sans_bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = ibm_plex_sans_bold.ttf; sourceTree = "<group>"; };
 		ECE608532D338B3E008B1618 /* ibm_plex_sans_medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = ibm_plex_sans_medium.ttf; sourceTree = "<group>"; };
 		ECE608542D338B3E008B1618 /* ibm_plex_sans_regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = ibm_plex_sans_regular.ttf; sourceTree = "<group>"; };
-		ECE608552D338B3E008B1618 /* unbounded.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = unbounded.ttf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -237,7 +235,6 @@
 				ECE608522D338B3E008B1618 /* ibm_plex_sans_bold.ttf */,
 				ECE608532D338B3E008B1618 /* ibm_plex_sans_medium.ttf */,
 				ECE608542D338B3E008B1618 /* ibm_plex_sans_regular.ttf */,
-				ECE608552D338B3E008B1618 /* unbounded.ttf */,
 			);
 			path = Font;
 			sourceTree = "<group>";
@@ -376,7 +373,6 @@
 				ECE608562D338B3E008B1618 /* ibm_plex_sans_medium.ttf in Resources */,
 				ECE608572D338B3E008B1618 /* ibm_plex_sans_bold.ttf in Resources */,
 				ECE608582D338B3E008B1618 /* ibm_plex_sans_regular.ttf in Resources */,
-				ECE608592D338B3E008B1618 /* unbounded.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -50,6 +50,13 @@ jobs:
           fetch-depth: 0
       - name: Select Xcode version
         run: sudo xcode-select -s '/Applications/Xcode_16.2.app/Contents/Developer'
+      - name: Ruby setup
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.2.5
+          bundler-cache: true
+      - name: Install gems
+        run: gem install xcpretty emerge
       - name: Set up App Store Connect API Key
         run: |
           ABSOLUTE_KEY_PATH="$(pwd)/app_store_key.p8"
@@ -60,7 +67,7 @@ jobs:
           APP_STORE_KEY_ID: ${{ secrets.ASC_KEY_ID }}
           APP_STORE_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
         run: |
-          xcodebuild test \
+          set -o pipefail && xcodebuild test \
             -scheme HackerNews \
             -sdk iphonesimulator \
             -destination 'platform=iOS Simulator,name=iPhone 16 Pro,OS=18.1' \
@@ -71,15 +78,8 @@ jobs:
             -authenticationKeyIssuerID $APP_STORE_ISSUER_ID \
             ONLY_ACTIVE_ARCH=YES \
             TARGETED_DEVICE_FAMILY=1 \
-            SUPPORTS_MACCATALYST=NO
+            SUPPORTS_MACCATALYST=NO | xcpretty
         continue-on-error: true
-      - name: Ruby setup
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 3.2.5
-          bundler-cache: true
-      - name: Setup gems
-        run: gem install emerge
       - name: Upload snapshots
         env:
           EMERGE_API_TOKEN: ${{ secrets.EMERGE_API_KEY }}
