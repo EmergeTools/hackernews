@@ -24,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/EmergeTools/Reaper",
       "state" : {
-        "revision" : "5d4d1a663355b049d7294d4d33706c8600517798",
-        "version" : "1.3.1"
+        "revision" : "1ee01c300554e83b6698190a1e3496afbd509ec6",
+        "version" : "1.6.0"
       }
     },
     {
