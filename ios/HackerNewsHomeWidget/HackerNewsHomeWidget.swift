@@ -53,13 +53,14 @@ struct StoryTimelineEntry: TimelineEntry {
 
 struct HackerNewsHomeWidgetEntryView: View {
   @Environment(\.widgetFamily) private var family
+  @Environment(Theme.self) private var theme
 
   let entry: HackerNewsProvider.Entry
 
   var body: some View {
     VStack(alignment: .leading, spacing: 8) {
       Text("Top Stories")
-        .font(.headline)
+        .font(theme.titleFont)
         .foregroundColor(.hnOrange)
 
       switch family {
@@ -101,17 +102,17 @@ struct HackerNewsHomeWidgetEntryView: View {
       Link(destination: URL(string: "hackernews://story/\(story.id)")!) {
         VStack(alignment: .leading, spacing: 4) {
           Text(story.title)
-            .font(.system(size: 12, weight: .semibold))
+            .font(theme.titleFont)
             .lineLimit(2)
             .foregroundColor(.primary)
 
           HStack(spacing: 12) {
             HStack(spacing: 4) {
               Image(systemName: "arrow.up")
-                .font(.system(size: 10))
+                .font(theme.userSansFont(size: 10))
                 .foregroundColor(.green)
               Text("\(story.score)")
-                .font(.system(size: 10, weight: .medium))
+                .font(theme.userSansFont(size: 10, weight: .medium))
             }
 
             HStack(spacing: 4) {
@@ -134,7 +135,7 @@ struct HackerNewsHomeWidgetEntryView: View {
       Link(destination: URL(string: "hackernews://story/\(story.id)")!) {
         VStack(alignment: .leading, spacing: 6) {
           Text(story.title)
-            .font(.system(size: 14, weight: .semibold))
+            .font(theme.titleFont)
             .lineLimit(2)
             .multilineTextAlignment(.leading)
             .foregroundColor(.primary)
@@ -142,10 +143,10 @@ struct HackerNewsHomeWidgetEntryView: View {
           HStack(spacing: 16) {
             HStack(spacing: 4) {
               Image(systemName: "arrow.up")
-                .font(.system(size: 12))
+                .font(theme.userSansFont(size: 12))
                 .foregroundColor(.green)
               Text("\(story.score)")
-                .font(.system(size: 12, weight: .medium))
+                .font(theme.userSansFont(size: 12, weight: .medium))
             }
 
             HStack(spacing: 4) {
@@ -180,7 +181,7 @@ struct HackerNewsHomeWidgetEntryView: View {
       Link(destination: URL(string: "hackernews://story/\(story.id)")!) {
         VStack(alignment: .leading, spacing: 6) {
           Text(story.title)
-            .font(.system(size: 14, weight: .semibold))
+            .font(theme.titleFont)
             .lineLimit(2)
             .multilineTextAlignment(.leading)
             .foregroundColor(.primary)
@@ -188,10 +189,10 @@ struct HackerNewsHomeWidgetEntryView: View {
           HStack(spacing: 16) {
             HStack(spacing: 4) {
               Image(systemName: "arrow.up")
-                .font(.system(size: 12))
+                .font(theme.userSansFont(size: 12))
                 .foregroundColor(.green)
               Text("\(story.score)")
-                .font(.system(size: 12, weight: .medium))
+                .font(theme.userSansFont(size: 12, weight: .medium))
             }
 
             HStack(spacing: 4) {
@@ -223,6 +224,7 @@ struct HackerNewsHomeWidgetEntryView: View {
 }
 
 struct HackerNewsHomeWidget: Widget {
+  @State var theme = Theme()
   let kind: String = "HackerNewsHomeWidget"
 
   var body: some WidgetConfiguration {
@@ -230,10 +232,12 @@ struct HackerNewsHomeWidget: Widget {
       if #available(iOS 17.0, *) {
         HackerNewsHomeWidgetEntryView(entry: entry)
           .containerBackground(.fill.tertiary, for: .widget)
+          .environment(theme)
       } else {
         HackerNewsHomeWidgetEntryView(entry: entry)
           .padding()
           .background()
+          .environment(theme)
       }
     }
     .configurationDisplayName("Hacker News")

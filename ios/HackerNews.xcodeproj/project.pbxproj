@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A411AE9D2D49A3480067FB97 /* ibm_plex_sans_bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECE608522D338B3E008B1618 /* ibm_plex_sans_bold.ttf */; };
+		A411AE9E2D49A3480067FB97 /* ibm_plex_sans_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECE608532D338B3E008B1618 /* ibm_plex_sans_medium.ttf */; };
+		A411AE9F2D49A3480067FB97 /* ibm_plex_sans_regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECE608542D338B3E008B1618 /* ibm_plex_sans_regular.ttf */; };
 		A47309B42AA29D9600201376 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = A47309B32AA29D9600201376 /* SwiftSoup */; };
 		A495A6662CED57BB009A2A6B /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = A495A6652CED57BB009A2A6B /* SnapshotTesting */; };
 		A495B2952BFEA11B00A8A8A9 /* Reaper in Frameworks */ = {isa = PBXBuildFile; productRef = A495B2942BFEA11B00A8A8A9 /* Reaper */; };
@@ -126,7 +129,9 @@
 				Utils/Colors.swift,
 				Utils/DateUtils.swift,
 				Utils/Flags.swift,
+				Utils/Font.swift,
 				Utils/Pager.swift,
+				Utils/Theme.swift,
 			);
 			target = A4B6CF902D49949200077F66 /* HackerNewsHomeWidgetExtension */;
 		};
@@ -486,6 +491,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A411AE9D2D49A3480067FB97 /* ibm_plex_sans_bold.ttf in Resources */,
+				A411AE9E2D49A3480067FB97 /* ibm_plex_sans_medium.ttf in Resources */,
+				A411AE9F2D49A3480067FB97 /* ibm_plex_sans_regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
