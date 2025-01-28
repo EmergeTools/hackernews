@@ -64,7 +64,6 @@ struct HackerNewsHomeWidgetEntryView: View {
 
       switch family {
       case .systemSmall:
-        // Compact layout for small widget
         ForEach(entry.stories.prefix(2), id: \.id) { story in
           smallStoryRow(story)
           if story.id != entry.stories.prefix(2).last?.id {
@@ -73,7 +72,6 @@ struct HackerNewsHomeWidgetEntryView: View {
         }
 
       case .systemMedium:
-        // Standard layout for medium widget
         ForEach(entry.stories.prefix(2), id: \.id) { story in
           mediumStoryRow(story)
           if story.id != entry.stories.prefix(2).last?.id {
@@ -82,7 +80,6 @@ struct HackerNewsHomeWidgetEntryView: View {
         }
 
       case .systemLarge, .systemExtraLarge:
-        // Full layout for large widget
         ForEach(entry.stories.prefix(5), id: \.id) { story in
           storyRow(story)
           if story.id != entry.stories.prefix(5).last?.id {
@@ -92,7 +89,7 @@ struct HackerNewsHomeWidgetEntryView: View {
 
       case .accessoryCircular, .accessoryRectangular, .accessoryInline:
         fatalError("Unsupported family \(family)")
-        
+
       @unknown default:
         fatalError("Unsupported family \(family)")
       }
@@ -101,26 +98,31 @@ struct HackerNewsHomeWidgetEntryView: View {
 
   private func smallStoryRow(_ story: Story) -> some View {
     VStack(alignment: .leading, spacing: 4) {
-      Text(story.title)
-        .font(.system(size: 12, weight: .semibold))
-        .lineLimit(2)
+      Link(destination: URL(string: "hackernews://story/\(story.id)")!) {
+        VStack(alignment: .leading, spacing: 4) {
+          Text(story.title)
+            .font(.system(size: 12, weight: .semibold))
+            .lineLimit(2)
+            .foregroundColor(.primary)
 
-      HStack(spacing: 12) {
-        HStack(spacing: 4) {
-          Image(systemName: "arrow.up")
-            .font(.system(size: 10))
-            .foregroundColor(.green)
-          Text("\(story.score)")
-            .font(.system(size: 10, weight: .medium))
-        }
+          HStack(spacing: 12) {
+            HStack(spacing: 4) {
+              Image(systemName: "arrow.up")
+                .font(.system(size: 10))
+                .foregroundColor(.green)
+              Text("\(story.score)")
+                .font(.system(size: 10, weight: .medium))
+            }
 
-        HStack(spacing: 4) {
-          Image(systemName: "message.fill")
-            .font(.system(size: 10))
-          Text("\(story.descendants)")
-            .font(.system(size: 10, weight: .medium))
+            HStack(spacing: 4) {
+              Image(systemName: "message.fill")
+                .font(.system(size: 10))
+              Text("\(story.descendants)")
+                .font(.system(size: 10, weight: .medium))
+            }
+            .foregroundStyle(.blue)
+          }
         }
-        .foregroundStyle(.blue)
       }
     }
     .padding(.horizontal, 8)
@@ -129,40 +131,45 @@ struct HackerNewsHomeWidgetEntryView: View {
 
   private func storyRow(_ story: Story) -> some View {
     VStack(alignment: .leading, spacing: 6) {
-      Text(story.title)
-        .font(.system(size: 14, weight: .semibold))
-        .lineLimit(2)
-        .multilineTextAlignment(.leading)
+      Link(destination: URL(string: "hackernews://story/\(story.id)")!) {
+        VStack(alignment: .leading, spacing: 6) {
+          Text(story.title)
+            .font(.system(size: 14, weight: .semibold))
+            .lineLimit(2)
+            .multilineTextAlignment(.leading)
+            .foregroundColor(.primary)
 
-      HStack(spacing: 16) {
-        HStack(spacing: 4) {
-          Image(systemName: "arrow.up")
-            .font(.system(size: 12))
-            .foregroundColor(.green)
-          Text("\(story.score)")
-            .font(.system(size: 12, weight: .medium))
+          HStack(spacing: 16) {
+            HStack(spacing: 4) {
+              Image(systemName: "arrow.up")
+                .font(.system(size: 12))
+                .foregroundColor(.green)
+              Text("\(story.score)")
+                .font(.system(size: 12, weight: .medium))
+            }
+
+            HStack(spacing: 4) {
+              Image(systemName: "clock")
+                .font(.system(size: 12))
+                .foregroundColor(.purple)
+              Text(
+                Date(timeIntervalSince1970: TimeInterval(story.time))
+                  .timeAgoDisplay()
+              )
+              .font(.system(size: 12, weight: .medium))
+            }
+
+            Spacer()
+
+            HStack(spacing: 4) {
+              Image(systemName: "message.fill")
+                .font(.system(size: 12))
+              Text("\(story.descendants)")
+                .font(.system(size: 12, weight: .medium))
+            }
+            .foregroundStyle(.blue)
+          }
         }
-
-        HStack(spacing: 4) {
-          Image(systemName: "clock")
-            .font(.system(size: 12))
-            .foregroundColor(.purple)
-          Text(
-            Date(timeIntervalSince1970: TimeInterval(story.time))
-              .timeAgoDisplay()
-          )
-          .font(.system(size: 12, weight: .medium))
-        }
-
-        Spacer()
-
-        HStack(spacing: 4) {
-          Image(systemName: "message.fill")
-            .font(.system(size: 12))
-          Text("\(story.descendants)")
-            .font(.system(size: 12, weight: .medium))
-        }
-        .foregroundStyle(.blue)
       }
     }
     .padding(.vertical, 4)
@@ -170,40 +177,45 @@ struct HackerNewsHomeWidgetEntryView: View {
 
   private func mediumStoryRow(_ story: Story) -> some View {
     VStack(alignment: .leading, spacing: 6) {
-      Text(story.title)
-        .font(.system(size: 14, weight: .semibold))
-        .lineLimit(2)
-        .multilineTextAlignment(.leading)
+      Link(destination: URL(string: "hackernews://story/\(story.id)")!) {
+        VStack(alignment: .leading, spacing: 6) {
+          Text(story.title)
+            .font(.system(size: 14, weight: .semibold))
+            .lineLimit(2)
+            .multilineTextAlignment(.leading)
+            .foregroundColor(.primary)
 
-      HStack(spacing: 16) {
-        HStack(spacing: 4) {
-          Image(systemName: "arrow.up")
-            .font(.system(size: 12))
-            .foregroundColor(.green)
-          Text("\(story.score)")
-            .font(.system(size: 12, weight: .medium))
+          HStack(spacing: 16) {
+            HStack(spacing: 4) {
+              Image(systemName: "arrow.up")
+                .font(.system(size: 12))
+                .foregroundColor(.green)
+              Text("\(story.score)")
+                .font(.system(size: 12, weight: .medium))
+            }
+
+            HStack(spacing: 4) {
+              Image(systemName: "clock")
+                .font(.system(size: 12))
+                .foregroundColor(.purple)
+              Text(
+                Date(timeIntervalSince1970: TimeInterval(story.time))
+                  .timeAgoDisplay()
+              )
+              .font(.system(size: 12, weight: .medium))
+            }
+
+            Spacer()
+
+            HStack(spacing: 4) {
+              Image(systemName: "message.fill")
+                .font(.system(size: 12))
+              Text("\(story.descendants)")
+                .font(.system(size: 12, weight: .medium))
+            }
+            .foregroundStyle(.blue)
+          }
         }
-
-        HStack(spacing: 4) {
-          Image(systemName: "clock")
-            .font(.system(size: 12))
-            .foregroundColor(.purple)
-          Text(
-            Date(timeIntervalSince1970: TimeInterval(story.time))
-              .timeAgoDisplay()
-          )
-          .font(.system(size: 12, weight: .medium))
-        }
-
-        Spacer()
-
-        HStack(spacing: 4) {
-          Image(systemName: "message.fill")
-            .font(.system(size: 12))
-          Text("\(story.descendants)")
-            .font(.system(size: 12, weight: .medium))
-        }
-        .foregroundStyle(.blue)
       }
     }
     .padding(.vertical, 4)

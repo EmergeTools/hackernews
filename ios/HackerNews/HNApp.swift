@@ -12,14 +12,16 @@ import SwiftUI
 
 @main
 struct Hacker_NewsApp: App {
-  @State private var appModel = AppViewModel(bookmarkStore: LiveBookmarksDataStore.shared)
+  @State private var appModel = AppViewModel(
+    bookmarkStore: LiveBookmarksDataStore.shared)
   @State private var theme = Theme()
 
   init() {
     UINavigationBar.appearance().backgroundColor = .clear
     UICollectionView.appearance().backgroundColor = .clear
 
-    EMGReaper.sharedInstance().start(withAPIKey: "f77fb081-cfc2-4d15-acb5-18bad59c9376")
+    EMGReaper.sharedInstance().start(
+      withAPIKey: "f77fb081-cfc2-4d15-acb5-18bad59c9376")
 
     SentrySDK.start { options in
       options.dsn =
@@ -37,13 +39,16 @@ struct Hacker_NewsApp: App {
 
           ContentView(model: $appModel)
         }
-        .navigationDestination(for: AppViewModel.AppNavigation.self) { appNavigation in
+        .navigationDestination(for: AppViewModel.AppNavigation.self) {
+          appNavigation in
           switch appNavigation {
           case .webLink(let url, let title):
             WebViewContainer(url: url, title: title)
               .ignoresSafeArea()
           case .storyComments(let story):
-            let commentModel = CommentsViewModel(story: story, auth: appModel.authState) {
+            let commentModel = CommentsViewModel(
+              story: story, auth: appModel.authState
+            ) {
               destination in
               switch destination {
               case .back:
@@ -65,6 +70,26 @@ struct Hacker_NewsApp: App {
         }
       }
       .environment(theme)
+      .onOpenURL { url in
+        handleDeepLink(url)
+      }
+    }
+  }
+
+  private func handleDeepLink(_ url: URL) {
+    guard url.scheme == "hackernews",
+      url.host == "story",
+      let storyId = Int64(url.lastPathComponent)
+    else {
+      return
+    }
+
+    Task {
+      let stories = await HNApi().fetchPage(page: Page(ids: [storyId]))
+      if let story = stories.first {
+        appModel.navigationPath
+          .append(AppViewModel.AppNavigation.storyComments(story: story))
+      }
     }
   }
 }
