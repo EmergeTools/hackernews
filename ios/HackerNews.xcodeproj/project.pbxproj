@@ -599,7 +599,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "\"$(PROJECT_DIR)/Frameworks/Reaper.xcframework\"";
-				MARKETING_VERSION = 3.5;
+				MARKETING_VERSION = 3.6;
 				OTHER_LDFLAGS = "-fprofile-instr-generate";
 				OTHER_SWIFT_FLAGS = "-profile-generate -profile-coverage-mapping";
 				PRODUCT_BUNDLE_IDENTIFIER = com.emergetools.hackernews;
@@ -641,7 +641,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "\"$(PROJECT_DIR)/Frameworks/Reaper.xcframework\"";
-				MARKETING_VERSION = 3.5;
+				MARKETING_VERSION = 3.6;
 				PRODUCT_BUNDLE_IDENTIFIER = com.emergetools.hackernews;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -800,7 +800,7 @@
 			repositoryURL = "https://github.com/EmergeTools/Reaper";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.3.1;
+				minimumVersion = 1.6.0;
 			};
 		};
 		A4D28AEC2C237E2A007F20D0 /* XCRemoteSwiftPackageReference "SnapshotPreviews-iOS" */ = {
