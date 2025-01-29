@@ -2,26 +2,16 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>ITSAppUsesNonExemptEncryption</key>
-	<false/>
-	<key>LSMinimumSystemVersion</key>
-	<string>14.0</string>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>hackernews</string>
-			</array>
-			<key>CFBundleURLName</key>
-			<string>com.emerge.hackernews</string>
-		</dict>
-	</array>
 	<key>UIAppFonts</key>
 	<array>
 		<string>ibm_plex_sans_regular.ttf</string>
 		<string>ibm_plex_sans_medium.ttf</string>
 		<string>ibm_plex_sans_bold.ttf</string>
 	</array>
+	<key>NSExtension</key>
+	<dict>
+		<key>NSExtensionPointIdentifier</key>
+		<string>com.apple.widgetkit-extension</string>
+	</dict>
 </dict>
 </plist>

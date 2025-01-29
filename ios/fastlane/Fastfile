@@ -69,14 +69,21 @@ platform :ios do
      keychain_password: keychain_password
    )
 
-   # Fetches and installs provisioning profiles from ASC
-   sigh(
-     adhoc: options[:adhoc],
-     api_key: api_key,
-     readonly: true,
-     provisioning_name: profile_name,
-     app_identifier: bundle_identifier
-   )
+    # Fetches and installs provisioning profiles from ASC
+    sigh(
+      adhoc: options[:adhoc],
+      api_key: api_key,
+      readonly: true,
+      provisioning_name: profile_name,
+      app_identifier: bundle_identifier
+    )
+    sigh(
+      adhoc: options[:adhoc],
+      api_key: api_key,
+      readonly: true,
+      provisioning_name: 'HackerNewsHomeWidget Distribution',
+      app_identifier: 'com.emergetools.hackernews.HackerNewsHomeWidget'
+    )
   end
 
   desc 'Build the iOS app'
@@ -91,10 +98,21 @@ platform :ios do
     # Turn off automatic signing during build so correct code signing identity is guaranteed to be used
     update_code_signing_settings(
       use_automatic_signing: false,
-      targets: ['HackerNews'],
+      targets: ['HackerNews', 'HackerNewsHomeWidgetExtension'],
       code_sign_identity: 'Apple Distribution',
       bundle_identifier: bundle_identifier,
       profile_name: profile_name,
+      build_configurations: ['Release'],
+      team_id: ENV['APPLE_TEAM_ID']
+    )
+
+    # Also update code signing for widget extension specifically
+    update_code_signing_settings(
+      use_automatic_signing: false,
+      targets: ['HackerNewsHomeWidgetExtension'],
+      code_sign_identity: 'Apple Distribution',
+      bundle_identifier: 'com.emergetools.hackernews.HackerNewsHomeWidget',
+      profile_name: 'HackerNewsHomeWidget Distribution',
       build_configurations: ['Release'],
       team_id: ENV['APPLE_TEAM_ID']
     )
@@ -108,7 +126,8 @@ platform :ios do
       export_options: {
         method: export_method,
         provisioningProfiles: {
-          bundle_identifier => profile_name
+          bundle_identifier => profile_name,
+          'com.emergetools.hackernews.HackerNewsHomeWidget' => 'HackerNewsHomeWidget Distribution'
         },
         team_id: ENV['APPLE_TEAM_ID']
       }

@@ -1,4 +1,10 @@
 import SwiftUI
+import WidgetKit
+
+enum ThemeContext {
+  case app
+  case widget
+}
 
 @MainActor
 @Observable
@@ -13,8 +19,11 @@ final class Theme {
   static let maxCommentFontSize: Double = 18
 
   static let defaultTitleFontSize: Double = 16
+  static let defaultWidgetTitleFontSize: Double = 13
   static let minTitleFontSize: Double = 14
   static let maxTitleFontSize: Double = 22
+
+  private let context: ThemeContext
 
   var useSystemFont: Bool {
     didSet {
@@ -30,11 +39,13 @@ final class Theme {
 
   var commentFontSize: Double {
     didSet {
-      let clamped = commentFontSize.clamped(to: Self.minCommentFontSize...Self.maxCommentFontSize)
+      let clamped = commentFontSize.clamped(
+        to: Self.minCommentFontSize...Self.maxCommentFontSize)
       if clamped != commentFontSize {
         commentFontSize = clamped
       }
-      UserDefaults.standard.set(commentFontSize, forKey: Self.commentFontSizeKey)
+      UserDefaults.standard.set(
+        commentFontSize, forKey: Self.commentFontSizeKey)
     }
   }
 
@@ -44,16 +55,18 @@ final class Theme {
 
   var titleFontSize: Double {
     didSet {
-      let clamped = titleFontSize.clamped(to: Self.minTitleFontSize...Self.maxTitleFontSize)
+      let clamped = titleFontSize.clamped(
+        to: Self.minTitleFontSize...Self.maxTitleFontSize)
       if clamped != titleFontSize {
         titleFontSize = clamped
       }
       UserDefaults.standard.set(titleFontSize, forKey: Self.titleFontSizeKey)
     }
   }
-  
+
   var titleFont: Font {
-    userMonoFont(size: titleFontSize, weight: .bold)
+    let size = context == .app ? titleFontSize : Self.defaultWidgetTitleFontSize
+    return userMonoFont(size: size, weight: .bold)
   }
 
   var commentTextFont: Font {
@@ -103,10 +116,14 @@ final class Theme {
     }
   }
 
-  init() {
-    self.useSystemFont = UserDefaults.standard.object(forKey: Self.useSystemFontKey) as? Bool ?? false
+  init(context: ThemeContext = .app) {
+    self.context = context
+    self.useSystemFont =
+      UserDefaults.standard.object(forKey: Self.useSystemFontKey) as? Bool
+      ?? false
     self.useMonospaced =
-      UserDefaults.standard.object(forKey: Self.useMonospacedKey) as? Bool ?? true
+      UserDefaults.standard.object(forKey: Self.useMonospacedKey) as? Bool
+      ?? true
     self.commentFontSize =
       UserDefaults.standard.object(forKey: Self.commentFontSizeKey) as? Double
       ?? Self.defaultCommentFontSize
