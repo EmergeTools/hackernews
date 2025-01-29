@@ -69,14 +69,21 @@ platform :ios do
      keychain_password: keychain_password
    )
 
-   # Fetches and installs provisioning profiles from ASC
-   sigh(
-     adhoc: options[:adhoc],
-     api_key: api_key,
-     readonly: true,
-     provisioning_name: profile_name,
-     app_identifier: bundle_identifier
-   )
+    # Fetches and installs provisioning profiles from ASC
+    sigh(
+      adhoc: options[:adhoc],
+      api_key: api_key,
+      readonly: true,
+      provisioning_name: profile_name,
+      app_identifier: bundle_identifier
+    )
+    sigh(
+      adhoc: options[:adhoc],
+      api_key: api_key,
+      readonly: true,
+      provisioning_name: 'HackerNewsHomeWidget',
+      app_identifier: 'com.emergetools.hackernews.HackerNewsHomeWidget'
+    )
   end
 
   desc 'Build the iOS app'
@@ -108,7 +115,8 @@ platform :ios do
       export_options: {
         method: export_method,
         provisioningProfiles: {
-          bundle_identifier => profile_name
+          bundle_identifier => profile_name,
+          'com.emergetools.hackernews.HackerNewsHomeWidget' => 'HackerNewsHomeWidget'
         },
         team_id: ENV['APPLE_TEAM_ID']
       }
