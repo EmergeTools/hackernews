@@ -224,7 +224,7 @@ struct HackerNewsHomeWidgetEntryView: View {
 }
 
 struct HackerNewsHomeWidget: Widget {
-  @State var theme = Theme()
+  @State var theme = Theme(context: .widget)
   let kind: String = "HackerNewsHomeWidget"
 
   var body: some WidgetConfiguration {

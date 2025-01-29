@@ -28,6 +28,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		A411AEA02D4A82CA0067FB97 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A42705712A4293B10057E439 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A4B6CF902D49949200077F66;
+			remoteInfo = HackerNewsHomeWidgetExtension;
+		};
 		A427058A2A4293B30057E439 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A42705712A4293B10057E439 /* Project object */;
@@ -41,13 +48,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = A42705782A4293B10057E439;
 			remoteInfo = HackerNews;
-		};
-		A4B6CF9E2D49949300077F66 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A42705712A4293B10057E439 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = A4B6CF902D49949200077F66;
-			remoteInfo = HackerNewsHomeWidgetExtension;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -318,14 +318,14 @@
 				A42705752A4293B10057E439 /* Sources */,
 				A42705762A4293B10057E439 /* Frameworks */,
 				A42705772A4293B10057E439 /* Resources */,
-				A42705AE2A44C35D0057E439 /* Strip Symbols */,
 				A4D28AE92C237BAE007F20D0 /* Embed Frameworks */,
 				A4B6CFA22D49949300077F66 /* Embed Foundation Extensions */,
+				A42705AE2A44C35D0057E439 /* Strip Symbols */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				A4B6CF9F2D49949300077F66 /* PBXTargetDependency */,
+				A411AEA12D4A82CA0067FB97 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				A43900DA2D483D6100FE51DD /* HackerNews */,
@@ -554,6 +554,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		A411AEA12D4A82CA0067FB97 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A4B6CF902D49949200077F66 /* HackerNewsHomeWidgetExtension */;
+			targetProxy = A411AEA02D4A82CA0067FB97 /* PBXContainerItemProxy */;
+		};
 		A427058B2A4293B30057E439 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A42705782A4293B10057E439 /* HackerNews */;
@@ -563,11 +568,6 @@
 			isa = PBXTargetDependency;
 			target = A42705782A4293B10057E439 /* HackerNews */;
 			targetProxy = A42705942A4293B30057E439 /* PBXContainerItemProxy */;
-		};
-		A4B6CF9F2D49949300077F66 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = A4B6CF902D49949200077F66 /* HackerNewsHomeWidgetExtension */;
-			targetProxy = A4B6CF9E2D49949300077F66 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
