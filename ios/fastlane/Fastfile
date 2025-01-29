@@ -98,10 +98,21 @@ platform :ios do
     # Turn off automatic signing during build so correct code signing identity is guaranteed to be used
     update_code_signing_settings(
       use_automatic_signing: false,
-      targets: ['HackerNews'],
+      targets: ['HackerNews', 'HackerNewsHomeWidgetExtension'],
       code_sign_identity: 'Apple Distribution',
       bundle_identifier: bundle_identifier,
       profile_name: profile_name,
+      build_configurations: ['Release'],
+      team_id: ENV['APPLE_TEAM_ID']
+    )
+
+    # Also update code signing for widget extension specifically
+    update_code_signing_settings(
+      use_automatic_signing: false,
+      targets: ['HackerNewsHomeWidgetExtension'],
+      code_sign_identity: 'Apple Distribution',
+      bundle_identifier: 'com.emergetools.hackernews.HackerNewsHomeWidget',
+      profile_name: 'HackerNewsHomeWidget Distribution',
       build_configurations: ['Release'],
       team_id: ENV['APPLE_TEAM_ID']
     )
