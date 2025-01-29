@@ -81,7 +81,7 @@ platform :ios do
       adhoc: options[:adhoc],
       api_key: api_key,
       readonly: true,
-      provisioning_name: 'HackerNewsHomeWidget',
+      provisioning_name: 'HackerNewsHomeWidget Distribution',
       app_identifier: 'com.emergetools.hackernews.HackerNewsHomeWidget'
     )
   end
@@ -116,7 +116,7 @@ platform :ios do
         method: export_method,
         provisioningProfiles: {
           bundle_identifier => profile_name,
-          'com.emergetools.hackernews.HackerNewsHomeWidget' => 'HackerNewsHomeWidget'
+          'com.emergetools.hackernews.HackerNewsHomeWidget' => 'HackerNewsHomeWidget Distribution'
         },
         team_id: ENV['APPLE_TEAM_ID']
       }
