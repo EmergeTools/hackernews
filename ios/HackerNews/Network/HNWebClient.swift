@@ -55,7 +55,8 @@ class HNWebClient {
     let formData = ["acct": acct, "pw": pw]
     let formString = formData.map { key, value in
       let escapedKey = key.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? key
-      let escapedValue = value.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? value
+      let escapedValue =
+        value.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? value
       return "\(escapedKey)=\(escapedValue)"
     }.joined(separator: "&")
     request.httpMethod = "POST"
@@ -75,7 +76,7 @@ class HNWebClient {
 
   func getStoryPage(id: Int64) async -> PostPage {
     // make request for page
-    let url = URL(string:"\(ITEM_URL)?id=\(id)")!
+    let url = URL(string: "\(ITEM_URL)?id=\(id)")!
     let request = URLRequest(url: url)
     do {
       let (data, _) = try await session.data(for: request)
@@ -85,11 +86,12 @@ class HNWebClient {
       let comments = try document.comments()
       let commentFormData = try document.commentFormData()
 
-      return .success(data: PostPageResponse(
-        postInfo: postInfo,
-        comments: comments,
-        commentForm: commentFormData
-      ))
+      return .success(
+        data: PostPageResponse(
+          postInfo: postInfo,
+          comments: comments,
+          commentForm: commentFormData
+        ))
     } catch {
       print("Error fetching post IDs: \(error)")
       return .error
@@ -123,7 +125,7 @@ class HNWebClient {
       URLQueryItem(name: "hmac", value: hmac),
       URLQueryItem(name: "text", value: text),
     ]
-    let formString = urlComponent.string!.dropFirst() // remove the ?, easy way to encode string
+    let formString = urlComponent.string!.dropFirst()  // remove the ?, easy way to encode string
     print("Form Data: ", formString)
     request.httpMethod = "POST"
     request.httpBody = formString.data(using: .utf8)
@@ -139,8 +141,8 @@ class HNWebClient {
   }
 }
 
-private extension Document {
-  func postInfo(id: Int64) throws -> PostInfo {
+extension Document {
+  fileprivate func postInfo(id: Int64) throws -> PostInfo {
     let postUpvoteLinkElement = try self.select("#up_\(id)").first()
     let upvoteUrl = try postUpvoteLinkElement?.attr("href") ?? ""
     let upvoted = postUpvoteLinkElement?.hasClass("nosee") ?? false
@@ -152,12 +154,12 @@ private extension Document {
     )
   }
 
-  func comments() throws -> [CommentInfo] {
+  fileprivate func comments() throws -> [CommentInfo] {
     let commentTree = try self.select("table.comment-tree tr.athing.comtr")
     let comments: [CommentInfo] = try commentTree.map { comment in
       let commentId = try Int64(comment.id(), format: .number)
       let commentLevel = try comment.select("td.ind").attr("indent")
-      let commentText = try comment.select("div.commtext").text()
+      let commentText = try comment.select("div.commtext").html()
       let commentAuthor = try comment.select("a.hnuser").text()
       let commentDate = try comment.select("span.age").attr("title").split(separator: " ").first!
       let upvoteLinkElement = try comment.select("a[id^=up_").first()
@@ -178,9 +180,9 @@ private extension Document {
     return comments
   }
 
-  func commentFormData() throws -> CommentFormData? {
+  fileprivate func commentFormData() throws -> CommentFormData? {
     let formElement = try self.select("form[action=comment]")
-    if (formElement.isEmpty()) { return nil }
+    if formElement.isEmpty() { return nil }
 
     let parentId = try formElement.select("input[name=parent]").attr("value")
     let goto = try formElement.select("input[name=goto]").attr("value")

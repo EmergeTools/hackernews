@@ -57,14 +57,18 @@ struct CommentRow: View {
       .padding(8)
       .background(isPressed ? .surface.opacity(0.85) : .surface)
       .zIndex(1)  // Ensure header stays on top
+      .simultaneousGesture(makeCommentGesture())  // Move gesture here
 
       // Comment Body
       if !state.hidden {
         VStack(alignment: .leading) {
-          Text(state.text.strippingHTML())
+          Text(state.text.formattedHTML())
             .font(theme.commentTextFont)
+            .tint(.accentColor)
         }
+        .frame(maxWidth: .infinity, alignment: .leading)  // Make it fill available width
         .padding(EdgeInsets(top: -3, leading: 8, bottom: 8, trailing: 8))
+        .background(.surface)  // Add background to body
         .transition(
           .asymmetric(
             insertion: .move(edge: .top).combined(with: .opacity),
@@ -73,10 +77,8 @@ struct CommentRow: View {
         )
       }
     }
-    .background(isPressed ? .surface.opacity(0.85) : .surface)
     .clipShape(RoundedRectangle(cornerRadius: 16.0))
     .animation(.spring(duration: 0.3), value: state.hidden)
-    .simultaneousGesture(makeCommentGesture())
     .padding(
       EdgeInsets(
         top: 0,

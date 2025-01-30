@@ -65,7 +65,7 @@ struct CommentsHeader: View {
         VStack(alignment: .leading, spacing: 8.0) {
           Image(systemName: "chevron.up.chevron.down")
             .font(.caption2)
-          Text(text.strippingHTML())
+          Text(text.formattedHTML())
             .font(.ibmPlexMono(.regular, size: 12))
             .frame(maxWidth: .infinity, alignment: .leading)
             .lineLimit(state.expanded ? nil : 4)
