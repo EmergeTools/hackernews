@@ -9,6 +9,7 @@ import Reaper
 import Sentry
 import SwiftData
 import SwiftUI
+import HackerNewsCommon
 
 @main
 struct Hacker_NewsApp: App {

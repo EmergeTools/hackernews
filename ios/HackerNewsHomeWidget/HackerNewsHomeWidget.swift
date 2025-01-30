@@ -8,9 +8,10 @@
 import Foundation
 import SwiftUI
 import WidgetKit
+import HackerNewsCommon
 
 struct HackerNewsProvider: TimelineProvider {
-  let api = HNApi()
+  public let api = HNApi()
 
   func placeholder(in context: Context) -> StoryTimelineEntry {
     StoryTimelineEntry(date: Date(), stories: [])

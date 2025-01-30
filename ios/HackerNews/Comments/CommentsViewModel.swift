@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import HackerNewsCommon
 
 struct CommentsUiState {
   var headerState: CommentsHeaderState

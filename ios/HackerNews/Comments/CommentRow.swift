@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import HackerNewsCommon
 
 private let maxIndentationLevel: Int = 5
 

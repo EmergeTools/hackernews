@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import HackerNewsCommon
 
 struct SettingsScreen: View {
   @Binding var model: AppViewModel

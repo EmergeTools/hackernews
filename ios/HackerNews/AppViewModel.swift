@@ -8,6 +8,7 @@
 import Foundation
 import SwiftData
 import SwiftUI
+import HackerNewsCommon
 
 struct StoryContent {
   var id: Int64
