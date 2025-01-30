@@ -7,9 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A411AE9D2D49A3480067FB97 /* ibm_plex_sans_bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECE608522D338B3E008B1618 /* ibm_plex_sans_bold.ttf */; };
-		A411AE9E2D49A3480067FB97 /* ibm_plex_sans_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECE608532D338B3E008B1618 /* ibm_plex_sans_medium.ttf */; };
-		A411AE9F2D49A3480067FB97 /* ibm_plex_sans_regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECE608542D338B3E008B1618 /* ibm_plex_sans_regular.ttf */; };
 		A47309B42AA29D9600201376 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = A47309B32AA29D9600201376 /* SwiftSoup */; };
 		A495A6662CED57BB009A2A6B /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = A495A6652CED57BB009A2A6B /* SnapshotTesting */; };
 		A495B2952BFEA11B00A8A8A9 /* Reaper in Frameworks */ = {isa = PBXBuildFile; productRef = A495B2942BFEA11B00A8A8A9 /* Reaper */; };
@@ -22,9 +19,6 @@
 		A4D28AF02C237E2A007F20D0 /* SnapshottingTests in Frameworks */ = {isa = PBXBuildFile; productRef = A4D28AEF2C237E2A007F20D0 /* SnapshottingTests */; };
 		A9DF68FF511E48048B0A703D /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = 673236B0A4D04137A0D80A76 /* Sentry */; };
 		C3AC6AD92CB6E8F7006BD22D /* SnapshottingTests in Frameworks */ = {isa = PBXBuildFile; productRef = C3AC6AD82CB6E8F7006BD22D /* SnapshottingTests */; };
-		ECE608562D338B3E008B1618 /* ibm_plex_sans_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECE608532D338B3E008B1618 /* ibm_plex_sans_medium.ttf */; };
-		ECE608572D338B3E008B1618 /* ibm_plex_sans_bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECE608522D338B3E008B1618 /* ibm_plex_sans_bold.ttf */; };
-		ECE608582D338B3E008B1618 /* ibm_plex_sans_regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECE608542D338B3E008B1618 /* ibm_plex_sans_regular.ttf */; };
 		F4A70C562D4C0F5A00AE3E11 /* HackerNewsCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4A70C502D4C0F5A00AE3E11 /* HackerNewsCommon.framework */; };
 		F4A70C572D4C0F5A00AE3E11 /* HackerNewsCommon.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F4A70C502D4C0F5A00AE3E11 /* HackerNewsCommon.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F4A70C5C2D4C0F6C00AE3E11 /* HackerNewsCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4A70C502D4C0F5A00AE3E11 /* HackerNewsCommon.framework */; };
@@ -131,9 +125,6 @@
 		A4B6CF942D49949200077F66 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		A4B6CFA12D49949300077F66 /* HackerNewsHomeWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HackerNewsHomeWidgetExtension.entitlements; sourceTree = "<group>"; };
 		C3AC6AD72CB6E854006BD22D /* HackerNews.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = HackerNews.xctestplan; sourceTree = "<group>"; };
-		ECE608522D338B3E008B1618 /* ibm_plex_sans_bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = ibm_plex_sans_bold.ttf; sourceTree = "<group>"; };
-		ECE608532D338B3E008B1618 /* ibm_plex_sans_medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = ibm_plex_sans_medium.ttf; sourceTree = "<group>"; };
-		ECE608542D338B3E008B1618 /* ibm_plex_sans_regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = ibm_plex_sans_regular.ttf; sourceTree = "<group>"; };
 		F4A70C502D4C0F5A00AE3E11 /* HackerNewsCommon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = HackerNewsCommon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -234,7 +225,6 @@
 				F4A70C512D4C0F5A00AE3E11 /* HackerNewsCommon */,
 				A427057A2A4293B10057E439 /* Products */,
 				A4BED5AB2ACDFDCF001642B3 /* Frameworks */,
-				ECE608492D338A43008B1618 /* Font */,
 			);
 			sourceTree = "<group>";
 		};
@@ -325,16 +315,6 @@
 				A4B6CF942D49949200077F66 /* SwiftUI.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		ECE608492D338A43008B1618 /* Font */ = {
-			isa = PBXGroup;
-			children = (
-				ECE608522D338B3E008B1618 /* ibm_plex_sans_bold.ttf */,
-				ECE608532D338B3E008B1618 /* ibm_plex_sans_medium.ttf */,
-				ECE608542D338B3E008B1618 /* ibm_plex_sans_regular.ttf */,
-			);
-			path = Font;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -535,9 +515,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ECE608562D338B3E008B1618 /* ibm_plex_sans_medium.ttf in Resources */,
-				ECE608572D338B3E008B1618 /* ibm_plex_sans_bold.ttf in Resources */,
-				ECE608582D338B3E008B1618 /* ibm_plex_sans_regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -559,9 +536,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A411AE9D2D49A3480067FB97 /* ibm_plex_sans_bold.ttf in Resources */,
-				A411AE9E2D49A3480067FB97 /* ibm_plex_sans_medium.ttf in Resources */,
-				A411AE9F2D49A3480067FB97 /* ibm_plex_sans_regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

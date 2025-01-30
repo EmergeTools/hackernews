@@ -19,9 +19,9 @@
 	</array>
 	<key>UIAppFonts</key>
 	<array>
-		<string>ibm_plex_sans_regular.ttf</string>
-		<string>ibm_plex_sans_medium.ttf</string>
-		<string>ibm_plex_sans_bold.ttf</string>
+		<string>Frameworks/HackerNewsCommon.framework/ibm_plex_sans_regular.ttf</string>
+		<string>Frameworks/HackerNewsCommon.framework/ibm_plex_sans_medium.ttf</string>
+		<string>Frameworks/HackerNewsCommon.framework/ibm_plex_sans_bold.ttf</string>
 	</array>
 </dict>
 </plist>
