@@ -16,16 +16,23 @@ extension String {
       self
       .replacingOccurrences(of: "<p>", with: "\n\n")
       .replacingOccurrences(of: "</p>", with: "")
-      .replacingOccurrences(of: "<i>", with: "_")
-      .replacingOccurrences(of: "</i>", with: "_")
-      .replacingOccurrences(of: "<em>", with: "_")
-      .replacingOccurrences(of: "</em>", with: "_")
+      .replacingOccurrences(of: "<i>", with: "*")  // Changed from _ to *
+      .replacingOccurrences(of: "</i>", with: "*")  // Changed from _ to *
+      .replacingOccurrences(of: "<em>", with: "*")  // Changed from _ to *
+      .replacingOccurrences(of: "</em>", with: "*")  // Changed from _ to *
       .replacingOccurrences(of: "<b>", with: "**")
       .replacingOccurrences(of: "</b>", with: "**")
       .replacingOccurrences(of: "<strong>", with: "**")
       .replacingOccurrences(of: "</strong>", with: "**")
-    
-    print("telkins")
+      .replacingOccurrences(of: "<pre><code>", with: "```\n")
+      .replacingOccurrences(of: "</code></pre>", with: "\n```")
+      .replacingOccurrences(of: "<code>", with: "`")
+      .replacingOccurrences(of: "</code>", with: "`")
+      .replacingOccurrences(of: "&gt;", with: ">")
+      .replacingOccurrences(of: "&lt;", with: "<")
+      .replacingOccurrences(of: "&amp;", with: "&")
+      .replacingOccurrences(of: "&quot;", with: "\"")
+      .replacingOccurrences(of: "&#x27;", with: "'")
 
     // Handle links - convert <a href="url">text</a> to [text](url)
     if let doc = try? SwiftSoup.parse(self) {
@@ -36,12 +43,6 @@ extension String {
           {
             let htmlLink = try? link.outerHtml()
             let markdownLink = "[\(text)](\(href))"
-            print("Link replacement:")
-            print("  Original HTML: \(htmlLink ?? "")")
-            print("  Text: \(text)")
-            print("  URL: \(href)")
-            print("  Markdown: \(markdownLink)")
-
             markdown = markdown.replacingOccurrences(
               of: htmlLink ?? "",
               with: markdownLink
