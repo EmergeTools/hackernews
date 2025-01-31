@@ -164,7 +164,7 @@ extension Document {
     let comments: [CommentInfo] = try commentTree.map { comment in
       let commentId = try Int64(comment.id(), format: .number)
       let commentLevel = try comment.select("td.ind").attr("indent")
-      let commentText = try comment.select("div.commtext").text()
+      let commentText = try comment.select("div.commtext").html()
       let commentAuthor = try comment.select("a.hnuser").text()
       let commentDate = try comment.select("span.age").attr("title").split(
         separator: " "
