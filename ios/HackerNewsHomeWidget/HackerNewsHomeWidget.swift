@@ -11,7 +11,7 @@ import WidgetKit
 import Common
 
 struct HackerNewsProvider: TimelineProvider {
-  public let api = HNApi()
+  let api = HNApi()
 
   func placeholder(in context: Context) -> StoryTimelineEntry {
     StoryTimelineEntry(date: Date(), stories: [])
