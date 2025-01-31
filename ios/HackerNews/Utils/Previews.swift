@@ -8,6 +8,7 @@
 import Foundation
 import SnapshotPreferences
 import SwiftUI
+import Common
 
 struct PreviewVariants<Content: View>: View {
   let content: Content

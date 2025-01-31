@@ -7,9 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A411AE9D2D49A3480067FB97 /* ibm_plex_sans_bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECE608522D338B3E008B1618 /* ibm_plex_sans_bold.ttf */; };
-		A411AE9E2D49A3480067FB97 /* ibm_plex_sans_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECE608532D338B3E008B1618 /* ibm_plex_sans_medium.ttf */; };
-		A411AE9F2D49A3480067FB97 /* ibm_plex_sans_regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECE608542D338B3E008B1618 /* ibm_plex_sans_regular.ttf */; };
 		A47309B42AA29D9600201376 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = A47309B32AA29D9600201376 /* SwiftSoup */; };
 		A495A6662CED57BB009A2A6B /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = A495A6652CED57BB009A2A6B /* SnapshotTesting */; };
 		A495B2952BFEA11B00A8A8A9 /* Reaper in Frameworks */ = {isa = PBXBuildFile; productRef = A495B2942BFEA11B00A8A8A9 /* Reaper */; };
@@ -22,9 +19,15 @@
 		A4D28AF02C237E2A007F20D0 /* SnapshottingTests in Frameworks */ = {isa = PBXBuildFile; productRef = A4D28AEF2C237E2A007F20D0 /* SnapshottingTests */; };
 		A9DF68FF511E48048B0A703D /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = 673236B0A4D04137A0D80A76 /* Sentry */; };
 		C3AC6AD92CB6E8F7006BD22D /* SnapshottingTests in Frameworks */ = {isa = PBXBuildFile; productRef = C3AC6AD82CB6E8F7006BD22D /* SnapshottingTests */; };
-		ECE608562D338B3E008B1618 /* ibm_plex_sans_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECE608532D338B3E008B1618 /* ibm_plex_sans_medium.ttf */; };
-		ECE608572D338B3E008B1618 /* ibm_plex_sans_bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECE608522D338B3E008B1618 /* ibm_plex_sans_bold.ttf */; };
-		ECE608582D338B3E008B1618 /* ibm_plex_sans_regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECE608542D338B3E008B1618 /* ibm_plex_sans_regular.ttf */; };
+		F45F6EA52D4D1E50003FA9A3 /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = F45F6EA42D4D1E50003FA9A3 /* Common */; };
+		F45F6EA72D4D1E57003FA9A3 /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = F45F6EA62D4D1E57003FA9A3 /* Common */; };
+		F45F6F4A2D4D2185003FA9A3 /* Common in Embed Frameworks */ = {isa = PBXBuildFile; productRef = F45F6EA42D4D1E50003FA9A3 /* Common */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		F45F703E2D4D2695003FA9A3 /* Fonts in Frameworks */ = {isa = PBXBuildFile; productRef = F45F703D2D4D2695003FA9A3 /* Fonts */; };
+		F45F70402D4D269F003FA9A3 /* Fonts in Frameworks */ = {isa = PBXBuildFile; productRef = F45F703F2D4D269F003FA9A3 /* Fonts */; };
+		F48E9DA32D4D2A3500FD8B30 /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = F48E9DA22D4D2A3500FD8B30 /* Common */; };
+		F48E9DA42D4D2A3500FD8B30 /* Common in Embed Frameworks */ = {isa = PBXBuildFile; productRef = F48E9DA22D4D2A3500FD8B30 /* Common */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		F48E9DA72D4D2A3C00FD8B30 /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = F48E9DA62D4D2A3C00FD8B30 /* Common */; };
+		F48E9DA82D4D2A3C00FD8B30 /* Common in Embed Frameworks */ = {isa = PBXBuildFile; productRef = F48E9DA62D4D2A3C00FD8B30 /* Common */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +72,39 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				F45F6F4A2D4D2185003FA9A3 /* Common in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F45F6F492D4D2180003FA9A3 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F48E9DA52D4D2A3500FD8B30 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				F48E9DA42D4D2A3500FD8B30 /* Common in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F48E9DA92D4D2A3C00FD8B30 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				F48E9DA82D4D2A3C00FD8B30 /* Common in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -113,9 +149,6 @@
 		A4B6CF942D49949200077F66 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		A4B6CFA12D49949300077F66 /* HackerNewsHomeWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HackerNewsHomeWidgetExtension.entitlements; sourceTree = "<group>"; };
 		C3AC6AD72CB6E854006BD22D /* HackerNews.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = HackerNews.xctestplan; sourceTree = "<group>"; };
-		ECE608522D338B3E008B1618 /* ibm_plex_sans_bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = ibm_plex_sans_bold.ttf; sourceTree = "<group>"; };
-		ECE608532D338B3E008B1618 /* ibm_plex_sans_medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = ibm_plex_sans_medium.ttf; sourceTree = "<group>"; };
-		ECE608542D338B3E008B1618 /* ibm_plex_sans_regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = ibm_plex_sans_regular.ttf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -123,15 +156,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Assets.xcassets,
-				Feed/FeedType.swift,
-				Network/HNApi.swift,
-				Network/NetworkDebugger.swift,
-				Utils/Colors.swift,
-				Utils/DateUtils.swift,
-				Utils/Flags.swift,
-				Utils/Font.swift,
-				Utils/Pager.swift,
-				Utils/Theme.swift,
 			);
 			target = A4B6CF902D49949200077F66 /* HackerNewsHomeWidgetExtension */;
 		};
@@ -156,8 +180,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F45F6EA52D4D1E50003FA9A3 /* Common in Frameworks */,
 				A47309B42AA29D9600201376 /* SwiftSoup in Frameworks */,
 				A4D28AEE2C237E2A007F20D0 /* SnapshotPreferences in Frameworks */,
+				F45F703E2D4D2695003FA9A3 /* Fonts in Frameworks */,
 				A495B2952BFEA11B00A8A8A9 /* Reaper in Frameworks */,
 				A9DF68FF511E48048B0A703D /* Sentry in Frameworks */,
 			);
@@ -170,6 +196,7 @@
 				A495A6662CED57BB009A2A6B /* SnapshotTesting in Frameworks */,
 				C3AC6AD92CB6E8F7006BD22D /* SnapshottingTests in Frameworks */,
 				A4BED5C32AD5E083001642B3 /* (null) in Frameworks */,
+				F48E9DA32D4D2A3500FD8B30 /* Common in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -179,6 +206,7 @@
 			files = (
 				A4D28AF02C237E2A007F20D0 /* SnapshottingTests in Frameworks */,
 				A4BED5C42AD5E083001642B3 /* (null) in Frameworks */,
+				F48E9DA72D4D2A3C00FD8B30 /* Common in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -188,6 +216,8 @@
 			files = (
 				A4B6CF952D49949200077F66 /* SwiftUI.framework in Frameworks */,
 				A4B6CF932D49949200077F66 /* WidgetKit.framework in Frameworks */,
+				F45F6EA72D4D1E57003FA9A3 /* Common in Frameworks */,
+				F45F70402D4D269F003FA9A3 /* Fonts in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -206,7 +236,6 @@
 				A4B6CF962D49949200077F66 /* HackerNewsHomeWidget */,
 				A427057A2A4293B10057E439 /* Products */,
 				A4BED5AB2ACDFDCF001642B3 /* Frameworks */,
-				ECE608492D338A43008B1618 /* Font */,
 			);
 			sourceTree = "<group>";
 		};
@@ -298,16 +327,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		ECE608492D338A43008B1618 /* Font */ = {
-			isa = PBXGroup;
-			children = (
-				ECE608522D338B3E008B1618 /* ibm_plex_sans_bold.ttf */,
-				ECE608532D338B3E008B1618 /* ibm_plex_sans_medium.ttf */,
-				ECE608542D338B3E008B1618 /* ibm_plex_sans_regular.ttf */,
-			);
-			path = Font;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -321,6 +340,7 @@
 				A4D28AE92C237BAE007F20D0 /* Embed Frameworks */,
 				A4B6CFA22D49949300077F66 /* Embed Foundation Extensions */,
 				A42705AE2A44C35D0057E439 /* Strip Symbols */,
+				F45F6F4B2D4D2339003FA9A3 /* Remove duplicated bundles */,
 			);
 			buildRules = (
 			);
@@ -336,6 +356,8 @@
 				673236B0A4D04137A0D80A76 /* Sentry */,
 				A495B2942BFEA11B00A8A8A9 /* Reaper */,
 				A4D28AED2C237E2A007F20D0 /* SnapshotPreferences */,
+				F45F6EA42D4D1E50003FA9A3 /* Common */,
+				F45F703D2D4D2695003FA9A3 /* Fonts */,
 			);
 			productName = HackerNews;
 			productReference = A42705792A4293B10057E439 /* HackerNews.app */;
@@ -348,6 +370,7 @@
 				A42705852A4293B30057E439 /* Sources */,
 				A42705862A4293B30057E439 /* Frameworks */,
 				A42705872A4293B30057E439 /* Resources */,
+				F48E9DA52D4D2A3500FD8B30 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -369,6 +392,7 @@
 				A427058F2A4293B30057E439 /* Sources */,
 				A42705902A4293B30057E439 /* Frameworks */,
 				A42705912A4293B30057E439 /* Resources */,
+				F48E9DA92D4D2A3C00FD8B30 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -381,6 +405,7 @@
 			name = HackerNewsUITests;
 			packageProductDependencies = (
 				A4D28AEF2C237E2A007F20D0 /* SnapshottingTests */,
+				F48E9DA62D4D2A3C00FD8B30 /* Common */,
 			);
 			productName = HackerNewsUITests;
 			productReference = A42705932A4293B30057E439 /* HackerNewsUITests.xctest */;
@@ -393,6 +418,7 @@
 				A4B6CF8D2D49949200077F66 /* Sources */,
 				A4B6CF8E2D49949200077F66 /* Frameworks */,
 				A4B6CF8F2D49949200077F66 /* Resources */,
+				F45F6F492D4D2180003FA9A3 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -403,6 +429,8 @@
 			);
 			name = HackerNewsHomeWidgetExtension;
 			packageProductDependencies = (
+				F45F6EA62D4D1E57003FA9A3 /* Common */,
+				F45F703F2D4D269F003FA9A3 /* Fonts */,
 			);
 			productName = HackerNewsHomeWidgetExtension;
 			productReference = A4B6CF912D49949200077F66 /* HackerNewsHomeWidgetExtension.appex */;
@@ -449,6 +477,8 @@
 				A495B2932BFEA11B00A8A8A9 /* XCRemoteSwiftPackageReference "Reaper" */,
 				A4D28AEC2C237E2A007F20D0 /* XCRemoteSwiftPackageReference "SnapshotPreviews-iOS" */,
 				A495A6642CED57BB009A2A6B /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
+				F45F6E532D4D1D3E003FA9A3 /* XCLocalSwiftPackageReference "Packages/Common" */,
+				F45F6F4C2D4D2554003FA9A3 /* XCLocalSwiftPackageReference "Packages/Fonts" */,
 			);
 			productRefGroup = A427057A2A4293B10057E439 /* Products */;
 			projectDirPath = "";
@@ -467,9 +497,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ECE608562D338B3E008B1618 /* ibm_plex_sans_medium.ttf in Resources */,
-				ECE608572D338B3E008B1618 /* ibm_plex_sans_bold.ttf in Resources */,
-				ECE608582D338B3E008B1618 /* ibm_plex_sans_regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -491,9 +518,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A411AE9D2D49A3480067FB97 /* ibm_plex_sans_bold.ttf in Resources */,
-				A411AE9E2D49A3480067FB97 /* ibm_plex_sans_medium.ttf in Resources */,
-				A411AE9F2D49A3480067FB97 /* ibm_plex_sans_regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -519,6 +543,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "#!/bin/bash\nset -e\n\nif [ \"Release\" = \"${CONFIGURATION}\" ]; then\n  # Path to the app directory\n  APP_DIR_PATH=\"${BUILT_PRODUCTS_DIR}/${EXECUTABLE_FOLDER_PATH}\"\n  # Strip main binary\n  strip -rSTx \"${APP_DIR_PATH}/${EXECUTABLE_NAME}\"\n  # Path to the Frameworks directory\n  APP_FRAMEWORKS_DIR=\"${APP_DIR_PATH}/Frameworks\"\n\n  # Strip symbols from frameworks, if Frameworks/ exists at all\n  # ... as long as the framework is NOT signed by Apple\n  if [ -d \"${APP_FRAMEWORKS_DIR}\" ]\n  then\n    find \"${APP_FRAMEWORKS_DIR}\" -type f -perm +111 -maxdepth 2 -mindepth 2 -exec bash -c '\n    codesign -v -R=\"anchor apple\" \"{}\" &> /dev/null ||\n    (\n        echo \"Stripping {}\" &&\n        if [ -w \"{}\" ]; then\n            strip -rSTx \"{}\"\n        else\n            echo \"Warning: No write permission for {}\"\n        fi\n    )\n    ' \\;\n  fi\nfi\n";
+		};
+		F45F6F4B2D4D2339003FA9A3 /* Remove duplicated bundles */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Remove duplicated bundles";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "for path in \"$BUILT_PRODUCTS_DIR/$CONTENTS_FOLDER_PATH\"/PlugIns/*/*.bundle; do\n  bundle=$(basename \"$path\")\n  if [ -d \"$BUILT_PRODUCTS_DIR/$CONTENTS_FOLDER_PATH/$bundle\" ]; then\n    >&2 echo \"Stripping $path ...\"\n    rm -rf \"$path\"\n    ln -vs \"../../$bundle\" \"$path\"\n  else\n    >&2 echo \"Not stripping $path\"\n  fi\ndone\n\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -963,6 +1005,17 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		F45F6E532D4D1D3E003FA9A3 /* XCLocalSwiftPackageReference "Packages/Common" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/Common;
+		};
+		F45F6F4C2D4D2554003FA9A3 /* XCLocalSwiftPackageReference "Packages/Fonts" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/Fonts;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		995A2BEDEF224F7085D3DB13 /* XCRemoteSwiftPackageReference "sentry-cocoa" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -1041,6 +1094,36 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A4D28AEC2C237E2A007F20D0 /* XCRemoteSwiftPackageReference "SnapshotPreviews-iOS" */;
 			productName = SnapshottingTests;
+		};
+		F45F6EA42D4D1E50003FA9A3 /* Common */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F45F6E532D4D1D3E003FA9A3 /* XCLocalSwiftPackageReference "Packages/Common" */;
+			productName = Common;
+		};
+		F45F6EA62D4D1E57003FA9A3 /* Common */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F45F6E532D4D1D3E003FA9A3 /* XCLocalSwiftPackageReference "Packages/Common" */;
+			productName = Common;
+		};
+		F45F703D2D4D2695003FA9A3 /* Fonts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F45F6F4C2D4D2554003FA9A3 /* XCLocalSwiftPackageReference "Packages/Fonts" */;
+			productName = Fonts;
+		};
+		F45F703F2D4D269F003FA9A3 /* Fonts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F45F6F4C2D4D2554003FA9A3 /* XCLocalSwiftPackageReference "Packages/Fonts" */;
+			productName = Fonts;
+		};
+		F48E9DA22D4D2A3500FD8B30 /* Common */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F45F6E532D4D1D3E003FA9A3 /* XCLocalSwiftPackageReference "Packages/Common" */;
+			productName = Common;
+		};
+		F48E9DA62D4D2A3C00FD8B30 /* Common */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F45F6E532D4D1D3E003FA9A3 /* XCLocalSwiftPackageReference "Packages/Common" */;
+			productName = Common;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

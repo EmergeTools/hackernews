@@ -7,19 +7,26 @@
 
 import Foundation
 
-struct Page {
-  var ids: ArraySlice<Int64>
+public struct Page {
+  public var ids: ArraySlice<Int64>
+  
+  public init(ids: ArraySlice<Int64>) {
+    self.ids = ids
+  }
 }
 
-struct Pager {
+public struct Pager {
   private var ids: [Int64] = []
   private let pageSize: Int = 20
   
-  mutating func setIds(_ ids: [Int64]) {
+  public init() {
+  }
+  
+  public mutating func setIds(_ ids: [Int64]) {
     self.ids = ids
   }
   
-  mutating func nextPage() -> Page {
+  public mutating func nextPage() -> Page {
     // first see if we can slice of the next page size
     let pageCount = min(ids.count, pageSize)
     
@@ -30,7 +37,7 @@ struct Pager {
     return Page(ids: taken)
   }
   
-  func hasNextPage() -> Bool {
+  public func hasNextPage() -> Bool {
     return !ids.isEmpty
   }
 }
