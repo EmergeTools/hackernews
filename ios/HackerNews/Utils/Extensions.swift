@@ -16,7 +16,7 @@ extension String {
     var markdown =
       self
       .replacingOccurrences(of: "<p>", with: "\n")
-      .replacingOccurrences(of: "</p>", with: "")
+      .replacingOccurrences(of: "</p>", with: "\n")
       .replacingOccurrences(of: "<br>", with: "\n")
       .replacingOccurrences(of: "<br/>", with: "\n")
       .replacingOccurrences(of: "<br />", with: "\n")
@@ -47,6 +47,14 @@ extension String {
         }
       }
     }
+    
+    if markdown.hasPrefix("\n") {
+      markdown.removeFirst()
+    }
+    if markdown.hasSuffix("\n") {
+      markdown.removeLast()
+    }
+    
     do {
       let options = AttributedString.MarkdownParsingOptions(
         allowsExtendedAttributes: true,
