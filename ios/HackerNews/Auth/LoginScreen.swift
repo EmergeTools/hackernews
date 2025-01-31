@@ -11,6 +11,7 @@ import SwiftUI
 struct LoginState {
   var username: String = ""
   var password: String = ""
+  var showError: Bool = false
 }
 
 enum LoginStatus {
@@ -20,7 +21,12 @@ enum LoginStatus {
 
 struct LoginScreen: View {
   @Binding var model: AppViewModel
-  @State var loginState = LoginState()
+  @State var loginState: LoginState
+
+  init(model: Binding<AppViewModel>, loginState: LoginState = LoginState()) {
+    self._model = model
+    self._loginState = State(initialValue: loginState)
+  }
 
   var body: some View {
     VStack(spacing: 8) {
@@ -51,16 +57,28 @@ struct LoginScreen: View {
             .stroke(Color.background.opacity(0.5), lineWidth: 1)
         )
 
+      if loginState.showError {
+        Text("Invalid username or password")
+          .foregroundColor(.red)
+          .font(.ibmPlexMono(.regular, size: 14))
+      }
+
       Spacer()
         .frame(maxHeight: 16)
 
       Button(
         action: {
           Task {
-            await model.loginSubmit(
+            loginState.showError = false  // Reset error state
+            let result = await model.loginSubmit(
               username: loginState.username,
               password: loginState.password
             )
+            if result == .error {
+              withAnimation {
+                loginState.showError = true
+              }
+            }
           }
         },
         label: {
@@ -79,10 +97,30 @@ struct LoginScreen: View {
   }
 }
 
-#Preview {
+#Preview("Default") {
   @Previewable @State var model = AppViewModel(
     bookmarkStore: FakeBookmarkDataStore(),
     shouldFetchPosts: false
   )
   LoginScreen(model: $model)
+}
+
+#Preview("Error State") {
+  struct ErrorStatePreview: View {
+    @State var model = AppViewModel(
+      bookmarkStore: FakeBookmarkDataStore(),
+      shouldFetchPosts: false
+    )
+    @State var loginState = LoginState(
+      username: "test",
+      password: "wrong",
+      showError: true
+    )
+
+    var body: some View {
+      LoginScreen(model: $model, loginState: loginState)
+    }
+  }
+
+  return ErrorStatePreview()
 }

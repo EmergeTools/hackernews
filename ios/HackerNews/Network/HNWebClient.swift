@@ -54,9 +54,12 @@ class HNWebClient {
     var request = URLRequest(url: url)
     let formData = ["acct": acct, "pw": pw]
     let formString = formData.map { key, value in
-      let escapedKey = key.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? key
+      let escapedKey =
+        key.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        ?? key
       let escapedValue =
-        value.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? value
+        value.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        ?? value
       return "\(escapedKey)=\(escapedValue)"
     }.joined(separator: "&")
     request.httpMethod = "POST"
@@ -67,7 +70,7 @@ class HNWebClient {
       let html = String(data: data, encoding: .utf8)!
       print("Login HTML: ", html)
       let document = try SwiftSoup.parse(html)
-      let failed = try document.select("b").first()?.text() == "Login"
+      let failed = try document.body()?.text().contains("Bad login") ?? false
       return failed ? .error : .success
     } catch {
       return .error
@@ -80,7 +83,9 @@ class HNWebClient {
     let request = URLRequest(url: url)
     do {
       let (data, _) = try await session.data(for: request)
-      guard let html = String(data: data, encoding: .utf8) else { return .error }
+      guard let html = String(data: data, encoding: .utf8) else {
+        return .error
+      }
       let document = try SwiftSoup.parse(html)
       let postInfo = try document.postInfo(id: id)
       let comments = try document.comments()
@@ -161,7 +166,9 @@ extension Document {
       let commentLevel = try comment.select("td.ind").attr("indent")
       let commentText = try comment.select("div.commtext").html()
       let commentAuthor = try comment.select("a.hnuser").text()
-      let commentDate = try comment.select("span.age").attr("title").split(separator: " ").first!
+      let commentDate = try comment.select("span.age").attr("title").split(
+        separator: " "
+      ).first!
       let upvoteLinkElement = try comment.select("a[id^=up_").first()
       let upvoteUrl = try upvoteLinkElement?.attr("href") ?? ""
       let upvoted = upvoteLinkElement?.hasClass("nosee") ?? false
