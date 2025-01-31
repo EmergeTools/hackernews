@@ -21,7 +21,6 @@
 		C3AC6AD92CB6E8F7006BD22D /* SnapshottingTests in Frameworks */ = {isa = PBXBuildFile; productRef = C3AC6AD82CB6E8F7006BD22D /* SnapshottingTests */; };
 		F45F6EA52D4D1E50003FA9A3 /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = F45F6EA42D4D1E50003FA9A3 /* Common */; };
 		F45F6EA72D4D1E57003FA9A3 /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = F45F6EA62D4D1E57003FA9A3 /* Common */; };
-		F45F6F482D4D2180003FA9A3 /* Common in Embed Frameworks */ = {isa = PBXBuildFile; productRef = F45F6EA62D4D1E57003FA9A3 /* Common */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		F45F6F4A2D4D2185003FA9A3 /* Common in Embed Frameworks */ = {isa = PBXBuildFile; productRef = F45F6EA42D4D1E50003FA9A3 /* Common */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		F45F703E2D4D2695003FA9A3 /* Fonts in Frameworks */ = {isa = PBXBuildFile; productRef = F45F703D2D4D2695003FA9A3 /* Fonts */; };
 		F45F70402D4D269F003FA9A3 /* Fonts in Frameworks */ = {isa = PBXBuildFile; productRef = F45F703F2D4D269F003FA9A3 /* Fonts */; };
@@ -84,7 +83,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				F45F6F482D4D2180003FA9A3 /* Common in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
