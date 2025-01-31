@@ -14,7 +14,10 @@ extension String {
     var markdown =
       self
       .replacingOccurrences(of: "<p>", with: "\n")
-      .replacingOccurrences(of: "</p>", with: "\n")
+      .replacingOccurrences(of: "</p>", with: "")
+      .replacingOccurrences(of: "<br>", with: "\n")
+      .replacingOccurrences(of: "<br/>", with: "\n")
+      .replacingOccurrences(of: "<br />", with: "\n")
       .replacingOccurrences(of: "<i>", with: "*")
       .replacingOccurrences(of: "</i>", with: "*")
       .replacingOccurrences(of: "&gt;", with: ">")
@@ -42,7 +45,13 @@ extension String {
         }
       }
     }
-
-    return (try? AttributedString(markdown: markdown)) ?? AttributedString(self)
+    do {
+      let options = AttributedString.MarkdownParsingOptions(
+        allowsExtendedAttributes: true,
+        interpretedSyntax: .inlineOnlyPreservingWhitespace)
+      return try AttributedString(markdown: markdown, options: options)
+    } catch {
+      return AttributedString(stringLiteral: self)
+    }
   }
 }

@@ -122,12 +122,12 @@ struct PreviewHelpers {
     )
   }
 
-  static func makeFakeComment(level: Int = 0) -> CommentState {
+  static func makeFakeComment(level: Int = 0, text: String? = nil) -> CommentState {
     CommentState(
       id: 1,
       upvoted: false,
       upvoteUrl: "",
-      text: """
+      text: text ?? """
         Totally useless commentary:
         It makes me deeply happy to hear success stories like this for a project that's moving in the correctly opposite direction to that of the rest of the world.
 
