@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 import WidgetKit
-import HackerNewsCommon
+import Common
 
 struct HackerNewsProvider: TimelineProvider {
   public let api = HNApi()

@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import HackerNewsCommon
+import Common
 
 struct ContentView: View {
 

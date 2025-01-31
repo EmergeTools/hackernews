@@ -7,7 +7,7 @@
 
 import Foundation
 import SwiftUI
-import HackerNewsCommon
+import Common
 
 struct StoryRow: View {
   @Binding var model: AppViewModel

@@ -7,7 +7,7 @@
 
 import Foundation
 import SwiftUI
-import HackerNewsCommon
+import Common
 
 struct LoginState {
   var username: String = ""

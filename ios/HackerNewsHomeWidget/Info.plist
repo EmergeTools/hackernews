@@ -4,9 +4,9 @@
 <dict>
 	<key>UIAppFonts</key>
 	<array>
-		<string>../../Frameworks/HackerNewsCommon.framework/ibm_plex_sans_regular.ttf</string>
-		<string>../../Frameworks/HackerNewsCommon.framework/ibm_plex_sans_medium.ttf</string>
-		<string>../../Frameworks/HackerNewsCommon.framework/ibm_plex_sans_bold.ttf</string>
+		<string>Fonts_Fonts.bundle/ibm_plex_sans_regular.ttf</string>
+		<string>Fonts_Fonts.bundle/ibm_plex_sans_medium.ttf</string>
+		<string>Fonts_Fonts.bundle/ibm_plex_sans_bold.ttf</string>
 	</array>
 	<key>NSExtension</key>
 	<dict>

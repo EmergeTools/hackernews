@@ -1,4 +1,4 @@
-import HackerNewsCommon
+import Common
 
 struct FeedState {
   let feeds = FeedType.allCases

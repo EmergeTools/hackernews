@@ -8,7 +8,7 @@
 import Foundation
 import SnapshotPreferences
 import SwiftUI
-import HackerNewsCommon
+import Common
 
 struct PreviewVariants<Content: View>: View {
   let content: Content
