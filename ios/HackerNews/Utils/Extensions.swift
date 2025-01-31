@@ -10,6 +10,8 @@ import SwiftSoup
 import SwiftUI
 
 extension String {
+  // Basic HTML to Markdown conversion that seems to work decently well in testing
+  // If we find bugs, maybe move to copying this solution: https://github.com/Dimillian/IceCubesApp/blob/main/Packages/Models/Sources/Models/Alias/HTMLString.swift
   func formattedHTML() -> AttributedString {
     var markdown =
       self
