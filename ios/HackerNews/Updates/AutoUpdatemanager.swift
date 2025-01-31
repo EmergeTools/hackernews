@@ -6,27 +6,31 @@
 //
 
 #if ADHOC
+import UIKit
 import Foundation
 import ETDistribution
 
 struct AutoUpdateManager {
   @MainActor static func checkForUpdates() {
     let params = CheckForUpdateParams(apiKey: Constants.Distribution.apiKey)
-    ETDistribution.shared.checkForUpdate(params: params) {
-      switch $0 {
-      case .success(let update):
-        print("Update available: \(update)")
-        guard let url = ETDistribution.shared.buildUrlForInstall(releaseInfo.downloadUrl) else {
-          return
-        }
-        DispatchQueue.main.async {
-          UIApplication.shared.open(url) { _ in
-            exit(0)
+    ETDistribution.shared.checkForUpdate(params: params) { result in
+      switch result {
+      case .success(let releaseInfo):
+        if let releaseInfo {
+          print("Update found: \(releaseInfo)")
+          guard let url = ETDistribution.shared.buildUrlForInstall(releaseInfo.downloadUrl) else {
+            return
           }
+          DispatchQueue.main.async {
+            UIApplication.shared.open(url) { _ in
+              exit(0)
+            }
+          }
+        } else {
+          print("Already up to date")
         }
       case .failure(let error):
-        
-        print("Error: \(error)")
+        print("Error checking for update: \(error)")
       }
     }
   }
