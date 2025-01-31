@@ -25,6 +25,10 @@
 		F45F6F4A2D4D2185003FA9A3 /* Common in Embed Frameworks */ = {isa = PBXBuildFile; productRef = F45F6EA42D4D1E50003FA9A3 /* Common */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		F45F703E2D4D2695003FA9A3 /* Fonts in Frameworks */ = {isa = PBXBuildFile; productRef = F45F703D2D4D2695003FA9A3 /* Fonts */; };
 		F45F70402D4D269F003FA9A3 /* Fonts in Frameworks */ = {isa = PBXBuildFile; productRef = F45F703F2D4D269F003FA9A3 /* Fonts */; };
+		F48E9DA32D4D2A3500FD8B30 /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = F48E9DA22D4D2A3500FD8B30 /* Common */; };
+		F48E9DA42D4D2A3500FD8B30 /* Common in Embed Frameworks */ = {isa = PBXBuildFile; productRef = F48E9DA22D4D2A3500FD8B30 /* Common */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		F48E9DA72D4D2A3C00FD8B30 /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = F48E9DA62D4D2A3C00FD8B30 /* Common */; };
+		F48E9DA82D4D2A3C00FD8B30 /* Common in Embed Frameworks */ = {isa = PBXBuildFile; productRef = F48E9DA62D4D2A3C00FD8B30 /* Common */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,6 +85,28 @@
 			dstSubfolderSpec = 10;
 			files = (
 				F45F6F482D4D2180003FA9A3 /* Common in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F48E9DA52D4D2A3500FD8B30 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				F48E9DA42D4D2A3500FD8B30 /* Common in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F48E9DA92D4D2A3C00FD8B30 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				F48E9DA82D4D2A3C00FD8B30 /* Common in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -172,6 +198,7 @@
 				A495A6662CED57BB009A2A6B /* SnapshotTesting in Frameworks */,
 				C3AC6AD92CB6E8F7006BD22D /* SnapshottingTests in Frameworks */,
 				A4BED5C32AD5E083001642B3 /* (null) in Frameworks */,
+				F48E9DA32D4D2A3500FD8B30 /* Common in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -181,6 +208,7 @@
 			files = (
 				A4D28AF02C237E2A007F20D0 /* SnapshottingTests in Frameworks */,
 				A4BED5C42AD5E083001642B3 /* (null) in Frameworks */,
+				F48E9DA72D4D2A3C00FD8B30 /* Common in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -344,6 +372,7 @@
 				A42705852A4293B30057E439 /* Sources */,
 				A42705862A4293B30057E439 /* Frameworks */,
 				A42705872A4293B30057E439 /* Resources */,
+				F48E9DA52D4D2A3500FD8B30 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -365,6 +394,7 @@
 				A427058F2A4293B30057E439 /* Sources */,
 				A42705902A4293B30057E439 /* Frameworks */,
 				A42705912A4293B30057E439 /* Resources */,
+				F48E9DA92D4D2A3C00FD8B30 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -377,6 +407,7 @@
 			name = HackerNewsUITests;
 			packageProductDependencies = (
 				A4D28AEF2C237E2A007F20D0 /* SnapshottingTests */,
+				F48E9DA62D4D2A3C00FD8B30 /* Common */,
 			);
 			productName = HackerNewsUITests;
 			productReference = A42705932A4293B30057E439 /* HackerNewsUITests.xctest */;
@@ -1085,6 +1116,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F45F6F4C2D4D2554003FA9A3 /* XCLocalSwiftPackageReference "Packages/Fonts" */;
 			productName = Fonts;
+		};
+		F48E9DA22D4D2A3500FD8B30 /* Common */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F45F6E532D4D1D3E003FA9A3 /* XCLocalSwiftPackageReference "Packages/Common" */;
+			productName = Common;
+		};
+		F48E9DA62D4D2A3C00FD8B30 /* Common */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F45F6E532D4D1D3E003FA9A3 /* XCLocalSwiftPackageReference "Packages/Common" */;
+			productName = Common;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
