@@ -38,7 +38,7 @@ jobs:
           echo $CERTIFICATE_BASE64 | base64 --decode > signing-cert.p12
       - name: Replace API key in Constants file
         run: |
-          sed -i '' "s/API_KEY/$ETDISTRIBUTION_API_KEY/g" ios/HackerNews/Utils/Constants.swift
+          sed -i '' "s/API_KEY/$ETDISTRIBUTION_API_KEY/g" HackerNews/Utils/Constants.swift
         env:
           ETDISTRIBUTION_API_KEY: ${{ secrets.ETDISTRIBUTION_API_KEY_IOS }}
       - name: Build & upload iOS size analysis binary to Emerge Tools
