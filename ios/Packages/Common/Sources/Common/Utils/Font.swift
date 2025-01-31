@@ -1,12 +1,12 @@
 import SwiftUI
 
-extension Font {
+public extension Font {
   enum IBMPlexSans {
     case regular
     case medium
     case bold
 
-    var name: String {
+    public var name: String {
       switch self {
       case .regular: "IBMPlexSans-Regular"
       case .medium: "IBMPlexSans-Medium"
@@ -20,7 +20,7 @@ extension Font {
     case medium
     case bold
 
-    var name: String {
+    public var name: String {
       switch self {
       case .regular: "IBMPlexMono-Regular"
       case .medium: "IBMPlexMono-Medium"

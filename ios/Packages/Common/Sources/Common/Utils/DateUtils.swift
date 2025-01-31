@@ -8,7 +8,7 @@
 import Foundation
 
 extension Date {
-  func timeAgoDisplay() -> String {
+  public func timeAgoDisplay() -> String {
     let formatter = RelativeDateTimeFormatter()
     formatter.unitsStyle = .full
     return formatter.localizedString(for: self, relativeTo: Date())
@@ -21,7 +21,7 @@ extension String {
    2024-12-27T13:59:29
    2024-09-05T17:48:25.000000Z
    */
-  func asDate() -> Date? {
+  public func asDate() -> Date? {
     let regularFormatter = DateFormatter()
     regularFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
     regularFormatter.timeZone = TimeZone(identifier: "UTC")

@@ -8,6 +8,7 @@
 import SnapshotTesting
 import SwiftUI
 import XCTest
+import Common
 
 @testable import HackerNews
 
