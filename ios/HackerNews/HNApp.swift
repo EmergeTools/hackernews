@@ -74,6 +74,11 @@ struct Hacker_NewsApp: App {
       .onOpenURL { url in
         handleDeepLink(url)
       }
+#if ADHOC
+      .onAppear() {
+        AutoUpdateManager.checkForUpdates()
+      }
+#endif
     }
   }
 
