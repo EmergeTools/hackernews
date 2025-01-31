@@ -13,7 +13,7 @@
     {
       "identity" : "etdistribution",
       "kind" : "remoteSourceControl",
-      "location" : "git@github.com:EmergeTools/ETDistribution.git",
+      "location" : "https://github.com/EmergeTools/ETDistribution.git",
       "state" : {
         "revision" : "6643aa6332ab3ebc629a3c4fefcfcf2bfe35c672",
         "version" : "0.2.1"
