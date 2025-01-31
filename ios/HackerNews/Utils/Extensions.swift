@@ -11,28 +11,19 @@ import SwiftUI
 
 extension String {
   func formattedHTML() -> AttributedString {
-    // First convert common HTML tags to markdown
     var markdown =
       self
-      .replacingOccurrences(of: "<p>", with: "\n\n")
-      .replacingOccurrences(of: "</p>", with: "")
-      .replacingOccurrences(of: "<i>", with: "*")  // Changed from _ to *
-      .replacingOccurrences(of: "</i>", with: "*")  // Changed from _ to *
-      .replacingOccurrences(of: "<em>", with: "*")  // Changed from _ to *
-      .replacingOccurrences(of: "</em>", with: "*")  // Changed from _ to *
-      .replacingOccurrences(of: "<b>", with: "**")
-      .replacingOccurrences(of: "</b>", with: "**")
-      .replacingOccurrences(of: "<strong>", with: "**")
-      .replacingOccurrences(of: "</strong>", with: "**")
-      .replacingOccurrences(of: "<pre><code>", with: "```\n")
-      .replacingOccurrences(of: "</code></pre>", with: "\n```")
-      .replacingOccurrences(of: "<code>", with: "`")
-      .replacingOccurrences(of: "</code>", with: "`")
+      .replacingOccurrences(of: "<p>", with: "\n")
+      .replacingOccurrences(of: "</p>", with: "\n")
+      .replacingOccurrences(of: "<i>", with: "*")
+      .replacingOccurrences(of: "</i>", with: "*")
       .replacingOccurrences(of: "&gt;", with: ">")
       .replacingOccurrences(of: "&lt;", with: "<")
       .replacingOccurrences(of: "&amp;", with: "&")
       .replacingOccurrences(of: "&quot;", with: "\"")
       .replacingOccurrences(of: "&#x27;", with: "'")
+      .replacingOccurrences(of: "<pre><code>", with: "```\n")
+      .replacingOccurrences(of: "</code></pre>", with: "\n```")
 
     // Handle links - convert <a href="url">text</a> to [text](url)
     if let doc = try? SwiftSoup.parse(self) {
@@ -52,7 +43,6 @@ extension String {
       }
     }
 
-    // Convert to AttributedString
     return (try? AttributedString(markdown: markdown)) ?? AttributedString(self)
   }
 }

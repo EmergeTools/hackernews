@@ -58,7 +58,7 @@ struct CommentRow: View {
       .padding(8)
       .background(isPressed ? .surface.opacity(0.85) : .surface)
       .zIndex(1)  // Ensure header stays on top
-      .simultaneousGesture(makeCommentGesture())  // Move gesture here
+      .simultaneousGesture(makeCommentGesture())
 
       // Comment Body
       if !state.hidden {
@@ -67,9 +67,9 @@ struct CommentRow: View {
             .font(theme.commentTextFont)
             .tint(.accentColor)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)  // Make it fill available width
+        .frame(maxWidth: .infinity, alignment: .leading)
         .padding(EdgeInsets(top: -3, leading: 8, bottom: 8, trailing: 8))
-        .background(.surface)  // Add background to body
+        .background(.surface)
         .transition(
           .asymmetric(
             insertion: .move(edge: .top).combined(with: .opacity),
