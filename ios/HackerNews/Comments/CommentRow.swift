@@ -179,3 +179,15 @@ It's much much more complicated than that. Sun refused to add many language feat
   )
   .environment(Theme())
 }
+
+#Preview("HTML case 4") {
+  let text = """
+Hudson River Trading | Hybrid | Full-time\n<p>We’re a quantitative trading firm based in NYC that trades hundreds of millions of shares each day on over 200 markets worldwide. We use math and technology in everything we do; our talented developers, engineers, and programmers build complex models and systems that allow us to make automated trading decisions on global markets.</p>\n<p>We’re hiring for:</p>\n<p>Senior Systems Engineer | US + London | <a href=\"https://www.hudsonrivertrading.com/careers/?q=senior+systems&amp;gh_src=ca07bf8d1us\" rel=\"nofollow\">https://www.hudsonrivertrading.com/careers/?q=senior+systems...</a></p>\n<p>Data Production Engineer | London | <a href=\"https://www.hudsonrivertrading.com/careers/job/?gh_jid=5196809&amp;req_id=431&amp;gh_src=ca07bf8d1us\" rel=\"nofollow\">https://www.hudsonrivertrading.com/careers/job/?gh_jid=51968...</a></p>\n<p>Design Verification Engineer | US + London | <a href=\"https://www.hudsonrivertrading.com/careers/?q=design+verification&amp;gh_src=ca07bf8d1us\" rel=\"nofollow\">https://www.hudsonrivertrading.com/careers/?q=design+verific...</a></p>\n<p>Middle Office Analyst - Crypto | SNG | <a href=\"https://www.hudsonrivertrading.com/careers/job/?gh_jid=6457676&amp;req_id=R-000384&amp;gh_src=ca07bf8d1us\" rel=\"nofollow\">https://www.hudsonrivertrading.com/careers/job/?gh_jid=64576...</a></p>\n<p>Windows Engineer | SNG | <a href=\"https://www.hudsonrivertrading.com/careers/job/?q=design+verification&amp;gh_src=ca07bf8d1us&amp;gh_jid=6533898&amp;req_id=R-000410&amp;gh_src=ca07bf8d1us\" rel=\"nofollow\">https://www.hudsonrivertrading.com/careers/job/?q=design+ver...</a></p>
+"""
+  CommentRow(
+    state: PreviewHelpers.makeFakeComment(level: 0, text: text),
+    likeComment: { _ in },
+    toggleComment: {}
+  )
+  .environment(Theme())
+}
