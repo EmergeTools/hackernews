@@ -13,8 +13,29 @@ extension String {
   // Basic HTML to Markdown conversion that seems to work decently well in testing
   // If we find bugs, maybe move to copying this solution: https://github.com/Dimillian/IceCubesApp/blob/main/Packages/Models/Sources/Models/Alias/HTMLString.swift
   func formattedHTML() -> AttributedString {
-    var markdown =
+    // Unescape HTML entities in the entire string before handling links
+    var processedText =
       self
+      .replacingOccurrences(of: "&amp;", with: "&")
+      .replacingOccurrences(of: "&gt;", with: ">")
+      .replacingOccurrences(of: "&lt;", with: "<")
+      .replacingOccurrences(of: "&quot;", with: "\"")
+      .replacingOccurrences(of: "&#x27;", with: "'")
+
+    // Handle links using regex
+    // Note: I tried using SwiftSoup at first, but it was having difficulty with edge cases
+    let linkPattern = #"<a[^>]*href="([^"]*)"[^>]*>(.*?)</a>"#
+    if let regex = try? NSRegularExpression(pattern: linkPattern) {
+      let range = NSRange(processedText.startIndex..<processedText.endIndex, in: processedText)
+      processedText = regex.stringByReplacingMatches(
+        in: processedText,
+        range: range,
+        withTemplate: "[$2]($1)"
+      )
+    }
+
+    processedText =
+      processedText
       .replacingOccurrences(of: "<p>", with: "\n")
       .replacingOccurrences(of: "</p>", with: "\n")
       .replacingOccurrences(of: "<br>", with: "\n")
@@ -22,44 +43,21 @@ extension String {
       .replacingOccurrences(of: "<br />", with: "\n")
       .replacingOccurrences(of: "<i>", with: "*")
       .replacingOccurrences(of: "</i>", with: "*")
-      .replacingOccurrences(of: "&gt;", with: ">")
-      .replacingOccurrences(of: "&lt;", with: "<")
-      .replacingOccurrences(of: "&amp;", with: "&")
-      .replacingOccurrences(of: "&quot;", with: "\"")
-      .replacingOccurrences(of: "&#x27;", with: "'")
       .replacingOccurrences(of: "<pre><code>", with: "```\n")
       .replacingOccurrences(of: "</code></pre>", with: "\n```")
 
-    // Handle links - convert <a href="url">text</a> to [text](url)
-    if let doc = try? SwiftSoup.parse(self) {
-      if let links = try? doc.select("a") {
-        for link in links {
-          if let href = try? link.attr("href"),
-            let text = try? link.text()
-          {
-            let htmlLink = try? link.outerHtml()
-            let markdownLink = "[\(text)](\(href))"
-            markdown = markdown.replacingOccurrences(
-              of: htmlLink ?? "",
-              with: markdownLink
-            )
-          }
-        }
-      }
+    if processedText.hasPrefix("\n") {
+      processedText.removeFirst()
     }
-    
-    if markdown.hasPrefix("\n") {
-      markdown.removeFirst()
+    if processedText.hasSuffix("\n") {
+      processedText.removeLast()
     }
-    if markdown.hasSuffix("\n") {
-      markdown.removeLast()
-    }
-    
+
     do {
       let options = AttributedString.MarkdownParsingOptions(
         allowsExtendedAttributes: true,
         interpretedSyntax: .inlineOnlyPreservingWhitespace)
-      return try AttributedString(markdown: markdown, options: options)
+      return try AttributedString(markdown: processedText, options: options)
     } catch {
       return AttributedString(stringLiteral: self)
     }
