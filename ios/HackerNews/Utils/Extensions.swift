@@ -13,29 +13,30 @@ extension String {
   // Basic HTML to Markdown conversion that seems to work decently well in testing
   // If we find bugs, maybe move to copying this solution: https://github.com/Dimillian/IceCubesApp/blob/main/Packages/Models/Sources/Models/Alias/HTMLString.swift
   func formattedHTML() -> AttributedString {
-    // Unescape HTML entities in the entire string before handling links
-    var processedText =
-      self
+    var processedText = self
+
+    // Handle links separately via parsing the HTML
+    if let doc = try? SwiftSoup.parse(processedText) {
+      if let links = try? doc.select("a") {
+        for link in links {
+          if let href = try? link.attr("href"),
+            let text = try? link.text(),
+            let htmlLink = try? link.outerHtml()
+          {
+            processedText = processedText.replacingOccurrences(
+              of: htmlLink, with: "[\(text)](\(href))")
+          }
+        }
+      }
+    }
+
+    processedText =
+      processedText
       .replacingOccurrences(of: "&amp;", with: "&")
       .replacingOccurrences(of: "&gt;", with: ">")
       .replacingOccurrences(of: "&lt;", with: "<")
       .replacingOccurrences(of: "&quot;", with: "\"")
       .replacingOccurrences(of: "&#x27;", with: "'")
-
-    // Handle links using regex
-    // Note: I tried using SwiftSoup at first, but it was having difficulty with edge cases
-    let linkPattern = #"<a[^>]*href="([^"]*)"[^>]*>(.*?)</a>"#
-    if let regex = try? NSRegularExpression(pattern: linkPattern) {
-      let range = NSRange(processedText.startIndex..<processedText.endIndex, in: processedText)
-      processedText = regex.stringByReplacingMatches(
-        in: processedText,
-        range: range,
-        withTemplate: "[$2]($1)"
-      )
-    }
-
-    processedText =
-      processedText
       .replacingOccurrences(of: "<p>", with: "\n")
       .replacingOccurrences(of: "</p>", with: "\n")
       .replacingOccurrences(of: "<br>", with: "\n")
