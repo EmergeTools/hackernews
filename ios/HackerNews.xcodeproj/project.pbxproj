@@ -28,6 +28,8 @@
 		F48E9DA42D4D2A3500FD8B30 /* Common in Embed Frameworks */ = {isa = PBXBuildFile; productRef = F48E9DA22D4D2A3500FD8B30 /* Common */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		F48E9DA72D4D2A3C00FD8B30 /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = F48E9DA62D4D2A3C00FD8B30 /* Common */; };
 		F48E9DA82D4D2A3C00FD8B30 /* Common in Embed Frameworks */ = {isa = PBXBuildFile; productRef = F48E9DA62D4D2A3C00FD8B30 /* Common */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		F48E9ECB2D4D691600FD8B30 /* ETDistribution in Frameworks */ = {isa = PBXBuildFile; productRef = F48E9ECA2D4D691600FD8B30 /* ETDistribution */; };
+		F48E9FDB2D51690400FD8B30 /* ETDistribution in Embed Frameworks */ = {isa = PBXBuildFile; productRef = F48E9ECA2D4D691600FD8B30 /* ETDistribution */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +75,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				F45F6F4A2D4D2185003FA9A3 /* Common in Embed Frameworks */,
+				F48E9FDB2D51690400FD8B30 /* ETDistribution in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -182,6 +185,7 @@
 			files = (
 				F45F6EA52D4D1E50003FA9A3 /* Common in Frameworks */,
 				A47309B42AA29D9600201376 /* SwiftSoup in Frameworks */,
+				F48E9ECB2D4D691600FD8B30 /* ETDistribution in Frameworks */,
 				A4D28AEE2C237E2A007F20D0 /* SnapshotPreferences in Frameworks */,
 				F45F703E2D4D2695003FA9A3 /* Fonts in Frameworks */,
 				A495B2952BFEA11B00A8A8A9 /* Reaper in Frameworks */,
@@ -358,6 +362,7 @@
 				A4D28AED2C237E2A007F20D0 /* SnapshotPreferences */,
 				F45F6EA42D4D1E50003FA9A3 /* Common */,
 				F45F703D2D4D2695003FA9A3 /* Fonts */,
+				F48E9ECA2D4D691600FD8B30 /* ETDistribution */,
 			);
 			productName = HackerNews;
 			productReference = A42705792A4293B10057E439 /* HackerNews.app */;
@@ -479,6 +484,7 @@
 				A495A6642CED57BB009A2A6B /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
 				F45F6E532D4D1D3E003FA9A3 /* XCLocalSwiftPackageReference "Packages/Common" */,
 				F45F6F4C2D4D2554003FA9A3 /* XCLocalSwiftPackageReference "Packages/Fonts" */,
+				F48E9EC92D4D691600FD8B30 /* XCRemoteSwiftPackageReference "ETDistribution" */,
 			);
 			productRefGroup = A427057A2A4293B10057E439 /* Products */;
 			projectDirPath = "";
@@ -745,6 +751,7 @@
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				EXCLUDED_SOURCE_FILE_NAMES = "ETDistribution*";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "HackerNews/Hacker-News-Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.news";
@@ -787,6 +794,7 @@
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				EXCLUDED_SOURCE_FILE_NAMES = "ETDistribution*";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "HackerNews/Hacker-News-Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.news";
@@ -1229,6 +1237,14 @@
 				kind = branch;
 			};
 		};
+		F48E9EC92D4D691600FD8B30 /* XCRemoteSwiftPackageReference "ETDistribution" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/EmergeTools/ETDistribution.git";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 0.2.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1296,6 +1312,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F45F6E532D4D1D3E003FA9A3 /* XCLocalSwiftPackageReference "Packages/Common" */;
 			productName = Common;
+		};
+		F48E9ECA2D4D691600FD8B30 /* ETDistribution */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F48E9EC92D4D691600FD8B30 /* XCRemoteSwiftPackageReference "ETDistribution" */;
+			productName = ETDistribution;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

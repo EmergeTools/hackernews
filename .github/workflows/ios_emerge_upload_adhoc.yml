@@ -36,6 +36,11 @@ jobs:
           CERTIFICATE_BASE64: ${{ secrets.IOS_DIST_SIGNING_KEY_BASE64 }}
         run: |
           echo $CERTIFICATE_BASE64 | base64 --decode > signing-cert.p12
+      - name: Replace API key in Constants file
+        run: |
+          sed -i '' "s/API_KEY/$ETDISTRIBUTION_API_KEY/g" HackerNews/Utils/Constants.swift
+        env:
+          ETDISTRIBUTION_API_KEY: ${{ secrets.ETDISTRIBUTION_API_KEY_IOS }}
       - name: Build & upload iOS AdHoc binary to Emerge Tools
         run: bundle exec fastlane ios build_upload_emerge
         env:

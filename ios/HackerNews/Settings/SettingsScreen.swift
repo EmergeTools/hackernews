@@ -65,6 +65,26 @@ struct SettingsScreen: View {
                 url: URL(string: "https://www.twitter.com/heyrikin")!)
             }
           )
+          
+#if ADHOC
+          SettingsRow(
+            text: "Check for Updates",
+            leadingIcon: {
+              Image(systemName: "icloud.and.arrow.down")
+                .font(.system(size: 12))
+                .foregroundStyle(.blue)
+            },
+            trailingIcon: {
+              Image(systemName: "arrow.up.right")
+                .font(.system(size: 12))
+                .foregroundStyle(.onBackground)
+
+            },
+            action: {
+              AutoUpdateManager.checkForUpdates()
+            }
+          )
+#endif
 
           SettingsRow(
             text: "Send Feedback",
