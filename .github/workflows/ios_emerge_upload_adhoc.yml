@@ -41,7 +41,7 @@ jobs:
           sed -i '' "s/API_KEY/$ETDISTRIBUTION_API_KEY/g" HackerNews/Utils/Constants.swift
         env:
           ETDISTRIBUTION_API_KEY: ${{ secrets.ETDISTRIBUTION_API_KEY_IOS }}
-      - name: Build & upload iOS size analysis binary to Emerge Tools
+      - name: Build & upload iOS AdHoc binary to Emerge Tools
         run: bundle exec fastlane ios build_upload_emerge
         env:
           ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}

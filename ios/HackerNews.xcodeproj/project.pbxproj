@@ -751,6 +751,7 @@
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				"EXCLUDED_SOURCE_FILE_NAMES[arch=*]" = "ETDistribution*";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "HackerNews/Hacker-News-Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.news";
@@ -793,6 +794,7 @@
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				EXCLUDED_SOURCE_FILE_NAMES = "ETDistribution*";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "HackerNews/Hacker-News-Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.news";
