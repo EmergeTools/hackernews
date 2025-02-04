@@ -64,6 +64,20 @@ struct LoginScreen: View {
           .font(.ibmPlexMono(.regular, size: 14))
       }
 
+      
+      HStack(spacing: 0) {
+        Text("By signin in, you agree to the ")
+          .font(.ibmPlexSans(.regular, size: 12))
+        Text("Hacker News Guidelines")
+          .font(.ibmPlexSans(.regular, size: 12))
+          .foregroundColor(.blue)
+          .underline()
+          .onTapGesture {
+            openURL("https://apple.com")
+          }
+        Spacer()
+      }
+      
       Spacer()
         .frame(maxHeight: 16)
 
@@ -95,6 +109,11 @@ struct LoginScreen: View {
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .padding(32)
     .background(.surface)
+  }
+  
+  func openURL(_ urlString: String) {
+    guard let url = URL(string: "https://news.ycombinator.com/newsguidelines.html") else { return }
+    UIApplication.shared.open(url, options: [:], completionHandler: nil)
   }
 }
 
