@@ -66,14 +66,14 @@ struct LoginScreen: View {
 
       
       HStack(spacing: 0) {
-        Text("By signin in, you agree to the ")
+        Text("By signing in, you agree to the ")
           .font(.ibmPlexSans(.regular, size: 12))
         Text("Hacker News Guidelines")
           .font(.ibmPlexSans(.regular, size: 12))
           .foregroundColor(.blue)
           .underline()
           .onTapGesture {
-            openURL("https://apple.com")
+            openURL("https://news.ycombinator.com/newsguidelines.html")
           }
         Spacer()
       }
@@ -112,7 +112,7 @@ struct LoginScreen: View {
   }
   
   func openURL(_ urlString: String) {
-    guard let url = URL(string: "https://news.ycombinator.com/newsguidelines.html") else { return }
+    guard let url = URL(string: urlString) else { return }
     UIApplication.shared.open(url, options: [:], completionHandler: nil)
   }
 }
