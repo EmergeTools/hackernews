@@ -29,6 +29,7 @@
 		F48E9DA72D4D2A3C00FD8B30 /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = F48E9DA62D4D2A3C00FD8B30 /* Common */; };
 		F48E9DA82D4D2A3C00FD8B30 /* Common in Embed Frameworks */ = {isa = PBXBuildFile; productRef = F48E9DA62D4D2A3C00FD8B30 /* Common */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		F48E9ECB2D4D691600FD8B30 /* ETDistribution in Frameworks */ = {isa = PBXBuildFile; productRef = F48E9ECA2D4D691600FD8B30 /* ETDistribution */; };
+		F48E9FDB2D51690400FD8B30 /* ETDistribution in Embed Frameworks */ = {isa = PBXBuildFile; productRef = F48E9ECA2D4D691600FD8B30 /* ETDistribution */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,6 +75,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				F45F6F4A2D4D2185003FA9A3 /* Common in Embed Frameworks */,
+				F48E9FDB2D51690400FD8B30 /* ETDistribution in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
