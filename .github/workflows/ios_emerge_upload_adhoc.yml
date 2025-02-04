@@ -1,4 +1,4 @@
-name: Emerge PR iOS Upload (Size Analysis)
+name: Emerge PR iOS Upload (Build Distribution)
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
     paths: [ios/**]
 
 jobs:
-  build:
+  build_adhoc:
     runs-on: macos-15
 
     defaults:
@@ -36,8 +36,7 @@ jobs:
           CERTIFICATE_BASE64: ${{ secrets.IOS_DIST_SIGNING_KEY_BASE64 }}
         run: |
           echo $CERTIFICATE_BASE64 | base64 --decode > signing-cert.p12
-
-      - name: Build & upload iOS size analysis binary to Emerge Tools
+      - name: Build & upload iOS AdHoc binary to Emerge Tools
         run: bundle exec fastlane ios build_upload_emerge
         env:
           ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
@@ -46,5 +45,9 @@ jobs:
           SIGNING_KEY_PASSWORD: ${{ secrets.IOS_DIST_SIGNING_KEY_PASSWORD }}
           SIGNING_KEY_FILE_PATH: signing-cert.p12
           EMERGE_API_TOKEN: ${{ secrets.EMERGE_API_KEY }}
-          CONFIGURATION: Release
-          EMERGE_BUILD_TYPE: pull-request
+          CONFIGURATION: AdHoc
+          EMERGE_BUILD_TYPE: pull-request-adhoc
+          PROV_PROFILE_NAME: HackerNews AdHoc Distribution
+          WIDGET_PROV_PROFILE_NAME: HackerNews AdHoc HomeWidget
+          ADHOC: true
+          APP_ID_SUFFIX: adhoc
