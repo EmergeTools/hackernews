@@ -10,8 +10,11 @@ import SwiftUI
 struct CommentsHeader: View {
   let state: CommentsHeaderState
   let likePost: () -> Void
+  let flagPost: () -> Void
   let toggleBody: () -> Void
   let onTitleTap: () -> Void
+  
+  @State private var showingMoreOptions = false
 
   var body: some View {
     VStack(alignment: .leading) {
@@ -59,6 +62,23 @@ struct CommentsHeader: View {
         .background(state.upvoted ? .green.opacity(0.2) : .surface)
         .foregroundStyle(state.upvoted ? .green : .onBackground)
         .clipShape(Capsule())
+        
+        Button(action: {
+          showingMoreOptions = true
+        }) {
+          Image(systemName: "ellipsis")
+            .font(.system(size: 12))
+            .padding(.horizontal, 8)
+            .padding(.vertical, 4)
+        }
+        .background(.white.opacity(0.2))
+        .foregroundStyle(.onBackground)
+        .clipShape(Capsule())
+        .confirmationDialog("Post Options", isPresented: $showingMoreOptions, titleVisibility: .visible) {
+          Button("Report Post") {
+            flagPost()
+          }
+        }
       }
       // body
       if let text = state.story.text {
@@ -85,6 +105,7 @@ struct CommentsHeader: View {
   CommentsHeader(
     state: CommentsHeaderState(story: PreviewHelpers.makeFakeStory()),
     likePost: {},
+    flagPost: {},
     toggleBody: {},
     onTitleTap: {}
   )

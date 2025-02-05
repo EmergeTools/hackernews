@@ -14,10 +14,12 @@ private let maxIndentationLevel: Int = 5
 struct CommentRow: View {
   let state: CommentState
   let likeComment: (CommentState) -> Void
+  let flagComment: (CommentState) -> Void
   let toggleComment: () -> Void
 
   @Environment(Theme.self) private var theme
   @State private var isPressed = false
+  @State private var showingMoreOptions = false
 
   var body: some View {
     VStack(alignment: .leading, spacing: 0) {
@@ -53,12 +55,34 @@ struct CommentRow: View {
           .background(state.upvoted ? .green.opacity(0.2) : .white.opacity(0.2))
           .foregroundStyle(state.upvoted ? .green : .onBackground)
           .clipShape(Capsule())
+          
+          Button(action: {
+            showingMoreOptions = true
+          }) {
+            Image(systemName: "ellipsis")
+              .font(.system(size: 12))
+              .padding(.horizontal, 8)
+              .padding(.vertical, 4)
+          }
+          .background(.white.opacity(0.2))
+          .foregroundStyle(.onBackground)
+          .clipShape(Capsule())
+          .confirmationDialog("Comment Options", isPresented: $showingMoreOptions, titleVisibility: .visible) {
+            Button("Report Comment") {
+              flagComment(state)
+            }
+            Button(state.hidden ? "Show" : "Collapse") {
+              toggleComment()
+            }
+          }
         }
       }
       .padding(8)
       .background(isPressed ? .surface.opacity(0.85) : .surface)
       .zIndex(1)  // Ensure header stays on top
-      .simultaneousGesture(makeCommentGesture())
+      .onTapGesture(count: 1) {
+        toggleComment()
+      }
 
       // Comment Body
       if !state.hidden {
@@ -90,33 +114,13 @@ struct CommentRow: View {
   }
 }
 
-extension CommentRow {
-  fileprivate func makeCommentGesture() -> some Gesture {
-    DragGesture(minimumDistance: 0)
-      .onChanged { value in
-        // Only show press effect if we haven't moved far
-        if abs(value.translation.height) < 2 && abs(value.translation.width) < 2 {
-          isPressed = true
-        } else {
-          isPressed = false
-        }
-      }
-      .onEnded { value in
-        isPressed = false
-        // Trigger tap if it was a small movement (effectively a tap)
-        if abs(value.translation.height) < 2 && abs(value.translation.width) < 2 {
-          toggleComment()
-        }
-      }
-  }
-}
-
 struct CommentView_Preview: PreviewProvider {
   static var previews: some View {
     PreviewVariants {
       CommentRow(
         state: PreviewHelpers.makeFakeComment(),
         likeComment: { _ in },
+        flagComment: { _ in },
         toggleComment: {}
       )
       .environment(Theme())
@@ -131,6 +135,7 @@ struct CommentViewIndentation_Preview: PreviewProvider {
         CommentRow(
           state: PreviewHelpers.makeFakeComment(level: index),
           likeComment: { _ in },
+          flagComment: { _ in },
           toggleComment: {}
         )
         .environment(Theme())
@@ -150,6 +155,7 @@ C# is a hugely underrated language that I feel like often gets overlooked when t
   CommentRow(
     state: PreviewHelpers.makeFakeComment(level: 0, text: text),
     likeComment: { _ in },
+    flagComment: { _ in },
     toggleComment: {}
   )
   .environment(Theme())
@@ -162,6 +168,7 @@ What do you mean that it's not truly cross-platform?<p><a href="https://develope
   CommentRow(
     state: PreviewHelpers.makeFakeComment(level: 0, text: text),
     likeComment: { _ in },
+    flagComment: { _ in },
     toggleComment: {}
   )
   .environment(Theme())
@@ -175,6 +182,7 @@ It's much much more complicated than that. Sun refused to add many language feat
   CommentRow(
     state: PreviewHelpers.makeFakeComment(level: 0, text: text),
     likeComment: { _ in },
+    flagComment: { _ in },
     toggleComment: {}
   )
   .environment(Theme())
@@ -187,6 +195,7 @@ Hudson River Trading | Hybrid | Full-time\n<p>We’re a quantitative trading fir
   CommentRow(
     state: PreviewHelpers.makeFakeComment(level: 0, text: text),
     likeComment: { _ in },
+    flagComment: { _ in },
     toggleComment: {}
   )
   .environment(Theme())

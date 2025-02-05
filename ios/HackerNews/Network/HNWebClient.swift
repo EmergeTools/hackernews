@@ -28,6 +28,8 @@ struct CommentInfo {
   let id: Int64
   var upvoted: Bool
   let upvoteUrl: String
+  let hideUrl: String
+  let flagUrl: String
   let text: String
   let user: String
   let age: String
@@ -38,6 +40,8 @@ struct PostInfo {
   let id: Int64
   let upvoted: Bool
   let upvoteUrl: String
+  let hideUrl: String
+  let flagUrl: String
 }
 
 struct CommentFormData {
@@ -106,6 +110,23 @@ class HNWebClient {
   @discardableResult
   func upvoteItem(upvoteUrl: String) async -> Bool {
     let url = URL(string: upvoteUrl)!
+    return await actionOnItem(url: url)
+  }
+  
+  @discardableResult
+  func hideItem(hideUrl: String) async -> Bool {
+    let url = URL(string: hideUrl)!
+    return await actionOnItem(url: url)
+  }
+  
+  @discardableResult
+  func flagItem(flagUrl: String) async -> Bool {
+    let url = URL(string: flagUrl)!
+    return await actionOnItem(url: url)
+  }
+  
+  @discardableResult
+  private func actionOnItem(url: URL) async -> Bool {
     do {
       let (_, response) = try await session.data(from: url)
       let httpResponse = response as! HTTPURLResponse
@@ -151,11 +172,15 @@ extension Document {
     let postUpvoteLinkElement = try self.select("#up_\(id)").first()
     let upvoteUrl = try postUpvoteLinkElement?.attr("href") ?? ""
     let upvoted = postUpvoteLinkElement?.hasClass("nosee") ?? false
+    let hideLink = !upvoteUrl.isEmpty ? upvoteUrl.replacingOccurrences(of: "vote", with: "hide") : ""
+    let flagUrl = !upvoteUrl.isEmpty ? upvoteUrl.replacingOccurrences(of: "vote", with: "flag") : ""
 
     return PostInfo(
       id: id,
       upvoted: upvoted,
-      upvoteUrl: !upvoteUrl.isEmpty ? BASE_WEB_URL + upvoteUrl : ""
+      upvoteUrl: !upvoteUrl.isEmpty ? BASE_WEB_URL + upvoteUrl : "",
+      hideUrl: !hideLink.isEmpty ? BASE_WEB_URL + hideLink : "",
+      flagUrl: !flagUrl.isEmpty ? BASE_WEB_URL + flagUrl : ""
     )
   }
 
@@ -173,11 +198,16 @@ extension Document {
       let upvoteUrl = try upvoteLinkElement?.attr("href") ?? ""
       let upvoted = upvoteLinkElement?.hasClass("nosee") ?? false
       let date = String(commentDate).asDate()
+      
+      let hideLink = !upvoteUrl.isEmpty ? upvoteUrl.replacingOccurrences(of: "vote", with: "hide") : ""
+      let flagUrl = !upvoteUrl.isEmpty ? upvoteUrl.replacingOccurrences(of: "vote", with: "flag") : ""
 
       return CommentInfo(
         id: commentId,
         upvoted: upvoted,
         upvoteUrl: !upvoteUrl.isEmpty ? BASE_WEB_URL + upvoteUrl : "",
+        hideUrl: !hideLink.isEmpty ? BASE_WEB_URL + hideLink : "",
+        flagUrl: !flagUrl.isEmpty ? BASE_WEB_URL + flagUrl : "",
         text: commentText,
         user: commentAuthor,
         age: date?.timeAgoDisplay() ?? "",

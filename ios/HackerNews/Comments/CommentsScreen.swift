@@ -30,6 +30,13 @@ struct CommentsScreen: View {
               )
             }
           },
+          flagPost: {
+            Task {
+              await model.flagPost(
+                url: model.state.headerState.flagUrl
+              )
+            }
+          },
           toggleBody: {
             model.toggleHeaderBody()
           },
@@ -62,6 +69,11 @@ struct CommentsScreen: View {
               likeComment: { state in
                 Task {
                   await model.likeComment(data: state)
+                }
+              },
+              flagComment: { state in
+                Task {
+                  await model.flagComment(data: state)
                 }
               },
               toggleComment: {
