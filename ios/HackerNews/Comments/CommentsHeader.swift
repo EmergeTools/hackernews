@@ -50,6 +50,7 @@ struct CommentsHeader: View {
             .padding(.vertical, 4)
         }
         .background(.surface)
+        .frame(height: 23)
         .foregroundStyle(.onBackground)
         .clipShape(Capsule())
         // upvote button
@@ -59,6 +60,7 @@ struct CommentsHeader: View {
             .padding(.horizontal, 8)
             .padding(.vertical, 4)
         }
+        .frame(height: 23)
         .background(state.upvoted ? .green.opacity(0.2) : .surface)
         .foregroundStyle(state.upvoted ? .green : .onBackground)
         .clipShape(Capsule())
@@ -71,7 +73,8 @@ struct CommentsHeader: View {
             .padding(.horizontal, 8)
             .padding(.vertical, 4)
         }
-        .background(.white.opacity(0.2))
+        .frame(height: 23)
+        .background(.surface)
         .foregroundStyle(.onBackground)
         .clipShape(Capsule())
         .confirmationDialog("Post Options", isPresented: $showingMoreOptions, titleVisibility: .visible) {

@@ -52,6 +52,7 @@ struct CommentRow: View {
               .padding(.horizontal, 8)
               .padding(.vertical, 4)
           }
+          .frame(height: 20)
           .background(state.upvoted ? .green.opacity(0.2) : .white.opacity(0.2))
           .foregroundStyle(state.upvoted ? .green : .onBackground)
           .clipShape(Capsule())
@@ -64,6 +65,7 @@ struct CommentRow: View {
               .padding(.horizontal, 8)
               .padding(.vertical, 4)
           }
+          .frame(height: 20)
           .background(.white.opacity(0.2))
           .foregroundStyle(.onBackground)
           .clipShape(Capsule())
