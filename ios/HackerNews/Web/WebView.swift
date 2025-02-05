@@ -10,9 +10,9 @@ import SwiftUI
 import UIKit
 import WebKit
 
-final class WebViewModel: ObservableObject {
-  @Published var url: URL
-  @Published var isLoading: Bool = true
+@Observable final class WebViewModel {
+  var url: URL
+  var isLoading: Bool = true
   
   init (url: URL) {
     self.url = url
@@ -22,18 +22,18 @@ final class WebViewModel: ObservableObject {
 struct WebViewContainer: View {
   @Environment(\.openURL) var openURL
   
-  @StateObject var model: WebViewModel
+  @State var model: WebViewModel
 
   let title: String
   
   init(url: URL, title: String) {
     self.title = title
-    _model = StateObject(wrappedValue: WebViewModel(url: url))
+    self.model = WebViewModel(url: url)
   }
 
   var body: some View {
     LoadingView(isShowing: self.$model.isLoading) {
-      WebView(viewModel: self.model)
+      WebView(viewModel: self.$model)
     }
     .navigationBarTitleDisplayMode(.inline)
     .navigationTitle(title)
@@ -56,7 +56,7 @@ struct WebViewContainer: View {
 }
 
 struct WebView: UIViewRepresentable {
-  @ObservedObject var viewModel: WebViewModel
+  @Binding var viewModel: WebViewModel
   let webView = WKWebView(frame: .zero)
 
   func makeCoordinator() -> Coordinator {

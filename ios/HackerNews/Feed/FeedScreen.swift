@@ -108,7 +108,7 @@ private struct FeedListView: View {
             if case .loaded(let content) = storyState,
               let url = content.makeUrl()
             {
-              WebView(viewModel: WebViewModel(url: url))
+              WebView(viewModel: .constant(WebViewModel(url: url)))
                 .frame(width: 300, height: 400)
             }
           }
