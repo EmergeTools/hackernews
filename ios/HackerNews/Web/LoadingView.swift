@@ -21,7 +21,8 @@ struct LoadingView<Content>: View where Content: View {
         
         VStack {
           Text("Loading...")
-          ActivityIndicatorView(isAnimating: .constant(true), style: .large)
+          ProgressView()
+            .controlSize(.large)
         }
         .frame(width: geometry.size.width / 2, height: geometry.size.height / 5)
         .background(Color.secondary.colorInvert())
