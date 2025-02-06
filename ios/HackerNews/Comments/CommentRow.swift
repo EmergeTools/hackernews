@@ -19,7 +19,6 @@ struct CommentRow: View {
 
   @Environment(Theme.self) private var theme
   @State private var isPressed = false
-  @State private var showingMoreOptions = false
 
   var body: some View {
     VStack(alignment: .leading, spacing: 0) {
@@ -57,25 +56,22 @@ struct CommentRow: View {
           .foregroundStyle(state.upvoted ? .green : .onBackground)
           .clipShape(Capsule())
           
-          Button(action: {
-            showingMoreOptions = true
-          }) {
-            Image(systemName: "ellipsis")
-              .font(.system(size: 12))
-              .padding(.horizontal, 8)
-              .padding(.vertical, 4)
-          }
-          .frame(height: 20)
-          .background(.white.opacity(0.2))
-          .foregroundStyle(.onBackground)
-          .clipShape(Capsule())
-          .confirmationDialog("Comment Options", isPresented: $showingMoreOptions, titleVisibility: .visible) {
+          Menu {
             Button("Report Comment") {
               flagComment(state)
             }
             Button(state.hidden ? "Show" : "Collapse") {
               toggleComment()
             }
+          } label: {
+            Image(systemName: "ellipsis")
+              .font(.system(size: 12))
+              .padding(.horizontal, 8)
+              .padding(.vertical, 4)
+              .frame(height: 20)
+              .background(.white.opacity(0.2))
+              .foregroundStyle(.onBackground)
+              .clipShape(Capsule())
           }
         }
       }

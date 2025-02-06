@@ -13,8 +13,6 @@ struct CommentsHeader: View {
   let flagPost: () -> Void
   let toggleBody: () -> Void
   let onTitleTap: () -> Void
-  
-  @State private var showingMoreOptions = false
 
   var body: some View {
     VStack(alignment: .leading) {
@@ -65,22 +63,17 @@ struct CommentsHeader: View {
         .foregroundStyle(state.upvoted ? .green : .onBackground)
         .clipShape(Capsule())
         
-        Button(action: {
-          showingMoreOptions = true
-        }) {
+        Menu {
+          Button("Report Post", action: flagPost)
+        } label: {
           Image(systemName: "ellipsis")
             .font(.system(size: 12))
             .padding(.horizontal, 8)
             .padding(.vertical, 4)
-        }
-        .frame(height: 23)
-        .background(.surface)
-        .foregroundStyle(.onBackground)
-        .clipShape(Capsule())
-        .confirmationDialog("Post Options", isPresented: $showingMoreOptions, titleVisibility: .visible) {
-          Button("Report Post") {
-            flagPost()
-          }
+            .frame(height: 20)
+            .background(.surface)
+            .foregroundStyle(.onBackground)
+            .clipShape(Capsule())
         }
       }
       // body
