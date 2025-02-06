@@ -26,6 +26,8 @@ struct CommentState {
   let id: Int64
   var upvoted: Bool
   let upvoteUrl: String
+  let hideUrl: String
+  let flagUrl: String
   let text: String
   let user: String
   let age: String
@@ -39,6 +41,8 @@ extension CommentInfo {
       id: self.id,
       upvoted: self.upvoted,
       upvoteUrl: self.upvoteUrl,
+      hideUrl: self.hideUrl,
+      flagUrl: self.flagUrl,
       text: self.text,
       user: self.user,
       age: self.age,
@@ -53,6 +57,8 @@ struct CommentsHeaderState {
   var expanded: Bool = false
   var upvoteLink: String = ""
   var upvoted: Bool = false
+  var hideUrl: String = ""
+  var flagUrl: String = ""
 }
 
 struct CommentComposerState {
@@ -119,6 +125,8 @@ class CommentsViewModel {
     case .success(let data):
       state.headerState.upvoted = data.postInfo.upvoted
       state.headerState.upvoteLink = data.postInfo.upvoteUrl
+      state.headerState.hideUrl = data.postInfo.hideUrl
+      state.headerState.flagUrl = data.postInfo.flagUrl
       state.comments = .loaded(comments: data.comments.map { $0.toCommentState() })
       state.postCommentState = data.commentForm?.toCommentComposerState(auth: state.auth)
     case .error:
@@ -158,6 +166,26 @@ class CommentsViewModel {
       })
       print("Like Comment: \(data.upvoteUrl)")
       await webClient.upvoteItem(upvoteUrl: data.upvoteUrl)
+    case .loggedOut:
+      navigation(.login)
+    }
+  }
+  
+  func flagPost(url: String) async {
+    switch state.auth {
+    case .loggedIn:
+      guard !url.isEmpty else { return }
+      await webClient.flagItem(flagUrl: url)
+    case .loggedOut:
+      navigation(.login)
+    }
+  }
+  
+  func flagComment(data: CommentState) async {
+    switch state.auth {
+    case .loggedIn:
+      guard !data.flagUrl.isEmpty else { return }
+      await webClient.flagItem(flagUrl: data.flagUrl)
     case .loggedOut:
       navigation(.login)
     }

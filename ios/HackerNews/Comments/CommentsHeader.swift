@@ -10,6 +10,7 @@ import SwiftUI
 struct CommentsHeader: View {
   let state: CommentsHeaderState
   let likePost: () -> Void
+  let flagPost: () -> Void
   let toggleBody: () -> Void
   let onTitleTap: () -> Void
 
@@ -47,6 +48,7 @@ struct CommentsHeader: View {
             .padding(.vertical, 4)
         }
         .background(.surface)
+        .frame(height: 23)
         .foregroundStyle(.onBackground)
         .clipShape(Capsule())
         // upvote button
@@ -56,9 +58,23 @@ struct CommentsHeader: View {
             .padding(.horizontal, 8)
             .padding(.vertical, 4)
         }
+        .frame(height: 23)
         .background(state.upvoted ? .green.opacity(0.2) : .surface)
         .foregroundStyle(state.upvoted ? .green : .onBackground)
         .clipShape(Capsule())
+        
+        Menu {
+          Button("Report Post", action: flagPost)
+        } label: {
+          Image(systemName: "ellipsis")
+            .font(.system(size: 12))
+            .padding(.horizontal, 8)
+            .padding(.vertical, 4)
+            .frame(height: 20)
+            .background(.surface)
+            .foregroundStyle(.onBackground)
+            .clipShape(Capsule())
+        }
       }
       // body
       if let text = state.story.text {
@@ -85,6 +101,7 @@ struct CommentsHeader: View {
   CommentsHeader(
     state: CommentsHeaderState(story: PreviewHelpers.makeFakeStory()),
     likePost: {},
+    flagPost: {},
     toggleBody: {},
     onTitleTap: {}
   )
