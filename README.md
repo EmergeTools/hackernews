@@ -10,7 +10,7 @@ Welcome to the [Emerge Tools](https://www.emergetools.com/) Hacker News repo!
 
 This repository serves as a practical Android & iOS example project, leveraging Emerge's suite of products for size analysis, snapshot testing, reaper (dead code detection), and performance testing.
 
-The Android app is available on [Google Play](https://play.google.com/store/apps/details?id=com.emergetools.hackernews), and the iOS project is currently in development.
+The iOS app is available on the [App Store](https://apps.apple.com/us/app/hacker-news-by-emerge/id6740922950) and the Android app is available on [Google Play](https://play.google.com/store/apps/details?id=com.emergetools.hackernews).
 
 ## Getting Started with Emerge
 
