@@ -7,6 +7,7 @@ plugins {
   alias(libs.plugins.emerge)
   alias(libs.plugins.sentry)
   alias(libs.plugins.roborazzi)
+  alias(libs.plugins.androidx.room)
 }
 
 val runningEnv: String? = System.getenv("RUNNING_ENV")
@@ -89,10 +90,13 @@ android {
       isIncludeAndroidResources = true
     }
   }
+  room {
+    schemaDirectory("$projectDir/schemas")
+  }
 }
 
-composeCompiler {
-  enableStrongSkippingMode = true
+ksp {
+  arg("room.generateKotlin", "true")
 }
 
 emerge {
