@@ -8,5 +8,4 @@ plugins {
   alias(libs.plugins.roborazzi) apply false
   alias(libs.plugins.androidx.room) apply false
   alias(libs.plugins.sentry) apply false
-  alias(libs.plugins.emerge) apply false
 }
