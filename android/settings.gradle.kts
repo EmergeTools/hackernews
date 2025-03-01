@@ -33,3 +33,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Hacker News"
 include(":app")
+include(":performance")
