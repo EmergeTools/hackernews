@@ -16,6 +16,17 @@
         android:theme="@style/Theme.HackerNews"
         tools:targetApi="31">
 
+        <!-- This demonstrates manual initialization of Reaper.
+         See https://docs.emergetools.com/docs/reaper-setup-android#disable-automatic-initialization -->
+        <provider
+          android:name="androidx.startup.InitializationProvider"
+          android:authorities="${applicationId}.androidx-startup"
+          android:exported="false"
+          tools:node="merge">
+          <meta-data android:name="com.emergetools.reaper.ReaperInitializer"
+            tools:node="remove" />
+        </provider>
+
         <meta-data
             android:name="io.sentry.dsn"
             android:value="https://db2524adf3fee320562f372d15f98098@o497846.ingest.us.sentry.io/4506028523388928" />

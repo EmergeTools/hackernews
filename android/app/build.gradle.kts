@@ -146,6 +146,7 @@ dependencies {
   implementation(libs.androidx.shapes)
   implementation(libs.androidx.browser)
   implementation(libs.androidx.datastore)
+  implementation(libs.androidx.startup)
 
   implementation(libs.extendedspans)
 
