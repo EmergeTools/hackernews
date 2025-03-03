@@ -31,5 +31,5 @@ dependencyResolutionManagement {
   }
 }
 
-rootProject.name = "Hacker News"
+rootProject.name = "hacker-news"
 include(":app")
