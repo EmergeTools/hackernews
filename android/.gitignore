@@ -15,6 +15,7 @@
 .cxx
 local.properties
 keystore.properties
+.kotlin/
 
 # Sentry Config File
 sentry.properties
