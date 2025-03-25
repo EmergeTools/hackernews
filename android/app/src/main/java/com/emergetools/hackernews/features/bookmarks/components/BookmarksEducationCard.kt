@@ -152,7 +152,6 @@ fun BookmarksEducationCard() {
 }
 
 @PreviewLightDark
-@EmergeSnapshotConfig(ignore = true)
 @Composable
 fun BookmarkEducationCardPreview() {
   HackerNewsTheme {
