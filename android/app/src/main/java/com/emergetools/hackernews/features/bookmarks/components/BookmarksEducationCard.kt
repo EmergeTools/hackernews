@@ -152,7 +152,7 @@ fun BookmarksEducationCard() {
 
 @PreviewLightDark
 @Composable
-fun BookmarkEducationCardPreview() {
+private fun BookmarkEducationCardPreview() {
   HackerNewsTheme {
     BookmarksEducationCard()
   }

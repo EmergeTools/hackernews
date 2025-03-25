@@ -102,6 +102,7 @@ ksp {
 emerge {
   snapshots {
     tag.set("snapshot")
+    includePrivatePreviews.set(false)
   }
 
   reaper {
