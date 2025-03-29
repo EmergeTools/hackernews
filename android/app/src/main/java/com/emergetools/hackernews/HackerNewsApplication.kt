@@ -32,9 +32,9 @@ class HackerNewsApplication : Application() {
   override fun onCreate() {
     super.onCreate()
 
-    // This demonstrates manual initialization of Reaper.
+    // This demonstrates manual disabling Reaper to minimize overhead.
     // See https://docs.emergetools.com/docs/reaper-setup-android#manual-initialization
-    Reaper.init(applicationContext)
+    Reaper.fuseOff(applicationContext)
 
     val db = Room.databaseBuilder(
       applicationContext,
