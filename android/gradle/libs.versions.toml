@@ -27,7 +27,7 @@ room = "2.7.0"
 startup = "1.2.0"
 jsoup = "1.19.1"
 extendedspans = "1.4.0"
-composeBom = "2025.03.01"
+composeBom = "2025.04.00"
 uiTestJunit4Android = "1.7.8"
 
 [libraries]
