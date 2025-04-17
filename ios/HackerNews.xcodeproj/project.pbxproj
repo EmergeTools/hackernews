@@ -1202,7 +1202,7 @@
 			repositoryURL = "https://github.com/getsentry/sentry-cocoa/";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 8.30.0;
+				minimumVersion = 8.49.0;
 			};
 		};
 		A47309B22AA29D9600201376 /* XCRemoteSwiftPackageReference "SwiftSoup" */ = {

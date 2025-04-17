@@ -12,7 +12,7 @@ import SwiftUI
 import Common
 
 @main
-struct Hacker_NewsApp: App {
+struct HackerNewsApp: App {
   @State private var appModel = AppViewModel(
     bookmarkStore: LiveBookmarksDataStore.shared)
   @State private var theme = Theme()
@@ -26,8 +26,16 @@ struct Hacker_NewsApp: App {
 
     SentrySDK.start { options in
       options.dsn =
-        "https://118cff4b239bd3e0ede8fd74aad9bf8f@o497846.ingest.sentry.io/4506027753668608"
+      "https://118cff4b239bd3e0ede8fd74aad9bf8f@o497846.ingest.sentry.io/4506027753668608"
       options.enableTracing = true
+      options.configureUserFeedback = { config in
+        config.onSubmitSuccess = { data in
+          print("Feedback submitted successfully: \(data)")
+        }
+        config.onSubmitError = { error in
+          print("Failed to submit feedback: \(error)")
+        }
+      }
     }
   }
 
