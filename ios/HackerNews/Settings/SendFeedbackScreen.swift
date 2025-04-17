@@ -9,7 +9,6 @@ import SwiftUI
 import Sentry
 
 struct SendFeedbackScreen: View {
-  // MARK: - State
   
   @State private var name: String = ""
   @State private var email: String = ""
@@ -17,12 +16,9 @@ struct SendFeedbackScreen: View {
   @State private var isSubmitted: Bool = false
   @Environment(\.dismiss) private var dismiss
   
-  // MARK: - Body
-  
   var body: some View {
     NavigationStack {
       Form {
-        // Optional user details
         Section("Your Info (optional)") {
           TextField("Name", text: $name)
           TextField("Email", text: $email)
@@ -31,22 +27,23 @@ struct SendFeedbackScreen: View {
             .autocapitalization(.none)
         }
 
-        // Required feedback message
         Section("Your Feedback") {
           TextEditor(text: $message)
             .frame(minHeight: 150)
         }
 
-        // Confirmation banner shown after submit
         if isSubmitted {
           Section {
             Label("Thank you for your feedback!", systemImage: "checkmark.seal.fill")
               .foregroundColor(.green)
+              .frame(maxWidth: .infinity, alignment: .center)
+              .transition(.scale.combined(with: .opacity))
           }
         }
       }
       .navigationTitle("Send Feedback")
       .navigationBarTitleDisplayMode(.inline)
+      .animation(.spring(), value: isSubmitted)
       .toolbar {
         ToolbarItem(placement: .navigationBarTrailing) {
           Button(action: { dismiss() }) {
@@ -55,7 +52,6 @@ struct SendFeedbackScreen: View {
         }
       }
     }
-    // Submit button pinned to the bottom, inside the safe area
     .safeAreaInset(edge: .bottom) {
       Button(action: { sendFeedback() }) {
         Text("Submit")
@@ -64,7 +60,7 @@ struct SendFeedbackScreen: View {
           .frame(height: 40)
       }
       .buttonStyle(.borderedProminent)
-      .disabled(message.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+      .disabled(message.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || isSubmitted)
       .padding(.horizontal)
       .padding(.bottom)
     }
@@ -80,10 +76,13 @@ struct SendFeedbackScreen: View {
         source: .custom,
     ))
     
-    // Reset form and show confirmation
-    isSubmitted = true
-    name = ""
-    email = ""
-    message = ""
+    withAnimation {
+      isSubmitted = true
+    }
+    
+    // Auto dismiss after a brief delay
+    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+      dismiss()
+    }
   }
 }
