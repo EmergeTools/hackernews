@@ -27,7 +27,6 @@ struct HackerNewsApp: App {
     SentrySDK.start { options in
       options.dsn =
       "https://118cff4b239bd3e0ede8fd74aad9bf8f@o497846.ingest.sentry.io/4506027753668608"
-      options.enableTracing = true
       options.configureUserFeedback = { config in
         config.onSubmitSuccess = { data in
           print("Feedback submitted successfully: \(data)")

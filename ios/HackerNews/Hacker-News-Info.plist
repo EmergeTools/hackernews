@@ -19,9 +19,12 @@
 	</array>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Fonts_Fonts.bundle/ibm_plex_sans_regular.ttf</string>
-		<string>Fonts_Fonts.bundle/ibm_plex_sans_medium.ttf</string>
-		<string>Fonts_Fonts.bundle/ibm_plex_sans_bold.ttf</string>
+		<string>Fonts_Fonts.bundle/IBMPlexSans-Regular.ttf</string>
+		<string>Fonts_Fonts.bundle/IBMPlexSans-Medium.ttf</string>
+		<string>Fonts_Fonts.bundle/IBMPlexSans-Bold.ttf</string>
+		<string>Fonts_Fonts.bundle/IBMPlexMono-Bold.ttf</string>
+		<string>Fonts_Fonts.bundle/IBMPlexMono-Medium.ttf</string>
+		<string>Fonts_Fonts.bundle/IBMPlexMono-Regular.ttf</string>
 	</array>
 </dict>
 </plist>

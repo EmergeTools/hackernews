@@ -42,7 +42,7 @@ struct StoryRow: View {
           let author = content.author!
           HStack {
             Text("@\(author)")
-              .font(theme.userMonoFont(size: 12, weight: .bold))
+              .font(theme.themedFont(size: 12, style: .mono, weight: .bold))
               .foregroundColor(.hnOrange)
             Spacer()
             if content.bookmarked {
@@ -62,14 +62,14 @@ struct StoryRow: View {
                 .font(.system(size: 12))
                 .foregroundColor(.green)
               Text("\(content.score)")
-                .font(theme.userSansFont(size: 12, weight: .medium))
+                .font(theme.themedFont(size: 12, style: .sans, weight: .medium))
             }
             HStack(spacing: 4) {
               Image(systemName: "clock")
                 .font(.system(size: 12))
                 .foregroundColor(.purple)
               Text(content.relativeDate())
-                .font(theme.userSansFont(size: 12, weight: .medium))
+                .font(theme.themedFont(size: 12, style: .sans, weight: .medium))
             }
             Spacer()
             // Comment Button
@@ -84,7 +84,7 @@ struct StoryRow: View {
                 Image(systemName: "message.fill")
                   .font(.system(size: 12))
                 Text("\(content.commentCount)")
-                  .font(theme.userSansFont(size: 12, weight: .medium))
+                  .font(theme.themedFont(size: 12, style: .sans, weight: .medium))
               }
               .foregroundStyle(.blue)
             }
@@ -104,11 +104,11 @@ struct StoryRowLoadingState: View {
   var body: some View {
     VStack(alignment: .leading, spacing: 8) {
       Text("@humdinger")
-        .font(theme.userMonoFont(size: 12, weight: .bold))
+        .font(theme.themedFont(size: 12, style: .mono, weight: .bold))
         .foregroundColor(.hnOrange)
         .redacted(reason: .placeholder)
       Text("Some Short Title")
-        .font(theme.userMonoFont(size: 16, weight: .bold))
+        .font(theme.themedFont(size: 16, style: .mono, weight: .bold))
         .redacted(reason: .placeholder)
       HStack(spacing: 16) {
         HStack(spacing: 4) {
@@ -118,7 +118,7 @@ struct StoryRowLoadingState: View {
             .redacted(reason: .placeholder)
           Text("99")
             .font(
-              theme.userSansFont(size: 12, weight: .medium)
+              theme.themedFont(size: 12, style: .sans, weight: .medium)
             )
             .redacted(reason: .placeholder)
         }
@@ -128,7 +128,7 @@ struct StoryRowLoadingState: View {
             .foregroundColor(.purple)
             .redacted(reason: .placeholder)
           Text("2h ago")
-            .font(theme.userSansFont(size: 12, weight: .medium))
+            .font(theme.themedFont(size: 12, style: .sans, weight: .medium))
             .redacted(reason: .placeholder)
         }
         Spacer()
@@ -138,7 +138,7 @@ struct StoryRowLoadingState: View {
             Image(systemName: "message.fill")
               .font(.system(size: 12))
             Text("45")
-              .font(theme.userSansFont(size: 12, weight: .medium))
+              .font(theme.themedFont(size: 12, style: .sans, weight: .medium))
           }
           .foregroundStyle(.blue)
         }

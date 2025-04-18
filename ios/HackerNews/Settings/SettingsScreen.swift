@@ -19,7 +19,7 @@ struct SettingsScreen: View {
       LazyVStack(spacing: 8) {
         VStack(alignment: .leading, spacing: 4) {
           Text("Profile")
-            .font(.ibmPlexSans(.medium, size: 12))
+            .font(theme.themedFont(size: 12, style: .sans, weight: .medium))
           LoginRow(loggedIn: model.authState == AuthState.loggedIn) {
             model.gotoLogin()
           }
@@ -27,7 +27,7 @@ struct SettingsScreen: View {
 
         VStack(alignment: .leading, spacing: 4) {
           Text("About")
-            .font(.ibmPlexSans(.medium, size: 12))
+            .font(theme.themedFont(size: 12, style: .sans, weight: .medium))
           SettingsRow(
             text: "Follow Emerge",
             leadingIcon: {
@@ -132,31 +132,63 @@ struct SettingsScreen: View {
           @Bindable var theme = theme
           Text("Appearance")
             .font(.ibmPlexSans(.medium, size: 12))
-
+          
           SettingsRow(
-            text: "Use System Font",
+            text: "Font Family",
             leadingIcon: {
               Image(systemName: "textformat")
                 .font(.system(size: 12))
                 .foregroundStyle(.purple)
             },
             trailingIcon: {
-              Toggle("", isOn: $theme.useSystemFont)
-                .labelsHidden()
+              Menu {
+                Button("System") {
+                  theme.fontFamilyPreference = .system
+                }
+                Button("IBM Plex") {
+                  theme.fontFamilyPreference = .ibmPlex
+                }
+              } label: {
+                HStack(spacing: 4) {
+                  Text(
+                    theme.fontFamilyPreference.displayName
+                  )
+                  .font(theme.themedFont(size: 14, style: .mono))
+                  Image(systemName: "chevron.down")
+                    .font(.system(size: 12))
+                }
+                .foregroundStyle(.onBackground)
+              }
             },
             action: {}
           )
-
+          
           SettingsRow(
-            text: "Use Monospaced Font",
+            text: "Font Style",
             leadingIcon: {
-              Image(systemName: "textformat.size")
+              Image(systemName: "textformat")
                 .font(.system(size: 12))
-                .foregroundStyle(.orange)
+                .foregroundStyle(.purple)
             },
             trailingIcon: {
-              Toggle("", isOn: $theme.useMonospaced)
-                .labelsHidden()
+              Menu {
+                Button("Sans") {
+                  theme.fontStylePreference = .sans
+                }
+                Button("Sans + Mono") {
+                  theme.fontStylePreference = .sansAndMono
+                }
+              } label: {
+                HStack(spacing: 4) {
+                  Text(
+                    theme.fontStylePreference.displayName
+                  )
+                  .font(theme.themedFont(size: 14, style: .mono))
+                  Image(systemName: "chevron.down")
+                    .font(.system(size: 12))
+                }
+                .foregroundStyle(.onBackground)
+              }
             },
             action: {}
           )
