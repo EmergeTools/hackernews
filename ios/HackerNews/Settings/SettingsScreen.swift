@@ -12,6 +12,7 @@ import Common
 struct SettingsScreen: View {
   @Binding var model: AppViewModel
   @Environment(Theme.self) private var theme
+  @State private var isShowingFeedback = false
 
   var body: some View {
     ScrollView {
@@ -100,8 +101,7 @@ struct SettingsScreen: View {
 
             },
             action: {
-              model.openLink(
-                url: URL(string: "https://forms.gle/YYno9sUehE5xuKAq9")!)
+              isShowingFeedback = true
             }
           )
 
@@ -217,6 +217,9 @@ struct SettingsScreen: View {
           .padding(.horizontal, 16)
       }
       .frame(height: 60)
+    }
+    .sheet(isPresented: $isShowingFeedback) {
+      SendFeedbackScreen()
     }
   }
 }
