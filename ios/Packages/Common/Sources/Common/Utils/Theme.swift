@@ -66,7 +66,8 @@ public enum FontFamilyPreference: String {
         }
       }
     case .system:
-      return .system(size: size, weight: weight, design: .default)
+      let design: Font.Design = (style == .mono) ? .monospaced : .default
+      return .system(size: size, weight: weight, design: design)
     }
   }
 }
@@ -81,6 +82,36 @@ public final class Theme {
   private static let titleFontSizeKey = "titleFontSize"
   private static let fontFamilyKey = "fontFamily"
   private static let fontStyleKey = "fontStyle"
+
+  /// Converts the legacy `useSystemFont` / `useMonospaced` keys into the new
+  /// `fontFamilyPreference` / `fontStylePreference` keys the first time the
+  /// app runs with this build.
+  private static func migrateLegacyPreferences() {
+    let defaults = UserDefaults.standard
+
+    // ---- Font family ----
+    // Only migrate if the legacy key actually exists *and* the new key is absent.
+    if defaults.string(forKey: fontFamilyKey) == nil,
+      let legacyUseSystem = defaults.object(forKey: useSystemFontKey) as? Bool
+    {
+
+      let family: FontFamilyPreference = legacyUseSystem ? .system : .ibmPlex
+      defaults.set(family.rawValue, forKey: fontFamilyKey)
+      // Remove the migrated legacy key so the check will not run again.
+      defaults.removeObject(forKey: useSystemFontKey)
+    }
+
+    // ---- Font style ----
+    // Only migrate if the legacy key actually exists *and* the new key is absent.
+    if defaults.string(forKey: fontStyleKey) == nil,
+      let legacyUseMono = defaults.object(forKey: useMonospacedKey) as? Bool
+    {
+
+      let style: FontStylePreference = legacyUseMono ? .sansAndMono : .sans
+      defaults.set(style.rawValue, forKey: fontStyleKey)
+      defaults.removeObject(forKey: useMonospacedKey)
+    }
+  }
 
   public static let defaultCommentFontSize: Double = 12
   public static let minCommentFontSize: Double = 10
@@ -106,18 +137,6 @@ public final class Theme {
     didSet {
       UserDefaults.standard
         .set(fontStylePreference.rawValue, forKey: Self.fontStyleKey)
-    }
-  }
-
-  private var useSystemFont: Bool {
-    didSet {
-      UserDefaults.standard.set(useSystemFont, forKey: Self.useSystemFontKey)
-    }
-  }
-
-  private var useMonospaced: Bool {
-    didSet {
-      UserDefaults.standard.set(useMonospaced, forKey: Self.useMonospacedKey)
     }
   }
 
@@ -182,13 +201,8 @@ public final class Theme {
   }
 
   public init(context: ThemeContext = .app) {
+    Self.migrateLegacyPreferences()
     self.context = context
-    self.useSystemFont =
-      UserDefaults.standard.object(forKey: Self.useSystemFontKey) as? Bool
-      ?? false
-    self.useMonospaced =
-      UserDefaults.standard.object(forKey: Self.useMonospacedKey) as? Bool
-      ?? true
     let fontStylePrefValue = UserDefaults.standard.string(
       forKey: Self.fontStyleKey
     )
