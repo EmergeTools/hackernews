@@ -7,18 +7,20 @@
 
 import Foundation
 import SwiftUI
+import Common
 
 struct SettingsRow<Leading: View, Trailing: View>: View {
   let text: String
   @ViewBuilder let leadingIcon: () -> Leading
   @ViewBuilder let trailingIcon: () -> Trailing
   let action: () -> Void
+  @Environment(Theme.self) private var theme
 
   var body: some View {
     HStack(alignment: .center, spacing: 8) {
       leadingIcon()
       Text(text)
-        .font(.ibmPlexMono(.bold, size: 16))
+        .font(theme.userMonoFont(size: 16, weight: .bold))
       Spacer()
       trailingIcon()
     }
