@@ -59,4 +59,5 @@ struct LoginRow: View {
 
 #Preview {
   LoginRow(loggedIn: true, tapped: {})
+    .environment(Theme())
 }

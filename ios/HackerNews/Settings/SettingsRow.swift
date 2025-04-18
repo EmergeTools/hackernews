@@ -47,4 +47,5 @@ struct SettingsRow<Leading: View, Trailing: View>: View {
     },
     action: {}
   )
+  .environment(Theme())
 }
