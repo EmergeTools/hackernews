@@ -19,9 +19,12 @@ let package = Package(
     .target(
       name: "Fonts",
       resources: [
-        .copy("ibm_plex_sans_bold.ttf"),
-        .copy("ibm_plex_sans_medium.ttf"),
-        .copy("ibm_plex_sans_regular.ttf")
+        .copy("IBMPlexSans-Bold.ttf"),
+        .copy("IBMPlexSans-Medium.ttf"),
+        .copy("IBMPlexSans-Regular.ttf"),
+        .copy("IBMPlexMono-Bold.ttf"),
+        .copy("IBMPlexMono-Medium.ttf"),
+        .copy("IBMPlexMono-Regular.ttf")
       ],
       swiftSettings: [
         .swiftLanguageMode(.v5)

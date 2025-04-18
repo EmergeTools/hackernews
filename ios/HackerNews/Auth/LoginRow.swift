@@ -7,11 +7,13 @@
 
 import Foundation
 import SwiftUI
+import Common
 
 struct LoginRow: View {
   let loggedIn: Bool
   let tapped: () -> Void
-
+  @Environment(Theme.self) private var theme
+  
   var body: some View {
     HStack(alignment: .center, spacing: 8) {
       Circle()
@@ -20,7 +22,7 @@ struct LoginRow: View {
           width: 8
         )
       Text(loginText())
-        .font(.ibmPlexMono(.bold, size: 16))
+        .font(theme.themedFont(size: 16, style: .mono, weight: .bold))
       Spacer()
       Image(systemName: "message.fill")
         .font(.system(size: 12))

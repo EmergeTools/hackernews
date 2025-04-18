@@ -19,7 +19,7 @@ struct SettingsScreen: View {
       LazyVStack(spacing: 8) {
         VStack(alignment: .leading, spacing: 4) {
           Text("Profile")
-            .font(theme.userSansFont(size: 12, weight: .medium))
+            .font(theme.themedFont(size: 12, style: .sans, weight: .medium))
           LoginRow(loggedIn: model.authState == AuthState.loggedIn) {
             model.gotoLogin()
           }
@@ -27,7 +27,7 @@ struct SettingsScreen: View {
 
         VStack(alignment: .leading, spacing: 4) {
           Text("About")
-            .font(theme.userSansFont(size: 12, weight: .medium))
+            .font(theme.themedFont(size: 12, style: .sans, weight: .medium))
           SettingsRow(
             text: "Follow Emerge",
             leadingIcon: {
@@ -143,19 +143,17 @@ struct SettingsScreen: View {
             trailingIcon: {
               Menu {
                 Button("System") {
-                  theme.useSystemFont = true
+                  theme.fontFamilyPreference = .system
                 }
                 Button("IBM Plex") {
-                  theme.useSystemFont = false
+                  theme.fontFamilyPreference = .ibmPlex
                 }
               } label: {
                 HStack(spacing: 4) {
                   Text(
-                    theme.useSystemFont
-                      ? "System"
-                      : "IBM Plex"
+                    theme.fontFamilyPreference.displayName
                   )
-                  .font(theme.userMonoFont(size: 14))
+                  .font(theme.themedFont(size: 14, style: .mono))
                   Image(systemName: "chevron.down")
                     .font(.system(size: 12))
                 }
@@ -174,20 +172,18 @@ struct SettingsScreen: View {
             },
             trailingIcon: {
               Menu {
-                Button("Regular") {
-                  theme.useMonospaced = false
+                Button("Sans") {
+                  theme.fontStylePreference = .sans
                 }
-                Button("Regular + Mono") {
-                  theme.useMonospaced = true
+                Button("Sans + Mono") {
+                  theme.fontStylePreference = .sansAndMono
                 }
               } label: {
                 HStack(spacing: 4) {
                   Text(
-                    theme.useMonospaced
-                      ? "Regular + Mono"
-                      : "Regular"
+                    theme.fontStylePreference.displayName
                   )
-                  .font(theme.userMonoFont(size: 14))
+                  .font(theme.themedFont(size: 14, style: .mono))
                   Image(systemName: "chevron.down")
                     .font(.system(size: 12))
                 }

@@ -20,7 +20,7 @@ struct SettingsRow<Leading: View, Trailing: View>: View {
     HStack(alignment: .center, spacing: 8) {
       leadingIcon()
       Text(text)
-        .font(theme.userMonoFont(size: 16, weight: .bold))
+        .font(theme.themedFont(size: 16, style: .mono, weight: .bold))
       Spacer()
       trailingIcon()
     }
