@@ -48,6 +48,11 @@ struct SendFeedbackScreen: View {
         ToolbarItem(placement: .navigationBarTrailing) {
           Button(action: { dismiss() }) {
             Image(systemName: "xmark")
+              .font(.system(size: 10, weight: .semibold))
+              .foregroundColor(.secondary)
+              .padding(8)
+              .background(Color(.systemGray5))
+              .clipShape(Circle())
           }
         }
       }
@@ -66,8 +71,6 @@ struct SendFeedbackScreen: View {
     }
   }
   
-  // MARK: - Sentry
-  
   private func sendFeedback() {
     SentrySDK.capture(feedback: .init(
         message: message,
@@ -85,4 +88,8 @@ struct SendFeedbackScreen: View {
       dismiss()
     }
   }
+}
+
+#Preview {
+  SendFeedbackScreen()
 }
