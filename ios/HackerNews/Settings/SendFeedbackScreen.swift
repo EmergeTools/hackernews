@@ -82,7 +82,7 @@ struct SendFeedbackScreen: View {
       message: message,
       name: name,
       email: email,
-      source: .custom,
+      source: .custom
     )
     SentrySDK.capture(feedback: feedback)
 
