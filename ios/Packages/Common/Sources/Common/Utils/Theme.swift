@@ -6,13 +6,112 @@ public enum ThemeContext {
   case widget
 }
 
+public enum FontStyle {
+  case sans
+  case mono
+}
+
+public enum FontStylePreference: String {
+  case sans
+  case sansAndMono
+
+  public var displayName: String {
+    switch self {
+    case .sans:
+      "Sans"
+    case .sansAndMono:
+      "Sans + Mono"
+    }
+  }
+}
+
+public enum FontFamilyPreference: String {
+  case system
+  case ibmPlex
+
+  public var displayName: String {
+    switch self {
+    case .system:
+      "System"
+    case .ibmPlex:
+      "IBM Plex"
+    }
+  }
+
+  func font(size: CGFloat, style: FontStyle, weight: Font.Weight) -> Font {
+    switch self {
+    case .ibmPlex:
+      switch style {
+      case .sans:
+        switch weight {
+        case .regular:
+          return .ibmPlexSans(.regular, size: size)
+        case .bold:
+          return .ibmPlexSans(.bold, size: size)
+        case .medium:
+          return .ibmPlexSans(.medium, size: size)
+        default:
+          return .ibmPlexSans(.regular, size: size)
+        }
+      case .mono:
+        switch weight {
+        case .regular:
+          return .ibmPlexMono(.regular, size: size)
+        case .bold:
+          return .ibmPlexMono(.bold, size: size)
+        case .medium:
+          return .ibmPlexMono(.medium, size: size)
+        default:
+          return .ibmPlexMono(.regular, size: size)
+        }
+      }
+    case .system:
+      let design: Font.Design = (style == .mono) ? .monospaced : .default
+      return .system(size: size, weight: weight, design: design)
+    }
+  }
+}
+
 @MainActor
 @Observable
 public final class Theme {
+
   private static let useSystemFontKey = "useSystemFont"
   private static let useMonospacedKey = "useMonospaced"
   private static let commentFontSizeKey = "commentFontSize"
   private static let titleFontSizeKey = "titleFontSize"
+  private static let fontFamilyKey = "fontFamily"
+  private static let fontStyleKey = "fontStyle"
+
+  /// Converts the legacy `useSystemFont` / `useMonospaced` keys into the new
+  /// `fontFamilyPreference` / `fontStylePreference` keys the first time the
+  /// app runs with this build.
+  private static func migrateLegacyPreferences() {
+    let defaults = UserDefaults.standard
+
+    // ---- Font family ----
+    // Only migrate if the legacy key actually exists *and* the new key is absent.
+    if defaults.string(forKey: fontFamilyKey) == nil,
+      let legacyUseSystem = defaults.object(forKey: useSystemFontKey) as? Bool
+    {
+
+      let family: FontFamilyPreference = legacyUseSystem ? .system : .ibmPlex
+      defaults.set(family.rawValue, forKey: fontFamilyKey)
+      // Remove the migrated legacy key so the check will not run again.
+      defaults.removeObject(forKey: useSystemFontKey)
+    }
+
+    // ---- Font style ----
+    // Only migrate if the legacy key actually exists *and* the new key is absent.
+    if defaults.string(forKey: fontStyleKey) == nil,
+      let legacyUseMono = defaults.object(forKey: useMonospacedKey) as? Bool
+    {
+
+      let style: FontStylePreference = legacyUseMono ? .sansAndMono : .sans
+      defaults.set(style.rawValue, forKey: fontStyleKey)
+      defaults.removeObject(forKey: useMonospacedKey)
+    }
+  }
 
   public static let defaultCommentFontSize: Double = 12
   public static let minCommentFontSize: Double = 10
@@ -25,27 +124,34 @@ public final class Theme {
 
   private let context: ThemeContext
 
-  public var useSystemFont: Bool {
+  public var fontFamilyPreference: FontFamilyPreference {
     didSet {
-      UserDefaults.standard.set(useSystemFont, forKey: Self.useSystemFontKey)
+      UserDefaults.standard.set(
+        fontFamilyPreference.rawValue,
+        forKey: Self.fontFamilyKey
+      )
     }
   }
 
-  public var useMonospaced: Bool {
+  public var fontStylePreference: FontStylePreference {
     didSet {
-      UserDefaults.standard.set(useMonospaced, forKey: Self.useMonospacedKey)
+      UserDefaults.standard
+        .set(fontStylePreference.rawValue, forKey: Self.fontStyleKey)
     }
   }
 
   public var commentFontSize: Double {
     didSet {
       let clamped = commentFontSize.clamped(
-        to: Self.minCommentFontSize...Self.maxCommentFontSize)
+        to: Self.minCommentFontSize...Self.maxCommentFontSize
+      )
       if clamped != commentFontSize {
         commentFontSize = clamped
       }
       UserDefaults.standard.set(
-        commentFontSize, forKey: Self.commentFontSizeKey)
+        commentFontSize,
+        forKey: Self.commentFontSizeKey
+      )
     }
   }
 
@@ -56,7 +162,8 @@ public final class Theme {
   public var titleFontSize: Double {
     didSet {
       let clamped = titleFontSize.clamped(
-        to: Self.minTitleFontSize...Self.maxTitleFontSize)
+        to: Self.minTitleFontSize...Self.maxTitleFontSize
+      )
       if clamped != titleFontSize {
         titleFontSize = clamped
       }
@@ -66,64 +173,48 @@ public final class Theme {
 
   public var titleFont: Font {
     let size = context == .app ? titleFontSize : Self.defaultWidgetTitleFontSize
-    return userMonoFont(size: size, weight: .bold)
+    return themedFont(size: size, style: .mono, weight: .bold)
   }
 
   public var commentTextFont: Font {
-    userMonoFont(size: commentFontSize, weight: .regular)
+    themedFont(size: commentFontSize, style: .mono, weight: .regular)
   }
 
   public var commentAuthorFont: Font {
-    userMonoFont(size: commentFontSize, weight: .bold)
+    themedFont(size: commentFontSize, style: .mono, weight: .bold)
   }
 
   public var commentMetadataFont: Font {
-    userSansFont(size: commentFontSize, weight: .medium)
+    themedFont(size: commentFontSize, style: .sans, weight: .medium)
   }
 
-  public func userMonoFont(size: CGFloat, weight: Font.Weight = .regular) -> Font {
-    if !useMonospaced {
-      return userSansFont(size: size, weight: weight)
+  public func themedFont(
+    size: CGFloat,
+    style: FontStyle,
+    weight: Font.Weight = .regular
+  ) -> Font {
+    var style = style
+    if fontStylePreference == .sans {
+      style = .sans
     }
-    if useSystemFont {
-      return .system(size: size, weight: weight, design: .default)
-    }
-    switch weight {
-    case .regular:
-      return .ibmPlexMono(.regular, size: size)
-    case .bold:
-      return .ibmPlexMono(.bold, size: size)
-    case .medium:
-      return .ibmPlexMono(.medium, size: size)
-    default:
-      return .ibmPlexMono(.regular, size: size)
-    }
-  }
-
-  public func userSansFont(size: CGFloat, weight: Font.Weight = .regular) -> Font {
-    if useSystemFont {
-      return .system(size: size, weight: weight, design: .default)
-    }
-    switch weight {
-    case .regular:
-      return .ibmPlexSans(.regular, size: size)
-    case .bold:
-      return .ibmPlexSans(.bold, size: size)
-    case .medium:
-      return .ibmPlexSans(.medium, size: size)
-    default:
-      return .ibmPlexSans(.regular, size: size)
-    }
+    return fontFamilyPreference.font(size: size, style: style, weight: weight)
   }
 
   public init(context: ThemeContext = .app) {
+    Self.migrateLegacyPreferences()
     self.context = context
-    self.useSystemFont =
-      UserDefaults.standard.object(forKey: Self.useSystemFontKey) as? Bool
-      ?? false
-    self.useMonospaced =
-      UserDefaults.standard.object(forKey: Self.useMonospacedKey) as? Bool
-      ?? true
+    let fontStylePrefValue = UserDefaults.standard.string(
+      forKey: Self.fontStyleKey
+    )
+    self.fontStylePreference =
+      fontStylePrefValue
+      .flatMap { FontStylePreference(rawValue: $0) } ?? .sansAndMono
+    let fontFamilyPrefValue = UserDefaults.standard.string(
+      forKey: Self.fontFamilyKey
+    )
+    self.fontFamilyPreference =
+      fontFamilyPrefValue
+      .flatMap { FontFamilyPreference(rawValue: $0) } ?? .ibmPlex
     self.commentFontSize =
       UserDefaults.standard.object(forKey: Self.commentFontSizeKey) as? Double
       ?? Self.defaultCommentFontSize

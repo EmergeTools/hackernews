@@ -110,10 +110,10 @@ struct HackerNewsHomeWidgetEntryView: View {
           HStack(spacing: 12) {
             HStack(spacing: 4) {
               Image(systemName: "arrow.up")
-                .font(theme.userSansFont(size: 10))
+                .font(theme.themedFont(size: 10, style: .sans))
                 .foregroundColor(.green)
               Text("\(story.score)")
-                .font(theme.userSansFont(size: 10, weight: .medium))
+                .font(theme.themedFont(size: 10, style: .sans, weight: .medium))
             }
 
             HStack(spacing: 4) {
@@ -144,10 +144,10 @@ struct HackerNewsHomeWidgetEntryView: View {
           HStack(spacing: 16) {
             HStack(spacing: 4) {
               Image(systemName: "arrow.up")
-                .font(theme.userSansFont(size: 12))
+                .font(theme.themedFont(size: 12, style: .sans))
                 .foregroundColor(.green)
               Text("\(story.score)")
-                .font(theme.userSansFont(size: 12, weight: .medium))
+                .font(theme.themedFont(size: 12, style: .sans, weight: .medium))
             }
 
             HStack(spacing: 4) {
@@ -190,10 +190,10 @@ struct HackerNewsHomeWidgetEntryView: View {
           HStack(spacing: 16) {
             HStack(spacing: 4) {
               Image(systemName: "arrow.up")
-                .font(theme.userSansFont(size: 12))
+                .font(theme.themedFont(size: 12, style: .sans))
                 .foregroundColor(.green)
               Text("\(story.score)")
-                .font(theme.userSansFont(size: 12, weight: .medium))
+                .font(theme.themedFont(size: 12, style: .sans, weight: .medium))
             }
 
             HStack(spacing: 4) {
