@@ -5,17 +5,17 @@
 //  Created by Trevor Elkins on 4/16/25.
 //
 
-import SwiftUI
 import Sentry
+import SwiftUI
 
 struct SendFeedbackScreen: View {
-  
+
   @State private var name: String = ""
   @State private var email: String = ""
   @State private var message: String = ""
   @State private var isSubmitted: Bool = false
   @Environment(\.dismiss) private var dismiss
-  
+
   var body: some View {
     NavigationStack {
       Form {
@@ -34,10 +34,13 @@ struct SendFeedbackScreen: View {
 
         if isSubmitted {
           Section {
-            Label("Thank you for your feedback!", systemImage: "checkmark.seal.fill")
-              .foregroundColor(.green)
-              .frame(maxWidth: .infinity, alignment: .center)
-              .transition(.scale.combined(with: .opacity))
+            Label(
+              "Thank you for your feedback!",
+              systemImage: "checkmark.seal.fill"
+            )
+            .foregroundColor(.green)
+            .frame(maxWidth: .infinity, alignment: .center)
+            .transition(.scale.combined(with: .opacity))
           }
         }
       }
@@ -65,24 +68,28 @@ struct SendFeedbackScreen: View {
           .frame(height: 40)
       }
       .buttonStyle(.borderedProminent)
-      .disabled(message.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || isSubmitted)
+      .disabled(
+        message.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+          || isSubmitted
+      )
       .padding(.horizontal)
       .padding(.bottom)
     }
   }
-  
+
   private func sendFeedback() {
-    SentrySDK.capture(feedback: .init(
-        message: message,
-        name: name,
-        email: email,
-        source: .custom,
-    ))
-    
+    let feedback = SentryFeedback(
+      message: message,
+      name: name,
+      email: email,
+      source: .custom,
+    )
+    SentrySDK.capture(feedback: feedback)
+
     withAnimation {
       isSubmitted = true
     }
-    
+
     // Auto dismiss after a brief delay
     DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
       dismiss()
