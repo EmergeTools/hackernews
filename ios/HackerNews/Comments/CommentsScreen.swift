@@ -54,6 +54,7 @@ struct CommentsScreen: View {
           .frame(maxWidth: .infinity)
         Spacer()
           .frame(height: 8)
+        
         // Comments
         switch model.state.comments {
         case .notStarted, .loading:

@@ -37,24 +37,17 @@ struct CommentState {
 
 extension Array where Element == CommentState {
   func shouldHide(id: Int64) -> Bool {
-    guard let currentIndex = firstIndex(where: { $0.id == id }) else { return false }
-    let currentItem = self[currentIndex]
+    guard let idx = firstIndex(where: { $0.id == id }) else { return false }
     
-    var currentLevel = currentItem.level
-    var index = currentIndex
-    
-    while index > 0 {
-      index -= 1
-      let item = self[index]
-      
-      if item.level < currentLevel {
-        if item.hidden {
-          return true
-        }
-        currentLevel = item.level
+    var level = self[idx].level
+  
+    for ancestor in self[..<idx].reversed() {
+      if ancestor.level < level {
+        if ancestor.hidden { return true }
+        level = ancestor.level
+        if level == 0 { break }
       }
     }
-    
     return false
   }
 }
