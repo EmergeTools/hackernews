@@ -36,27 +36,27 @@ struct CommentState {
 }
 
 extension Array where Element == CommentState {
-    func shouldHide(id: Int64) -> Bool {
-        guard let currentIndex = firstIndex(where: { $0.id == id }) else { return false }
-        let currentItem = self[currentIndex]
-        
-        var currentLevel = currentItem.level
-        var index = currentIndex
-        
-        while index > 0 {
-            index -= 1
-            let item = self[index]
-            
-            if item.level < currentLevel {
-                if item.hidden {
-                    return true
-                }
-                currentLevel = item.level
-            }
+  func shouldHide(id: Int64) -> Bool {
+    guard let currentIndex = firstIndex(where: { $0.id == id }) else { return false }
+    let currentItem = self[currentIndex]
+    
+    var currentLevel = currentItem.level
+    var index = currentIndex
+    
+    while index > 0 {
+      index -= 1
+      let item = self[index]
+      
+      if item.level < currentLevel {
+        if item.hidden {
+          return true
         }
-        
-        return false
+        currentLevel = item.level
+      }
     }
+    
+    return false
+  }
 }
 
 extension CommentInfo {

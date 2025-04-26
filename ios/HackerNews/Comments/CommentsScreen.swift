@@ -54,7 +54,6 @@ struct CommentsScreen: View {
           .frame(maxWidth: .infinity)
         Spacer()
           .frame(height: 8)
-          
         // Comments
         switch model.state.comments {
         case .notStarted, .loading:
@@ -64,26 +63,25 @@ struct CommentsScreen: View {
             .padding(24)
         case .loaded(let comments):
           ForEach(comments, id: \.id) { commentState in
-              
-              if !comments.shouldHide(id: commentState.id) {
-                  CommentRow(
-                    state: commentState,
-                    likeComment: { state in
-                      Task {
-                        await model.likeComment(data: state)
-                      }
-                    },
-                    flagComment: { state in
-                      Task {
-                        await model.flagComment(data: state)
-                      }
-                    },
-                    toggleComment: {
-                      model.toggleComment(commentId: commentState.id)
-                    }
-                  )
-              }
-           
+            if !comments.shouldHide(id: commentState.id) {
+              CommentRow(
+                state: commentState,
+                likeComment: { state in
+                  Task {
+                    await model.likeComment(data: state)
+                  }
+                },
+                flagComment: { state in
+                  Task {
+                    await model.flagComment(data: state)
+                  }
+                },
+                toggleComment: {
+                  model.toggleComment(commentId: commentState.id)
+                }
+              )
+            }
+            
           }
         }
       }
