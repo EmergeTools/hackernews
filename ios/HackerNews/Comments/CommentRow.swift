@@ -98,6 +98,7 @@ struct CommentRow: View {
             removal: .move(edge: .top).combined(with: .opacity)
           )
         )
+        .clipped()
       }
     }
     .clipShape(RoundedRectangle(cornerRadius: 16.0))
