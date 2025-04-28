@@ -98,16 +98,20 @@ struct CommentRow: View {
             removal: .move(edge: .top).combined(with: .opacity)
           )
         )
+        .clipped()
       }
     }
     .clipShape(RoundedRectangle(cornerRadius: 16.0))
-    .animation(.spring(duration: 0.3), value: state.hidden)
     .padding(
       EdgeInsets(
         top: 0,
-        leading: min(CGFloat(state.level * 20), CGFloat(maxIndentationLevel * 20)),
+        leading: min(
+          CGFloat(state.level * 20),
+          CGFloat(maxIndentationLevel * 20)
+        ),
         bottom: 0,
-        trailing: 0)
+        trailing: 0
+      )
     )
   }
 }

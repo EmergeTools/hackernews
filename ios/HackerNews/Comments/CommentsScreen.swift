@@ -78,9 +78,19 @@ struct CommentsScreen: View {
                   }
                 },
                 toggleComment: {
-                  model.toggleComment(commentId: commentState.id)
+                  withAnimation {
+                    model.toggleComment(commentId: commentState.id)
+                  }
                 }
               )
+              .transition(
+                .asymmetric(
+                  insertion: .move(edge: .bottom).combined(with: .opacity),
+                  removal: .move(edge: .top).combined(with: .opacity)
+                )
+              )
+              .clipped()
+              .zIndex(-Double(commentState.level))
             }
             
           }
