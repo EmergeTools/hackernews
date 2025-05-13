@@ -35,6 +35,7 @@ struct HackerNewsApp: App {
           print("Failed to submit feedback: \(error)")
         }
       }
+      options.enableAppHangTrackingV2 = true
     }
   }
 
