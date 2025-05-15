@@ -55,15 +55,18 @@
           android:value="1.0"
           />
 
-        <!-- enable profiling -->
+        <!-- Enable UI profiling -->
         <meta-data
-          android:name="io.sentry.traces.profiling.sample-rate"
+          android:name="io.sentry.traces.profiling.session-sample-rate"
           android:value="1.0"
-          />
-
-        <!-- enable app start profiling -->
+        />
         <meta-data
-          android:name="io.sentry.traces.profiling.enable-app-start"
+          android:name="io.sentry.traces.profiling.lifecycle"
+          android:value="trace"
+        />
+        <!-- Enable profiling on app start. The app start profile will be stopped automatically when the app start root span finishes -->
+        <meta-data
+          android:name="io.sentry.traces.profiling.start-on-app-start"
           android:value="true"
           />
 
@@ -75,6 +78,12 @@
         <meta-data
           android:name="io.sentry.session-replay.session-sample-rate"
           android:value="0.1"
+          />
+
+        <!-- enable logs -->
+        <meta-data
+          android:name="io.sentry.logs.enabled"
+          android:value="true"
           />
 
         <activity

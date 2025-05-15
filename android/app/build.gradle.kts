@@ -127,6 +127,8 @@ sentry {
 
   ignoredVariants.set(listOf("debug", "fast"))
 
+  autoInstallation.sentryVersion.set("8.12.0")
+
   // Don't upload source code to Sentry
   includeSourceContext.set(false)
 }
