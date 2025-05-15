@@ -20,7 +20,6 @@ emergePlugin = "4.4.0"
 emergeSnapshots = "1.4.1"
 emergeReaper = "1.0.2-SNAPSHOT"
 emergeDistribution = "0.0.5-SNAPSHOT"
-sentry = "5.5.0"
 shapes = "1.0.1"
 datastore = "1.1.4"
 room = "2.7.1"
@@ -82,7 +81,6 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlin-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 emerge = { id = "com.emergetools.android", version.ref = "emergePlugin" }
-sentry = { id = "io.sentry.android.gradle", version.ref = "sentry" }
 roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
 androidx-room = { id = "androidx.room", version.ref = "room" }
 

@@ -5,7 +5,6 @@ plugins {
   alias(libs.plugins.kotlin.serialization)
   alias(libs.plugins.kotlin.ksp)
   alias(libs.plugins.emerge)
-  alias(libs.plugins.sentry)
   alias(libs.plugins.roborazzi)
   alias(libs.plugins.androidx.room)
 }
@@ -119,16 +118,6 @@ emerge {
       repoOwner.set("EmergeTools")
     }
   }
-}
-
-sentry {
-  org.set("emerge-tools")
-  projectName.set("hackernews-android")
-
-  ignoredVariants.set(listOf("debug", "fast"))
-
-  // Don't upload source code to Sentry
-  includeSourceContext.set(false)
 }
 
 dependencies {
