@@ -133,6 +133,15 @@ private struct FeedListView: View {
     .environment(Theme())
 }
 
+#Preview("Small font") {
+  @Previewable @State var model = AppViewModel(
+    bookmarkStore: FakeBookmarkDataStore(),
+    shouldFetchPosts: false)
+  FeedScreen(model: $model)
+    .environment(Theme())
+    .dynamicTypeSize(.small)
+}
+
 #Preview("Loading") {
   @Previewable @State var appModel = AppViewModel(
     bookmarkStore: FakeBookmarkDataStore(),
