@@ -23,6 +23,7 @@ struct FeedScreen: View {
           .containerShape(.rect(cornerRadius: 24, style: .continuous))
 
         HStack(spacing: 16) {
+          Spacer()
           ForEach(model.feedState.feeds, id: \.self) { feedType in
             Button(action: {
               withAnimation {
@@ -37,7 +38,9 @@ struct FeedScreen: View {
                 .foregroundColor(
                   model.feedState.selectedFeed == feedType ? .hnOrange : .gray)
             }
+            .frame(maxWidth: .infinity)
           }
+          Spacer()
         }
       }
       .frame(height: 60)
