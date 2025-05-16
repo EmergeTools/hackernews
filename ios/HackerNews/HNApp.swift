@@ -62,6 +62,10 @@ struct HackerNewsApp: App {
         $0.sessionSampleRate = 0.1
       }
 #endif
+      
+      if NSClassFromString("XCTest") != nil {
+        options.environment = "xctest"
+      }
     }
   }
 
