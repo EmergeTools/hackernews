@@ -47,9 +47,14 @@ struct WebViewContainer: View {
             } label: {
               Label("Open in browser", systemImage: "safari")
             }
-          } label: {
-            Image(systemName: "ellipsis")
+          ShareLink(item: self.model.url) {
+            Label("Share", systemImage: "square.and.arrow.up")
           }
+        } label: {
+          Image(systemName: "ellipsis")
+        }
+
+
         }
       }
   }
