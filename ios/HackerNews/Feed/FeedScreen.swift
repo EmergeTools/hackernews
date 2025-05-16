@@ -23,7 +23,7 @@ struct FeedScreen: View {
           .containerShape(.rect(cornerRadius: 24, style: .continuous))
 
         HStack(spacing: 16) {
-          Spacer()
+          Spacer(minLength: 0)
           ForEach(model.feedState.feeds, id: \.self) { feedType in
             Button(action: {
               withAnimation {
@@ -40,7 +40,7 @@ struct FeedScreen: View {
             }
             .frame(maxWidth: .infinity)
           }
-          Spacer()
+          Spacer(minLength: 0)
         }
       }
       .frame(height: 60)
