@@ -27,6 +27,7 @@ struct HackerNewsApp: App {
     SentrySDK.start { options in
       options.dsn =
       "https://118cff4b239bd3e0ede8fd74aad9bf8f@o497846.ingest.sentry.io/4506027753668608"
+      
       options.configureUserFeedback = { config in
         config.onSubmitSuccess = { data in
           print("Feedback submitted successfully: \(data)")
@@ -35,9 +36,32 @@ struct HackerNewsApp: App {
           print("Failed to submit feedback: \(error)")
         }
       }
+      
       options.enableAppHangTrackingV2 = true
       options.sessionReplay.onErrorSampleRate = 1.0
+      options.sendDefaultPii = true
+      
+#if DEBUG
+      options.environment = "development"
+      options.sessionReplay.sessionSampleRate = 1.0
+      options.tracesSampleRate = 1
+//      options.debug = true
+      options.configureProfiling = {
+        $0.profileAppStarts = true
+        $0.lifecycle = .trace
+        $0.sessionSampleRate = 1.0
+      }
+#else
+      options.environment = "production"
       options.sessionReplay.sessionSampleRate = 0.1
+      options.tracesSampleRate = 0.1
+      options.debug = false
+      options.configureProfiling = {
+        $0.profileAppStarts = true
+        $0.lifecycle = .trace
+        $0.sessionSampleRate = 0.1
+      }
+#endif
     }
   }
 
