@@ -31,6 +31,52 @@
             android:name="io.sentry.dsn"
             android:value="https://db2524adf3fee320562f372d15f98098@o497846.ingest.us.sentry.io/4506028523388928" />
 
+        <!-- add breadcrumbs for user interactions (clicks, swipes, scrolls) -->
+        <meta-data
+          android:name="io.sentry.traces.user-interaction.enable"
+          android:value="true"
+          />
+
+        <!-- attach screenshot on crash -->
+        <meta-data
+          android:name="io.sentry.attach-screenshot"
+          android:value="true"
+          />
+
+        <!-- attach view hierarchy on crash -->
+        <meta-data
+          android:name="io.sentry.attach-view-hierarchy"
+          android:value="true"
+          />
+
+        <!-- enable traces -->
+        <meta-data
+          android:name="io.sentry.traces.sample-rate"
+          android:value="1.0"
+          />
+
+        <!-- enable profiling -->
+        <meta-data
+          android:name="io.sentry.traces.profiling.sample-rate"
+          android:value="1.0"
+          />
+
+        <!-- enable app start profiling -->
+        <meta-data
+          android:name="io.sentry.traces.profiling.enable-app-start"
+          android:value="true"
+          />
+
+        <!-- record session replays -->
+        <meta-data
+          android:name="io.sentry.session-replay.on-error-sample-rate"
+          android:value="1.0"
+          />
+        <meta-data
+          android:name="io.sentry.session-replay.session-sample-rate"
+          android:value="0.1"
+          />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
