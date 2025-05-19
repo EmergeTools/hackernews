@@ -160,13 +160,11 @@ platform :ios do
     build_app_for_scheme(build_configuration: 'Release')
     upload_app
     emerge(tag: ENV['EMERGE_BUILD_TYPE'])
-
-    # TODO(telkins)
-    # sentry_cli(
-    #   org_slug: 'emerge-tools',
-    #   project_slug: 'hackernews-ios',
-    #   include_sources: true
-    # )
+    sentry_debug_files_upload(
+      auth_token: ENV['SENTRY_AUTH_TOKEN'],
+      org_slug: 'emerge-tools',
+      project_slug: 'hackernews-ios',
+    )
   end
 
   desc 'Build and upload to Emerge Tools'
