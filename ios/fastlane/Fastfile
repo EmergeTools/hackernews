@@ -164,6 +164,7 @@ platform :ios do
       auth_token: ENV['SENTRY_AUTH_TOKEN'],
       org_slug: 'emerge-tools',
       project_slug: 'hackernews-ios',
+      include_sources: true
     )
   end
 
