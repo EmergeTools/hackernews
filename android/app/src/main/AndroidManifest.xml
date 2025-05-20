@@ -31,6 +31,61 @@
             android:name="io.sentry.dsn"
             android:value="https://db2524adf3fee320562f372d15f98098@o497846.ingest.us.sentry.io/4506028523388928" />
 
+        <!-- add breadcrumbs for user interactions (clicks, swipes, scrolls) -->
+        <meta-data
+          android:name="io.sentry.traces.user-interaction.enable"
+          android:value="true"
+          />
+
+        <!-- attach screenshot on crash -->
+        <meta-data
+          android:name="io.sentry.attach-screenshot"
+          android:value="true"
+          />
+
+        <!-- attach view hierarchy on crash -->
+        <meta-data
+          android:name="io.sentry.attach-view-hierarchy"
+          android:value="true"
+          />
+
+        <!-- enable traces -->
+        <meta-data
+          android:name="io.sentry.traces.sample-rate"
+          android:value="1.0"
+          />
+
+        <!-- Enable UI profiling -->
+        <meta-data
+          android:name="io.sentry.traces.profiling.session-sample-rate"
+          android:value="1.0"
+        />
+        <meta-data
+          android:name="io.sentry.traces.profiling.lifecycle"
+          android:value="trace"
+        />
+        <!-- Enable profiling on app start. The app start profile will be stopped automatically when the app start root span finishes -->
+        <meta-data
+          android:name="io.sentry.traces.profiling.start-on-app-start"
+          android:value="true"
+          />
+
+        <!-- record session replays -->
+        <meta-data
+          android:name="io.sentry.session-replay.on-error-sample-rate"
+          android:value="1.0"
+          />
+        <meta-data
+          android:name="io.sentry.session-replay.session-sample-rate"
+          android:value="0.1"
+          />
+
+        <!-- enable logs -->
+        <meta-data
+          android:name="io.sentry.logs.enabled"
+          android:value="true"
+          />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
