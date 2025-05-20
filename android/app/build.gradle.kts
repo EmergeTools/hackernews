@@ -126,6 +126,8 @@ sentry {
   projectName.set("hackernews-android")
 
   ignoredVariants.set(listOf("debug", "fast"))
+
+  autoInstallation.sentryVersion.set("8.12.0")
 }
 
 dependencies {
