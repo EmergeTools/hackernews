@@ -114,7 +114,7 @@ struct StoryRowLoadingState: View {
         HStack(spacing: 4) {
           Image(systemName: "arrow.up")
             .font(.system(size: 12))
-            .foregroundColor(.green)
+            .foregroundColor(.purple)
             .redacted(reason: .placeholder)
           Text("99")
             .font(
