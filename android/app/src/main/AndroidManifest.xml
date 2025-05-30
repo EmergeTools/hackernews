@@ -27,6 +27,19 @@
             tools:node="remove" />
         </provider>
 
+        <!-- The Reaper library sends data to two endpoints:
+          - $baseUrl/report
+          - $baseUrl/reaper/error
+          So if baseUrl is set to https://example.com/foo as
+          below Reaper reports will be sent to:
+          - https://example.com/foo/report
+          and errors will be sent to:
+          - https://example.com/foo/reaper/error
+          -->
+        <meta-data
+          android:name="com.emergetools.OVERRIDE_BASE_URL"
+          android:value="https://example.com/foo" />
+
         <meta-data
             android:name="io.sentry.dsn"
             android:value="https://db2524adf3fee320562f372d15f98098@o497846.ingest.us.sentry.io/4506028523388928" />
