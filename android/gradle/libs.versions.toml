@@ -28,6 +28,8 @@ jsoup = "1.20.1"
 extendedspans = "1.4.0"
 composeBom = "2025.04.01"
 uiTestJunit4Android = "1.8.1"
+bugsnag-android = "6.13.0"
+bugsnag-gradle = "0.4.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -73,7 +75,8 @@ roborazzi-rule = { group = "io.github.takahirom.roborazzi", name = "roborazzi-ju
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-ui-test-junit4-android = { group = "androidx.compose.ui", name = "ui-test-junit4-android", version.ref = "uiTestJunit4Android" }
-
+bugsnag-android = { group = "com.bugsnag", name = "bugsnag-android", version.ref = "bugsnag-android"}
+  
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
@@ -83,4 +86,4 @@ kotlin-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 emerge = { id = "com.emergetools.android", version.ref = "emergePlugin" }
 roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
 androidx-room = { id = "androidx.room", version.ref = "room" }
-
+bugsnag-gradle = { id = "com.bugsnag.gradle", version.ref = "bugsnag-gradle"}

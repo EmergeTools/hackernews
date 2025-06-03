@@ -14,6 +14,7 @@ import com.emergetools.hackernews.data.remote.HackerNewsBaseClient
 import com.emergetools.hackernews.data.remote.HackerNewsSearchClient
 import com.emergetools.hackernews.data.remote.HackerNewsWebClient
 import com.emergetools.reaper.Reaper
+import com.bugsnag.android.Bugsnag
 import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
 import java.time.Duration
@@ -31,6 +32,8 @@ class HackerNewsApplication : Application() {
 
   override fun onCreate() {
     super.onCreate()
+
+    Bugsnag.start(this)
 
     // This demonstrates manual initialization of Reaper.
     // See https://docs.emergetools.com/docs/reaper-setup-android#manual-initialization

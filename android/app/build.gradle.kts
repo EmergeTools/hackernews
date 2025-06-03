@@ -7,6 +7,7 @@ plugins {
   alias(libs.plugins.emerge)
   alias(libs.plugins.roborazzi)
   alias(libs.plugins.androidx.room)
+  alias(libs.plugins.bugsnag.gradle)
 }
 
 val runningEnv: String? = System.getenv("RUNNING_ENV")
@@ -136,6 +137,7 @@ dependencies {
   implementation(libs.androidx.browser)
   implementation(libs.androidx.datastore)
   implementation(libs.androidx.startup)
+  implementation(libs.bugsnag.android)
 
   implementation(libs.extendedspans)
 

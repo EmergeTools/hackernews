@@ -16,6 +16,9 @@
         android:theme="@style/Theme.HackerNews"
         tools:targetApi="31">
 
+        <meta-data android:name="com.bugsnag.android.API_KEY"
+             android:value="your-api-key-here"/>
+
         <!-- This demonstrates manual initialization of Reaper.
          See https://docs.emergetools.com/docs/reaper-setup-android#disable-automatic-initialization -->
         <provider
