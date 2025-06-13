@@ -127,7 +127,8 @@ sentry {
 
   ignoredVariants.set(listOf("debug", "fast"))
 
-  autoInstallation.sentryVersion.set("8.12.0")
+  // autoInstallation.sentryVersion.set("8.12.0")
+  autoInstallation.enabled.set(false)
 }
 
 dependencies {
@@ -159,6 +160,9 @@ dependencies {
   implementation(libs.androidx.room)
   implementation(libs.androidx.room.ktx)
   implementation(libs.androidx.ui.test.junit4.android)
+
+  implementation(project(":sentry-root:sentry-android"))
+
   ksp(libs.androidx.room.compiler)
 
   testImplementation(libs.junit)
