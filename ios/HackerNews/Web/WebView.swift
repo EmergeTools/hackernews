@@ -32,9 +32,7 @@ struct WebViewContainer: View {
   }
 
   var body: some View {
-    LoadingView(isShowing: self.$model.isLoading) {
-      WebView(viewModel: self.$model)
-    }
+    WebView(viewModel: self.$model)
     .navigationBarTitleDisplayMode(.inline)
     .navigationTitle(title)
     .toolbarBackground(.visible, for: .navigationBar)
