@@ -49,13 +49,6 @@ platform :ios do
    adhoc = ENV['ADHOC'] === 'true'
    widget_profile_name = ENV['WIDGET_PROV_PROFILE_NAME'] || 'HackerNewsHomeWidget Distribution'
 
-   # Debug output
-   UI.message("Bundle Identifier: #{bundle_identifier}")
-   UI.message("Profile Name: #{profile_name}")
-   UI.message("ADHOC Environment Variable: #{ENV['ADHOC']}")
-   UI.message("Adhoc flag: #{adhoc}")
-   UI.message("Widget Profile Name: #{widget_profile_name}")
-
    keychain_name = 'signing'
    keychain_password = 'temp'
 
@@ -78,22 +71,18 @@ platform :ios do
      keychain_password: keychain_password
    )
 
-    # Debug: List certificates in keychain
-    UI.message("Listing certificates in keychain:")
-    sh("security find-identity -v -p codesigning #{keychain_name}")
-
     # Fetches and installs provisioning profiles from ASC
     sigh(
       adhoc: adhoc,
       api_key: api_key,
-      readonly: false,
+      readonly: true,
       provisioning_name: profile_name,
       app_identifier: bundle_identifier
     )
     sigh(
       adhoc: adhoc,
       api_key: api_key,
-      readonly: false,
+      readonly: true,
       provisioning_name: widget_profile_name,
       app_identifier: 'com.emergetools.hackernews.HackerNewsHomeWidget'
     )
@@ -185,7 +174,7 @@ platform :ios do
     prepare_signing
     build_app_for_scheme(build_configuration: ENV['CONFIGURATION'])
     emerge(
-      tag: ENV['EMERGE_BUILD_TYPE'],
+      tag: ENV['EMERGE_BUILD_TYPE'], 
       app_id_suffix: ENV['APP_ID_SUFFIX']
     )
   end
