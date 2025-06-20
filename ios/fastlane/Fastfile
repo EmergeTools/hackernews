@@ -49,6 +49,13 @@ platform :ios do
    adhoc = ENV['ADHOC'] === 'true'
    widget_profile_name = ENV['WIDGET_PROV_PROFILE_NAME'] || 'HackerNewsHomeWidget Distribution'
 
+   # Debug output
+   UI.message("Bundle Identifier: #{bundle_identifier}")
+   UI.message("Profile Name: #{profile_name}")
+   UI.message("ADHOC Environment Variable: #{ENV['ADHOC']}")
+   UI.message("Adhoc flag: #{adhoc}")
+   UI.message("Widget Profile Name: #{widget_profile_name}")
+
    keychain_name = 'signing'
    keychain_password = 'temp'
 
@@ -70,6 +77,13 @@ platform :ios do
      keychain_name: keychain_name,
      keychain_password: keychain_password
    )
+
+    # Debug: List certificates in keychain
+    UI.message("Listing certificates in keychain:")
+    list_certificates(
+      keychain_name: keychain_name,
+      keychain_password: keychain_password
+    )
 
     # Fetches and installs provisioning profiles from ASC
     sigh(
