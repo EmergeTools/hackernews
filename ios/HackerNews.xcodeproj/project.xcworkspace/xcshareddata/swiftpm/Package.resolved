@@ -1,5 +1,5 @@
 {
-  "originHash" : "c34323d163c00dd4dae2ae6fc2f9a080d25b045754f0da0c9fb74617d5640494",
+  "originHash" : "cfad413fd23662bc65d0d4da94719d561d253fd554cd6306d0140ebc0df879c3",
   "pins" : [
     {
       "identity" : "accessibilitysnapshot",
@@ -17,6 +17,15 @@
       "state" : {
         "revision" : "6643aa6332ab3ebc629a3c4fefcfcf2bfe35c672",
         "version" : "0.2.1"
+      }
+    },
+    {
+      "identity" : "faultordering",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/getsentry/faultordering",
+      "state" : {
+        "branch" : "main",
+        "revision" : "8c61bbe08e642893b47d33e57042a07104805964"
       }
     },
     {
@@ -44,6 +53,14 @@
       "state" : {
         "revision" : "6c81e671154e63464dd6749b7ba3279dd390a146",
         "version" : "8.50.1"
+      }
+    },
+    {
+      "identity" : "simpledebugger",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/EmergeTools/SimpleDebugger",
+      "state" : {
+        "revision" : "e0ad1cd304132efa0ab3b4707bd0eea761dbe2b5"
       }
     },
     {

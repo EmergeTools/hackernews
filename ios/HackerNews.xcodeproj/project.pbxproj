@@ -7,9 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A422716B2DE78DEF002F03D5 /* FaultOrdering in Frameworks */ = {isa = PBXBuildFile; productRef = A422716A2DE78DEF002F03D5 /* FaultOrdering */; };
+		A422716D2DE78DEF002F03D5 /* FaultOrderingTests in Frameworks */ = {isa = PBXBuildFile; productRef = A422716C2DE78DEF002F03D5 /* FaultOrderingTests */; };
 		A47309B42AA29D9600201376 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = A47309B32AA29D9600201376 /* SwiftSoup */; };
 		A495A6662CED57BB009A2A6B /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = A495A6652CED57BB009A2A6B /* SnapshotTesting */; };
 		A495B2952BFEA11B00A8A8A9 /* Reaper in Frameworks */ = {isa = PBXBuildFile; productRef = A495B2942BFEA11B00A8A8A9 /* Reaper */; };
+		A49D686D2DE8EB1F00E44A18 /* Linkmap.txt in Resources */ = {isa = PBXBuildFile; fileRef = A49D686C2DE8EB1F00E44A18 /* Linkmap.txt */; };
 		A4B6CF932D49949200077F66 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4B6CF922D49949200077F66 /* WidgetKit.framework */; };
 		A4B6CF952D49949200077F66 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4B6CF942D49949200077F66 /* SwiftUI.framework */; };
 		A4B6CFA02D49949300077F66 /* HackerNewsHomeWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A4B6CF912D49949200077F66 /* HackerNewsHomeWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -147,6 +150,7 @@
 		A45C2C9A2A5DDE25009BC030 /* marketing_url.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = marketing_url.txt; sourceTree = "<group>"; };
 		A45C2C9B2A5DDE25009BC030 /* description.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = description.txt; sourceTree = "<group>"; };
 		A45C2C9C2A5DDE25009BC030 /* primary_category.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = primary_category.txt; sourceTree = "<group>"; };
+		A49D686C2DE8EB1F00E44A18 /* Linkmap.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Linkmap.txt; sourceTree = "<group>"; };
 		A4B6CF912D49949200077F66 /* HackerNewsHomeWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = HackerNewsHomeWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4B6CF922D49949200077F66 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		A4B6CF942D49949200077F66 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -210,7 +214,9 @@
 			files = (
 				A4D28AF02C237E2A007F20D0 /* SnapshottingTests in Frameworks */,
 				A4BED5C42AD5E083001642B3 /* (null) in Frameworks */,
+				A422716D2DE78DEF002F03D5 /* FaultOrderingTests in Frameworks */,
 				F48E9DA72D4D2A3C00FD8B30 /* Common in Frameworks */,
+				A422716B2DE78DEF002F03D5 /* FaultOrdering in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -231,6 +237,7 @@
 		A42705702A4293B10057E439 = {
 			isa = PBXGroup;
 			children = (
+				A49D686C2DE8EB1F00E44A18 /* Linkmap.txt */,
 				A4B6CFA12D49949300077F66 /* HackerNewsHomeWidgetExtension.entitlements */,
 				C3AC6AD72CB6E854006BD22D /* HackerNews.xctestplan */,
 				A45C2C7B2A5DDE25009BC030 /* fastlane */,
@@ -411,6 +418,8 @@
 			packageProductDependencies = (
 				A4D28AEF2C237E2A007F20D0 /* SnapshottingTests */,
 				F48E9DA62D4D2A3C00FD8B30 /* Common */,
+				A422716A2DE78DEF002F03D5 /* FaultOrdering */,
+				A422716C2DE78DEF002F03D5 /* FaultOrderingTests */,
 			);
 			productName = HackerNewsUITests;
 			productReference = A42705932A4293B30057E439 /* HackerNewsUITests.xctest */;
@@ -485,6 +494,7 @@
 				F45F6E532D4D1D3E003FA9A3 /* XCLocalSwiftPackageReference "Packages/Common" */,
 				F45F6F4C2D4D2554003FA9A3 /* XCLocalSwiftPackageReference "Packages/Fonts" */,
 				F48E9EC92D4D691600FD8B30 /* XCRemoteSwiftPackageReference "ETDistribution" */,
+				A42271692DE78DEF002F03D5 /* XCRemoteSwiftPackageReference "faultordering" */,
 			);
 			productRefGroup = A427057A2A4293B10057E439 /* Products */;
 			projectDirPath = "";
@@ -517,6 +527,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A49D686D2DE8EB1F00E44A18 /* Linkmap.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -762,6 +773,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
 				LD_GENERATE_MAP_FILE = YES;
+				LD_MAP_FILE_PATH = "$(PROJECT_DIR)/Linkmap.txt";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -805,6 +817,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
 				LD_GENERATE_MAP_FILE = YES;
+				LD_MAP_FILE_PATH = "$(PROJECT_DIR)/Linkmap.txt";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1042,6 +1055,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
 				LD_GENERATE_MAP_FILE = YES;
+				LD_MAP_FILE_PATH = "$(PROJECT_DIR)/Linkmap.txt";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1205,6 +1219,14 @@
 				minimumVersion = 8.50.1;
 			};
 		};
+		A42271692DE78DEF002F03D5 /* XCRemoteSwiftPackageReference "faultordering" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/getsentry/faultordering";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		A47309B22AA29D9600201376 /* XCRemoteSwiftPackageReference "SwiftSoup" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/scinfu/SwiftSoup";
@@ -1252,6 +1274,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 995A2BEDEF224F7085D3DB13 /* XCRemoteSwiftPackageReference "sentry-cocoa" */;
 			productName = Sentry;
+		};
+		A422716A2DE78DEF002F03D5 /* FaultOrdering */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A42271692DE78DEF002F03D5 /* XCRemoteSwiftPackageReference "faultordering" */;
+			productName = FaultOrdering;
+		};
+		A422716C2DE78DEF002F03D5 /* FaultOrderingTests */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A42271692DE78DEF002F03D5 /* XCRemoteSwiftPackageReference "faultordering" */;
+			productName = FaultOrderingTests;
 		};
 		A47309B32AA29D9600201376 /* SwiftSoup */ = {
 			isa = XCSwiftPackageProductDependency;
