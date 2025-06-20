@@ -29,6 +29,8 @@ jsoup = "1.20.1"
 extendedspans = "1.4.0"
 composeBom = "2025.06.00"
 uiTestJunit4Android = "1.8.3"
+uiautomator = "2.2.0"
+benchmarkMacroJunit4 = "1.2.0-beta01"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -74,6 +76,8 @@ roborazzi-rule = { group = "io.github.takahirom.roborazzi", name = "roborazzi-ju
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-ui-test-junit4-android = { group = "androidx.compose.ui", name = "ui-test-junit4-android", version.ref = "uiTestJunit4Android" }
+androidx-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "uiautomator" }
+androidx-benchmark-macro-junit4 = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "benchmarkMacroJunit4" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -85,4 +89,5 @@ emerge = { id = "com.emergetools.android", version.ref = "emergePlugin" }
 sentry = { id = "io.sentry.android.gradle", version.ref = "sentry" }
 roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
 androidx-room = { id = "androidx.room", version.ref = "room" }
+android-test = { id = "com.android.test", version.ref = "agp" }
 

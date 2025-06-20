@@ -49,3 +49,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "hacker-news"
 include(":app")
+include(":benchmark")
