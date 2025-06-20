@@ -75,14 +75,14 @@ platform :ios do
     sigh(
       adhoc: adhoc,
       api_key: api_key,
-      readonly: true,
+      readonly: false,
       provisioning_name: profile_name,
       app_identifier: bundle_identifier
     )
     sigh(
       adhoc: adhoc,
       api_key: api_key,
-      readonly: true,
+      readonly: false,
       provisioning_name: widget_profile_name,
       app_identifier: 'com.emergetools.hackernews.HackerNewsHomeWidget'
     )
@@ -174,7 +174,7 @@ platform :ios do
     prepare_signing
     build_app_for_scheme(build_configuration: ENV['CONFIGURATION'])
     emerge(
-      tag: ENV['EMERGE_BUILD_TYPE'], 
+      tag: ENV['EMERGE_BUILD_TYPE'],
       app_id_suffix: ENV['APP_ID_SUFFIX']
     )
   end
