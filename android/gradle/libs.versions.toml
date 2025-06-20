@@ -29,7 +29,7 @@ jsoup = "1.20.1"
 extendedspans = "1.4.0"
 composeBom = "2025.06.00"
 uiTestJunit4Android = "1.8.3"
-uiautomator = "2.2.0"
+uiautomator = "2.3.0"
 benchmarkMacroJunit4 = "1.2.0-beta01"
 
 [libraries]
