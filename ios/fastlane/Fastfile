@@ -80,10 +80,7 @@ platform :ios do
 
     # Debug: List certificates in keychain
     UI.message("Listing certificates in keychain:")
-    list_certificates(
-      keychain_name: keychain_name,
-      keychain_password: keychain_password
-    )
+    sh("security find-identity -v -p codesigning #{keychain_name}")
 
     # Fetches and installs provisioning profiles from ASC
     sigh(
