@@ -48,5 +48,6 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "hacker-news"
+includeBuild("../../sentry-java")
 include(":app")
 include(":benchmark")
