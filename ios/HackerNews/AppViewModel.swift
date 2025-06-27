@@ -129,6 +129,7 @@ final class AppViewModel {
   @ObservationIgnored private var loadingTask: Task<Void, Never>?
 
   init(bookmarkStore: BookmarksDataStore, shouldFetchPosts: Bool = true) {
+    print("test")
     self.bookmarkStore = bookmarkStore
     self.bookmarks = bookmarkStore.fetchBookmarks()
     authState = self.cookieStorage.cookies?.isEmpty == true ? .loggedOut : .loggedIn
