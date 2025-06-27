@@ -1,7 +1,7 @@
 [versions]
 agp = "8.10.1"
 kotlin = "2.2.0"
-ksp = "2.1.21-2.0.2"
+ksp = "2.2.0-2.0.2"
 coreKtx = "1.16.0"
 junit = "4.13.2"
 junitVersion = "1.1.5" # This is to match Compose's version
