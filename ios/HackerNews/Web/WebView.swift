@@ -9,10 +9,12 @@ import Foundation
 import SwiftUI
 import UIKit
 import WebKit
+import Common
 
 @Observable final class WebViewModel {
   var url: URL
   var isLoading: Bool = true
+  var progress: Double = 0.0
   
   init (url: URL) {
     self.url = url
@@ -32,8 +34,20 @@ struct WebViewContainer: View {
   }
 
   var body: some View {
-    LoadingView(isShowing: self.$model.isLoading) {
+    ZStack {
       WebView(viewModel: self.$model)
+      
+      // Progress bar overlay positioned at the top
+      VStack {
+        if model.progress < 1.0 && model.isLoading {
+          ProgressView(value: model.progress)
+            .progressViewStyle(.linear)
+            .frame(height: 3)
+            .tint(HNColors.orange)
+            .animation(.linear(duration: 0.1), value: model.progress)
+        }
+        Spacer()
+      }
     }
     .navigationBarTitleDisplayMode(.inline)
     .navigationTitle(title)
@@ -53,10 +67,8 @@ struct WebViewContainer: View {
         } label: {
           Image(systemName: "ellipsis")
         }
-
-
-        }
       }
+    }
   }
 }
 
@@ -70,13 +82,36 @@ struct WebView: UIViewRepresentable {
   
   class Coordinator: NSObject, WKNavigationDelegate {
     private var viewModel: WebViewModel
+    private var progressObservation: NSKeyValueObservation?
     
     init(_ viewModel: WebViewModel) {
       self.viewModel = viewModel
     }
+    
+    func startObserving(_ webView: WKWebView) {
+      progressObservation = webView.observe(\.estimatedProgress, options: .new) { [weak self] webView, _ in
+        let progress = webView.estimatedProgress
+        self?.viewModel.progress = progress
+      }
+    }
+    
+    func stopObserving() {
+      progressObservation?.invalidate()
+      progressObservation = nil
+    }
 
+    func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+      self.viewModel.isLoading = true
+      self.viewModel.progress = 0.0
+    }
+    
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
       self.viewModel.isLoading = false
+      self.viewModel.progress = 1.0
+    }
+    
+    deinit {
+      stopObserving()
     }
   }
 
@@ -84,6 +119,7 @@ struct WebView: UIViewRepresentable {
     self.webView.navigationDelegate = context.coordinator
     self.webView.backgroundColor = .systemBackground
     self.webView.isOpaque = false
+    context.coordinator.startObserving(self.webView)
 
     return self.webView
   }

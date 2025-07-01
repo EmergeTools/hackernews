@@ -83,7 +83,6 @@ struct HackerNewsApp: App {
           switch appNavigation {
           case .webLink(let url, let title):
             WebViewContainer(url: url, title: title)
-              .ignoresSafeArea()
           case .storyComments(let story):
             let commentModel = CommentsViewModel(
               story: story, auth: appModel.authState
