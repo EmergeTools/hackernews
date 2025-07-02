@@ -154,7 +154,7 @@ dependencies {
 
   implementation(libs.extendedspans)
 
-  implementation(libs.emerge.snapshots.annotations)
+  implementation(libs.emerge.snapshots.runtime)
   implementation(libs.okhttp)
   implementation(libs.retrofit)
   implementation(libs.retrofit.kotlinx.serialization)
