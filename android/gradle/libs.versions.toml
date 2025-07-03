@@ -14,10 +14,10 @@ retrofit = "3.0.0"
 okhttp = "4.12.0"
 kotlinx-serialization-json = "1.9.0"
 viewmodel = "2.9.1"
-navigation = "2.9.1"
+navigation = "2.9.0"
 browser = "1.8.0"
 emergePlugin = "4.4.0"
-emergeSnapshots = "1.4.1"
+emergeSnapshots = "1.5.0"
 emergeReaper = "1.0.1"
 emergeDistribution = "0.0.4"
 sentry = "5.8.0"
@@ -64,7 +64,7 @@ kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-
 jsoup = { group = "org.jsoup", name = "jsoup", version.ref = "jsoup" }
 
 emerge-snapshots = { group = "com.emergetools.snapshots", name = "snapshots", version.ref = "emergeSnapshots" }
-emerge-snapshots-annotations = { group = "com.emergetools.snapshots", name = "snapshots-annotations", version.ref = "emergeSnapshots" }
+emerge-snapshots-runtime = { group = "com.emergetools.snapshots", name = "snapshots-runtime", version.ref = "emergeSnapshots" }
 emerge-reaper = { group = "com.emergetools.reaper", name = "reaper", version.ref = "emergeReaper" }
 emerge-distribution = { group = "com.emergetools.distribution", name = "distribution", version.ref = "emergeDistribution" }
 
