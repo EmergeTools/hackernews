@@ -66,7 +66,7 @@ sealed class StoryItem(open val id: Long) {
   data class Loading(override val id: Long) : StoryItem(id)
   data class Content(
     override val id: Long,
-    val title: String,
+    val title: String?,
     val author: String,
     val score: Int,
     val commentCount: Int,
@@ -285,7 +285,7 @@ class StoriesViewModel(
       .map<Item, StoryItem> { item ->
         StoryItem.Content(
           id = item.id,
-          title = item.title!!,
+          title = item.title,
           author = item.by!!,
           score = item.score ?: 0,
           commentCount = item.descendants ?: 0,

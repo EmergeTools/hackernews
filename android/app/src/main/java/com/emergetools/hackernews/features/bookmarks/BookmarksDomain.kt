@@ -65,7 +65,7 @@ class BookmarksViewModel(private val bookmarkDao: BookmarkDao) : ViewModel() {
 fun StoryItem.Content.toLocalBookmark(): LocalBookmark {
   return LocalBookmark(
     id = id,
-    title = title,
+    title = title ?: "", // titles can be null sometimes, use empty string to avoid changing the DB schema
     author = author,
     score = score,
     commentCount = commentCount,
