@@ -132,7 +132,7 @@ sentry {
 
   ignoredVariants.set(listOf("debug", "fast"))
 
-  autoInstallation.sentryVersion.set("8.12.0")
+  autoInstallation.sentryVersion.set("8.17.0")
 }
 
 dependencies {
