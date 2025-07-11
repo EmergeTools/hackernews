@@ -14,12 +14,12 @@ val runningEnv: String? = System.getenv("RUNNING_ENV")
 
 android {
   namespace = "com.emergetools.hackernews"
-  compileSdk = 35
+  compileSdk = 36
 
   defaultConfig {
     applicationId = "com.emergetools.hackernews"
     minSdk = 30
-    targetSdk = 35
+    targetSdk = 36
     versionCode = 14
     versionName = "1.0.3"
 
@@ -132,7 +132,7 @@ sentry {
 
   ignoredVariants.set(listOf("debug", "fast"))
 
-  autoInstallation.sentryVersion.set("8.17.0")
+  autoInstallation.sentryVersion.set(libs.versions.sentry.sdk.get())
 }
 
 dependencies {
