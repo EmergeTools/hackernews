@@ -1,8 +1,8 @@
 name: Emerge PR iOS Upload (Size Analysis)
-
+# fake edit
 on:
   pull_request:
-    branches: [main]
+    branches: [main, old-main-testing]
     paths: [ios/**]
 
 jobs:

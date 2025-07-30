@@ -67,7 +67,7 @@ struct StoryRow: View {
             HStack(spacing: 4) {
               Image(systemName: "clock")
                 .font(.system(size: 12))
-                .foregroundColor(.purple)
+                .foregroundColor(.green)
               Text(content.relativeDate())
                 .font(theme.themedFont(size: 12, style: .sans, weight: .medium))
             }
