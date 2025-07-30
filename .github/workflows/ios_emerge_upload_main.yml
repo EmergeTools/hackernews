@@ -2,7 +2,7 @@ name: Emerge iOS Upload (Size Analysis)
 
 on:
   push:
-    branches: [main, old-main-testing]
+    branches: [main, old-main-testing, 07-30-nico_dnm_testing_stacked_pr]
 
 jobs:
   build:
