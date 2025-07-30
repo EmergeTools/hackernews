@@ -125,7 +125,7 @@ struct StoryRowLoadingState: View {
         HStack(spacing: 4) {
           Image(systemName: "clock")
             .font(.system(size: 12))
-            .foregroundColor(.green)
+            .foregroundColor(.hnOrange)
             .redacted(reason: .placeholder)
           Text("2h ago")
             .font(theme.themedFont(size: 12, style: .sans, weight: .medium))
