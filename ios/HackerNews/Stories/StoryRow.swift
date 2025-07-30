@@ -3,7 +3,7 @@
 //  Hacker News
 //
 //  Created by Ryan Brooks on 6/21/23.
-//
+// fake comment nothing changes 
 
 import Foundation
 import SwiftUI
@@ -67,7 +67,7 @@ struct StoryRow: View {
             HStack(spacing: 4) {
               Image(systemName: "clock")
                 .font(.system(size: 12))
-                .foregroundColor(.purple)
+                .foregroundColor(.green)
               Text(content.relativeDate())
                 .font(theme.themedFont(size: 12, style: .sans, weight: .medium))
             }

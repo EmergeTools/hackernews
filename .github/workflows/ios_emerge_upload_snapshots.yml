@@ -2,9 +2,9 @@ name: Emerge PR iOS Upload (Snapshots)
 
 on:
   push:
-    branches: [main]
+    branches: [main, old-main-testing]
   pull_request:
-    branches: [main]
+    branches: [main, old-main-testing]
     paths: [ios/**, .github/workflows/ios*]
 
 jobs:

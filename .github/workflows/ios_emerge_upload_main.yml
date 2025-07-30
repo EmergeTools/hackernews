@@ -2,7 +2,7 @@ name: Emerge iOS Upload (Size Analysis)
 
 on:
   push:
-    branches: [main]
+    branches: [main, old-main-testing]
 
 jobs:
   build:
