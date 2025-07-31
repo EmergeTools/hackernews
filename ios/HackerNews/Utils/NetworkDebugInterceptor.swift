@@ -76,7 +76,7 @@ private final class DebugProtocol: URLProtocol {
     error: Error?,
     elapsed: Double
   ) {
-    let logger = Logger(
+    let logger = os.Logger(
       subsystem: Bundle.main.bundleIdentifier ?? "NetworkDebug",
       category: "🌐"
     )

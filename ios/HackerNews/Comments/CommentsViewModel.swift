@@ -135,7 +135,7 @@ class CommentsViewModel {
   }
 
   func fetchPage() async {
-    print("Fetching comments")
+    Logger.info("Fetching comments")
     state.comments = .loading
     let page = await webClient.getStoryPage(id: story.id)
     switch page {
@@ -158,7 +158,7 @@ class CommentsViewModel {
   func likePost(upvoted: Bool, url: String) async {
     switch state.auth {
     case .loggedIn:
-      print("Like Post: \(url)")
+      Logger.info("Like Post: \(url)")
       guard !url.isEmpty || upvoted else { return }
       state.headerState.upvoted = true
       await webClient.upvoteItem(upvoteUrl: url)
@@ -181,7 +181,7 @@ class CommentsViewModel {
           comment
         }
       })
-      print("Like Comment: \(data.upvoteUrl)")
+      Logger.info("Like Comment: \(data.upvoteUrl)")
       await webClient.upvoteItem(upvoteUrl: data.upvoteUrl)
     case .loggedOut:
       navigation(.login)

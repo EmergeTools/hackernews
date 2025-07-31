@@ -34,7 +34,7 @@ struct StoryRow: View {
             } else {
               .storyComments(story: content.toStory())
             }
-          print("Navigating to \(destination)")
+          Logger.info("Navigating to \(destination)")
           model.navigationPath.append(destination)
         }
       } label: {
@@ -74,7 +74,7 @@ struct StoryRow: View {
             Spacer()
             // Comment Button
             Button(action: {
-              print("Pressed comment button for: \(content.id)")
+              Logger.info("Pressed comment button for: \(content.id)")
               model.navigationPath.append(
                 AppViewModel.AppNavigation.storyComments(
                   story: content.toStory())
