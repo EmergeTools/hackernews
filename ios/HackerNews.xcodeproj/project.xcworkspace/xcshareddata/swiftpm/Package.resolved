@@ -20,6 +20,15 @@
       }
     },
     {
+      "identity" : "faultordering",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/getsentry/faultordering",
+      "state" : {
+        "branch" : "main",
+        "revision" : "8c61bbe08e642893b47d33e57042a07104805964"
+      }
+    },
+    {
       "identity" : "flyingfox",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/swhitty/FlyingFox.git",
@@ -44,6 +53,14 @@
       "state" : {
         "revision" : "156495496cb101e2f0a6b059f12dafcff1912197",
         "version" : "8.54.0"
+      }
+    },
+    {
+      "identity" : "simpledebugger",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/EmergeTools/SimpleDebugger",
+      "state" : {
+        "revision" : "e0ad1cd304132efa0ab3b4707bd0eea761dbe2b5"
       }
     },
     {

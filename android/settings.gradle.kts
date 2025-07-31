@@ -10,7 +10,7 @@ pluginManagement {
     mavenCentral()
     gradlePluginPortal()
     maven {
-      url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots")
+      url = uri("https://central.sonatype.com/repository/maven-snapshots/")
       mavenContent {
         includeGroupByRegex("com.emergetools.*")
         snapshotsOnly()
@@ -20,7 +20,7 @@ pluginManagement {
 }
 
 plugins {
-  id("com.gradle.develocity") version("4.0.2")
+  id("com.gradle.develocity") version("4.1")
 }
 
 develocity {
@@ -38,7 +38,7 @@ dependencyResolutionManagement {
 
     // We want to be able to use snapshots for the Emergetools SDK:
     maven {
-      url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots")
+      url = uri("https://central.sonatype.com/repository/maven-snapshots/")
       mavenContent {
         includeGroupByRegex("com.emergetools.*")
         snapshotsOnly()
@@ -49,3 +49,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "hacker-news"
 include(":app")
+include(":benchmark")

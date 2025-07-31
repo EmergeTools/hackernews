@@ -151,7 +151,7 @@ fun StoryRow(
           fontWeight = FontWeight.Bold
         )
         Text(
-          text = item.title,
+          text = item.title ?: "",
           color = MaterialTheme.colorScheme.onSurface,
           style = MaterialTheme.typography.titleSmall
         )

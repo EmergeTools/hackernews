@@ -14,12 +14,12 @@ val runningEnv: String? = System.getenv("RUNNING_ENV")
 
 android {
   namespace = "com.emergetools.hackernews"
-  compileSdk = 35
+  compileSdk = 36
 
   defaultConfig {
     applicationId = "com.emergetools.hackernews"
     minSdk = 30
-    targetSdk = 35
+    targetSdk = 36
     versionCode = 14
     versionName = "1.0.3"
 
@@ -52,6 +52,11 @@ android {
       isDebuggable = false
       applicationIdSuffix = ".fast"
       signingConfig = signingConfigs.getByName("debug")
+    }
+    create("benchmark") {
+      initWith(buildTypes.getByName("release"))
+      signingConfig = signingConfigs.getByName("debug")
+      matchingFallbacks += listOf("release")
     }
     release {
       isDebuggable = false
@@ -127,7 +132,7 @@ sentry {
 
   ignoredVariants.set(listOf("debug", "fast"))
 
-  autoInstallation.sentryVersion.set("8.12.0")
+  autoInstallation.sentryVersion.set(libs.versions.sentry.sdk.get())
 }
 
 dependencies {
@@ -149,7 +154,7 @@ dependencies {
 
   implementation(libs.extendedspans)
 
-  implementation(libs.emerge.snapshots.annotations)
+  implementation(libs.emerge.snapshots.runtime)
   implementation(libs.okhttp)
   implementation(libs.retrofit)
   implementation(libs.retrofit.kotlinx.serialization)
