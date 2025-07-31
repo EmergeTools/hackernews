@@ -40,6 +40,7 @@ struct HackerNewsApp: App {
       options.enableAppHangTrackingV2 = true
       options.sessionReplay.onErrorSampleRate = 1.0
       options.sendDefaultPii = true
+      options.experimental.enableLogs = true
       
 #if DEBUG
       options.environment = "development"
