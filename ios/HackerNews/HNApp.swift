@@ -68,6 +68,7 @@ struct HackerNewsApp: App {
         options.environment = "xctest"
       }
     }
+    Logger.info("App launched")
   }
 
   var body: some Scene {

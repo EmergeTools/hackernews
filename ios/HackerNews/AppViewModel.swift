@@ -257,13 +257,13 @@ final class AppViewModel {
 
   func loginSubmit(username: String, password: String) async -> LoginStatus {
     let status = await webClient.login(acct: username, pw: password)
-    print("Login Status: \(status)")
+    Logger.info("Login Status: \(status)")
     switch status {
     case .success:
       showLoginSheet = false
       authState = .loggedIn
     case .error:
-      print("Login failed")
+      Logger.error("Login failed")
       authState = .loggedOut
     }
     return status

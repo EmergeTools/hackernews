@@ -85,6 +85,7 @@ struct SendFeedbackScreen: View {
       source: .custom
     )
     SentrySDK.capture(feedback: feedback)
+    Logger.info("Feedback sent")
 
     withAnimation {
       isSubmitted = true
