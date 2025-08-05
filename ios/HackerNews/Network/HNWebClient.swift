@@ -102,7 +102,7 @@ class HNWebClient {
           commentForm: commentFormData
         ))
     } catch {
-      print("Error fetching post IDs: \(error)")
+      Logger.error("Error fetching post IDs: \(error)")
       return .error
     }
   }
@@ -162,6 +162,7 @@ class HNWebClient {
       let comments = try document.comments()
       return comments
     } catch {
+      Logger.error("Failed to post comment: \(error)")
       return []
     }
   }
