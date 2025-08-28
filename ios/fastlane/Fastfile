@@ -128,7 +128,7 @@ platform :ios do
       configuration: ENV['CONFIGURATION'],
       export_team_id: ENV['APPLE_TEAM_ID'],
       skip_package_ipa: true,
-      export_xcargs: "-archivePath ./build/HackerNews.xcarchive",
+      archive_path: './build/HackerNews.xcarchive',
       export_options: {
         method: export_method,
         provisioningProfiles: {
