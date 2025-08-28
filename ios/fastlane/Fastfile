@@ -127,6 +127,8 @@ platform :ios do
       output_name: output_name,
       configuration: ENV['CONFIGURATION'],
       export_team_id: ENV['APPLE_TEAM_ID'],
+      skip_package_ipa: true,
+      archive_path: './build/HackerNews.xcarchive',
       export_options: {
         method: export_method,
         provisioningProfiles: {
@@ -174,7 +176,7 @@ platform :ios do
     prepare_signing
     build_app_for_scheme(build_configuration: ENV['CONFIGURATION'])
     emerge(
-      tag: ENV['EMERGE_BUILD_TYPE'], 
+      tag: ENV['EMERGE_BUILD_TYPE'],
       app_id_suffix: ENV['APP_ID_SUFFIX']
     )
   end
@@ -182,5 +184,13 @@ platform :ios do
   desc 'Build and upload snapshot build to Emerge Tools'
   lane :build_upload_emerge_snapshot do
     emerge_snapshot(scheme: "HackerNews")
+  end
+
+  desc 'Build the iOS app only (no uploads)'
+  lane :build_only do
+    load_asc_api_key
+    prepare_signing
+    generate_build_number
+    build_app_for_scheme(build_configuration: ENV['CONFIGURATION'] || 'Release')
   end
 end
