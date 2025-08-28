@@ -3,7 +3,7 @@ name: Sentry PR iOS Upload (Size Analysis)
 on:
   pull_request:
     branches: [main]
-    paths: [ios/**]
+    paths: [ios/**, .github/workflows/ios_sentry_upload_pr.yml]
 
 jobs:
   build:
@@ -43,7 +43,7 @@ jobs:
         run: |
           echo $CERTIFICATE_BASE64 | base64 --decode > signing-cert.p12
 
-      - name: Build & upload iOS size analysis binary to Emerge Tools
+      - name: Build XCArchive
         run: bundle exec fastlane ios build_only
         env:
           ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
@@ -64,4 +64,13 @@ jobs:
            upload \
            ./build/HackerNews.xcarchive \
            --org sentry \
-           --project launchpad-test-ios
+           --project launchpad-test-ios \
+           --head-sha ${{ github.event.pull_request.head.sha }} \
+           --base-sha ${{ github.event.pull_request.base.sha }} \
+           --vcs-provider github \
+           --head-repo-name ${{ github.repository }} \
+           --base-repo-name ${{ github.repository }} \
+           --head-ref ${{ github.head_ref }} \
+           --base-ref ${{ github.base_ref }} \
+           --pr-number ${{ github.event.number }} \
+           --build-configuration Release
