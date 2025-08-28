@@ -3,7 +3,7 @@ name: Sentry PR iOS Upload (Size Analysis)
 on:
   pull_request:
     branches: [main]
-    paths: [ios/**]
+    paths: [ios/**, .github/workflows/ios_sentry_upload_pr.yml]
 
 jobs:
   build:
