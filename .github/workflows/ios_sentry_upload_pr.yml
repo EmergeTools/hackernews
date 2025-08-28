@@ -29,7 +29,10 @@ jobs:
           bundler-cache: true
 
       - name: Install Sentry CLI
-        run: curl -sL https://sentry.io/get-cli/ | SENTRY_CLI_VERSION="2.53.0-alpha" sh
+        run: |
+          curl -L -o sentry-cli https://github.com/getsentry/sentry-cli/releases/download/2.53.0-alpha/sentry-cli-Darwin-universal
+          chmod +x sentry-cli
+          sudo mv sentry-cli /usr/local/bin/
 
       - name: Setup gems
         run: exec ../.github/scripts/ios/setup.sh
