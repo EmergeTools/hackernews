@@ -28,6 +28,9 @@ DerivedData/
 ## Obj-C/Swift specific
 *.hmap
 
+## Linker map files (build artifacts)
+Linkmap.txt
+
 ## App packaging
 *.ipa
 *.dSYM.zip

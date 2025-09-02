@@ -129,7 +129,6 @@ platform :ios do
       export_team_id: ENV['APPLE_TEAM_ID'],
       skip_package_ipa: true,
       archive_path: './build/HackerNews.xcarchive',
-      destination: 'generic/platform=iOS Simulator',
       export_options: {
         method: export_method,
         provisioningProfiles: {
