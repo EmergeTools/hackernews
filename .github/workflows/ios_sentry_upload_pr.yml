@@ -55,6 +55,31 @@ jobs:
           CONFIGURATION: Release
           EMERGE_BUILD_TYPE: pull-request
 
+      - name: Thin asset catalogs in XCArchive
+        run: |
+          echo "Finding and thinning asset catalogs in XCArchive..."
+
+          # Find all asset catalogs in the xcarchive
+          XCARCHIVE_PATH="./build/HackerNews.xcarchive"
+
+          # Look for asset catalogs in the Products directory
+          find "$XCARCHIVE_PATH" -name "*.car" -type f | while read -r car_file; do
+            echo "Found asset catalog: $car_file"
+
+            # Create backup of original
+            cp "$car_file" "${car_file}.backup"
+
+            # Thin the asset catalog using assetutil
+            assetutil -i "phone" -s "3" -p "P3" -M "4" -g "MTL6,1" -r "13.0" "$car_file" -o "$car_file"
+
+            if [ $? -eq 0 ]; then
+              echo "Successfully thinned: $car_file"
+            else
+              echo "Failed to thin: $car_file, restoring backup"
+              mv "${car_file}.backup" "$car_file"
+            fi
+          done
+
       - name: Upload iOS size analysis binary to Sentry
         run: |
           sentry-cli \
