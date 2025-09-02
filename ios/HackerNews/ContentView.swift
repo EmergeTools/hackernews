@@ -33,7 +33,7 @@ struct ContentView: View {
     .accentColor(.hnOrange)
   }
 }
-// test
+
 struct ContentView_LoggedIn_Loading_Previews: PreviewProvider {
   static var previews: some View {
     @Previewable @State var appModel = AppViewModel(
