@@ -90,59 +90,46 @@ platform :ios do
 
   desc 'Thin asset catalogs in XCArchive'
   lane :thin_asset_catalogs do
-    xcarchive_path = lane_context[SharedValues::XCODEBUILD_ARCHIVE]
+    xcarchive_path = './build/HackerNews.xcarchive'
 
     UI.message('Finding and thinning asset catalogs in XCArchive...')
     
-    # Check if xcarchive exists
-    if xcarchive_path && File.exist?(xcarchive_path)
-      UI.message("XCArchive exists at: #{xcarchive_path}")
-      
-      # Debug: List contents to see structure
-      UI.message("XCArchive contents:")
-      Dir.glob("#{xcarchive_path}/**/*").each do |file|
-        UI.message("  #{file}") if file.end_with?('.car') || file.include?('Assets')
-      end
+    # Find all asset catalogs in the xcarchive
+    car_files = Dir.glob("#{xcarchive_path}/**/*.car")
+    
+    if car_files.empty?
+      UI.message("No .car files found in XCArchive")
+    else
+      car_files.each do |car_file|
+        UI.message("Found asset catalog: #{car_file}")
 
-      # Find all asset catalogs in the xcarchive
-      car_files = Dir.glob("#{xcarchive_path}/**/*.car")
-      
-      if car_files.empty?
-        UI.message("No .car files found in XCArchive")
-      else
-        car_files.each do |car_file|
-          UI.message("Found asset catalog: #{car_file}")
+        # Create backup of original
+        backup_file = "#{car_file}.backup"
+        FileUtils.cp(car_file, backup_file)
 
-          # Create backup of original
-          backup_file = "#{car_file}.backup"
-          FileUtils.cp(car_file, backup_file)
+        # Thin the asset catalog using assetutil
+        command = [
+          'assetutil',
+          '-i', 'phone',
+          '-s', '3',
+          '-p', 'P3',
+          '-M', '4',
+          '-g', 'MTL6,1',
+          '-r', '13.0',
+          car_file,
+          '-o', car_file
+        ]
 
-          # Thin the asset catalog using assetutil
-          command = [
-            'assetutil',
-            '-i', 'phone',
-            '-s', '3',
-            '-p', 'P3',
-            '-M', '4',
-            '-g', 'MTL6,1',
-            '-r', '13.0',
-            car_file,
-            '-o', car_file
-          ]
+        success = system(*command)
 
-          success = system(*command)
-
-          if success
-            UI.success("Successfully thinned: #{car_file}")
-            FileUtils.rm(backup_file)
-          else
-            UI.error("Failed to thin: #{car_file}, restoring backup")
-            FileUtils.mv(backup_file, car_file)
-          end
+        if success
+          UI.success("Successfully thinned: #{car_file}")
+          FileUtils.rm(backup_file)
+        else
+          UI.error("Failed to thin: #{car_file}, restoring backup")
+          FileUtils.mv(backup_file, car_file)
         end
       end
-    else
-      UI.error("XCArchive not found. Path from lane context: #{xcarchive_path}")
     end
   end
 
