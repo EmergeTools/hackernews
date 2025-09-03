@@ -94,11 +94,18 @@ platform :ios do
 
     UI.message('Finding and thinning asset catalogs in XCArchive...')
     
+    # Debug: Show what's actually in the archive
+    UI.message("Archive structure:")
+    sh("find #{xcarchive_path} -name '*.car' -type f") rescue UI.message("No .car files found with find command")
+    
     # Find all asset catalogs in the xcarchive
     car_files = Dir.glob("#{xcarchive_path}/**/*.car")
     
     if car_files.empty?
-      UI.message("No .car files found in XCArchive")
+      UI.message("No .car files found in XCArchive with Dir.glob")
+      # Show some files to understand structure
+      UI.message("Some files in archive:")
+      Dir.glob("#{xcarchive_path}/**/*").first(10).each { |f| UI.message("  #{f}") }
     else
       car_files.each do |car_file|
         UI.message("Found asset catalog: #{car_file}")
