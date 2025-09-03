@@ -93,9 +93,28 @@ platform :ios do
     xcarchive_path = './build/HackerNews.xcarchive'
 
     UI.message('Finding and thinning asset catalogs in XCArchive...')
+    
+    # Debug: Check if xcarchive exists
+    unless File.exist?(xcarchive_path)
+      UI.error("XCArchive not found at: #{xcarchive_path}")
+      return
+    end
+    
+    UI.message("XCArchive exists at: #{xcarchive_path}")
+    
+    # Debug: List contents to see structure
+    UI.message("XCArchive contents:")
+    Dir.glob("#{xcarchive_path}/**/*").each do |file|
+      UI.message("  #{file}") if file.end_with?('.car') || file.include?('Assets')
+    end
 
     # Find all asset catalogs in the xcarchive
     car_files = Dir.glob("#{xcarchive_path}/**/*.car")
+    
+    if car_files.empty?
+      UI.message("No .car files found in XCArchive")
+      return
+    end
 
     car_files.each do |car_file|
       UI.message("Found asset catalog: #{car_file}")
