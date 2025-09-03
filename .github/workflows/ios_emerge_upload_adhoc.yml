@@ -50,7 +50,7 @@ jobs:
           SIGNING_KEY_PASSWORD: ${{ secrets.IOS_DIST_SIGNING_KEY_PASSWORD }}
           SIGNING_KEY_FILE_PATH: signing-cert.p12
           EMERGE_API_TOKEN: ${{ secrets.EMERGE_API_KEY }}
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
           CONFIGURATION: AdHoc
           EMERGE_BUILD_TYPE: pull-request-adhoc
           PROV_PROFILE_NAME: HackerNews AdHoc Distribution
