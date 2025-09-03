@@ -91,19 +91,19 @@ platform :ios do
   desc 'Thin asset catalogs in XCArchive'
   lane :thin_asset_catalogs do
     xcarchive_path = './build/HackerNews.xcarchive'
-    
+
     UI.message('Finding and thinning asset catalogs in XCArchive...')
-    
+
     # Find all asset catalogs in the xcarchive
     car_files = Dir.glob("#{xcarchive_path}/**/*.car")
-    
+
     car_files.each do |car_file|
       UI.message("Found asset catalog: #{car_file}")
-      
+
       # Create backup of original
       backup_file = "#{car_file}.backup"
       FileUtils.cp(car_file, backup_file)
-      
+
       # Thin the asset catalog using assetutil
       command = [
         'assetutil',
@@ -116,9 +116,9 @@ platform :ios do
         car_file,
         '-o', car_file
       ]
-      
+
       success = system(*command)
-      
+
       if success
         UI.success("Successfully thinned: #{car_file}")
         FileUtils.rm(backup_file)
@@ -212,8 +212,8 @@ platform :ios do
     )
     sentry_upload_mobile_app(
       auth_token: ENV['SENTRY_AUTH_TOKEN'],
-      org_slug: 'emerge-tools',
-      project_slug: 'hackernews-ios'
+      org_slug: 'sentry',
+      project_slug: 'launchpad-test-ios'
     )
   end
 
@@ -229,8 +229,8 @@ platform :ios do
     thin_asset_catalogs
     sentry_upload_mobile_app(
       auth_token: ENV['SENTRY_AUTH_TOKEN'],
-      org_slug: 'emerge-tools',
-      project_slug: 'hackernews-ios'
+      org_slug: 'sentry',
+      project_slug: 'launchpad-test-ios'
     )
   end
 
