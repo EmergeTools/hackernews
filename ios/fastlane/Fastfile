@@ -90,7 +90,7 @@ platform :ios do
 
   desc 'Thin asset catalogs in XCArchive'
   lane :thin_asset_catalogs do
-    xcarchive_path = lane_context[SharedValues::XCODE_ARCHIVE_PATH]
+    xcarchive_path = lane_context[SharedValues::XCODEBUILD_ARCHIVE]
 
     UI.message('Finding and thinning asset catalogs in XCArchive...')
     
