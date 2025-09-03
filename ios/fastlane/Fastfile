@@ -90,13 +90,13 @@ platform :ios do
 
   desc 'Thin asset catalogs in XCArchive'
   lane :thin_asset_catalogs do
-    xcarchive_path = './build/HackerNews.xcarchive'
+    xcarchive_path = lane_context[SharedValues::XCODE_ARCHIVE_PATH]
 
     UI.message('Finding and thinning asset catalogs in XCArchive...')
     
     # Debug: Check if xcarchive exists
-    unless File.exist?(xcarchive_path)
-      UI.error("XCArchive not found at: #{xcarchive_path}")
+    unless xcarchive_path && File.exist?(xcarchive_path)
+      UI.error("XCArchive not found. Path from lane context: #{xcarchive_path}")
       return
     end
     
