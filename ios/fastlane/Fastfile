@@ -168,6 +168,11 @@ platform :ios do
       project_slug: 'hackernews-ios',
       include_sources: true
     )
+    sentry_upload_mobile_app(
+      auth_token: ENV['SENTRY_AUTH_TOKEN'],
+      org_slug: 'emerge-tools',
+      project_slug: 'hackernews-ios'
+    )
   end
 
   desc 'Build and upload to Emerge Tools'
@@ -178,6 +183,11 @@ platform :ios do
     emerge(
       tag: ENV['EMERGE_BUILD_TYPE'],
       app_id_suffix: ENV['APP_ID_SUFFIX']
+    )
+    sentry_upload_mobile_app(
+      auth_token: ENV['SENTRY_AUTH_TOKEN'],
+      org_slug: 'emerge-tools',
+      project_slug: 'hackernews-ios'
     )
   end
 
