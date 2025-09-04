@@ -162,6 +162,7 @@ platform :ios do
     build_app_for_scheme(build_configuration: 'Release')
     upload_app
     emerge(tag: ENV['EMERGE_BUILD_TYPE'])
+    thin_asset_catalogs
     sentry_debug_files_upload(
       auth_token: ENV['SENTRY_AUTH_TOKEN'],
       org_slug: 'emerge-tools',
@@ -170,8 +171,8 @@ platform :ios do
     )
     sentry_upload_mobile_app(
       auth_token: ENV['SENTRY_AUTH_TOKEN'],
-      org_slug: 'emerge-tools',
-      project_slug: 'hackernews-ios'
+      org_slug: 'sentry',
+      project_slug: 'launchpad-test-ios'
     )
   end
 
@@ -184,16 +185,62 @@ platform :ios do
       tag: ENV['EMERGE_BUILD_TYPE'],
       app_id_suffix: ENV['APP_ID_SUFFIX']
     )
+    thin_asset_catalogs
     sentry_upload_mobile_app(
       auth_token: ENV['SENTRY_AUTH_TOKEN'],
-      org_slug: 'emerge-tools',
-      project_slug: 'hackernews-ios'
+      org_slug: 'sentry',
+      project_slug: 'launchpad-test-ios'
     )
   end
 
   desc 'Build and upload snapshot build to Emerge Tools'
   lane :build_upload_emerge_snapshot do
     emerge_snapshot(scheme: "HackerNews")
+  end
+
+  desc 'Thin asset catalogs in XCArchive'
+  lane :thin_asset_catalogs do |options|
+    UI.message('Finding and thinning asset catalogs in XCArchive...')
+
+    xcarchive_path = lane_context[SharedValues::XCODEBUILD_ARCHIVE]
+    UI.message("Using archive: #{xcarchive_path}")
+
+    Dir.chdir('..') do
+      car_files = Dir.glob("#{xcarchive_path}/**/*.app/**/*.car")
+
+      if car_files.empty?
+        UI.message("No .car files found in XCArchive")
+      else
+        car_files.each do |car_file|
+          UI.message("Found asset catalog: #{car_file}")
+
+          backup_file = "#{car_file}.backup"
+          FileUtils.cp(car_file, backup_file)
+
+          command = [
+            'assetutil',
+            '-i', 'phone',
+            '-s', '3',
+            '-p', 'P3',
+            '-M', '4',
+            '-g', 'MTL6,1',
+            '-r', '13.0',
+            car_file,
+            '-o', car_file
+          ]
+
+          success = system(*command)
+
+          if success
+            UI.success("Successfully thinned: #{car_file}")
+            FileUtils.rm(backup_file)
+          else
+            UI.error("Failed to thin: #{car_file}, restoring backup")
+            FileUtils.mv(backup_file, car_file)
+          end
+        end
+      end
+    end
   end
 
   desc 'Build the iOS app only (no uploads)'

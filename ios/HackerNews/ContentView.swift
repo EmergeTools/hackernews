@@ -5,8 +5,8 @@
 //  Created by Trevor Elkins on 6/20/23..
 //
 
-import SwiftUI
 import Common
+import SwiftUI
 
 struct ContentView: View {
 
