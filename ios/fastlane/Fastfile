@@ -169,7 +169,7 @@ platform :ios do
       project_slug: 'hackernews-ios',
       include_sources: true
     )
-    sentry_upload_mobile_app(
+    sentry_upload_build(
       auth_token: ENV['SENTRY_AUTH_TOKEN'],
       org_slug: 'sentry',
       project_slug: 'launchpad-test-ios'
@@ -186,7 +186,7 @@ platform :ios do
       app_id_suffix: ENV['APP_ID_SUFFIX']
     )
     thin_asset_catalogs
-    sentry_upload_mobile_app(
+    sentry_upload_build(
       auth_token: ENV['SENTRY_AUTH_TOKEN'],
       org_slug: 'sentry',
       project_slug: 'launchpad-test-ios'
