@@ -170,7 +170,7 @@ platform :ios do
       include_sources: true
     )
     sentry_upload_build(
-      auth_token: ENV['SENTRY_AUTH_TOKEN'],
+      auth_token: ENV['SENTRY_SENTRY_AUTH_TOKEN'],
       org_slug: 'sentry',
       project_slug: 'launchpad-test-ios'
     )
@@ -187,7 +187,7 @@ platform :ios do
     )
     thin_asset_catalogs
     sentry_upload_build(
-      auth_token: ENV['SENTRY_AUTH_TOKEN'],
+      auth_token: ENV['SENTRY_SENTRY_AUTH_TOKEN'],
       org_slug: 'sentry',
       project_slug: 'launchpad-test-ios'
     )
