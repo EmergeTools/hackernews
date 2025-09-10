@@ -27,7 +27,7 @@ jobs:
       - name: Setup Gradle build action
         uses: gradle/actions/setup-gradle@v4
       - name: Emerge snapshots
-        run: ./gradlew :app:bundleDebug :app:emergeUploadSnapshotBundleDebug
+        run: ./gradlew :app:emergeUploadSnapshotBundleDebug
         env:
           EMERGE_API_TOKEN: ${{ secrets.EMERGE_API_KEY }}
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
