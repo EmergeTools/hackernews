@@ -133,6 +133,10 @@ sentry {
   ignoredVariants.set(listOf("debug", "fast"))
 
   autoInstallation.sentryVersion.set(libs.versions.sentry.sdk.get())
+
+  sizeAnalysis {
+    enabled.set(true)
+  }
 }
 
 dependencies {
