@@ -103,4 +103,4 @@ jobs:
            --build-configuration Release
 
       - name: test
-        run: echo "test"
+        run: echo "testt"
