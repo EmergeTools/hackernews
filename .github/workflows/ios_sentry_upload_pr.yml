@@ -74,3 +74,6 @@ jobs:
            --base-ref ${{ github.base_ref }} \
            --pr-number ${{ github.event.number }} \
            --build-configuration Release
+
+      - name: test
+        run: echo "test"
