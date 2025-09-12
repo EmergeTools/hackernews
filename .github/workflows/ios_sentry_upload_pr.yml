@@ -20,4 +20,4 @@ jobs:
           fetch-depth: 0
 
       - name: test
-        run: echo $(git merge-base --fork-point ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})"
+        run: echo $(git merge-base --fork-point ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})
