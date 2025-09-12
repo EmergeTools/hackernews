@@ -19,6 +19,9 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: test
+        run: echo $(git merge-base --fork-point ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})"
+
       - name: Select Xcode version
         run: sudo xcode-select -s '/Applications/Xcode_16.4.app/Contents/Developer'
 
@@ -101,6 +104,3 @@ jobs:
            --base-ref ${{ github.base_ref }} \
            --pr-number ${{ github.event.number }} \
            --build-configuration Release
-
-      - name: test
-        run: echo "testt"
