@@ -137,6 +137,15 @@ sentry {
   sizeAnalysis {
     enabled.set(true)
   }
+
+  vcsInfo {
+    System.getenv("GITHUB_HEAD_REF")?.let { headRef.set(it) }
+    System.getenv("GITHUB_BASE_REF")?.let { baseRef.set(it) }
+    headRepoName.set(System.getenv("GITHUB_REPOSITORY") ?: "EmergeTools/hackernews")
+    baseRepoName.set(System.getenv("GITHUB_REPOSITORY") ?: "EmergeTools/hackernews")
+    vcsProvider.set("github")
+    System.getenv("GITHUB_EVENT_NUMBER")?.toIntOrNull()?.let { prNumber.set(it) }
+  }
 }
 
 dependencies {
