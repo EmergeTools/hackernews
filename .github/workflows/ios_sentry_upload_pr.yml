@@ -23,11 +23,29 @@ jobs:
         run: |
           git -c protocol.version=2 fetch --no-tags --prune --filter=blob:none origin \
             "+refs/heads/${{ github.base_ref }}:refs/remotes/origin/${{ github.base_ref }}"
+          git show -s --oneline "origin/${{ github.base_ref }}"
 
       - name: Compute merge-base (BASE_SHA)
+        shell: bash
         run: |
-          set -euo pipefail
+          # Be strict about failures, but avoid -u (unbound var) because we build BASE_SHA progressively
+          set -e -o pipefail
+
           BASE_REF="origin/${{ github.base_ref }}"
-          BASE_SHA="$(git merge-base --fork-point "$BASE_REF" HEAD 2>/dev/null || git merge-base HEAD "$BASE_REF")"
+
+          echo "HEAD commit:"
+          git show -s --oneline HEAD
+          echo "Base ref:"
+          git show -s --oneline "$BASE_REF" || { echo "Missing $BASE_REF"; exit 1; }
+
+          # Try fork-point first; if it fails or is empty, fall back to plain merge-base
+          BASE_SHA=""
+          if BASE_SHA=$(git merge-base --fork-point "$BASE_REF" HEAD 2>/dev/null); then
+            :
+          fi
+          if [[ -z "$BASE_SHA" ]]; then
+            BASE_SHA=$(git merge-base HEAD "$BASE_REF")
+          fi
+
           echo "BASE_SHA=$BASE_SHA"
           echo "BASE_SHA=$BASE_SHA" >> "$GITHUB_ENV"
