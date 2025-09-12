@@ -7,70 +7,28 @@ on:
 
 jobs:
   build:
-    runs-on: macos-15
-
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./ios
 
     steps:
-      - name: Checkout
+      - name: Checkout PR HEAD
         uses: actions/checkout@v5
         with:
           fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
 
-      - name: Select Xcode version
-        run: sudo xcode-select -s '/Applications/Xcode_16.4.app/Contents/Developer'
-
-      - name: Set up Ruby env
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 3.1.4
-          bundler-cache: true
-
-      - name: Install Sentry CLI
+      - name: Fetch base branch tip
         run: |
-          curl -L -o sentry-cli https://github.com/getsentry/sentry-cli/releases/download/2.53.0-alpha/sentry-cli-Darwin-universal
-          chmod +x sentry-cli
-          sudo mv sentry-cli /usr/local/bin/
+          git -c protocol.version=2 fetch --no-tags --prune --filter=blob:none origin \
+            "+refs/heads/${{ github.base_ref }}:refs/remotes/origin/${{ github.base_ref }}"
+          git show -s --oneline "origin/${{ github.base_ref }}"
 
-      - name: Setup gems
-        run: exec ../.github/scripts/ios/setup.sh
-
-      - name: Decode signing certificate into a file
-        env:
-          CERTIFICATE_BASE64: ${{ secrets.IOS_DIST_SIGNING_KEY_BASE64 }}
+      - name: Compute merge-base (BASE_SHA)
+        shell: bash
         run: |
-          echo $CERTIFICATE_BASE64 | base64 --decode > signing-cert.p12
-
-      - name: Build XCArchive
-        run: bundle exec fastlane ios build_only
-        env:
-          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
-          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
-          ASC_KEY: ${{ secrets.ASC_PRIVATE_KEY }}
-          SIGNING_KEY_PASSWORD: ${{ secrets.IOS_DIST_SIGNING_KEY_PASSWORD }}
-          SIGNING_KEY_FILE_PATH: signing-cert.p12
-          EMERGE_API_TOKEN: ${{ secrets.EMERGE_API_KEY }}
-          CONFIGURATION: Release
-          EMERGE_BUILD_TYPE: pull-request
-
-      - name: Upload iOS size analysis binary to Sentry
-        run: |
-          sentry-cli \
-           --log-level=debug \
-           --auth-token ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }} \
-           build \
-           upload \
-           ./build/HackerNews.xcarchive \
-           --org sentry \
-           --project launchpad-test-ios \
-           --head-sha ${{ github.event.pull_request.head.sha }} \
-           --base-sha ${{ github.event.pull_request.base.sha }} \
-           --vcs-provider github \
-           --head-repo-name ${{ github.repository }} \
-           --base-repo-name ${{ github.repository }} \
-           --head-ref ${{ github.head_ref }} \
-           --base-ref ${{ github.base_ref }} \
-           --pr-number ${{ github.event.number }} \
-           --build-configuration Release
+          set -e -o pipefail
+          BASE_REF="origin/${{ github.base_ref }}"
+          BASE_SHA=$(git merge-base "$BASE_REF" HEAD 2>/dev/null)
+          echo "BASE_SHA=$BASE_SHA"
