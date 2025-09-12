@@ -32,3 +32,8 @@ jobs:
           BASE_REF="origin/${{ github.base_ref }}"
           BASE_SHA=$(git merge-base "$BASE_REF" HEAD 2>/dev/null)
           echo "BASE_SHA=$BASE_SHA"
+
+      - name: Fork
+        shell: bash
+        run: |
+          echo "test"
