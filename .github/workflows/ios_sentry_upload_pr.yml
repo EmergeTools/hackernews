@@ -30,7 +30,13 @@ jobs:
         run: |
           set -e -o pipefail
           BASE_REF="origin/${{ github.base_ref }}"
-          BASE_SHA=$(git merge-base "$BASE_REF" HEAD 2>/dev/null)
+          if [[ "${{ github.base_ref }}" == "$DEFAULT" ]]; then
+            # Normal PR
+            BASE_SHA="$(git merge-base "$BASE_REF" HEAD 2>/dev/null || git merge-base HEAD "$BASE_REF")"
+          else
+            # Stacked PR
+            BASE_SHA="$(git rev-parse "$BASE_REF")"
+          fi
           echo "BASE_SHA=$BASE_SHA"
 
       - name: Fork
