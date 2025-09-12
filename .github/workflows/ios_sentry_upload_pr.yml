@@ -13,10 +13,11 @@ jobs:
         working-directory: ./ios
 
     steps:
-      - name: Checkout PR HEAD (full history, but graph-only for speed)
+      - name: Checkout PR HEAD
         uses: actions/checkout@v5
         with:
           fetch-depth: 2
+          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Fetch base branch tip
         run: |
