@@ -8,16 +8,26 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     defaults:
       run:
         working-directory: ./ios
 
     steps:
-      - name: Checkout
+      - name: Checkout PR HEAD (full history, but graph-only for speed)
         uses: actions/checkout@v5
         with:
           fetch-depth: 0
+          filter: blob:none
 
-      - name: test
-        run: echo $(git merge-base ${{ github.event.pull_request.base.ref }} ${{ github.event.pull_request.head.ref }})
+      - name: Fetch base branch tip
+        run: |
+          git -c protocol.version=2 fetch --no-tags --prune --filter=blob:none origin \
+            "+refs/heads/${{ github.base_ref }}:refs/remotes/origin/${{ github.base_ref }}"
+
+      - name: Compute merge-base (BASE_SHA)
+        run: |
+          set -euo pipefail
+          BASE_REF="origin/${{ github.base_ref }}"
+          BASE_SHA="$(git merge-base --fork-point "$BASE_REF" HEAD 2>/dev/null || git merge-base HEAD "$BASE_REF")"
+          echo "BASE_SHA=$BASE_SHA"
+          echo "BASE_SHA=$BASE_SHA" >> "$GITHUB_ENV"
