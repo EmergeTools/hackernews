@@ -172,7 +172,10 @@ platform :ios do
     sentry_upload_build(
       auth_token: ENV['SENTRY_SENTRY_AUTH_TOKEN'],
       org_slug: 'sentry',
-      project_slug: 'launchpad-test-ios'
+      project_slug: 'launchpad-test-ios',
+      pr_number: ENV['PR_NUMBER'],
+      base_sha: ENV['BASE_SHA'],
+      base_ref: ENV['BASE_REF']
     )
   end
 
@@ -189,7 +192,10 @@ platform :ios do
     sentry_upload_build(
       auth_token: ENV['SENTRY_SENTRY_AUTH_TOKEN'],
       org_slug: 'sentry',
-      project_slug: 'launchpad-test-ios'
+      project_slug: 'launchpad-test-ios',
+      pr_number: ENV['PR_NUMBER'],
+      base_sha: ENV['BASE_SHA'],
+      base_ref: ENV['BASE_REF']
     )
   end
 

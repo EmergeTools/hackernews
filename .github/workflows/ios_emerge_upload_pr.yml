@@ -37,7 +37,7 @@ jobs:
         run: |
           echo $CERTIFICATE_BASE64 | base64 --decode > signing-cert.p12
 
-      - name: Build & upload iOS size analysis binary to Emerge Tools
+      - name: Build & upload iOS size analysis binary to Emerge Tools + Sentry
         run: bundle exec fastlane ios build_upload_emerge
         env:
           ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
@@ -50,3 +50,6 @@ jobs:
           SENTRY_SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
           CONFIGURATION: Release
           EMERGE_BUILD_TYPE: pull-request
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          BASE_REF: ${{ github.event.pull_request.base.ref }}
