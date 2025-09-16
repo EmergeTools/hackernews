@@ -127,6 +127,7 @@ emerge {
 }
 
 sentry {
+  debug.set(true)
   org.set("emerge-tools")
   projectName.set("hackernews-android")
 
