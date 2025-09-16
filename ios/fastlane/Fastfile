@@ -173,10 +173,6 @@ platform :ios do
       auth_token: ENV['SENTRY_SENTRY_AUTH_TOKEN'],
       org_slug: 'sentry',
       project_slug: 'launchpad-test-ios',
-      vcs_provider: 'github',
-      pr_number: ENV['PR_NUMBER'],
-      base_sha: ENV['BASE_SHA'],
-      base_ref: ENV['BASE_REF']
     )
   end
 
@@ -194,10 +190,6 @@ platform :ios do
       auth_token: ENV['SENTRY_SENTRY_AUTH_TOKEN'],
       org_slug: 'sentry',
       project_slug: 'launchpad-test-ios',
-      vcs_provider: 'github',
-      pr_number: ENV['PR_NUMBER'],
-      base_sha: ENV['BASE_SHA'],
-      base_ref: ENV['BASE_REF']
     )
   end
 
