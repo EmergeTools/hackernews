@@ -176,7 +176,7 @@ platform :ios do
       pr_number: ENV['GITHUB_PR_NUMBER'],
       base_ref: ENV['GITHUB_BASE_REF'],
       head_ref: ENV['GITHUB_HEAD_REF'],
-      commit_sha: ENV['GITHUB_SHA'],
+      head_sha: ENV['GITHUB_SHA'],
       log_level: 'debug'
     )
   end
@@ -198,7 +198,7 @@ platform :ios do
       pr_number: ENV['GITHUB_PR_NUMBER'],
       base_ref: ENV['GITHUB_BASE_REF'],
       head_ref: ENV['GITHUB_HEAD_REF'],
-      commit_sha: ENV['GITHUB_SHA'],
+      head_sha: ENV['GITHUB_SHA'],
       log_level: 'debug'
     )
   end
