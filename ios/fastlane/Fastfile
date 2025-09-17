@@ -177,8 +177,7 @@ platform :ios do
       base_ref: ENV['GITHUB_BASE_REF'],
       base_sha: ENV['GITHUB_BASE_SHA'],
       head_ref: ENV['GITHUB_HEAD_REF'],
-      head_sha: ENV['GITHUB_SHA'],
-      log_level: 'debug'
+      head_sha: ENV['GITHUB_SHA']
     )
   end
 
@@ -200,8 +199,7 @@ platform :ios do
       base_ref: ENV['GITHUB_BASE_REF'],
       base_sha: ENV['GITHUB_BASE_SHA'],
       head_ref: ENV['GITHUB_HEAD_REF'],
-      head_sha: ENV['GITHUB_SHA'],
-      log_level: 'debug'
+      head_sha: ENV['GITHUB_SHA']
     )
   end
 
