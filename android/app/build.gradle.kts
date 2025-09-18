@@ -141,14 +141,23 @@ sentry {
   debug.set(true)
 
   vcsInfo {
-    (System.getenv("GITHUB_HEAD_REF") ?: System.getenv("GITHUB_REF"))?.takeIf { it.isNotEmpty() }?.let { headRef.set(it) }
-    System.getenv("GITHUB_BASE_REF")?.takeIf { it.isNotEmpty() }?.let { baseRef.set(it) }
-    System.getenv("GITHUB_BASE_SHA")?.takeIf { it.isNotEmpty() }?.let { baseSha.set(it) }
-    val repoName = System.getenv("GITHUB_REPOSITORY")?.takeIf { it.isNotEmpty() } ?: "EmergeTools/hackernews"
+    (System.getenv("GITHUB_HEAD_REF") ?: System.getenv("GITHUB_REF"))
+      ?.takeIf { it.isNotEmpty() }
+      ?.let { headRef.set(it) }
+    System.getenv("GITHUB_BASE_REF")
+      ?.takeIf { it.isNotEmpty() }
+      ?.let { baseRef.set(it) }
+    System.getenv("GITHUB_BASE_SHA")
+      ?.takeIf { it.isNotEmpty() }
+      ?.let { baseSha.set(it) }
+    val repoName = System.getenv("GITHUB_REPOSITORY")?.takeIf { it.isNotEmpty() }
+      ?: "EmergeTools/hackernews"
     headRepoName.set(repoName)
-    baseRepoName.set(repoName)
     vcsProvider.set("github")
-    System.getenv("GITHUB_PR_NUMBER")?.takeIf { it.isNotEmpty() }?.toIntOrNull()?.let { prNumber.set(it) }
+    System.getenv("GITHUB_PR_NUMBER")
+      ?.takeIf { it.isNotEmpty() }
+      ?.toIntOrNull()
+      ?.let { prNumber.set(it) }
   }
 }
 
