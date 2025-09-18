@@ -186,7 +186,7 @@ platform :ios do
       head_ref: ENV['GITHUB_HEAD_REF'] || ENV['GITHUB_REF']&.sub('refs/heads/', ''),
       head_sha: ENV['SENTRY_SHA'],
       vcs_provider: 'github',
-      head_repo_name: 'emergetools/hackernews',
+      head_repo_name: 'EmergeTools/hackernews',
       log_level: 'debug'
     )
   end
@@ -211,7 +211,7 @@ platform :ios do
       head_ref: ENV['GITHUB_HEAD_REF'] || ENV['GITHUB_REF']&.sub('refs/heads/', ''),
       head_sha: ENV['SENTRY_SHA'],
       vcs_provider: 'github',
-      head_repo_name: 'emergetools/hackernews',
+      head_repo_name: 'EmergeTools/hackernews',
       log_level: 'debug'
     )
   end
