@@ -187,6 +187,7 @@ platform :ios do
       head_sha: ENV['SENTRY_SHA'],
       vcs_provider: 'github',
       head_repo_name: 'EmergeTools/hackernews',
+      build_configuration: 'Release',
       log_level: 'debug'
     )
   end
@@ -212,6 +213,7 @@ platform :ios do
       head_sha: ENV['SENTRY_SHA'],
       vcs_provider: 'github',
       head_repo_name: 'EmergeTools/hackernews',
+      build_configuration: ENV['CONFIGURATION'],
       log_level: 'debug'
     )
   end
