@@ -139,7 +139,7 @@ sentry {
   }
 
   vcsInfo {
-    System.getenv("GITHUB_HEAD_REF")?.let { headRef.set(it) }
+    (System.getenv("GITHUB_HEAD_REF") ?: System.getenv("GITHUB_REF"))?.let { headRef.set(it) }
     System.getenv("GITHUB_BASE_REF")?.let { baseRef.set(it) }
     System.getenv("GITHUB_BASE_SHA")?.let { baseSha.set(it) }
     headRepoName.set(System.getenv("GITHUB_REPOSITORY") ?: "EmergeTools/hackernews")
