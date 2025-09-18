@@ -50,5 +50,5 @@ jobs:
           SENTRY_SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
           CONFIGURATION: Release
           EMERGE_BUILD_TYPE: pull-request
-          GITHUB_EVENT_NUMBER: ${{ github.event.number }}
+          GITHUB_PR_NUMBER: ${{ github.event.number }}
           GITHUB_BASE_SHA: ${{ github.event.pull_request.base.sha }}

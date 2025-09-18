@@ -57,5 +57,5 @@ jobs:
           WIDGET_PROV_PROFILE_NAME: HackerNews AdHoc HomeWidget
           ADHOC: true
           APP_ID_SUFFIX: adhoc
-          GITHUB_EVENT_NUMBER: ${{ github.event.number }}
+          GITHUB_PR_NUMBER: ${{ github.event.number }}
           GITHUB_BASE_SHA: ${{ github.event.pull_request.base.sha }}
