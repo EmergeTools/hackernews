@@ -138,6 +138,8 @@ sentry {
     enabled.set(true)
   }
 
+  debug.set(true)
+
   vcsInfo {
     (System.getenv("GITHUB_HEAD_REF") ?: System.getenv("GITHUB_REF"))?.let { headRef.set(it) }
     System.getenv("GITHUB_BASE_REF")?.let { baseRef.set(it) }
