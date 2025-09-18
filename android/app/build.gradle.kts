@@ -141,16 +141,16 @@ sentry {
   debug.set(true)
 
   vcsInfo {
-    val String.env: String? get() = System.getenv(this)?.takeIf { it.isNotEmpty() }
+    fun env(key: String): String? = System.getenv(key)?.takeIf { it.isNotEmpty() }
 
-    ("GITHUB_HEAD_REF".env ?: "GITHUB_REF".env)?.let { headRef.set(it) }
-    "GITHUB_BASE_REF".env?.let { baseRef.set(it) }
-    "GITHUB_BASE_SHA".env?.let { baseSha.set(it) }
-    val repoName = "GITHUB_REPOSITORY".env ?: "EmergeTools/hackernews"
+    (env("GITHUB_HEAD_REF") ?: env("GITHUB_REF"))?.let { headRef.set(it) }
+    env("GITHUB_BASE_REF")?.let { baseRef.set(it) }
+    env("GITHUB_BASE_SHA")?.let { baseSha.set(it) }
+    val repoName = env("GITHUB_REPOSITORY") ?: "EmergeTools/hackernews"
     headRepoName.set(repoName)
     baseRepoName.set(repoName)
     vcsProvider.set("github")
-    "GITHUB_PR_NUMBER".env?.toIntOrNull()?.let { prNumber.set(it) }
+    env("GITHUB_PR_NUMBER")?.toIntOrNull()?.let { prNumber.set(it) }
   }
 }
 
