@@ -52,3 +52,4 @@ jobs:
           EMERGE_BUILD_TYPE: pull-request
           GITHUB_PR_NUMBER: ${{ github.event.number }}
           GITHUB_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          SENTRY_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
