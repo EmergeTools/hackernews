@@ -69,7 +69,6 @@ struct HackerNewsApp: App {
       }
     }
     Logger.info("App launched")
-    Logger.debug("Sentry integration initialized successfully")
   }
 
   var body: some Scene {
