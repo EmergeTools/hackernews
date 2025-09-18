@@ -178,7 +178,8 @@ platform :ios do
       base_sha: ENV['GITHUB_BASE_SHA'],
       head_ref: ENV['GITHUB_HEAD_REF'] || ENV['GITHUB_REF'],
       head_sha: ENV['GITHUB_SHA'],
-      vcs_provider: 'github'
+      vcs_provider: 'github',
+      head_repo_name: 'emergetools/hackernews'
     )
   end
 
@@ -201,7 +202,8 @@ platform :ios do
       base_sha: ENV['GITHUB_BASE_SHA'],
       head_ref: ENV['GITHUB_HEAD_REF'] || ENV['GITHUB_REF'],
       head_sha: ENV['GITHUB_SHA'],
-      vcs_provider: 'github'
+      vcs_provider: 'github',
+      head_repo_name: 'emergetools/hackernews'
     )
   end
 
