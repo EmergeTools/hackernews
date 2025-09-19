@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/getsentry/sentry-fastlane-plugin.git
-  revision: b0c36a1472a6bfde0a4766c612c1154706dbd014
-  ref: b0c36a1472a6bfde0a4766c612c1154706dbd014
+  revision: 43162dec0c1722b596f61881d86435ae14327514
+  ref: 43162dec0c1722b596f61881d86435ae14327514
   specs:
     fastlane-plugin-sentry (1.33.0)
       os (~> 1.1, >= 1.1.4)
