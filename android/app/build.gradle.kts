@@ -146,6 +146,9 @@ sentry {
     env("GITHUB_BASE_REF")?.let { baseRef.set(it) }
     env("GITHUB_BASE_SHA")?.let { baseSha.set(it) }
     env("SENTRY_SHA")?.let { headSha.set(it) }
+    val repoName = env("GITHUB_REPOSITORY") ?: "EmergeTools/hackernews"
+    headRepoName.set(repoName)
+    baseRepoName.set(repoName)
     vcsProvider.set("github")
   }
 }
