@@ -31,7 +31,6 @@ composeBom = "2025.09.00"
 uiTestJunit4Android = "1.9.0"
 uiautomator = "2.3.0"
 benchmarkMacroJunit4 = "1.4.0"
-sentry-sdk = "8.17.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }

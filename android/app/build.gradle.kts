@@ -132,7 +132,6 @@ sentry {
 
   ignoredVariants.set(listOf("debug", "fast"))
 
-  autoInstallation.sentryVersion.set(libs.versions.sentry.sdk.get())
 
   sizeAnalysis {
     enabled.set(true)
@@ -151,7 +150,6 @@ sentry {
     headRepoName.set(repoName)
     baseRepoName.set(repoName)
     vcsProvider.set("github")
-    env("GITHUB_PR_NUMBER")?.toIntOrNull()?.let { prNumber.set(it) }
   }
 }
 
