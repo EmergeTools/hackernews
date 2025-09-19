@@ -58,5 +58,4 @@ jobs:
           SENTRY_BASE_REPO_NAME: EmergeTools/hackernews
           SENTRY_HEAD_REF: ${{ github.head_ref }}
           SENTRY_BASE_REF: ${{ github.base_ref }}
-          SENTRY_PR_NUMBER: ${{ github.event.number }}
           SENTRY_BUILD_CONFIGURATION: Release

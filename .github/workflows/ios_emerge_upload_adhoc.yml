@@ -50,13 +50,20 @@ jobs:
           SIGNING_KEY_PASSWORD: ${{ secrets.IOS_DIST_SIGNING_KEY_PASSWORD }}
           SIGNING_KEY_FILE_PATH: signing-cert.p12
           EMERGE_API_TOKEN: ${{ secrets.EMERGE_API_KEY }}
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
           CONFIGURATION: AdHoc
           EMERGE_BUILD_TYPE: pull-request-adhoc
           PROV_PROFILE_NAME: HackerNews AdHoc Distribution
           WIDGET_PROV_PROFILE_NAME: HackerNews AdHoc HomeWidget
           ADHOC: true
           APP_ID_SUFFIX: adhoc
-          GITHUB_PR_NUMBER: ${{ github.event.number }}
-          GITHUB_BASE_SHA: ${{ github.event.pull_request.base.sha }}
-          SENTRY_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+          # Sentry build upload environment variables
+          SENTRY_HEAD_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+          SENTRY_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          SENTRY_VCS_PROVIDER: github
+          SENTRY_HEAD_REPO_NAME: EmergeTools/hackernews
+          SENTRY_BASE_REPO_NAME: EmergeTools/hackernews
+          SENTRY_HEAD_REF: ${{ github.head_ref }}
+          SENTRY_BASE_REF: ${{ github.base_ref }}
+          SENTRY_BUILD_CONFIGURATION: AdHoc
