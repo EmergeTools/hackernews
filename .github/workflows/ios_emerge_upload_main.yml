@@ -50,6 +50,12 @@ jobs:
           SENTRY_SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
           CONFIGURATION: Release
           EMERGE_BUILD_TYPE: release
+          # Sentry build upload environment variables
+          SENTRY_HEAD_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+          SENTRY_VCS_PROVIDER: github
+          SENTRY_HEAD_REPO_NAME: EmergeTools/hackernews
+          SENTRY_BASE_REPO_NAME: EmergeTools/hackernews
+          SENTRY_BUILD_CONFIGURATION: Release
 
   build_adhoc:
     runs-on: macos-15
@@ -99,3 +105,9 @@ jobs:
           WIDGET_PROV_PROFILE_NAME: HackerNews AdHoc HomeWidget
           ADHOC: true
           APP_ID_SUFFIX: adhoc
+          # Sentry build upload environment variables
+          SENTRY_HEAD_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+          SENTRY_VCS_PROVIDER: github
+          SENTRY_HEAD_REPO_NAME: EmergeTools/hackernews
+          SENTRY_BASE_REPO_NAME: EmergeTools/hackernews
+          SENTRY_BUILD_CONFIGURATION: AdHoc

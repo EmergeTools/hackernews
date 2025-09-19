@@ -18,12 +18,6 @@
 default_platform(:ios)
 
 platform :ios do
-  def sentry_upload_build_filtered(**params)
-    filtered_params = params.select { |key, value|
-      value && !value.to_s.strip.empty?
-    }
-    sentry_upload_build(**filtered_params)
-  end
 
   desc 'Load ASC API Key information to use in subsequent lanes'
   lane :load_asc_api_key do
@@ -176,19 +170,10 @@ platform :ios do
       project_slug: 'hackernews-ios',
       include_sources: true
     )
-    sentry_upload_build_filtered(
+    sentry_upload_build(
       auth_token: ENV['SENTRY_SENTRY_AUTH_TOKEN'],
       org_slug: 'sentry',
-      project_slug: 'launchpad-test-ios',
-      pr_number: ENV['GITHUB_PR_NUMBER'],
-      base_ref: ENV['GITHUB_BASE_REF'],
-      base_sha: ENV['GITHUB_BASE_SHA'],
-      head_ref: ENV['GITHUB_HEAD_REF'] || ENV['GITHUB_REF']&.sub('refs/heads/', ''),
-      head_sha: ENV['SENTRY_SHA'],
-      vcs_provider: 'github',
-      head_repo_name: 'EmergeTools/hackernews',
-      build_configuration: 'Release',
-      log_level: 'debug'
+      project_slug: 'launchpad-test-ios'
     )
   end
 
@@ -202,19 +187,10 @@ platform :ios do
       app_id_suffix: ENV['APP_ID_SUFFIX']
     )
     thin_asset_catalogs
-    sentry_upload_build_filtered(
+    sentry_upload_build(
       auth_token: ENV['SENTRY_SENTRY_AUTH_TOKEN'],
       org_slug: 'sentry',
-      project_slug: 'launchpad-test-ios',
-      pr_number: ENV['GITHUB_PR_NUMBER'],
-      base_ref: ENV['GITHUB_BASE_REF'],
-      base_sha: ENV['GITHUB_BASE_SHA'],
-      head_ref: ENV['GITHUB_HEAD_REF'] || ENV['GITHUB_REF']&.sub('refs/heads/', ''),
-      head_sha: ENV['SENTRY_SHA'],
-      vcs_provider: 'github',
-      head_repo_name: 'EmergeTools/hackernews',
-      build_configuration: ENV['CONFIGURATION'],
-      log_level: 'debug'
+      project_slug: 'launchpad-test-ios'
     )
   end
 

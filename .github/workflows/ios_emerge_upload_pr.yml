@@ -50,6 +50,13 @@ jobs:
           SENTRY_SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
           CONFIGURATION: Release
           EMERGE_BUILD_TYPE: pull-request
-          GITHUB_PR_NUMBER: ${{ github.event.number }}
-          GITHUB_BASE_SHA: ${{ github.event.pull_request.base.sha }}
-          SENTRY_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+          # Sentry build upload environment variables
+          SENTRY_HEAD_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+          SENTRY_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          SENTRY_VCS_PROVIDER: github
+          SENTRY_HEAD_REPO_NAME: EmergeTools/hackernews
+          SENTRY_BASE_REPO_NAME: EmergeTools/hackernews
+          SENTRY_HEAD_REF: ${{ github.head_ref }}
+          SENTRY_BASE_REF: ${{ github.base_ref }}
+          SENTRY_PR_NUMBER: ${{ github.event.number }}
+          SENTRY_BUILD_CONFIGURATION: Release
