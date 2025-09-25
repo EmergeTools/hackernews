@@ -143,7 +143,6 @@ sentry {
     fun env(key: String): String? = System.getenv(key)?.takeIf { it.isNotEmpty() }
 
     (env("GITHUB_HEAD_REF") ?: env("GITHUB_REF")?.removePrefix("refs/heads/"))?.let { headRef.set(it) }
-    env("GITHUB_BASE_REF")?.let { baseRef.set(it) }
     env("GITHUB_BASE_SHA")?.let { baseSha.set(it) }
     env("SENTRY_SHA")?.let { headSha.set(it) }
   }
