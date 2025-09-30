@@ -88,6 +88,7 @@ struct CommentRow: View {
           Text(state.text.formattedHTML())
             .font(theme.commentTextFont)
             .tint(.accentColor)
+            .textSelection(.enabled)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(EdgeInsets(top: -3, leading: 8, bottom: 8, trailing: 8))
