@@ -9,6 +9,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -126,12 +127,14 @@ fun CommentRow(
           }
         }
         if (state.hidden == HiddenStatus.Displayed) {
-          Text(
-            text = state.content.parseAsHtml(),
-            style = MaterialTheme.typography.labelSmall,
-            fontWeight = FontWeight.Normal,
-            color = MaterialTheme.colorScheme.onSurface,
-          )
+          SelectionContainer {
+            Text(
+              text = state.content.parseAsHtml(),
+              style = MaterialTheme.typography.labelSmall,
+              fontWeight = FontWeight.Normal,
+              color = MaterialTheme.colorScheme.onSurface,
+            )
+          }
         }
       }
     }
