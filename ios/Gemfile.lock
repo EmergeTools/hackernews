@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/getsentry/sentry-fastlane-plugin.git
-  revision: b0c36a1472a6bfde0a4766c612c1154706dbd014
-  ref: b0c36a1472a6bfde0a4766c612c1154706dbd014
+  revision: 840ac30316aeda41630db1be6c3d17d2c870d08c
+  ref: 840ac30316aeda41630db1be6c3d17d2c870d08c
   specs:
     fastlane-plugin-sentry (1.33.0)
       os (~> 1.1, >= 1.1.4)
@@ -231,6 +231,7 @@ GEM
 PLATFORMS
   arm64-darwin-21
   arm64-darwin-24
+  arm64-darwin-25
   x86_64-linux
 
 DEPENDENCIES
@@ -240,4 +241,4 @@ DEPENDENCIES
   xcpretty
 
 BUNDLED WITH
-   2.3.26
+   2.7.2
