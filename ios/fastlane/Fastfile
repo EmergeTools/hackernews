@@ -17,6 +17,8 @@
 
 default_platform(:ios)
 
+require 'plist'
+
 platform :ios do
   def sentry_upload_build_filtered(**params)
     filtered_params = params.select { |key, value|
@@ -52,9 +54,6 @@ platform :ios do
    api_key = lane_context[SharedValues::APP_STORE_CONNECT_API_KEY]
    app_identifier = CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)
    bundle_identifier = ENV['BUNDLE_ID'] || app_identifier
-   profile_name = ENV['PROV_PROFILE_NAME'] || 'Github'
-   adhoc = ENV['ADHOC'] === 'true'
-   widget_profile_name = ENV['WIDGET_PROV_PROFILE_NAME'] || 'HackerNewsHomeWidget Distribution'
 
    keychain_name = 'signing'
    keychain_password = 'temp'
@@ -78,21 +77,25 @@ platform :ios do
      keychain_password: keychain_password
    )
 
-    # Fetches and installs provisioning profiles from ASC
-    sigh(
-      adhoc: adhoc,
-      api_key: api_key,
-      readonly: true,
-      provisioning_name: profile_name,
-      app_identifier: bundle_identifier
-    )
-    sigh(
-      adhoc: adhoc,
-      api_key: api_key,
-      readonly: true,
-      provisioning_name: widget_profile_name,
-      app_identifier: 'com.emergetools.hackernews.HackerNewsHomeWidget'
-    )
+    [true, false].each do |adhoc|
+      profile_name = adhoc ? 'HackerNews AdHoc Distribution' : 'Github'
+      widget_profile_name = adhoc ? 'HackerNews AdHoc HomeWidget' : 'HackerNewsHomeWidget Distribution'
+      # Fetches and installs provisioning profiles from ASC
+      sigh(
+        adhoc: adhoc,
+        api_key: api_key,
+        readonly: true,
+        provisioning_name: profile_name,
+        app_identifier: bundle_identifier
+      )
+      sigh(
+        adhoc: adhoc,
+        api_key: api_key,
+        readonly: true,
+        provisioning_name: widget_profile_name,
+        app_identifier: 'com.emergetools.hackernews.HackerNewsHomeWidget'
+      )
+    end
   end
 
   desc 'Build the iOS app'
@@ -166,10 +169,10 @@ platform :ios do
     load_asc_api_key
     prepare_signing
     generate_build_number
-    build_app_for_scheme(build_configuration: 'Release')
+    build_app_for_scheme
     upload_app
     emerge(tag: ENV['EMERGE_BUILD_TYPE'])
-    thin_asset_catalogs
+    export_thinned_build
     sentry_debug_files_upload(
       auth_token: ENV['SENTRY_AUTH_TOKEN'],
       org_slug: 'emerge-tools',
@@ -189,12 +192,12 @@ platform :ios do
   lane :build_upload_emerge do
     load_asc_api_key
     prepare_signing
-    build_app_for_scheme(build_configuration: ENV['CONFIGURATION'])
+    build_app_for_scheme
     emerge(
       tag: ENV['EMERGE_BUILD_TYPE'],
       app_id_suffix: ENV['APP_ID_SUFFIX']
     )
-    thin_asset_catalogs
+    export_thinned_build
     sentry_upload_build_filtered(
       auth_token: ENV['SENTRY_SENTRY_AUTH_TOKEN'],
       org_slug: 'sentry',
@@ -209,49 +212,90 @@ platform :ios do
     emerge_snapshot(scheme: "HackerNews")
   end
 
-  desc 'Thin asset catalogs in XCArchive'
-  lane :thin_asset_catalogs do |options|
-    UI.message('Finding and thinning asset catalogs in XCArchive...')
-
+  desc 'Export thinned build for specific device type'
+  lane :export_thinned_build do |options|
     xcarchive_path = lane_context[SharedValues::XCODEBUILD_ARCHIVE]
     UI.message("Using archive: #{xcarchive_path}")
+    
+    # Device type configuration for thinning, default is iPhone 16 Pro
+    device_type = options[:device_type] || 'iPhone17,1'
+    UI.message("Thinning for device type: #{device_type}")
+    
+    # Export options for thinning
+    export_options = {
+      method: 'ad-hoc',
+      thinning: device_type,  # This creates a thinned build for the specific device type
+      team_id: ENV['APPLE_TEAM_ID']
+    }
+    
+    # Add provisioning profiles if available
+    app_identifier = CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)
+    bundle_identifier = ENV['BUNDLE_ID'] || app_identifier
+    profile_name = 'HackerNews AdHoc Distribution'
+    widget_profile_name = 'HackerNews AdHoc HomeWidget'
+    
+    export_options[:provisioningProfiles] = {
+      bundle_identifier => profile_name,
+      'com.emergetools.hackernews.HackerNewsHomeWidget' => widget_profile_name
+    }
 
-    Dir.chdir('..') do
-      car_files = Dir.glob("#{xcarchive_path}/**/*.app/**/*.car")
+    Dir.chdir("..") do
+      File.open('export_options.plist', 'w') do |file|
+        file.write(Plist::Emit.dump(export_options))
+      end
+      xcsafe = File.join(Gym::ROOT, "lib/assets/wrap_xcodebuild/xcbuild-safe.sh")
+      sh("#{xcsafe} -exportArchive -archivePath #{xcarchive_path} -exportOptionsPlist export_options.plist -exportPath ./build")
 
-      if car_files.empty?
-        UI.message("No .car files found in XCArchive")
-      else
-        car_files.each do |car_file|
-          UI.message("Found asset catalog: #{car_file}")
-
-          backup_file = "#{car_file}.backup"
-          FileUtils.cp(car_file, backup_file)
-
-          command = [
-            'assetutil',
-            '-i', 'phone',
-            '-s', '3',
-            '-p', 'P3',
-            '-M', '4',
-            '-g', 'MTL6,1',
-            '-r', '13.0',
-            car_file,
-            '-o', car_file
-          ]
-
-          success = system(*command)
-
-          if success
-            UI.success("Successfully thinned: #{car_file}")
-            FileUtils.rm(backup_file)
-          else
-            UI.error("Failed to thin: #{car_file}, restoring backup")
-            FileUtils.mv(backup_file, car_file)
+      plist_data = Plist.parse_xml('./build/app-thinning.plist')
+      
+      # Find the variant matching our device and OS version
+      target_ipa_path = nil
+      
+      if plist_data && plist_data['variants']
+        plist_data['variants'].each do |variant|
+          path = variant[0]
+          descriptors = variant[1]['variantDescriptors']
+          descriptors.each do |descriptor|
+            if descriptor['device'] == device_type && descriptor['os-version'] == '18.0'
+              target_ipa_path = path
+              break
+            end
           end
         end
       end
+      
+      ipa_path = File.join('../', target_ipa_path)
+      UI.message("Using IPA: #{ipa_path}")
+      
+      temp_dir = './build/temp_extraction'
+      FileUtils.rm_rf(temp_dir) if Dir.exist?(temp_dir)
+      FileUtils.mkdir_p(temp_dir)
+      
+      # Extract the IPA
+      sh("cd #{temp_dir} && unzip -q '#{ipa_path}'")
+      payload_dir = File.join(temp_dir, 'Payload')
+      app_files = Dir.glob(File.join(payload_dir, '*.app'))
+      
+      if app_files.empty?
+        UI.error("No .app file found in extracted IPA")
+        return
+      end
+      
+      thinned_app_path = app_files.first
+      # Find the original .app in the XCArchive
+      original_app_pattern = File.join(xcarchive_path, 'Products', 'Applications', '*.app')
+      original_app_files = Dir.glob(original_app_pattern)
+      
+      original_app_path = original_app_files.first
+   
+      FileUtils.rm_rf(original_app_path)
+      FileUtils.cp_r(thinned_app_path, original_app_path)
+      
+      # Clean up temporary directory
+      FileUtils.rm_rf(temp_dir)
     end
+    
+    UI.success("Successfully replaced app in XCArchive with thinned build for #{device_type}")
   end
 
   desc 'Build the iOS app only (no uploads)'
