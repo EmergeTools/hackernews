@@ -180,13 +180,6 @@ platform :ios do
       auth_token: ENV['SENTRY_SENTRY_AUTH_TOKEN'],
       org_slug: 'sentry',
       project_slug: 'launchpad-test-ios',
-      pr_number: ENV['GITHUB_PR_NUMBER'],
-      base_ref: ENV['GITHUB_BASE_REF'],
-      base_sha: ENV['GITHUB_BASE_SHA'],
-      head_ref: ENV['GITHUB_HEAD_REF'] || ENV['GITHUB_REF']&.sub('refs/heads/', ''),
-      head_sha: ENV['SENTRY_SHA'],
-      vcs_provider: 'github',
-      head_repo_name: 'EmergeTools/hackernews',
       build_configuration: 'Release',
       log_level: 'debug'
     )
@@ -206,13 +199,6 @@ platform :ios do
       auth_token: ENV['SENTRY_SENTRY_AUTH_TOKEN'],
       org_slug: 'sentry',
       project_slug: 'launchpad-test-ios',
-      pr_number: ENV['GITHUB_PR_NUMBER'],
-      base_ref: ENV['GITHUB_BASE_REF'],
-      base_sha: ENV['GITHUB_BASE_SHA'],
-      head_ref: ENV['GITHUB_HEAD_REF'] || ENV['GITHUB_REF']&.sub('refs/heads/', ''),
-      head_sha: ENV['SENTRY_SHA'],
-      vcs_provider: 'github',
-      head_repo_name: 'EmergeTools/hackernews',
       build_configuration: ENV['CONFIGURATION'],
       log_level: 'debug'
     )
