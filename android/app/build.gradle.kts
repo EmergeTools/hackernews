@@ -134,7 +134,7 @@ sentry {
 
 
   sizeAnalysis {
-    enabled.set(providers.environmentVariable("GITHUB_ACTIONS").isPresent)
+    enabled = providers.environmentVariable("GITHUB_ACTIONS").isPresent
   }
 
   debug.set(true)
