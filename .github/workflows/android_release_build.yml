@@ -23,7 +23,7 @@ jobs:
           distribution: "adopt"
 
       - name: Setup Gradle build action
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v5
 
       - name: Install Bundletool
         run: |
