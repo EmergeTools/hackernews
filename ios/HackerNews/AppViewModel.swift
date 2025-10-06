@@ -10,6 +10,7 @@ import SwiftData
 import SwiftUI
 import Common
 
+
 struct StoryContent {
   var id: Int64
   var title: String
