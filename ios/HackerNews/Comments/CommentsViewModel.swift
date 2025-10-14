@@ -126,6 +126,7 @@ class CommentsViewModel {
       comments: .notStarted,
       auth: auth
     )
+    print(Self.longConstant)
 
     loadInitalPage()
   }
