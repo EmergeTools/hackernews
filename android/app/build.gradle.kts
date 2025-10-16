@@ -48,16 +48,6 @@ android {
       isDebuggable = true
       applicationIdSuffix = ".debug"
     }
-    create("fast") {
-      isDebuggable = false
-      applicationIdSuffix = ".fast"
-      signingConfig = signingConfigs.getByName("debug")
-    }
-    create("benchmark") {
-      initWith(buildTypes.getByName("release"))
-      signingConfig = signingConfigs.getByName("debug")
-      matchingFallbacks += listOf("release")
-    }
     release {
       isDebuggable = false
       isMinifyEnabled = true
@@ -130,14 +120,14 @@ sentry {
   org.set("emerge-tools")
   projectName.set("hackernews-android")
 
-  ignoredVariants.set(listOf("debug", "fast"))
+  ignoredVariants.set(listOf("debug"))
 
 
   sizeAnalysis {
     enabled = providers.environmentVariable("GITHUB_ACTIONS").isPresent
   }
 
-  debug.set(true)
+  debug = true
 }
 
 dependencies {
