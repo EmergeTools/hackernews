@@ -45,11 +45,11 @@ jobs:
           REAPER_API_KEY: ${{ secrets.REAPER_API_KEY }}
           ANDROID_DISTRIBUTION_API_KEY: ${{ secrets.ANDROID_DISTRIBUTION_API_KEY }}
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
-        run: ./gradlew :app:bundleBetaRelease
+        run: ./gradlew :app:bundleBeta
 
       - name: Upload AAB
         uses: actions/upload-artifact@v4
         with:
-          path: ./android/app/build/outputs/bundle/betaRelease/app-betaRelease.aab
+          path: ./android/app/build/outputs/bundle/beta/app-beta.aab
           name: hackernews-beta-${{github.sha}}.aab
           if-no-files-found: error
