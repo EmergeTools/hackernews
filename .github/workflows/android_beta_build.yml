@@ -1,0 +1,53 @@
+name: Android Beta Build
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./android
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up JDK
+        uses: actions/setup-java@v5
+        with:
+          java-version: "17"
+          distribution: "adopt"
+
+      - name: Setup Gradle build action
+        uses: gradle/actions/setup-gradle@v5
+
+      - name: Decode Keystore
+        env:
+          ENCODED_KEYSTORE: ${{ secrets.ANDROID_RELEASE_KEYSTORE_BASE64 }}
+        run: |
+          echo $ENCODED_KEYSTORE > keystore_base64.txt
+          base64 -d keystore_base64.txt > ${{ runner.temp }}/keystore.jks
+
+      - name: Build Beta AAB
+        env:
+          RUNNING_ENV: beta_workflow
+          DECODED_KEYSTORE_PATH: ${{ runner.temp }}/keystore.jks
+          RELEASE_KEY_ALIAS: ${{ secrets.ANDROID_RELEASE_KEY_ALIAS }}
+          RELEASE_KEY_PASSWORD: ${{ secrets.ANDROID_RELEASE_KEY_PASSWORD }}
+          RELEASE_STORE_PASSWORD: ${{ secrets.ANDROID_RELEASE_STORE_PASSWORD }}
+          EMERGE_API_TOKEN: ${{ secrets.EMERGE_API_KEY }}
+          REAPER_API_KEY: ${{ secrets.REAPER_API_KEY }}
+          ANDROID_DISTRIBUTION_API_KEY: ${{ secrets.ANDROID_DISTRIBUTION_API_KEY }}
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
+        run: ./gradlew :app:bundleBetaRelease
+
+      - name: Upload AAB
+        uses: actions/upload-artifact@v4
+        with:
+          path: ./android/app/build/outputs/bundle/betaRelease/app-betaRelease.aab
+          name: hackernews-beta-${{github.sha}}.aab
+          if-no-files-found: error
