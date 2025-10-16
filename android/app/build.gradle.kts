@@ -33,7 +33,7 @@ android {
   }
 
   signingConfigs {
-    if (runningEnv == "release_workflow") {
+    if (runningEnv == "release_workflow" || runningEnv == "beta_workflow") {
       create("release") {
         storeFile = file(System.getenv("DECODED_KEYSTORE_PATH"))
         keyAlias = System.getenv("RELEASE_KEY_ALIAS")
@@ -62,6 +62,14 @@ android {
       } else {
         manifestPlaceholders["emerge.distribution.apiKey"] = System.getenv("ANDROID_DISTRIBUTION_API_KEY") ?: ""
         signingConfig = signingConfigs.getByName("debug")
+      }
+    }
+    create("beta") {
+      initWith(getByName("release"))
+      applicationIdSuffix = ".beta"
+      manifestPlaceholders["emerge.distribution.tag"] = "beta"
+      if (runningEnv == "beta_workflow") {
+        signingConfig = signingConfigs.getByName("release")
       }
     }
   }
