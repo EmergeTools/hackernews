@@ -55,13 +55,15 @@ android {
       proguardFiles(
         getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
       )
+      manifestPlaceholders["emerge.distribution.apiKey"] = System.getenv("ANDROID_DISTRIBUTION_API_KEY") ?: ""
+      signingConfig = signingConfigs.getByName("debug")
+    }
+    create("playStoreRelease") {
+      initWith(getByName("release"))
+      manifestPlaceholders["emerge.distribution.apiKey"] = ""
+      manifestPlaceholders["emerge.distribution.tag"] = "release"
       if (runningEnv == "release_workflow") {
-        manifestPlaceholders["emerge.distribution.apiKey"] = ""
-        manifestPlaceholders["emerge.distribution.tag"] = "release"
         signingConfig = signingConfigs.getByName("release")
-      } else {
-        manifestPlaceholders["emerge.distribution.apiKey"] = System.getenv("ANDROID_DISTRIBUTION_API_KEY") ?: ""
-        signingConfig = signingConfigs.getByName("debug")
       }
     }
     create("beta") {
@@ -110,7 +112,7 @@ emerge {
   reaper {
     // Only enable reaper on release workflow
     if (runningEnv == "release_workflow") {
-      enabledVariants.set(listOf("release"))
+      enabledVariants.set(listOf("playStoreRelease"))
     }
     publishableApiKey.set(System.getenv("REAPER_API_KEY"))
   }
