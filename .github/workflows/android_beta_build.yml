@@ -34,7 +34,7 @@ jobs:
           echo $ENCODED_KEYSTORE > keystore_base64.txt
           base64 -d keystore_base64.txt > ${{ runner.temp }}/keystore.jks
 
-      - name: Build Beta AAB
+      - name: Build Beta APK
         env:
           RUNNING_ENV: beta_workflow
           DECODED_KEYSTORE_PATH: ${{ runner.temp }}/keystore.jks
@@ -45,11 +45,11 @@ jobs:
           REAPER_API_KEY: ${{ secrets.REAPER_API_KEY }}
           ANDROID_DISTRIBUTION_API_KEY: ${{ secrets.ANDROID_DISTRIBUTION_API_KEY }}
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-        run: ./gradlew :app:bundleBeta
+        run: ./gradlew :app:assembleBeta
 
-      - name: Upload AAB
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          path: ./android/app/build/outputs/bundle/beta/app-beta.aab
-          name: hackernews-beta-${{github.sha}}.aab
+          path: ./android/app/build/outputs/apk/beta/app-beta.apk
+          name: hackernews-beta-${{github.sha}}.apk
           if-no-files-found: error
