@@ -38,22 +38,20 @@ jobs:
 
       - name: Build AAB
         env:
-          RUNNING_ENV: release_workflow
           DECODED_KEYSTORE_PATH: ${{ runner.temp }}/keystore.jks
           RELEASE_KEY_ALIAS: ${{ secrets.ANDROID_RELEASE_KEY_ALIAS }}
           RELEASE_KEY_PASSWORD: ${{ secrets.ANDROID_RELEASE_KEY_PASSWORD }}
           RELEASE_STORE_PASSWORD: ${{ secrets.ANDROID_RELEASE_STORE_PASSWORD }}
           EMERGE_API_TOKEN: ${{ secrets.EMERGE_API_KEY }}
           REAPER_API_KEY: ${{ secrets.REAPER_API_KEY }}
-          ANDROID_DISTRIBUTION_API_KEY: ${{ secrets.ANDROID_DISTRIBUTION_API_KEY }}
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
-        run: ./gradlew :app:bundleRelease
+        run: ./gradlew :app:bundlePlayStoreRelease
 
       - name: Convert AAB to APK
         run: |
           java -jar /usr/local/bin/bundletool.jar build-apks \
             --mode=universal \
-            --bundle=./app/build/outputs/bundle/release/app-release.aab \
+            --bundle=./app/build/outputs/bundle/playStoreRelease/app-playStoreRelease.aab \
             --output=${{ runner.temp }}/app-release.apks \
             --ks=${{ runner.temp }}/keystore.jks \
             --ks-pass=pass:${{ secrets.ANDROID_RELEASE_STORE_PASSWORD }} \
@@ -91,4 +89,4 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
-          aws s3 cp app/build/outputs/bundle/release/app-release.aab s3://hn-artifacts/app-release-${{ env.VERSION_NAME }}.aab
+          aws s3 cp app/build/outputs/bundle/playStoreRelease/app-playStoreRelease.aab s3://hn-artifacts/app-release-${{ env.VERSION_NAME }}.aab
