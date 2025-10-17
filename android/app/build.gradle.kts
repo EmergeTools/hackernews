@@ -10,8 +10,6 @@ plugins {
   alias(libs.plugins.androidx.room)
 }
 
-val runningEnv: String? = System.getenv("RUNNING_ENV")
-
 android {
   namespace = "com.emergetools.hackernews"
   compileSdk = 36
@@ -33,9 +31,10 @@ android {
   }
 
   signingConfigs {
-    if (runningEnv == "release_workflow" || runningEnv == "beta_workflow") {
+    val keystorePath = System.getenv("DECODED_KEYSTORE_PATH")
+    if (keystorePath != null) {
       create("release") {
-        storeFile = file(System.getenv("DECODED_KEYSTORE_PATH"))
+        storeFile = file(keystorePath)
         keyAlias = System.getenv("RELEASE_KEY_ALIAS")
         keyPassword = System.getenv("RELEASE_KEY_PASSWORD")
         storePassword = System.getenv("RELEASE_STORE_PASSWORD")
@@ -62,17 +61,13 @@ android {
       initWith(getByName("release"))
       manifestPlaceholders["emerge.distribution.apiKey"] = ""
       manifestPlaceholders["emerge.distribution.tag"] = "release"
-      if (runningEnv == "release_workflow") {
-        signingConfig = signingConfigs.getByName("release")
-      }
+      signingConfig = signingConfigs.findByName("release")
     }
     create("beta") {
       initWith(getByName("release"))
       applicationIdSuffix = ".beta"
       manifestPlaceholders["emerge.distribution.tag"] = "beta"
-      if (runningEnv == "beta_workflow") {
-        signingConfig = signingConfigs.getByName("release")
-      }
+      signingConfig = signingConfigs.findByName("release")
     }
   }
   buildFeatures {
@@ -110,10 +105,7 @@ emerge {
   }
 
   reaper {
-    // Only enable reaper on release workflow
-    if (runningEnv == "release_workflow") {
-      enabledVariants.set(listOf("playStoreRelease"))
-    }
+    enabledVariants.set(listOf("playStoreRelease"))
     publishableApiKey.set(System.getenv("REAPER_API_KEY"))
   }
 
