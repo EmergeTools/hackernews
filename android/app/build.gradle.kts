@@ -54,19 +54,15 @@ android {
       proguardFiles(
         getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
       )
-      manifestPlaceholders["emerge.distribution.apiKey"] = System.getenv("ANDROID_DISTRIBUTION_API_KEY") ?: ""
       signingConfig = signingConfigs.getByName("debug")
     }
     create("playStoreRelease") {
       initWith(getByName("release"))
-      manifestPlaceholders["emerge.distribution.apiKey"] = ""
-      manifestPlaceholders["emerge.distribution.tag"] = "release"
       signingConfig = signingConfigs.findByName("release")
     }
     create("beta") {
       initWith(getByName("release"))
       applicationIdSuffix = ".beta"
-      manifestPlaceholders["emerge.distribution.tag"] = "beta"
       signingConfig = signingConfigs.findByName("release")
     }
   }
