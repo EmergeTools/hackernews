@@ -89,9 +89,11 @@ fun SettingsScreen(
         }
       )
       Spacer(modifier = Modifier.height(8.dp))
-      SettingsSectionLabel("Version")
-      VersionCard()
-      Spacer(modifier = Modifier.height(8.dp))
+      if (Sentry.distribution().isEnabled) {
+        SettingsSectionLabel("Version")
+        VersionCard()
+        Spacer(modifier = Modifier.height(8.dp))
+      }
       SettingsSectionLabel("About")
       BuiltByCard {
         navigation(SettingsNavigation.GoToSettingsLink("https://www.emergetools.com"))

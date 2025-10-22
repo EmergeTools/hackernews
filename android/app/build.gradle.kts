@@ -117,7 +117,7 @@ sentry {
 
   ignoredVariants.set(listOf("debug"))
 
-  autoInstallation.sentryVersion = "8.24.0-alpha.2"
+  autoInstallation.sentryVersion = "8.24.0"
 
   sizeAnalysis {
     enabled = providers.environmentVariable("GITHUB_ACTIONS").isPresent
