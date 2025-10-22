@@ -21,9 +21,6 @@ android {
     versionCode = 14
     versionName = "1.0.3"
 
-    manifestPlaceholders["emerge.distribution.apiKey"] = ""
-    manifestPlaceholders["emerge.distribution.tag"] = ""
-
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables {
       useSupportLibrary = true
@@ -120,9 +117,14 @@ sentry {
 
   ignoredVariants.set(listOf("debug"))
 
+  autoInstallation.sentryVersion = "8.24.0"
 
   sizeAnalysis {
     enabled = providers.environmentVariable("GITHUB_ACTIONS").isPresent
+  }
+
+  distribution {
+    enabledVariants.add("beta")
   }
 
   debug = true
@@ -175,5 +177,4 @@ dependencies {
   debugImplementation(libs.androidx.ui.test.manifest)
 
   implementation(libs.emerge.reaper)
-  implementation(libs.emerge.distribution)
 }

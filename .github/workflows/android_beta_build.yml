@@ -41,6 +41,7 @@ jobs:
           EMERGE_API_TOKEN: ${{ secrets.EMERGE_API_KEY }}
           REAPER_API_KEY: ${{ secrets.REAPER_API_KEY }}
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_DISTRIBUTION_AUTH_TOKEN: ${{ secrets.SENTRY_DISTRIBUTION_AUTH_TOKEN }}
         run: ./gradlew :app:assembleBeta
 
       - name: Upload APK
