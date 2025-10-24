@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import SentrySwiftUI
 
 struct BookmarksScreen: View {
   @Binding var model: AppViewModel
@@ -52,6 +53,7 @@ struct BookmarksScreen: View {
       }
       .frame(height: 60)
     }
+    .sentryTrace("BookmarksScreen")
   }
 }
 
