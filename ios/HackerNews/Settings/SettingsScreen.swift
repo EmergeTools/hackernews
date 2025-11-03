@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import Common
+import SentrySwiftUI
 
 struct SettingsScreen: View {
   @Binding var model: AppViewModel
@@ -251,6 +252,7 @@ struct SettingsScreen: View {
     .sheet(isPresented: $isShowingFeedback) {
       SendFeedbackScreen()
     }
+    .sentryTrace("SettingsScreen")
   }
 }
 

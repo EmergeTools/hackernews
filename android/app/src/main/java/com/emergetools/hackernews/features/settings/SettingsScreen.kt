@@ -1,7 +1,5 @@
 package com.emergetools.hackernews.features.settings
 
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -31,14 +29,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat.startActivity
-import com.emergetools.distribution.Distribution
-import com.emergetools.distribution.UpdateStatus
 import com.emergetools.hackernews.R
 import com.emergetools.hackernews.features.settings.components.BuiltByCard
 import com.emergetools.hackernews.features.settings.components.LoginCard
@@ -51,7 +45,11 @@ import com.emergetools.hackernews.ui.theme.HackerNewsTheme
 import com.emergetools.hackernews.ui.theme.HackerOrange
 import com.emergetools.hackernews.ui.theme.HackerRed
 import com.emergetools.snapshots.annotations.EmergeAppStoreSnapshot
+import io.sentry.Sentry
+import io.sentry.UpdateStatus
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @Composable
 fun SettingsScreen(
@@ -91,7 +89,7 @@ fun SettingsScreen(
         }
       )
       Spacer(modifier = Modifier.height(8.dp))
-      if (Distribution.isEnabled()) {
+      if (Sentry.distribution().isEnabled) {
         SettingsSectionLabel("Version")
         VersionCard()
         Spacer(modifier = Modifier.height(8.dp))
@@ -190,7 +188,6 @@ fun SettingsScreen(
 
 @Composable
 private fun VersionCard() {
-  val context = LocalContext.current
   val scope = rememberCoroutineScope()
   var isLoading by remember { mutableStateOf(false) }
   var status by remember { mutableStateOf<UpdateStatus?>(null) }
@@ -214,7 +211,8 @@ private fun VersionCard() {
       true -> "Loading..."
       else -> when (status) {
         is UpdateStatus.UpToDate -> "Up to date!"
-        is UpdateStatus.Error -> (status as UpdateStatus.Error).message
+        is UpdateStatus.UpdateError -> (status as UpdateStatus.UpdateError).message
+        is UpdateStatus.NoNetwork -> (status as UpdateStatus.NoNetwork).message
         is UpdateStatus.NewRelease -> "New release!"
         else -> "Check for updates"
       }
@@ -223,11 +221,12 @@ private fun VersionCard() {
     scope.launch {
       isLoading = true
       status = null
-      status = Distribution.checkForUpdate(context)
+      status = withContext(Dispatchers.IO) {
+        Sentry.distribution().checkForUpdateBlocking()
+      }
       val theStatus = status
       if (theStatus is UpdateStatus.NewRelease) {
-        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(theStatus.info.downloadUrl))
-        context.startActivity(browserIntent)
+        Sentry.distribution().downloadUpdate(theStatus.info)
       }
       isLoading = false
     }

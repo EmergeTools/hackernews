@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import Common
+import SentrySwiftUI
 
 struct FeedScreen: View {
 
@@ -63,6 +64,7 @@ struct FeedScreen: View {
         }
       }
       .tabViewStyle(.page(indexDisplayMode: .never))
+      .sentryTrace("FeedScreen")
     }
   }
 }
@@ -125,6 +127,7 @@ private struct FeedListView: View {
       try? await Task.sleep(for: .milliseconds(300))
       await model.fetchInitialPosts(feedType: model.feedState.selectedFeed)
     }
+    .sentryTrace("FeedListView")
   }
 }
 

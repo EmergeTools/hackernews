@@ -22,6 +22,7 @@
 		A4D28AF02C237E2A007F20D0 /* SnapshottingTests in Frameworks */ = {isa = PBXBuildFile; productRef = A4D28AEF2C237E2A007F20D0 /* SnapshottingTests */; };
 		A9DF68FF511E48048B0A703D /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = 673236B0A4D04137A0D80A76 /* Sentry */; };
 		C3AC6AD92CB6E8F7006BD22D /* SnapshottingTests in Frameworks */ = {isa = PBXBuildFile; productRef = C3AC6AD82CB6E8F7006BD22D /* SnapshottingTests */; };
+		F40E42A02EA80E1600E53876 /* SentrySwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = F40E429F2EA80E1600E53876 /* SentrySwiftUI */; };
 		F45F6EA52D4D1E50003FA9A3 /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = F45F6EA42D4D1E50003FA9A3 /* Common */; };
 		F45F6EA72D4D1E57003FA9A3 /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = F45F6EA62D4D1E57003FA9A3 /* Common */; };
 		F45F6F4A2D4D2185003FA9A3 /* Common in Embed Frameworks */ = {isa = PBXBuildFile; productRef = F45F6EA42D4D1E50003FA9A3 /* Common */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -192,6 +193,7 @@
 				F48E9ECB2D4D691600FD8B30 /* ETDistribution in Frameworks */,
 				A4D28AEE2C237E2A007F20D0 /* SnapshotPreferences in Frameworks */,
 				F45F703E2D4D2695003FA9A3 /* Fonts in Frameworks */,
+				F40E42A02EA80E1600E53876 /* SentrySwiftUI in Frameworks */,
 				A495B2952BFEA11B00A8A8A9 /* Reaper in Frameworks */,
 				A9DF68FF511E48048B0A703D /* Sentry in Frameworks */,
 			);
@@ -370,6 +372,7 @@
 				F45F6EA42D4D1E50003FA9A3 /* Common */,
 				F45F703D2D4D2695003FA9A3 /* Fonts */,
 				F48E9ECA2D4D691600FD8B30 /* ETDistribution */,
+				F40E429F2EA80E1600E53876 /* SentrySwiftUI */,
 			);
 			productName = HackerNews;
 			productReference = A42705792A4293B10057E439 /* HackerNews.app */;
@@ -1219,7 +1222,7 @@
 			repositoryURL = "https://github.com/getsentry/sentry-cocoa/";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 8.54.0;
+				minimumVersion = 8.57.0;
 			};
 		};
 		A42271692DE78DEF002F03D5 /* XCRemoteSwiftPackageReference "faultordering" */ = {
@@ -1317,6 +1320,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A4D28AEC2C237E2A007F20D0 /* XCRemoteSwiftPackageReference "SnapshotPreviews-iOS" */;
 			productName = SnapshottingTests;
+		};
+		F40E429F2EA80E1600E53876 /* SentrySwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 995A2BEDEF224F7085D3DB13 /* XCRemoteSwiftPackageReference "sentry-cocoa" */;
+			productName = SentrySwiftUI;
 		};
 		F45F6EA42D4D1E50003FA9A3 /* Common */ = {
 			isa = XCSwiftPackageProductDependency;

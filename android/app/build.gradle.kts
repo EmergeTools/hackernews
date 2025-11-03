@@ -10,8 +10,6 @@ plugins {
   alias(libs.plugins.androidx.room)
 }
 
-val runningEnv: String? = System.getenv("RUNNING_ENV")
-
 android {
   namespace = "com.emergetools.hackernews"
   compileSdk = 36
@@ -23,9 +21,6 @@ android {
     versionCode = 14
     versionName = "1.0.3"
 
-    manifestPlaceholders["emerge.distribution.apiKey"] = ""
-    manifestPlaceholders["emerge.distribution.tag"] = ""
-
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables {
       useSupportLibrary = true
@@ -33,9 +28,10 @@ android {
   }
 
   signingConfigs {
-    if (runningEnv == "release_workflow") {
+    val keystorePath = System.getenv("DECODED_KEYSTORE_PATH")
+    if (keystorePath != null) {
       create("release") {
-        storeFile = file(System.getenv("DECODED_KEYSTORE_PATH"))
+        storeFile = file(keystorePath)
         keyAlias = System.getenv("RELEASE_KEY_ALIAS")
         keyPassword = System.getenv("RELEASE_KEY_PASSWORD")
         storePassword = System.getenv("RELEASE_STORE_PASSWORD")
@@ -48,16 +44,6 @@ android {
       isDebuggable = true
       applicationIdSuffix = ".debug"
     }
-    create("fast") {
-      isDebuggable = false
-      applicationIdSuffix = ".fast"
-      signingConfig = signingConfigs.getByName("debug")
-    }
-    create("benchmark") {
-      initWith(buildTypes.getByName("release"))
-      signingConfig = signingConfigs.getByName("debug")
-      matchingFallbacks += listOf("release")
-    }
     release {
       isDebuggable = false
       isMinifyEnabled = true
@@ -65,14 +51,16 @@ android {
       proguardFiles(
         getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
       )
-      if (runningEnv == "release_workflow") {
-        manifestPlaceholders["emerge.distribution.apiKey"] = ""
-        manifestPlaceholders["emerge.distribution.tag"] = "release"
-        signingConfig = signingConfigs.getByName("release")
-      } else {
-        manifestPlaceholders["emerge.distribution.apiKey"] = System.getenv("ANDROID_DISTRIBUTION_API_KEY") ?: ""
-        signingConfig = signingConfigs.getByName("debug")
-      }
+      signingConfig = signingConfigs.getByName("debug")
+    }
+    create("playStoreRelease") {
+      initWith(getByName("release"))
+      signingConfig = signingConfigs.findByName("release")
+    }
+    create("beta") {
+      initWith(getByName("release"))
+      applicationIdSuffix = ".beta"
+      signingConfig = signingConfigs.findByName("release")
     }
   }
   buildFeatures {
@@ -110,10 +98,7 @@ emerge {
   }
 
   reaper {
-    // Only enable reaper on release workflow
-    if (runningEnv == "release_workflow") {
-      enabledVariants.set(listOf("release"))
-    }
+    enabledVariants.set(listOf("playStoreRelease"))
     publishableApiKey.set(System.getenv("REAPER_API_KEY"))
   }
 
@@ -130,14 +115,20 @@ sentry {
   org.set("emerge-tools")
   projectName.set("hackernews-android")
 
-  ignoredVariants.set(listOf("debug", "fast"))
+  ignoredVariants.set(listOf("debug"))
 
+  autoInstallation.sentryVersion = "8.24.0"
 
   sizeAnalysis {
     enabled = providers.environmentVariable("GITHUB_ACTIONS").isPresent
   }
 
-  debug.set(true)
+  distribution {
+    enabled = providers.environmentVariable("GITHUB_ACTIONS").isPresent
+    updateSdkVariants.add("beta")
+  }
+
+  debug = true
 }
 
 dependencies {
@@ -187,5 +178,4 @@ dependencies {
   debugImplementation(libs.androidx.ui.test.manifest)
 
   implementation(libs.emerge.reaper)
-  implementation(libs.emerge.distribution)
 }
