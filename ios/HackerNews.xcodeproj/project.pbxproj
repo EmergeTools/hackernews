@@ -784,6 +784,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "\"$(PROJECT_DIR)/Frameworks/Reaper.xcframework\"";
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 3.10;
 				OTHER_LDFLAGS = "-fprofile-instr-generate";
 				OTHER_SWIFT_FLAGS = "-profile-generate -profile-coverage-mapping";
@@ -828,6 +829,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "\"$(PROJECT_DIR)/Frameworks/Reaper.xcframework\"";
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 3.10;
 				PRODUCT_BUNDLE_IDENTIFIER = com.emergetools.hackernews;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1067,6 +1069,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "\"$(PROJECT_DIR)/Frameworks/Reaper.xcframework\"";
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 3.10;
 				PRODUCT_BUNDLE_IDENTIFIER = com.emergetools.hackernews;
 				PRODUCT_NAME = "$(TARGET_NAME)";
