@@ -1,0 +1,168 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "" : {
+
+    },
+    "@%@" : {
+
+    },
+    "@humdinger" : {
+
+    },
+    "%lld" : {
+
+    },
+    "2h ago" : {
+
+    },
+    "45" : {
+
+    },
+    "99" : {
+
+    },
+    "About" : {
+
+    },
+    "Add a comment" : {
+
+    },
+    "Appearance" : {
+
+    },
+    "Ask" : {
+
+    },
+    "Best" : {
+
+    },
+    "Bookmark" : {
+
+    },
+    "Bookmarks" : {
+
+    },
+    "By signing in, you agree to the " : {
+
+    },
+    "Check for Updates" : {
+
+    },
+    "Collapse" : {
+
+    },
+    "Comment Font Size (%@pt)" : {
+
+    },
+    "Email" : {
+
+    },
+    "Follow Emerge" : {
+
+    },
+    "Follow Supergooey" : {
+
+    },
+    "Font Family" : {
+
+    },
+    "Font Style" : {
+
+    },
+    "Hacker News Guidelines" : {
+
+    },
+    "IBM Plex" : {
+
+    },
+    "Invalid username or password" : {
+
+    },
+    "Login" : {
+
+    },
+    "Logout" : {
+
+    },
+    "Long-press a story to bookmark it." : {
+
+    },
+    "Name" : {
+
+    },
+    "New" : {
+
+    },
+    "Open in browser" : {
+
+    },
+    "Password" : {
+
+    },
+    "Privacy Policy" : {
+
+    },
+    "Profile" : {
+
+    },
+    "Remove Bookmark" : {
+
+    },
+    "Report Comment" : {
+
+    },
+    "Report Post" : {
+
+    },
+    "Sans" : {
+
+    },
+    "Sans + Mono" : {
+
+    },
+    "Send Feedback" : {
+
+    },
+    "Settings" : {
+
+    },
+    "Share" : {
+
+    },
+    "Show" : {
+
+    },
+    "Some Short Title" : {
+
+    },
+    "Submit" : {
+
+    },
+    "System" : {
+
+    },
+    "Thank you for your feedback!" : {
+
+    },
+    "Title Font Size (%@pt)" : {
+
+    },
+    "Top" : {
+
+    },
+    "Username" : {
+
+    },
+    "Words of wisdom" : {
+
+    },
+    "Your Feedback" : {
+
+    },
+    "Your Info (optional)" : {
+
+    }
+  },
+  "version" : "1.1"
+}
