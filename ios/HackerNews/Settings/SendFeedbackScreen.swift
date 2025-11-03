@@ -19,15 +19,15 @@ struct SendFeedbackScreen: View {
   var body: some View {
     NavigationStack {
       Form {
-        Section("Your Info (optional)") {
-          TextField("Name", text: $name)
-          TextField("Email", text: $email)
+        Section(String(localized: "feedback.section.yourInfo")) {
+          TextField(String(localized: "feedback.field.name"), text: $name)
+          TextField(String(localized: "feedback.field.email"), text: $email)
             .keyboardType(.emailAddress)
             .textContentType(.emailAddress)
             .autocapitalization(.none)
         }
 
-        Section("Your Feedback") {
+        Section(String(localized: "feedback.section.yourFeedback")) {
           TextEditor(text: $message)
             .frame(minHeight: 150)
         }
@@ -35,7 +35,7 @@ struct SendFeedbackScreen: View {
         if isSubmitted {
           Section {
             Label(
-              "Thank you for your feedback!",
+              String(localized: "feedback.success"),
               systemImage: "checkmark.seal.fill"
             )
             .foregroundColor(.green)
@@ -44,7 +44,7 @@ struct SendFeedbackScreen: View {
           }
         }
       }
-      .navigationTitle("Send Feedback")
+      .navigationTitle(String(localized: "feedback.title"))
       .navigationBarTitleDisplayMode(.inline)
       .animation(.spring(), value: isSubmitted)
       .toolbar {
@@ -62,7 +62,7 @@ struct SendFeedbackScreen: View {
     }
     .safeAreaInset(edge: .bottom) {
       Button(action: { sendFeedback() }) {
-        Text("Submit")
+        Text("feedback.button.submit")
           .font(.ibmPlexMono(.bold, size: 16))
           .frame(maxWidth: .infinity)
           .frame(height: 40)

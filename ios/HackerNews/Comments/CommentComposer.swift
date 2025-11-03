@@ -16,11 +16,11 @@ struct CommentComposer: View {
       HStack(alignment: .center) {
         Image(systemName: "message.fill")
           .font(.system(size: 12))
-        Text("Add a comment")
+        Text("comments.composer.title")
           .font(.ibmPlexSans(.medium, size: 12))
       }
       TextField(
-        "Words of wisdom",
+        String(localized: "comments.composer.placeholder"),
         text: $state.text
       )
       .textFieldStyle(.roundedBorder)

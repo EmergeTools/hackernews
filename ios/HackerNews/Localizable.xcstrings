@@ -22,146 +22,547 @@
     "99" : {
 
     },
-    "About" : {
-
+    "auth.agreement.guidelines" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hacker News Guidelines"
+          }
+        }
+      }
     },
-    "Add a comment" : {
-
+    "auth.agreement.prefix" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "By signing in, you agree to the "
+          }
+        }
+      }
     },
-    "Appearance" : {
-
+    "auth.button.login" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Login"
+          }
+        }
+      }
     },
-    "Ask" : {
-
+    "auth.button.logout" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logout"
+          }
+        }
+      }
     },
-    "Best" : {
-
+    "auth.button.submit" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Submit"
+          }
+        }
+      }
     },
-    "Bookmark" : {
-
+    "auth.error.invalidCredentials" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invalid username or password"
+          }
+        }
+      }
     },
-    "Bookmarks" : {
-
+    "auth.field.password" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Password"
+          }
+        }
+      }
     },
-    "By signing in, you agree to the " : {
-
+    "auth.field.username" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Username"
+          }
+        }
+      }
     },
-    "Check for Updates" : {
-
+    "bookmarks.action.bookmark" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bookmark"
+          }
+        }
+      }
     },
-    "Collapse" : {
-
+    "bookmarks.action.remove" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove Bookmark"
+          }
+        }
+      }
     },
-    "Comment Font Size (%@pt)" : {
-
+    "bookmarks.emptyState" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Long-press a story to bookmark it."
+          }
+        }
+      }
     },
-    "Email" : {
-
+    "bookmarks.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bookmarks"
+          }
+        }
+      }
     },
-    "Follow Emerge" : {
-
+    "comments.action.collapse" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Collapse"
+          }
+        }
+      }
     },
-    "Follow Supergooey" : {
-
+    "comments.action.report" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Report Comment"
+          }
+        }
+      }
     },
-    "Font Family" : {
-
+    "comments.action.show" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show"
+          }
+        }
+      }
     },
-    "Font Style" : {
-
+    "comments.composer.placeholder" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Words of wisdom"
+          }
+        }
+      }
     },
-    "Hacker News Guidelines" : {
-
+    "comments.composer.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add a comment"
+          }
+        }
+      }
     },
-    "IBM Plex" : {
-
+    "feed.type.ask" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ask"
+          }
+        }
+      }
     },
-    "Invalid username or password" : {
-
+    "feed.type.best" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Best"
+          }
+        }
+      }
     },
-    "Login" : {
-
+    "feed.type.new" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New"
+          }
+        }
+      }
     },
-    "Logout" : {
-
+    "feed.type.show" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show"
+          }
+        }
+      }
     },
-    "Long-press a story to bookmark it." : {
-
+    "feed.type.top" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Top"
+          }
+        }
+      }
     },
-    "Name" : {
-
+    "feedback.button.submit" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Submit"
+          }
+        }
+      }
     },
-    "New" : {
-
+    "feedback.field.email" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email"
+          }
+        }
+      }
     },
-    "Open in browser" : {
-
+    "feedback.field.name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name"
+          }
+        }
+      }
     },
-    "Password" : {
-
+    "feedback.section.yourFeedback" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your Feedback"
+          }
+        }
+      }
     },
-    "Privacy Policy" : {
-
+    "feedback.section.yourInfo" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your Info (optional)"
+          }
+        }
+      }
     },
-    "Profile" : {
-
+    "feedback.success" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thank you for your feedback!"
+          }
+        }
+      }
     },
-    "Remove Bookmark" : {
-
+    "feedback.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send Feedback"
+          }
+        }
+      }
     },
-    "Report Comment" : {
-
+    "post.action.report" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Report Post"
+          }
+        }
+      }
     },
-    "Report Post" : {
-
+    "settings.commentFontSize" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comment Font Size (%@pt)"
+          }
+        }
+      }
     },
-    "Sans" : {
-
+    "settings.row.checkForUpdates" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check for Updates"
+          }
+        }
+      }
     },
-    "Sans + Mono" : {
-
+    "settings.row.followEmerge" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Follow Emerge"
+          }
+        }
+      }
     },
-    "Send Feedback" : {
-
+    "settings.row.followSupergooey" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Follow Supergooey"
+          }
+        }
+      }
     },
-    "Settings" : {
-
+    "settings.row.fontFamily" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Font Family"
+          }
+        }
+      }
     },
-    "Share" : {
-
+    "settings.row.fontStyle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Font Style"
+          }
+        }
+      }
     },
-    "Show" : {
-
+    "settings.row.privacyPolicy" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacy Policy"
+          }
+        }
+      }
+    },
+    "settings.row.sendFeedback" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send Feedback"
+          }
+        }
+      }
+    },
+    "settings.section.about" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "About"
+          }
+        }
+      }
+    },
+    "settings.section.appearance" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Appearance"
+          }
+        }
+      }
+    },
+    "settings.section.profile" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profile"
+          }
+        }
+      }
+    },
+    "settings.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
+          }
+        }
+      }
+    },
+    "settings.titleFontSize" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Title Font Size (%@pt)"
+          }
+        }
+      }
     },
     "Some Short Title" : {
 
     },
-    "Submit" : {
-
+    "theme.fontFamily.ibmPlex" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "IBM Plex"
+          }
+        }
+      }
     },
-    "System" : {
-
+    "theme.fontFamily.system" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "System"
+          }
+        }
+      }
     },
-    "Thank you for your feedback!" : {
-
+    "theme.fontStyle.sans" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sans"
+          }
+        }
+      }
     },
-    "Title Font Size (%@pt)" : {
-
+    "theme.fontStyle.sansMono" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sans + Mono"
+          }
+        }
+      }
     },
-    "Top" : {
-
+    "web.action.openInBrowser" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open in browser"
+          }
+        }
+      }
     },
-    "Username" : {
-
-    },
-    "Words of wisdom" : {
-
-    },
-    "Your Feedback" : {
-
-    },
-    "Your Info (optional)" : {
-
+    "web.action.share" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share"
+          }
+        }
+      }
     }
   },
   "version" : "1.1"

@@ -91,7 +91,7 @@ private struct FeedListView: View {
                 model.toggleBookmark(content)
               } label: {
                 Label(
-                  content.bookmarked ? "Remove Bookmark" : "Bookmark",
+                  content.bookmarked ? String(localized: "bookmarks.action.remove") : String(localized: "bookmarks.action.bookmark"),
                   systemImage: content.bookmarked ? "book.fill" : "book"
                 )
               }

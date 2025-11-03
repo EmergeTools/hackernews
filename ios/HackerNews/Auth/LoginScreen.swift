@@ -39,7 +39,7 @@ struct LoginScreen: View {
       Spacer()
         .frame(maxHeight: 16)
 
-      TextField("Username", text: $loginState.username)
+      TextField(String(localized: "auth.field.username"), text: $loginState.username)
         .textInputAutocapitalization(.none)
         .padding()
         .background(Color.background)
@@ -49,7 +49,7 @@ struct LoginScreen: View {
             .stroke(Color.background.opacity(0.5), lineWidth: 1)
         )
 
-      SecureField("Password", text: $loginState.password)
+      SecureField(String(localized: "auth.field.password"), text: $loginState.password)
         .padding()
         .background(Color.background)
         .clipShape(RoundedRectangle(cornerRadius: 12))
@@ -59,16 +59,16 @@ struct LoginScreen: View {
         )
 
       if loginState.showError {
-        Text("Invalid username or password")
+        Text("auth.error.invalidCredentials")
           .foregroundColor(.red)
           .font(.ibmPlexMono(.regular, size: 14))
       }
 
       
       HStack(spacing: 0) {
-        Text("By signing in, you agree to the ")
+        Text("auth.agreement.prefix")
           .font(.ibmPlexSans(.regular, size: 12))
-        Text("Hacker News Guidelines")
+        Text("auth.agreement.guidelines")
           .font(.ibmPlexSans(.regular, size: 12))
           .foregroundColor(.blue)
           .underline()
@@ -97,7 +97,7 @@ struct LoginScreen: View {
           }
         },
         label: {
-          Text("Submit")
+          Text("auth.button.submit")
             .font(.ibmPlexMono(.bold, size: 16))
             .frame(maxWidth: .infinity)
             .frame(height: 40)
