@@ -57,10 +57,10 @@ struct CommentRow: View {
           .clipShape(Capsule())
           
           Menu {
-            Button("Report Comment") {
+            Button(String(localized: "comments.action.report")) {
               flagComment(state)
             }
-            Button(state.hidden ? "Show" : "Collapse") {
+            Button(state.hidden ? String(localized: "comments.action.show") : String(localized: "comments.action.collapse")) {
               toggleComment()
             }
           } label: {

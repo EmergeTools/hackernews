@@ -59,10 +59,10 @@ struct WebViewContainer: View {
           Button {
             openURL(self.model.url)
             } label: {
-              Label("Open in browser", systemImage: "safari")
+              Label(String(localized: "web.action.openInBrowser"), systemImage: "safari")
             }
           ShareLink(item: self.model.url) {
-            Label("Share", systemImage: "square.and.arrow.up")
+            Label(String(localized: "web.action.share"), systemImage: "square.and.arrow.up")
           }
         } label: {
           Image(systemName: "ellipsis")

@@ -15,15 +15,15 @@ public enum FeedType: CaseIterable {
   public var title: String {
     switch self {
     case .top:
-      return "Top"
+      return String(localized: "feed.type.top", bundle: .main)
     case .new:
-      return "New"
+      return String(localized: "feed.type.new", bundle: .main)
     case .best:
-      return "Best"
+      return String(localized: "feed.type.best", bundle: .main)
     case .ask:
-      return "Ask"
+      return String(localized: "feed.type.ask", bundle: .main)
     case .show:
-      return "Show"
+      return String(localized: "feed.type.show", bundle: .main)
     }
   }
 }

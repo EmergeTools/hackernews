@@ -64,7 +64,7 @@ struct CommentsHeader: View {
         .clipShape(Capsule())
         
         Menu {
-          Button("Report Post", action: flagPost)
+          Button(String(localized: "post.action.report"), action: flagPost)
         } label: {
           Image(systemName: "ellipsis")
             .font(.system(size: 12))

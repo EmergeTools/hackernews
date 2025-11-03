@@ -19,7 +19,7 @@ struct SettingsScreen: View {
     ScrollView {
       LazyVStack(spacing: 8) {
         VStack(alignment: .leading, spacing: 4) {
-          Text("Profile")
+          Text("settings.section.profile")
             .font(theme.themedFont(size: 12, style: .sans, weight: .medium))
           LoginRow(loggedIn: model.authState == AuthState.loggedIn) {
             model.gotoLogin()
@@ -27,10 +27,10 @@ struct SettingsScreen: View {
         }
 
         VStack(alignment: .leading, spacing: 4) {
-          Text("About")
+          Text("settings.section.about")
             .font(theme.themedFont(size: 12, style: .sans, weight: .medium))
           SettingsRow(
-            text: "Follow Emerge",
+            text: String(localized: "settings.row.followEmerge"),
             leadingIcon: {
               Image(systemName: "bird.fill")
                 .font(.system(size: 12))
@@ -50,7 +50,7 @@ struct SettingsScreen: View {
           )
 
           SettingsRow(
-            text: "Follow Supergooey",
+            text: String(localized: "settings.row.followSupergooey"),
             leadingIcon: {
               Image(systemName: "bird.fill")
                 .font(.system(size: 12))
@@ -70,7 +70,7 @@ struct SettingsScreen: View {
           
 #if ADHOC
           SettingsRow(
-            text: "Check for Updates",
+            text: String(localized: "settings.row.checkForUpdates"),
             leadingIcon: {
               Image(systemName: "icloud.and.arrow.down")
                 .font(.system(size: 12))
@@ -89,7 +89,7 @@ struct SettingsScreen: View {
 #endif
 
           SettingsRow(
-            text: "Send Feedback",
+            text: String(localized: "settings.row.sendFeedback"),
             leadingIcon: {
               Image(systemName: "exclamationmark.triangle.fill")
                 .font(.system(size: 12))
@@ -107,7 +107,7 @@ struct SettingsScreen: View {
           )
 
           SettingsRow(
-            text: "Privacy Policy",
+            text: String(localized: "settings.row.privacyPolicy"),
             leadingIcon: {
               Image(systemName: "lock.fill")
                 .font(.system(size: 12))
@@ -131,11 +131,11 @@ struct SettingsScreen: View {
 
         VStack(alignment: .leading, spacing: 4) {
           @Bindable var theme = theme
-          Text("Appearance")
+          Text("settings.section.appearance")
             .font(.ibmPlexSans(.medium, size: 12))
           
           SettingsRow(
-            text: "Font Family",
+            text: String(localized: "settings.row.fontFamily"),
             leadingIcon: {
               Image(systemName: "textformat")
                 .font(.system(size: 12))
@@ -143,10 +143,10 @@ struct SettingsScreen: View {
             },
             trailingIcon: {
               Menu {
-                Button("System") {
+                Button(String(localized: "theme.fontFamily.system")) {
                   theme.fontFamilyPreference = .system
                 }
-                Button("IBM Plex") {
+                Button(String(localized: "theme.fontFamily.ibmPlex")) {
                   theme.fontFamilyPreference = .ibmPlex
                 }
               } label: {
@@ -165,7 +165,7 @@ struct SettingsScreen: View {
           )
           
           SettingsRow(
-            text: "Font Style",
+            text: String(localized: "settings.row.fontStyle"),
             leadingIcon: {
               Image(systemName: "textformat")
                 .font(.system(size: 12))
@@ -173,10 +173,10 @@ struct SettingsScreen: View {
             },
             trailingIcon: {
               Menu {
-                Button("Sans") {
+                Button(String(localized: "theme.fontStyle.sans")) {
                   theme.fontStylePreference = .sans
                 }
-                Button("Sans + Mono") {
+                Button(String(localized: "theme.fontStyle.sansMono")) {
                   theme.fontStylePreference = .sansAndMono
                 }
               } label: {
@@ -195,8 +195,7 @@ struct SettingsScreen: View {
           )
 
           SettingsRow(
-            text:
-              "Comment Font Size (\(String(format: "%.1f", theme.commentFontSize))pt)",
+            text: String(localized: "settings.commentFontSize", defaultValue: "Comment Font Size (\(String(format: "%.1f", theme.commentFontSize))pt)"),
             leadingIcon: {
               Image(systemName: "text.bubble")
                 .font(.system(size: 12))
@@ -216,8 +215,7 @@ struct SettingsScreen: View {
           .animation(.smooth, value: theme.commentFontSize)
 
           SettingsRow(
-            text:
-              "Title Font Size (\(String(format: "%.1f", theme.titleFontSize))pt)",
+            text: String(localized: "settings.titleFontSize", defaultValue: "Title Font Size (\(String(format: "%.1f", theme.titleFontSize))pt)"),
             leadingIcon: {
               Image(systemName: "text.alignleft")
                 .font(.system(size: 12))
@@ -245,7 +243,7 @@ struct SettingsScreen: View {
           .background(.ultraThinMaterial)
           .containerShape(.rect(cornerRadius: 24, style: .continuous))
 
-        Text("Settings")
+        Text("settings.title")
           .font(.ibmPlexMono(.bold, size: 24))
           .padding(.horizontal, 16)
       }

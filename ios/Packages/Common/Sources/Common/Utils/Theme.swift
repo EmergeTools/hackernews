@@ -18,9 +18,9 @@ public enum FontStylePreference: String {
   public var displayName: String {
     switch self {
     case .sans:
-      "Sans"
+      String(localized: "theme.fontStyle.sans", bundle: .main)
     case .sansAndMono:
-      "Sans + Mono"
+      String(localized: "theme.fontStyle.sansMono", bundle: .main)
     }
   }
 }
@@ -32,9 +32,9 @@ public enum FontFamilyPreference: String {
   public var displayName: String {
     switch self {
     case .system:
-      "System"
+      String(localized: "theme.fontFamily.system", bundle: .main)
     case .ibmPlex:
-      "IBM Plex"
+      String(localized: "theme.fontFamily.ibmPlex", bundle: .main)
     }
   }
 

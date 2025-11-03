@@ -41,7 +41,7 @@ struct LoginRow: View {
   }
 
   func loginText() -> String {
-    return loggedIn ? "Logout" : "Login"
+    return loggedIn ? String(localized: "auth.button.logout") : String(localized: "auth.button.login")
   }
 
   func glowColor() -> Color {
