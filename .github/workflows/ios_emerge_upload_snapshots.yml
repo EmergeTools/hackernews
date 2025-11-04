@@ -60,7 +60,9 @@ jobs:
           gem update --system
           gem install bundler
       - name: Install gems
-        run: gem install xcpretty emerge
+        run: |
+          gem install openssl -v '~> 3.3.1'
+          gem install xcpretty emerge
       - name: Set up App Store Connect API Key
         run: |
           ABSOLUTE_KEY_PATH="$(pwd)/app_store_key.p8"
@@ -87,7 +89,6 @@ jobs:
       - name: Upload snapshots
         env:
           EMERGE_API_TOKEN: ${{ secrets.EMERGE_API_KEY }}
-          SSL_CERT_FILE: /etc/ssl/cert.pem
         run: |
           emerge upload snapshots \
             --name "HackerNews Swift-Snapshot-Testing" \
