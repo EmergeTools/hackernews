@@ -55,6 +55,10 @@ jobs:
         with:
           ruby-version: 3.2.5
           bundler-cache: true
+      - name: Update RubyGems and certificates
+        run: |
+          gem update --system
+          gem install bundler
       - name: Install gems
         run: gem install xcpretty emerge
       - name: Set up App Store Connect API Key
@@ -83,6 +87,7 @@ jobs:
       - name: Upload snapshots
         env:
           EMERGE_API_TOKEN: ${{ secrets.EMERGE_API_KEY }}
+          SSL_CERT_FILE: /etc/ssl/cert.pem
         run: |
           emerge upload snapshots \
             --name "HackerNews Swift-Snapshot-Testing" \
