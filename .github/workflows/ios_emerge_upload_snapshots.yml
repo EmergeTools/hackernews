@@ -53,16 +53,10 @@ jobs:
       - name: Ruby setup
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.2.5
+          ruby-version: 3.3.3
           bundler-cache: true
-      - name: Update RubyGems and certificates
-        run: |
-          gem update --system
-          gem install bundler
       - name: Install gems
-        run: |
-          gem install openssl -v '~> 3.3.1'
-          gem install xcpretty emerge
+        run: gem install xcpretty emerge
       - name: Set up App Store Connect API Key
         run: |
           ABSOLUTE_KEY_PATH="$(pwd)/app_store_key.p8"
