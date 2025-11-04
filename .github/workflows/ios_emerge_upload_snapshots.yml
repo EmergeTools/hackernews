@@ -27,7 +27,7 @@ jobs:
       - name: Set up Ruby env
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.1.4
+          ruby-version: 3.3.10
           bundler-cache: true
 
       - name: Setup gems
@@ -53,7 +53,7 @@ jobs:
       - name: Ruby setup
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.3.3
+          ruby-version: 3.3.10
           bundler-cache: true
       - name: Install gems
         run: gem install xcpretty emerge
