@@ -183,8 +183,7 @@ platform :ios do
       auth_token: ENV['SENTRY_SENTRY_AUTH_TOKEN'],
       org_slug: 'sentry',
       project_slug: 'launchpad-test-ios',
-      build_configuration: 'Release',
-      log_level: 'debug'
+      build_configuration: 'Release'
     )
   end
 
@@ -202,8 +201,7 @@ platform :ios do
       auth_token: ENV['SENTRY_SENTRY_AUTH_TOKEN'],
       org_slug: 'sentry',
       project_slug: 'launchpad-test-ios',
-      build_configuration: ENV['CONFIGURATION'],
-      log_level: 'debug'
+      build_configuration: ENV['CONFIGURATION']
     )
   end
 
