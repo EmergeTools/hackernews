@@ -17,5 +17,6 @@ local.properties
 keystore.properties
 .kotlin/
 
-# Sentry Config File
-sentry.properties
+# Sentry Config File (typically contains auth tokens)
+# Our sentry.properties only has cli.executable path, so we commit it
+# sentry.properties
