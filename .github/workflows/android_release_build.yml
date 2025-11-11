@@ -44,7 +44,7 @@ jobs:
           RELEASE_STORE_PASSWORD: ${{ secrets.ANDROID_RELEASE_STORE_PASSWORD }}
           EMERGE_API_TOKEN: ${{ secrets.EMERGE_API_KEY }}
           REAPER_API_KEY: ${{ secrets.REAPER_API_KEY }}
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
+          SENTRY_SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
         run: ./gradlew :app:bundlePlayStoreRelease
 
       - name: Convert AAB to APK
