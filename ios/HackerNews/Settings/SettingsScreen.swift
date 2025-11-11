@@ -30,11 +30,11 @@ struct SettingsScreen: View {
           Text("settings.section.about")
             .font(theme.themedFont(size: 12, style: .sans, weight: .medium))
           SettingsRow(
-            text: String(localized: "settings.row.followEmerge"),
+            text: String(localized: "settings.row.followSentry"),
             leadingIcon: {
-              Image(systemName: "bird.fill")
+              Image("Sentry")
                 .font(.system(size: 12))
-                .foregroundStyle(.blue)
+                .foregroundStyle(HNColors.sentry)
             },
             trailingIcon: {
               Image(systemName: "arrow.up.right")
@@ -43,9 +43,8 @@ struct SettingsScreen: View {
 
             },
             action: {
-              model.openLink(
-                url: URL(string: "https://www.twitter.com/emergetools")!)
-
+              model.openSafariLink(
+                url: URL(string: "https://www.x.com/sentry")!)
             }
           )
 
@@ -63,8 +62,8 @@ struct SettingsScreen: View {
 
             },
             action: {
-              model.openLink(
-                url: URL(string: "https://www.twitter.com/heyrikin")!)
+              model.openSafariLink(
+                url: URL(string: "https://www.x.com/heyrikin")!)
             }
           )
           

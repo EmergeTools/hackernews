@@ -13,4 +13,5 @@ public struct HNColors {
   public static let background = Color("Background")
   public static let commentBackground = Color("CommentBackground")
   public static let red = Color("HNRed")
+  public static let sentry = Color("Sentry")
 }

@@ -374,13 +374,13 @@
         }
       }
     },
-    "settings.row.followEmerge" : {
+    "settings.row.followSentry" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Follow Emerge"
+            "value" : "Follow Sentry"
           }
         }
       }
