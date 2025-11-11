@@ -8,7 +8,7 @@ on:
     paths: [android/**]
 
 jobs:
-  emerge:
+  sentry:
     runs-on: ubuntu-latest
 
     defaults:
@@ -26,7 +26,7 @@ jobs:
           distribution: "adopt"
       - name: Setup Gradle build action
         uses: gradle/actions/setup-gradle@v5
-      - name: Emerge snapshots
+      - name: Sentry snapshots
         run: ./gradlew :app:bundleDebug :app:emergeUploadSnapshotBundleDebug
         env:
           EMERGE_API_TOKEN: ${{ secrets.EMERGE_API_KEY }}

@@ -1,4 +1,4 @@
-name: Emerge iOS Upload (Size Analysis)
+name: Sentry iOS Upload (Size Analysis)
 
 on:
   push:
@@ -37,7 +37,7 @@ jobs:
           echo $CERTIFICATE_BASE64 | base64 --decode > signing-cert.p12
 
       # This version uploads a build to Testflight
-      - name: Build & upload iOS size analysis binary to Emerge Tools
+      - name: Build & upload iOS size analysis binary to Sentry
         run: bundle exec fastlane ios build_upload_testflight
         env:
           ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
@@ -82,7 +82,7 @@ jobs:
         run: |
           echo $CERTIFICATE_BASE64 | base64 --decode > signing-cert.p12
 
-      - name: Build & upload iOS AdHoc binary to Emerge Tools
+      - name: Build & upload iOS AdHoc binary to Sentry
         run: bundle exec fastlane ios build_upload_emerge
         env:
           ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
