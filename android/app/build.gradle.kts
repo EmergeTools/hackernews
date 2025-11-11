@@ -114,7 +114,7 @@ emerge {
 sentry {
   org.set("sentry")
   authToken = providers.environmentVariable("SENTRY_SENTRY_AUTH_TOKEN")
-  projectName.set("hackernews-android")
+  projectName.set("launchpad-test-android")
 
   ignoredVariants.set(listOf("debug"))
 
