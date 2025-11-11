@@ -374,6 +374,17 @@
         }
       }
     },
+    "settings.row.followEmerge" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Follow Emerge"
+          }
+        }
+      }
+    },
     "settings.row.followSentry" : {
       "extractionState" : "manual",
       "localizations" : {

@@ -30,6 +30,25 @@ struct SettingsScreen: View {
           Text("settings.section.about")
             .font(theme.themedFont(size: 12, style: .sans, weight: .medium))
           SettingsRow(
+            text: String(localized: "settings.row.followEmerge"),
+            leadingIcon: {
+              Image(systemName: "bird.fill")
+                .font(.system(size: 12))
+                .foregroundStyle(.blue)
+            },
+            trailingIcon: {
+              Image(systemName: "arrow.up.right")
+                .font(.system(size: 12))
+                .foregroundStyle(.onBackground)
+
+            },
+            action: {
+              model.openSafariLink(
+                url: URL(string: "https://www.x.com/emergetools")!)
+            }
+          )
+          
+          SettingsRow(
             text: String(localized: "settings.row.followSentry"),
             leadingIcon: {
               Image("Sentry")
