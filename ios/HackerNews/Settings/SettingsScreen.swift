@@ -49,7 +49,7 @@ struct SettingsScreen: View {
           )
           
           SettingsRow(
-            text: String(localized: "settings.row.followSentry"),
+            text: "Fake text dont land",
             leadingIcon: {
               Image("Sentry")
                 .font(.system(size: 12))
