@@ -24,48 +24,50 @@ struct HackerNewsApp: App {
     EMGReaper.sharedInstance().start(
       withAPIKey: "f77fb081-cfc2-4d15-acb5-18bad59c9376")
 
-    SentrySDK.start { options in
-      options.dsn =
-      "https://118cff4b239bd3e0ede8fd74aad9bf8f@o497846.ingest.sentry.io/4506027753668608"
-      
-      options.configureUserFeedback = { config in
-        config.onSubmitSuccess = { data in
-          print("Feedback submitted successfully: \(data)")
+    if ProcessInfo.processInfo.environment["EMERGE_IS_RUNNING_FOR_SNAPSHOTS"] != "1" {
+      SentrySDK.start { options in
+        options.dsn =
+        "https://118cff4b239bd3e0ede8fd74aad9bf8f@o497846.ingest.sentry.io/4506027753668608"
+        
+        options.configureUserFeedback = { config in
+          config.onSubmitSuccess = { data in
+            print("Feedback submitted successfully: \(data)")
+          }
+          config.onSubmitError = { error in
+            print("Failed to submit feedback: \(error)")
+          }
         }
-        config.onSubmitError = { error in
-          print("Failed to submit feedback: \(error)")
-        }
-      }
-      
-      options.enableAppHangTracking = true
-      options.sessionReplay.onErrorSampleRate = 1.0
-      options.sendDefaultPii = true
-      options.enableLogs = true
-      
+        
+        options.enableAppHangTracking = true
+        options.sessionReplay.onErrorSampleRate = 1.0
+        options.sendDefaultPii = true
+        options.enableLogs = true
+        
 #if DEBUG
-      options.environment = "development"
-      options.sessionReplay.sessionSampleRate = 1.0
-      options.tracesSampleRate = 1
-//      options.debug = true
-      options.configureProfiling = {
-        $0.profileAppStarts = true
-        $0.lifecycle = .trace
-        $0.sessionSampleRate = 1.0
-      }
+        options.environment = "development"
+        options.sessionReplay.sessionSampleRate = 1.0
+        options.tracesSampleRate = 1
+        //      options.debug = true
+        options.configureProfiling = {
+          $0.profileAppStarts = true
+          $0.lifecycle = .trace
+          $0.sessionSampleRate = 1.0
+        }
 #else
-      options.environment = "production"
-      options.sessionReplay.sessionSampleRate = 0.1
-      options.tracesSampleRate = 0.1
-      options.debug = false
-      options.configureProfiling = {
-        $0.profileAppStarts = true
-        $0.lifecycle = .trace
-        $0.sessionSampleRate = 0.1
-      }
+        options.environment = "production"
+        options.sessionReplay.sessionSampleRate = 0.1
+        options.tracesSampleRate = 0.1
+        options.debug = false
+        options.configureProfiling = {
+          $0.profileAppStarts = true
+          $0.lifecycle = .trace
+          $0.sessionSampleRate = 0.1
+        }
 #endif
-      
-      if NSClassFromString("XCTest") != nil {
-        options.environment = "xctest"
+        
+        if NSClassFromString("XCTest") != nil {
+          options.environment = "xctest"
+        }
       }
     }
     Logger.info("App launched")
