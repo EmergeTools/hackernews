@@ -233,6 +233,12 @@ final class AppViewModel {
   func openLink(url: URL) {
     navigationPath.append(AppNavigation.webLink(url: url, title: ""))
   }
+    
+  func openSafariLink(url: URL) {
+    // X.com disables WKWebview, so lets open in safari
+    // Safari Services doesn't play well with SwiftUI
+    UIApplication.shared.open(url)
+  }
 
   func toggleBookmark(_ item: StoryContent) {
     let currentStories = feedState.storiesForFeed(feedState.selectedFeed)

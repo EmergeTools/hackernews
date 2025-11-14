@@ -385,6 +385,17 @@
         }
       }
     },
+    "settings.row.followSentry" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Follow Sentry"
+          }
+        }
+      }
+    },
     "settings.row.followSupergooey" : {
       "extractionState" : "manual",
       "localizations" : {

@@ -43,9 +43,27 @@ struct SettingsScreen: View {
 
             },
             action: {
-              model.openLink(
-                url: URL(string: "https://www.twitter.com/emergetools")!)
+              model.openSafariLink(
+                url: URL(string: "https://www.x.com/emergetools")!)
+            }
+          )
+          
+          SettingsRow(
+            text: String(localized: "settings.row.followSentry"),
+            leadingIcon: {
+              Image("Sentry")
+                .font(.system(size: 12))
+                .foregroundStyle(HNColors.sentry)
+            },
+            trailingIcon: {
+              Image(systemName: "arrow.up.right")
+                .font(.system(size: 12))
+                .foregroundStyle(.onBackground)
 
+            },
+            action: {
+              model.openSafariLink(
+                url: URL(string: "https://www.x.com/sentry")!)
             }
           )
 
@@ -63,8 +81,8 @@ struct SettingsScreen: View {
 
             },
             action: {
-              model.openLink(
-                url: URL(string: "https://www.twitter.com/heyrikin")!)
+              model.openSafariLink(
+                url: URL(string: "https://www.x.com/heyrikin")!)
             }
           )
           
