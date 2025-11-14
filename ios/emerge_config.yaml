@@ -1,0 +1,8 @@
+version: 2.0
+snapshots:
+  ios:
+    runSettings:
+      - osVersion: 26.1
+        excludedPreviews:
+          - type: exact
+            value: HackerNews.HackerNewsPreviewProviderType4

@@ -209,7 +209,7 @@ platform :ios do
 
   desc 'Build and upload snapshot build to Emerge Tools'
   lane :build_upload_emerge_snapshot do
-    emerge_snapshot(scheme: "HackerNews")
+    emerge_snapshot(scheme: "HackerNews", config_path: "emerge_config.yaml")
   end
 
   desc 'Export thinned build for specific device type'
