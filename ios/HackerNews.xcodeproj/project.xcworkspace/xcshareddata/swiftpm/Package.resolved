@@ -1,13 +1,13 @@
 {
-  "originHash" : "956841bd48445375af9b85d6617a2e4c1144af55323707809f3eef68e28d1ff6",
+  "originHash" : "41633491f6f1fcb0afdded3559f6bb4f810d305eb9b709a778b41dfa7a3dfa17",
   "pins" : [
     {
       "identity" : "accessibilitysnapshot",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/EmergeTools/AccessibilitySnapshot.git",
+      "location" : "https://github.com/cashapp/AccessibilitySnapshot",
       "state" : {
-        "revision" : "54046d8fa44b9fa9f0e2229526f6ed89cb5e0ec2",
-        "version" : "1.0.2"
+        "revision" : "8d4bc42c1ba23755147b931e1e94c775df91a997",
+        "version" : "0.10.0"
       }
     },
     {
@@ -38,6 +38,15 @@
       }
     },
     {
+      "identity" : "ios-snapshot-test-case",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/uber/ios-snapshot-test-case.git",
+      "state" : {
+        "revision" : "7b10770333a961be6e5a41c9ce04b8c6d3990126",
+        "version" : "8.0.0"
+      }
+    },
+    {
       "identity" : "reaper",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/EmergeTools/Reaper",
@@ -64,12 +73,12 @@
       }
     },
     {
-      "identity" : "snapshotpreviews-ios",
+      "identity" : "snapshotpreviews",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/EmergeTools/SnapshotPreviews-iOS",
+      "location" : "https://github.com/EmergeTools/SnapshotPreviews",
       "state" : {
         "branch" : "main",
-        "revision" : "fc7a10d6307076565c5a780ca36dee6cb31fcccd"
+        "revision" : "1b3bd9bb341de85d927a78ad8874a35d081a8a66"
       }
     },
     {

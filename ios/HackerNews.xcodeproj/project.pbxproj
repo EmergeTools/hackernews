@@ -34,6 +34,8 @@
 		F48E9DA82D4D2A3C00FD8B30 /* Common in Embed Frameworks */ = {isa = PBXBuildFile; productRef = F48E9DA62D4D2A3C00FD8B30 /* Common */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		F48E9ECB2D4D691600FD8B30 /* ETDistribution in Frameworks */ = {isa = PBXBuildFile; productRef = F48E9ECA2D4D691600FD8B30 /* ETDistribution */; };
 		F48E9FDB2D51690400FD8B30 /* ETDistribution in Embed Frameworks */ = {isa = PBXBuildFile; productRef = F48E9ECA2D4D691600FD8B30 /* ETDistribution */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		FA80C2702EC78D7500A700AB /* AccessibilitySnapshotCore in Frameworks */ = {isa = PBXBuildFile; productRef = FA80C26F2EC78D7500A700AB /* AccessibilitySnapshotCore */; };
+		FA80C2732EC78F2D00A700AB /* AccessibilitySnapshotCore in Frameworks */ = {isa = PBXBuildFile; productRef = FA80C2722EC78F2D00A700AB /* AccessibilitySnapshotCore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -203,10 +205,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA80C2732EC78F2D00A700AB /* AccessibilitySnapshotCore in Frameworks */,
 				A495A6662CED57BB009A2A6B /* SnapshotTesting in Frameworks */,
 				C3AC6AD92CB6E8F7006BD22D /* SnapshottingTests in Frameworks */,
 				A4BED5C32AD5E083001642B3 /* (null) in Frameworks */,
 				F48E9DA32D4D2A3500FD8B30 /* Common in Frameworks */,
+				FA80C2702EC78D7500A700AB /* AccessibilitySnapshotCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -492,12 +496,13 @@
 				A47309B22AA29D9600201376 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 				995A2BEDEF224F7085D3DB13 /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
 				A495B2932BFEA11B00A8A8A9 /* XCRemoteSwiftPackageReference "Reaper" */,
-				A4D28AEC2C237E2A007F20D0 /* XCRemoteSwiftPackageReference "SnapshotPreviews-iOS" */,
+				A4D28AEC2C237E2A007F20D0 /* XCRemoteSwiftPackageReference "SnapshotPreviews" */,
 				A495A6642CED57BB009A2A6B /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
 				F45F6E532D4D1D3E003FA9A3 /* XCLocalSwiftPackageReference "Packages/Common" */,
 				F45F6F4C2D4D2554003FA9A3 /* XCLocalSwiftPackageReference "Packages/Fonts" */,
 				F48E9EC92D4D691600FD8B30 /* XCRemoteSwiftPackageReference "ETDistribution" */,
 				A42271692DE78DEF002F03D5 /* XCRemoteSwiftPackageReference "faultordering" */,
+				FA80C2712EC78F2D00A700AB /* XCRemoteSwiftPackageReference "AccessibilitySnapshot" */,
 			);
 			productRefGroup = A427057A2A4293B10057E439 /* Products */;
 			projectDirPath = "";
@@ -1260,9 +1265,9 @@
 				minimumVersion = 1.6.0;
 			};
 		};
-		A4D28AEC2C237E2A007F20D0 /* XCRemoteSwiftPackageReference "SnapshotPreviews-iOS" */ = {
+		A4D28AEC2C237E2A007F20D0 /* XCRemoteSwiftPackageReference "SnapshotPreviews" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/EmergeTools/SnapshotPreviews-iOS";
+			repositoryURL = "https://github.com/EmergeTools/SnapshotPreviews";
 			requirement = {
 				branch = main;
 				kind = branch;
@@ -1274,6 +1279,22 @@
 			requirement = {
 				kind = upToNextMinorVersion;
 				minimumVersion = 0.2.1;
+			};
+		};
+		FA80C26E2EC78D7500A700AB /* XCRemoteSwiftPackageReference "AccessibilitySnapshot" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/cashapp/AccessibilitySnapshot.git";
+			requirement = {
+				kind = exactVersion;
+				version = 1.0.2;
+			};
+		};
+		FA80C2712EC78F2D00A700AB /* XCRemoteSwiftPackageReference "AccessibilitySnapshot" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/cashapp/AccessibilitySnapshot";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.10.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -1311,17 +1332,17 @@
 		};
 		A4D28AED2C237E2A007F20D0 /* SnapshotPreferences */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = A4D28AEC2C237E2A007F20D0 /* XCRemoteSwiftPackageReference "SnapshotPreviews-iOS" */;
+			package = A4D28AEC2C237E2A007F20D0 /* XCRemoteSwiftPackageReference "SnapshotPreviews" */;
 			productName = SnapshotPreferences;
 		};
 		A4D28AEF2C237E2A007F20D0 /* SnapshottingTests */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = A4D28AEC2C237E2A007F20D0 /* XCRemoteSwiftPackageReference "SnapshotPreviews-iOS" */;
+			package = A4D28AEC2C237E2A007F20D0 /* XCRemoteSwiftPackageReference "SnapshotPreviews" */;
 			productName = SnapshottingTests;
 		};
 		C3AC6AD82CB6E8F7006BD22D /* SnapshottingTests */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = A4D28AEC2C237E2A007F20D0 /* XCRemoteSwiftPackageReference "SnapshotPreviews-iOS" */;
+			package = A4D28AEC2C237E2A007F20D0 /* XCRemoteSwiftPackageReference "SnapshotPreviews" */;
 			productName = SnapshottingTests;
 		};
 		F40E429F2EA80E1600E53876 /* SentrySwiftUI */ = {
@@ -1363,6 +1384,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F48E9EC92D4D691600FD8B30 /* XCRemoteSwiftPackageReference "ETDistribution" */;
 			productName = ETDistribution;
+		};
+		FA80C26F2EC78D7500A700AB /* AccessibilitySnapshotCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA80C26E2EC78D7500A700AB /* XCRemoteSwiftPackageReference "AccessibilitySnapshot" */;
+			productName = AccessibilitySnapshotCore;
+		};
+		FA80C2722EC78F2D00A700AB /* AccessibilitySnapshotCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA80C2712EC78F2D00A700AB /* XCRemoteSwiftPackageReference "AccessibilitySnapshot" */;
+			productName = AccessibilitySnapshotCore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
