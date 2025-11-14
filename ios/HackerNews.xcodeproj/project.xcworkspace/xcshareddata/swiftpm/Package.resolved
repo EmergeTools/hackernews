@@ -1,13 +1,13 @@
 {
-  "originHash" : "41633491f6f1fcb0afdded3559f6bb4f810d305eb9b709a778b41dfa7a3dfa17",
+  "originHash" : "cd279061071a9be804a18a197dd9701ac5708de79c458383a585d24b3f0df7d0",
   "pins" : [
     {
-      "identity" : "accessibilitysnapshot",
+      "identity" : "accessibilitysnapshotios26",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/cashapp/AccessibilitySnapshot",
+      "location" : "https://github.com/EmergeTools/AccessibilitySnapshotios26",
       "state" : {
-        "revision" : "8d4bc42c1ba23755147b931e1e94c775df91a997",
-        "version" : "0.10.0"
+        "branch" : "main",
+        "revision" : "2e2ece6a050a240f03c14da4d126a97f04c7b7d4"
       }
     },
     {

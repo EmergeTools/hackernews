@@ -36,14 +36,15 @@ override open class func setupA11y() -> ((UIViewController, UIWindow, PreviewLay
     }
     let a11yView = AccessibilitySnapshotView(
       containedView: containedView,
-      viewRenderingMode: controller.view.bounds.size.requiresCoreAnimationSnapshot ? .renderLayerInContext : .drawHierarchyInRect,
-      activationPointDisplayMode: .never,
-      showUserInputLabels: true)
+      snapshotConfiguration: .init(
+        viewRenderingMode: controller.view.bounds.size.requiresCoreAnimationSnapshot ? .renderLayerInContext : .drawHierarchyInRect,
+        activationPointDisplay: .never,
+        includesInputLabels: .never))
   
     a11yView.center = window.center
     window.addSubview(a11yView)
 
-    _ = try? a11yView.parseAccessibility(useMonochromeSnapshot: false)
+    _ = try? a11yView.parseAccessibility()
     a11yView.sizeToFit()
     return a11yView
   }
