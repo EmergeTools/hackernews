@@ -67,7 +67,7 @@ struct PreviewVariants<Content: View>: View {
         .navigationBarHidden(true)
         .previewDevice("iPhone 11 Pro Max")
         .previewDisplayName("Accessibility")
-        .emergeAccessibility(true)
+        // .emergeAccessibility(true)
     }
   }
 }
