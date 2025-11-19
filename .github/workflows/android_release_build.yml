@@ -45,8 +45,6 @@ jobs:
           EMERGE_API_TOKEN: ${{ secrets.EMERGE_API_KEY }}
           REAPER_API_KEY: ${{ secrets.REAPER_API_KEY }}
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
-          # Hack to ensure head-ref is set to avoid failing uploading to Sentry
-          GITHUB_HEAD_REF: release
         run: ./gradlew :app:bundlePlayStoreRelease
 
       - name: Convert AAB to APK
