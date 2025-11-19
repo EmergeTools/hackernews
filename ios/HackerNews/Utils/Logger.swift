@@ -1,4 +1,4 @@
-import Sentry
+import SentrySwift
 
 struct Logger {
     static func info(_ message: String) {
