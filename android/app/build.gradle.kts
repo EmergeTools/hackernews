@@ -117,8 +117,6 @@ sentry {
 
   ignoredVariants.set(listOf("debug"))
 
-  autoInstallation.sentryVersion = "8.26.0"
-
   sizeAnalysis {
     enabled = providers.environmentVariable("GITHUB_ACTIONS").isPresent
   }
@@ -126,14 +124,6 @@ sentry {
   distribution {
     enabled = providers.environmentVariable("GITHUB_ACTIONS").isPresent
     updateSdkVariants.add("beta")
-  }
-
-  vcsInfo {
-    // Set headRef to "release" when running in GitHub release workflow
-    val eventName = providers.environmentVariable("GITHUB_EVENT_NAME").orNull
-    if (eventName == "release") {
-      headRef.set("release")
-    }
   }
 
   debug = true
