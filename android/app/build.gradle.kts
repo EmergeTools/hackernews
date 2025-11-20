@@ -126,6 +126,14 @@ sentry {
     updateSdkVariants.add("beta")
   }
 
+  vcsInfo {
+    // Set headRef to "release" when running in GitHub release workflow
+    val eventName = providers.environmentVariable("GITHUB_EVENT_NAME").orNull
+    if (eventName == "release") {
+      headRef.set("release")
+    }
+  }
+
   debug = true
 }
 
