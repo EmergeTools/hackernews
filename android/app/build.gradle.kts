@@ -113,7 +113,7 @@ emerge {
 
 sentry {
   org.set("sentry")
-  projectName.set("launchpad-test-android")
+  projectName.set("hackernews-android")
 
   ignoredVariants.set(listOf("debug"))
 
