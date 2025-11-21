@@ -44,7 +44,7 @@
 
         <meta-data
             android:name="io.sentry.dsn"
-            android:value="https://db2524adf3fee320562f372d15f98098@o497846.ingest.us.sentry.io/4506028523388928" />
+            android:value="https://d381e3d533c65c895caaa6e084940537@o1.ingest.us.sentry.io/4510398352719872" />
 
         <!-- add breadcrumbs for user interactions (clicks, swipes, scrolls) -->
         <meta-data
