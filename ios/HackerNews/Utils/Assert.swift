@@ -23,7 +23,7 @@ public func et_assertionFailure(
   #if DEBUG
     fatalError("\(message()) — \(function) @ \(file):\(line)")
   #else
-  let scope = Sentry.Scope()
+  let scope = SentrySwift.Scope()
   scope.setTag(value: "assertion", key: "type")
   let sentryId = SentrySDK.capture(message: message(), scope: scope)
   print("Created Sentry event \(sentryId)")

@@ -13,6 +13,12 @@ struct FeedScreen: View {
 
   @Binding var model: AppViewModel
   @State private var isAnimating = false
+  
+  func crash() {
+    let a = ""
+    let b = (a as Any) as! Date
+    print(b)
+  }
 
   var body: some View {
     VStack(spacing: 8) {
@@ -44,6 +50,10 @@ struct FeedScreen: View {
         }
       }
       .frame(height: 60)
+      Button("Crash") {
+        print("going to crash")
+        crash()
+      }
 
       // Page view for feeds
       TabView(selection: $model.feedState.selectedFeed) {

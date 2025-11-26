@@ -42,6 +42,7 @@ struct HackerNewsApp: App {
         options.sessionReplay.onErrorSampleRate = 1.0
         options.sendDefaultPii = true
         options.enableLogs = true
+        options.experimental.enableSessionReplayInUnreliableEnvironment = true
         
 #if DEBUG
         options.environment = "development"
