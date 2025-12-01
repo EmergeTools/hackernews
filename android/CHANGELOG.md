@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Remove Reaper. [#204](https://github.com/EmergeTools/hackernews/pull/204).
 - Bump SentrySDK to 8.17.0
 - Fix crash when title is null [#514](https://github.com/EmergeTools/hackernews/pull/514)
 - Set Compile SDK to 36
