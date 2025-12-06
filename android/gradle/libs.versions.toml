@@ -18,7 +18,6 @@ navigation = "2.9.6"
 browser = "1.9.0"
 emergePlugin = "4.4.0"
 emergeSnapshots = "1.5.0"
-emergeReaper = "1.0.1"
 sentry = "6.0.0-beta.2"
 shapes = "1.1.0"
 datastore = "1.2.0"
@@ -64,7 +63,6 @@ jsoup = { group = "org.jsoup", name = "jsoup", version.ref = "jsoup" }
 
 emerge-snapshots = { group = "com.emergetools.snapshots", name = "snapshots", version.ref = "emergeSnapshots" }
 emerge-snapshots-runtime = { group = "com.emergetools.snapshots", name = "snapshots-runtime", version.ref = "emergeSnapshots" }
-emerge-reaper = { group = "com.emergetools.reaper", name = "reaper", version.ref = "emergeReaper" }
 
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }

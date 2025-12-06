@@ -13,7 +13,6 @@ import com.emergetools.hackernews.data.local.UserStorage
 import com.emergetools.hackernews.data.remote.HackerNewsBaseClient
 import com.emergetools.hackernews.data.remote.HackerNewsSearchClient
 import com.emergetools.hackernews.data.remote.HackerNewsWebClient
-import com.emergetools.reaper.Reaper
 import io.sentry.Sentry
 import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
@@ -34,10 +33,6 @@ class HackerNewsApplication : Application() {
     super.onCreate()
 
     Sentry.logger().info("HackerNewsApplication#onCreate")
-
-    // This demonstrates manual initialization of Reaper.
-    // See https://docs.emergetools.com/docs/reaper-setup-android#manual-initialization
-    Reaper.init(applicationContext)
 
     val db = Room.databaseBuilder(
       applicationContext,

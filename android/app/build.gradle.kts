@@ -47,7 +47,7 @@ android {
     release {
       isDebuggable = false
       isMinifyEnabled = true
-      isShrinkResources = true
+      isShrinkResources = false
       proguardFiles(
         getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
       )
@@ -97,11 +97,6 @@ emerge {
     tag.set("snapshot")
   }
 
-  reaper {
-    enabledVariants.set(listOf("playStoreRelease"))
-    publishableApiKey.set(System.getenv("REAPER_API_KEY"))
-  }
-
   vcs {
     gitHub {
       // System.getenv override is for integration tests from the emerge-android repository
@@ -122,8 +117,8 @@ sentry {
   }
 
   distribution {
-    enabled = providers.environmentVariable("GITHUB_ACTIONS").isPresent
-    updateSdkVariants.add("beta")
+    //enabled = providers.environmentVariable("GITHUB_ACTIONS").isPresent
+    //updateSdkVariants.add("beta")
   }
 
   vcsInfo {
@@ -183,5 +178,4 @@ dependencies {
   debugImplementation(libs.androidx.ui.tooling)
   debugImplementation(libs.androidx.ui.test.manifest)
 
-  implementation(libs.emerge.reaper)
 }
