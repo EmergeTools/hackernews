@@ -1,5 +1,5 @@
 {
-  "originHash" : "cd279061071a9be804a18a197dd9701ac5708de79c458383a585d24b3f0df7d0",
+  "originHash" : "31753152508674c3b53b9ec503f6ba91dc92abc617d5323b0229848309b174a9",
   "pins" : [
     {
       "identity" : "accessibilitysnapshotios26",
@@ -7,7 +7,7 @@
       "location" : "https://github.com/EmergeTools/AccessibilitySnapshotios26",
       "state" : {
         "branch" : "main",
-        "revision" : "2e2ece6a050a240f03c14da4d126a97f04c7b7d4"
+        "revision" : "70f4e47e14df54fdeba9d0ce447da3d9eb62cacf"
       }
     },
     {
@@ -58,10 +58,10 @@
     {
       "identity" : "sentry-cocoa",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/getsentry/sentry-cocoa",
+      "location" : "https://github.com/getsentry/sentry-cocoa/",
       "state" : {
-        "revision" : "0011afdaef35cf7301482fbc501b1204b3edb231",
-        "version" : "9.0.0-alpha.1"
+        "branch" : "autoTrackAppLaunch",
+        "revision" : "8dac8f316be3adb047a521cf34583bbf0b2bfdec"
       }
     },
     {
@@ -78,7 +78,7 @@
       "location" : "https://github.com/EmergeTools/SnapshotPreviews",
       "state" : {
         "branch" : "main",
-        "revision" : "1b3bd9bb341de85d927a78ad8874a35d081a8a66"
+        "revision" : "6dfb281493e48e7c09ae9717593ae0b8eb47b15c"
       }
     },
     {
