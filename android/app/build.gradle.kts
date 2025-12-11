@@ -179,7 +179,6 @@ dependencies {
   debugImplementation(libs.androidx.ui.tooling)
   debugImplementation(libs.androidx.ui.test.manifest)
 
-  // Showkase - Component Browser (Debug only)
   debugImplementation(libs.showkase)
   implementation(libs.showkase.annotation)
   kspDebug(libs.showkase.processor)
