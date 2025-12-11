@@ -90,6 +90,7 @@ android {
 
 ksp {
   arg("room.generateKotlin", "true")
+  arg("skipPrivatePreviews", "true")
 }
 
 emerge {
@@ -117,8 +118,8 @@ sentry {
   }
 
   distribution {
-    //enabled = providers.environmentVariable("GITHUB_ACTIONS").isPresent
-    //updateSdkVariants.add("beta")
+    enabled = providers.environmentVariable("GITHUB_ACTIONS").isPresent
+    updateSdkVariants.add("beta")
   }
 
   vcsInfo {
@@ -177,5 +178,10 @@ dependencies {
 
   debugImplementation(libs.androidx.ui.tooling)
   debugImplementation(libs.androidx.ui.test.manifest)
+
+  // Showkase - Component Browser (Debug only)
+  debugImplementation(libs.showkase)
+  implementation(libs.showkase.annotation)
+  kspDebug(libs.showkase.processor)
 
 }
