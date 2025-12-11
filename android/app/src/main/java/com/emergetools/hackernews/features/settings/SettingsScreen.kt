@@ -15,6 +15,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Lock
 import androidx.compose.material.icons.rounded.Warning
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -34,6 +35,7 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.emergetools.hackernews.R
+import com.emergetools.hackernews.ShowkaseLauncher
 import com.emergetools.hackernews.features.settings.components.BuiltByCard
 import com.emergetools.hackernews.features.settings.components.LoginCard
 import com.emergetools.hackernews.features.settings.components.SettingsCard
@@ -181,6 +183,24 @@ fun SettingsScreen(
         label = "Privacy Policy"
       ) {
         navigation(SettingsNavigation.GoToSettingsLink("https://www.emergetools.com/HackerNewsPrivacyPolicy.html"))
+      }
+      if (ShowkaseLauncher.isAvailable) {
+        Spacer(modifier = Modifier.height(8.dp))
+        SettingsSectionLabel("Developer")
+        val context = LocalContext.current
+        SettingsCard(
+          leadingIcon = {
+            Icon(
+              modifier = Modifier.width(12.dp),
+              painter = painterResource(R.drawable.ic_settings),
+              tint = MaterialTheme.colorScheme.primary,
+              contentDescription = "Component Browser"
+            )
+          },
+          label = "Component Browser"
+        ) {
+          ShowkaseLauncher.launch(context)
+        }
       }
     }
   }
