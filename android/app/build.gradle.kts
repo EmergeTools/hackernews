@@ -117,8 +117,8 @@ sentry {
   }
 
   distribution {
-    //enabled = providers.environmentVariable("GITHUB_ACTIONS").isPresent
-    //updateSdkVariants.add("beta")
+    enabled = providers.environmentVariable("GITHUB_ACTIONS").isPresent
+    updateSdkVariants.add("beta")
   }
 
   vcsInfo {
