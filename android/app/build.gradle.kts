@@ -6,8 +6,8 @@ plugins {
   alias(libs.plugins.kotlin.ksp)
   alias(libs.plugins.emerge)
   alias(libs.plugins.sentry)
-  alias(libs.plugins.roborazzi)
   alias(libs.plugins.androidx.room)
+  alias(libs.plugins.paparazzi)
 }
 
 android {
@@ -156,10 +156,11 @@ dependencies {
   ksp(libs.androidx.room.compiler)
 
   testImplementation(libs.junit)
-  testImplementation(libs.robolectric)
-  testImplementation(libs.roborazzi)
-  testImplementation(libs.roborazzi.compose)
-  testImplementation(libs.roborazzi.rule)
+  testImplementation(libs.reflections)
+//  testImplementation(libs.robolectric)
+//  testImplementation(libs.roborazzi)
+//  testImplementation(libs.roborazzi.compose)
+//  testImplementation(libs.roborazzi.rule)
 
   androidTestImplementation(libs.androidx.junit)
   androidTestImplementation(libs.androidx.espresso.core)
