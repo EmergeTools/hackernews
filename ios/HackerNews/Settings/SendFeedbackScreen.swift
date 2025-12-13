@@ -5,7 +5,7 @@
 //  Created by Trevor Elkins on 4/16/25.
 //
 
-import Sentry
+import SentrySwift
 import SwiftUI
 
 struct SendFeedbackScreen: View {
