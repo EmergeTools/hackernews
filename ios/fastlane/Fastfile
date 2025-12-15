@@ -20,13 +20,6 @@ default_platform(:ios)
 require 'plist'
 
 platform :ios do
-  def sentry_upload_build_filtered(**params)
-    filtered_params = params.select { |key, value|
-      value && !value.to_s.strip.empty?
-    }
-    sentry_upload_build(**filtered_params)
-  end
-
   desc 'Load ASC API Key information to use in subsequent lanes'
   lane :load_asc_api_key do
     app_store_connect_api_key(
@@ -179,7 +172,7 @@ platform :ios do
       project_slug: 'hackernews-ios',
       include_sources: true
     )
-    sentry_upload_build_filtered(
+    sentry_upload_build(
       auth_token: ENV['SENTRY_SENTRY_AUTH_TOKEN'],
       org_slug: 'sentry',
       project_slug: 'launchpad-test-ios',
@@ -198,7 +191,7 @@ platform :ios do
       app_id_suffix: ENV['APP_ID_SUFFIX']
     )
     export_thinned_build
-    sentry_upload_build_filtered(
+    sentry_upload_build(
       auth_token: ENV['SENTRY_SENTRY_AUTH_TOKEN'],
       org_slug: 'sentry',
       project_slug: 'launchpad-test-ios',
