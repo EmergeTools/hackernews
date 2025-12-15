@@ -157,10 +157,11 @@ dependencies {
 
   testImplementation(libs.junit)
   testImplementation(libs.reflections)
-//  testImplementation(libs.robolectric)
-//  testImplementation(libs.roborazzi)
-//  testImplementation(libs.roborazzi.compose)
-//  testImplementation(libs.roborazzi.rule)
+  testImplementation(libs.composable.preview.scanner)
+  testImplementation(libs.robolectric)
+  testImplementation(libs.roborazzi)
+  testImplementation(libs.roborazzi.compose)
+  testImplementation(libs.roborazzi.rule)
 
   androidTestImplementation(libs.androidx.junit)
   androidTestImplementation(libs.androidx.espresso.core)

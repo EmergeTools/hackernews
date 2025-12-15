@@ -32,6 +32,7 @@ uiautomator = "2.3.0"
 benchmarkMacroJunit4 = "1.4.1"
 
 [libraries]
+composable-preview-scanner = { module = "io.github.sergio-sastre.ComposablePreviewScanner:android", version = "0.7.2" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
