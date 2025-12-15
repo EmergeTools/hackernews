@@ -6,6 +6,7 @@ plugins {
   alias(libs.plugins.kotlin.ksp)
   alias(libs.plugins.emerge)
   alias(libs.plugins.sentry)
+  alias(libs.plugins.roborazzi)
   alias(libs.plugins.androidx.room)
   alias(libs.plugins.paparazzi)
 }
