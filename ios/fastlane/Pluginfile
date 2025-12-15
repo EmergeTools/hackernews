@@ -3,4 +3,4 @@
 # Ensure this file is checked in to source control!
 
 gem 'fastlane-plugin-emerge', '0.10.8'
-gem 'fastlane-plugin-sentry', '1.35.0'
+gem 'fastlane-plugin-sentry', '1.36.0'
