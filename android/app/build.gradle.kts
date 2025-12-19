@@ -90,6 +90,7 @@ android {
 
 ksp {
   arg("room.generateKotlin", "true")
+  arg("skipPrivatePreviews", "true")
 }
 
 emerge {
@@ -177,5 +178,9 @@ dependencies {
 
   debugImplementation(libs.androidx.ui.tooling)
   debugImplementation(libs.androidx.ui.test.manifest)
+
+  debugImplementation(libs.showkase)
+  implementation(libs.showkase.annotation)
+  kspDebug(libs.showkase.processor)
 
 }
