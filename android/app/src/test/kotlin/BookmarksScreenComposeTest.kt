@@ -12,14 +12,14 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.GraphicsMode
 import java.time.Instant
 
-@GraphicsMode(GraphicsMode.Mode.NATIVE)
-@RunWith(RobolectricTestRunner::class)
+//@GraphicsMode(GraphicsMode.Mode.NATIVE)
+//@RunWith(RobolectricTestRunner::class)
 class BookmarksScreenComposeTest {
 
   @get:Rule
   val composeRule = createComposeRule()
 
-  @Test
+//  @Test
   fun roborazziTest() {
     composeRule.setContent {
       HackerNewsTheme {

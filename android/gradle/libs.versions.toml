@@ -1,5 +1,5 @@
 [versions]
-agp = "8.13.2"
+agp = "8.13.+"
 kotlin = "2.2.21"
 ksp = "2.3.4"
 coreKtx = "1.17.0"
@@ -57,8 +57,9 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 
 extendedspans = { group = "me.saket.extendedspans", name = "extendedspans", version.ref = "extendedspans" }
 
+android-gradle-build = { module = "com.android.tools.build:gradle", version.ref = "agp" }
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
-reflections = { module = "org.reflections:reflections", version.ref = "reflections" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-kotlinx-serialization = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization", version.ref = "retrofit" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }

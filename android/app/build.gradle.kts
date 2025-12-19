@@ -1,3 +1,5 @@
+import com.android.tools.r8.internal.im
+
 plugins {
   alias(libs.plugins.android.application)
   alias(libs.plugins.kotlin.android)
@@ -9,6 +11,7 @@ plugins {
   alias(libs.plugins.roborazzi)
   alias(libs.plugins.androidx.room)
   alias(libs.plugins.paparazzi)
+  id("com.emergetools.paparazzi.preview-scanner")
 }
 
 android {
@@ -126,6 +129,7 @@ sentry {
 }
 
 dependencies {
+  implementation(project(":ui-components"))
 
   implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -157,8 +161,6 @@ dependencies {
   ksp(libs.androidx.room.compiler)
 
   testImplementation(libs.junit)
-  testImplementation(libs.reflections)
-  testImplementation(libs.composable.preview.scanner)
   testImplementation(libs.robolectric)
   testImplementation(libs.roborazzi)
   testImplementation(libs.roborazzi.compose)
