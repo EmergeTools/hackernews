@@ -88,13 +88,14 @@ abstract class PaparazziPreviewScannerPlugin @Inject constructor() : Plugin<Proj
             override fun execute(task: GeneratePreviewScannerTestTask) {
                 task.scanPackages.set(extension.scanPackages)
                 task.namespace.set(namespace)
+                task.includePrivatePreviews.set(extension.includePrivatePreviews)
 
                 task.outputDirectory.set(
                     project.layout.buildDirectory.dir(
                         "generated/source/paparazzi/${variantName}"
                     )
                 )
-              task.logger.lifecycle("Output directory is ${task.outputDirectory.get()}")
+                task.logger.lifecycle("Output directory is ${task.outputDirectory.get()}")
             }
         })
 

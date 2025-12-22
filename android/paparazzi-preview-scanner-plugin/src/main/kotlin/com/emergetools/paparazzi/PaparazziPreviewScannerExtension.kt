@@ -33,8 +33,15 @@ abstract class PaparazziPreviewScannerExtension @Inject constructor(project: Pro
 
     /**
      * ComposePreviewScanner version.
-     * Default: "0.7.2"
+     * Default: "0.8.1"
      */
     val previewScannerVersion: Property<String> =
-        objects.property(String::class.java).convention("0.7.2")
+        objects.property(String::class.java).convention("0.8.1")
+
+    /**
+     * Include private previews in the scan.
+     * Default: false
+     */
+    val includePrivatePreviews: Property<Boolean> =
+        objects.property(Boolean::class.java).convention(false)
 }
