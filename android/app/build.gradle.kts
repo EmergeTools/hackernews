@@ -1,5 +1,3 @@
-import com.android.tools.r8.internal.im
-
 plugins {
   alias(libs.plugins.android.application)
   alias(libs.plugins.kotlin.android)
@@ -10,7 +8,6 @@ plugins {
   alias(libs.plugins.sentry)
   alias(libs.plugins.roborazzi)
   alias(libs.plugins.androidx.room)
-  alias(libs.plugins.paparazzi)
   id("com.emergetools.paparazzi.preview-scanner")
 }
 

@@ -37,7 +37,8 @@ abstract class PaparazziPreviewScannerPlugin @Inject constructor() : Plugin<Proj
             return
         }
 
-        // Apply Paparazzi plugin if not already applied
+        // This only works if the paparazzi plugin is already on the classpath.
+
         if (!project.pluginManager.hasPlugin("app.cash.paparazzi")) {
             project.logger.debug("Applying Paparazzi plugin")
             project.pluginManager.apply("app.cash.paparazzi")
