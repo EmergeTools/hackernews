@@ -12,19 +12,16 @@ import javax.inject.Inject
 abstract class PaparazziPreviewScannerPlugin @Inject constructor() : Plugin<Project> {
 
     override fun apply(project: Project) {
-        // Create extension for user configuration
         val extension = project.extensions.create(
             "paparazziPreviewScanner",
             PaparazziPreviewScannerExtension::class.java,
             project
         )
 
-        // Wait for Android application plugin to be applied
         project.pluginManager.withPlugin("com.android.application") {
             configureForAndroid(project, extension)
         }
 
-        // Also support Android library modules
         project.pluginManager.withPlugin("com.android.library") {
             configureForAndroid(project, extension)
         }
@@ -48,7 +45,6 @@ abstract class PaparazziPreviewScannerPlugin @Inject constructor() : Plugin<Proj
               println("variant has unit tests")
                 val unitTest = variant.unitTest ?: return@onVariants
 
-                // Collect all source directories for this variant
                 val sourceDirs = mutableSetOf<String>()
 
                 variant.sources.java?.all?.get()?.forEach { directory ->
@@ -59,12 +55,10 @@ abstract class PaparazziPreviewScannerPlugin @Inject constructor() : Plugin<Proj
                     sourceDirs.add(directory.asFile.absolutePath)
                 }
 
-                // Register test generation task
                 val generateTask = registerGenerateTask(project, variant.name, variant.namespace, sourceDirs.toList(), extension)
               println("generateTask registered for variant ${variant.name} and ${variant.namespace}")
 
 
-                // Wire generated sources to test source set
                 unitTest.sources.java!!.addGeneratedSourceDirectory(
                     generateTask,
                     GeneratePreviewScannerTestTask::outputDirectory
@@ -76,7 +70,6 @@ abstract class PaparazziPreviewScannerPlugin @Inject constructor() : Plugin<Proj
             }
         }
 
-        // Auto-inject dependencies
         injectDependencies(project, extension)
     }
 

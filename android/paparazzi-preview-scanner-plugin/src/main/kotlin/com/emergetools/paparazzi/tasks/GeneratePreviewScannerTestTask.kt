@@ -56,7 +56,7 @@ abstract class GeneratePreviewScannerTestTask : DefaultTask() {
             sources
         )
 
-        // Clean output directory before generating new content
+        // Clean output directory before generating new content to prevent stale outputs
         val outputDir = outputDirectory.get().asFile
         if (outputDir.exists()) {
             logger.lifecycle("Cleaning output directory: ${outputDir.absolutePath}")
