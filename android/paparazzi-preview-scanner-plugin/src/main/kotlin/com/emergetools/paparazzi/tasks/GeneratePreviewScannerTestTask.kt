@@ -6,7 +6,11 @@ import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.OutputDirectory
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
+import org.gradle.api.tasks.PathSensitivity.RELATIVE
 import org.gradle.api.tasks.TaskAction
 import org.intellij.lang.annotations.Language
 import java.io.File
@@ -23,6 +27,10 @@ abstract class GeneratePreviewScannerTestTask : DefaultTask() {
     @get:Input
     abstract val includePrivatePreviews: Property<Boolean>
 
+    @get:InputFiles
+    @get:PathSensitive(RELATIVE)
+    abstract val sourceDirs: ListProperty<String>
+
     @get:OutputDirectory
     abstract val outputDirectory: DirectoryProperty
 
@@ -34,7 +42,9 @@ abstract class GeneratePreviewScannerTestTask : DefaultTask() {
             listOf(namespace.get())
         }
 
+        val sources = sourceDirs.get()
         logger.lifecycle("Scanning packages: $packages")
+        logger.lifecycle("Source directories: $sources")
         val packageName = "com.emergetools.paparazzi.generated"
         val className = "ComposePreviewScannerTest"
 
@@ -42,7 +52,8 @@ abstract class GeneratePreviewScannerTestTask : DefaultTask() {
             packageName,
             className,
             packages,
-            includePrivatePreviews.getOrElse(false)
+            includePrivatePreviews.getOrElse(false),
+            sources
         )
 
         // Clean output directory before generating new content
@@ -64,9 +75,11 @@ abstract class GeneratePreviewScannerTestTask : DefaultTask() {
         packageName: String,
         className: String,
         scanPackages: List<String>,
-        includePrivatePreviews: Boolean
+        includePrivatePreviews: Boolean,
+        sourceDirs: List<String>
     ): String {
         val packagesString = scanPackages.joinToString(", ") { "\"$it\"" }
+        val sourceDirsString = sourceDirs.joinToString(", ") { "\"$it\"" }
 
         return """
             package $packageName
@@ -297,11 +310,31 @@ abstract class GeneratePreviewScannerTestTask : DefaultTask() {
             ) {
 
                 companion object {
+                    private val SOURCE_DIRS = listOf($sourceDirsString)
+
                     private val cachedPreviews: List<ComposablePreview<AndroidPreviewInfo>> by lazy {
-                        AndroidComposablePreviewScanner()
+                        val allPreviews = AndroidComposablePreviewScanner()
                             .scanPackageTrees($packagesString)
                             ${if (includePrivatePreviews) ".includePrivatePreviews()" else ""}
                             .getPreviews()
+
+                        // Filter to only include previews from the current module by checking
+                        // if the source file exists in any of this module's source directories
+                        allPreviews.filter { preview ->
+                            // Convert class name to file path: com.example.MyClassKt -> com/example/MyClass.kt
+                            // Kotlin adds "Kt" suffix to file-level functions, so we need to strip it
+                            val className = preview.declaringClass
+                            val classPath = if (className.endsWith("Kt")) {
+                                className.removeSuffix("Kt").replace('.', '/')
+                            } else {
+                                className.replace('.', '/')
+                            } + ".kt"
+
+                            // Check if the source file exists in any of the module's source directories
+                            SOURCE_DIRS.any { sourceDir ->
+                                java.io.File(sourceDir, classPath).exists()
+                            }
+                        }
                     }
 
                     @JvmStatic

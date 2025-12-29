@@ -2,6 +2,7 @@ plugins {
   id("com.android.library")
   alias(libs.plugins.kotlin.android)
   alias(libs.plugins.compose.compiler)
+  alias(libs.plugins.paparazzi)
   id("com.emergetools.paparazzi.preview-scanner")
 }
 

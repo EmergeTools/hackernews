@@ -8,6 +8,7 @@ plugins {
   alias(libs.plugins.sentry)
   alias(libs.plugins.roborazzi)
   alias(libs.plugins.androidx.room)
+  alias(libs.plugins.paparazzi)
   id("com.emergetools.paparazzi.preview-scanner")
 }
 

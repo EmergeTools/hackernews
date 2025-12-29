@@ -37,25 +37,30 @@ abstract class PaparazziPreviewScannerPlugin @Inject constructor() : Plugin<Proj
             return
         }
 
-        // This only works if the paparazzi plugin is already on the classpath.
-
         if (!project.pluginManager.hasPlugin("app.cash.paparazzi")) {
-            project.logger.debug("Applying Paparazzi plugin")
-            project.pluginManager.apply("app.cash.paparazzi")
+            project.logger.warn("Paparazzi plugin (app.cash.paparazzi) is not applied")
         }
 
-        // Get Android Components extension
         val androidComponents = project.extensions.getByType(AndroidComponentsExtension::class.java)
 
-        // Configure for each variant
         androidComponents.onVariants { variant ->
-            // Only generate for variants that have unit tests
             if (variant is HasUnitTest) {
               println("variant has unit tests")
                 val unitTest = variant.unitTest ?: return@onVariants
 
+                // Collect all source directories for this variant
+                val sourceDirs = mutableSetOf<String>()
+
+                variant.sources.java?.all?.get()?.forEach { directory ->
+                    sourceDirs.add(directory.asFile.absolutePath)
+                }
+
+                variant.sources.kotlin?.all?.get()?.forEach { directory ->
+                    sourceDirs.add(directory.asFile.absolutePath)
+                }
+
                 // Register test generation task
-                val generateTask = registerGenerateTask(project, variant.name, variant.namespace, extension)
+                val generateTask = registerGenerateTask(project, variant.name, variant.namespace, sourceDirs.toList(), extension)
               println("generateTask registered for variant ${variant.name} and ${variant.namespace}")
 
 
@@ -79,6 +84,7 @@ abstract class PaparazziPreviewScannerPlugin @Inject constructor() : Plugin<Proj
         project: Project,
         variantName: String,
         namespace: org.gradle.api.provider.Provider<String>,
+        sourceDirs: List<String>,
         extension: PaparazziPreviewScannerExtension
     ): TaskProvider<GeneratePreviewScannerTestTask> {
         val taskName = "generate${variantName.replaceFirstChar { it.titlecase() }}PaparazziPreviewScannerTest"
@@ -90,6 +96,7 @@ abstract class PaparazziPreviewScannerPlugin @Inject constructor() : Plugin<Proj
                 task.scanPackages.set(extension.scanPackages)
                 task.namespace.set(namespace)
                 task.includePrivatePreviews.set(extension.includePrivatePreviews)
+                task.sourceDirs.set(sourceDirs)
 
                 task.outputDirectory.set(
                     project.layout.buildDirectory.dir(
