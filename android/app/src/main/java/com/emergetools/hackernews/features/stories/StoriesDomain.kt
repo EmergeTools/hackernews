@@ -286,7 +286,7 @@ class StoriesViewModel(
         StoryItem.Content(
           id = item.id,
           title = item.title,
-          author = item.by!!,
+          author = item.by ?: "",
           score = item.score ?: 0,
           commentCount = item.descendants ?: 0,
           epochTimestamp = item.time,
