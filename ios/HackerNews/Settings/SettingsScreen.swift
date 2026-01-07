@@ -19,7 +19,7 @@ struct SettingsScreen: View {
     ScrollView {
       LazyVStack(spacing: 8) {
         VStack(alignment: .leading, spacing: 4) {
-          Text("settings.section.profile")
+          Text("settings.section.about")
             .font(theme.themedFont(size: 12, style: .sans, weight: .medium))
           LoginRow(loggedIn: model.authState == AuthState.loggedIn) {
             model.gotoLogin()
