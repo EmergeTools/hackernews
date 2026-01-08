@@ -1,4 +1,3 @@
-import jdk.jfr.internal.JVM
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
