@@ -6,7 +6,7 @@
 //
 
 import Reaper
-import Sentry
+import SentrySwift
 import SwiftData
 import SwiftUI
 import Common
