@@ -10,6 +10,8 @@ plugins {
   alias(libs.plugins.sentry)
   alias(libs.plugins.roborazzi)
   alias(libs.plugins.androidx.room)
+  alias(libs.plugins.paparazzi)
+  id("com.emergetools.paparazzi.preview-scanner")
 }
 
 android {
@@ -129,6 +131,7 @@ sentry {
 }
 
 dependencies {
+  implementation(project(":ui-components"))
 
   implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.lifecycle.runtime.ktx)
