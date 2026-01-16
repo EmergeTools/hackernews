@@ -1,6 +1,6 @@
 //
 //  SettingsScreen.swift
-//  HackerNews
+//  HackerNewssss
 //
 //  Created by Rikin Marfatia on 12/3/24.
 //
@@ -19,7 +19,7 @@ struct SettingsScreen: View {
     ScrollView {
       LazyVStack(spacing: 8) {
         VStack(alignment: .leading, spacing: 4) {
-          Text("settings.section.profile")
+          Text("settings.section.about")
             .font(theme.themedFont(size: 12, style: .sans, weight: .medium))
           LoginRow(loggedIn: model.authState == AuthState.loggedIn) {
             model.gotoLogin()
@@ -47,7 +47,7 @@ struct SettingsScreen: View {
                 url: URL(string: "https://www.x.com/emergetools")!)
             }
           )
-          
+
           SettingsRow(
             text: String(localized: "settings.row.followSentry"),
             leadingIcon: {
@@ -85,7 +85,7 @@ struct SettingsScreen: View {
                 url: URL(string: "https://www.x.com/heyrikin")!)
             }
           )
-          
+
 #if ADHOC
           SettingsRow(
             text: String(localized: "settings.row.checkForUpdates"),
@@ -151,7 +151,7 @@ struct SettingsScreen: View {
           @Bindable var theme = theme
           Text("settings.section.appearance")
             .font(.ibmPlexSans(.medium, size: 12))
-          
+
           SettingsRow(
             text: String(localized: "settings.row.fontFamily"),
             leadingIcon: {
@@ -181,7 +181,7 @@ struct SettingsScreen: View {
             },
             action: {}
           )
-          
+
           SettingsRow(
             text: String(localized: "settings.row.fontStyle"),
             leadingIcon: {
