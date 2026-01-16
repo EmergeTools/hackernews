@@ -48,5 +48,8 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "hacker-news"
+
 include(":app")
 include(":benchmark")
+include(":ui-components")
+includeBuild("paparazzi-preview-scanner-plugin")
