@@ -1,6 +1,6 @@
 //
 //  Story.swift
-//  Hacker Newssss
+//  Hacker Newsss
 //
 //  Created by Ryan Brooks on 6/21/23.
 //
