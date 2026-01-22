@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 import Common
-import Kingfisher
+import KingfisherDynamic
 import SentrySwiftUI
 
 struct SettingsScreen: View {
