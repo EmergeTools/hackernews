@@ -186,10 +186,7 @@ platform :ios do
     load_asc_api_key
     prepare_signing
     build_app_for_scheme
-    emerge(
-      tag: ENV['EMERGE_BUILD_TYPE'],
-      app_id_suffix: ENV['APP_ID_SUFFIX']
-    )
+    # Emerge upload moved to GitHub Action step using REST API
     export_thinned_build
     sentry_upload_build(
       auth_token: ENV['SENTRY_SENTRY_AUTH_TOKEN'],
