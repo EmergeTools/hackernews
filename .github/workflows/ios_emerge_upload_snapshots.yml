@@ -9,7 +9,7 @@ on:
 
 jobs:
   upload_emerge_snapshots:
-    runs-on: macos-15
+    runs-on: macos-14
 
     defaults:
       run:
@@ -22,7 +22,7 @@ jobs:
           fetch-depth: 0
 
       - name: Select Xcode version
-        run: sudo xcode-select -s '/Applications/Xcode_16.2.app/Contents/Developer'
+        run: sudo xcode-select -s '/Applications/Xcode_15.4.app/Contents/Developer'
 
       - name: Set up Ruby env
         uses: ruby/setup-ruby@v1
@@ -39,7 +39,7 @@ jobs:
           EMERGE_API_TOKEN: ${{ secrets.EMERGE_API_KEY }}
 
   upload_swift_snapshot_testing_snapshots:
-    runs-on: macos-15
+    runs-on: macos-14
     defaults:
       run:
         working-directory: ./ios
@@ -49,7 +49,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Select Xcode version
-        run: sudo xcode-select -s '/Applications/Xcode_16.2.app/Contents/Developer'
+        run: sudo xcode-select -s '/Applications/Xcode_15.4.app/Contents/Developer'
       - name: Ruby setup
         uses: ruby/setup-ruby@v1
         with:
@@ -70,7 +70,7 @@ jobs:
           set -o pipefail && xcodebuild test \
             -scheme HackerNews \
             -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator,name=iPhone 16 Pro,OS=18.6' \
+            -destination 'platform=iOS Simulator,name=iPhone 15 Pro,OS=17.5' \
             -only-testing:HackerNewsTests/SwiftSnapshotTest \
             -allowProvisioningUpdates \
             -authenticationKeyPath "$AUTH_KEY_PATH" \
