@@ -22,8 +22,10 @@ jobs:
       - name: Select Xcode version
         run: sudo xcode-select -s '/Applications/Xcode_26.0.1.app/Contents/Developer'
 
-      - name: Install iOS platform
-        run: xcodebuild -downloadPlatform iOS
+      - name: List available SDKs and simulators
+        run: |
+          xcodebuild -showsdks
+          xcrun simctl list devices available
 
       - name: Set up Ruby env
         uses: ruby/setup-ruby@v1
