@@ -23,7 +23,15 @@ jobs:
         run: sudo xcode-select -s '/Applications/Xcode_26.0.1.app/Contents/Developer'
 
       - name: Install iOS platform
-        run: xcodebuild -downloadPlatform iOS
+        run: |
+          for i in 1 2 3 4 5; do
+            echo "Attempt $i to download iOS platform..."
+            xcodebuild -downloadPlatform iOS && exit 0
+            echo "Attempt $i failed, waiting 45s before retry..."
+            sleep 45
+          done
+          echo "All attempts failed"
+          exit 1
 
       - name: Set up Ruby env
         uses: ruby/setup-ruby@v1
