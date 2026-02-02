@@ -12,6 +12,8 @@
 		A47309B42AA29D9600201376 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = A47309B32AA29D9600201376 /* SwiftSoup */; };
 		A495A6662CED57BB009A2A6B /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = A495A6652CED57BB009A2A6B /* SnapshotTesting */; };
 		A495B2952BFEA11B00A8A8A9 /* Reaper in Frameworks */ = {isa = PBXBuildFile; productRef = A495B2942BFEA11B00A8A8A9 /* Reaper */; };
+		05B2BD042A88C8DC9BECD5B9 /* KingfisherDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = A990CB277FAD71FD1667B0AC /* KingfisherDynamic */; };
+		5885E2A84CFAB9F0D52287A5 /* KingfisherDynamic in Embed Frameworks */ = {isa = PBXBuildFile; productRef = A990CB277FAD71FD1667B0AC /* KingfisherDynamic */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		A49D686D2DE8EB1F00E44A18 /* Linkmap.txt in Resources */ = {isa = PBXBuildFile; fileRef = A49D686C2DE8EB1F00E44A18 /* Linkmap.txt */; };
 		A4B6CF932D49949200077F66 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4B6CF922D49949200077F66 /* WidgetKit.framework */; };
 		A4B6CF952D49949200077F66 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4B6CF942D49949200077F66 /* SwiftUI.framework */; };
@@ -83,6 +85,7 @@
 			files = (
 				F45F6F4A2D4D2185003FA9A3 /* Common in Embed Frameworks */,
 				F48E9FDB2D51690400FD8B30 /* ETDistribution in Embed Frameworks */,
+				5885E2A84CFAB9F0D52287A5 /* KingfisherDynamic in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -193,6 +196,7 @@
 			files = (
 				F45F6EA52D4D1E50003FA9A3 /* Common in Frameworks */,
 				A47309B42AA29D9600201376 /* SwiftSoup in Frameworks */,
+				05B2BD042A88C8DC9BECD5B9 /* KingfisherDynamic in Frameworks */,
 				F48E9ECB2D4D691600FD8B30 /* ETDistribution in Frameworks */,
 				A4D28AEE2C237E2A007F20D0 /* SnapshotPreferences in Frameworks */,
 				F45F703E2D4D2695003FA9A3 /* Fonts in Frameworks */,
@@ -372,6 +376,7 @@
 			name = HackerNews;
 			packageProductDependencies = (
 				A47309B32AA29D9600201376 /* SwiftSoup */,
+				A990CB277FAD71FD1667B0AC /* KingfisherDynamic */,
 				673236B0A4D04137A0D80A76 /* Sentry */,
 				A495B2942BFEA11B00A8A8A9 /* Reaper */,
 				A4D28AED2C237E2A007F20D0 /* SnapshotPreferences */,
@@ -496,6 +501,7 @@
 			mainGroup = A42705702A4293B10057E439;
 			packageReferences = (
 				A47309B22AA29D9600201376 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
+				BD436D9EB42265A7226AE73D /* XCLocalSwiftPackageReference "Packages/KingfisherDynamic" */,
 				995A2BEDEF224F7085D3DB13 /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
 				A495B2932BFEA11B00A8A8A9 /* XCRemoteSwiftPackageReference "Reaper" */,
 				A4D28AEC2C237E2A007F20D0 /* XCRemoteSwiftPackageReference "SnapshotPreviews" */,
@@ -1224,6 +1230,10 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Packages/Fonts;
 		};
+		BD436D9EB42265A7226AE73D /* XCLocalSwiftPackageReference "Packages/KingfisherDynamic" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/KingfisherDynamic;
+		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
@@ -1321,6 +1331,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A47309B22AA29D9600201376 /* XCRemoteSwiftPackageReference "SwiftSoup" */;
 			productName = SwiftSoup;
+		};
+		A990CB277FAD71FD1667B0AC /* KingfisherDynamic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BD436D9EB42265A7226AE73D /* XCLocalSwiftPackageReference "Packages/KingfisherDynamic" */;
+			productName = KingfisherDynamic;
 		};
 		A495A6652CED57BB009A2A6B /* SnapshotTesting */ = {
 			isa = XCSwiftPackageProductDependency;
