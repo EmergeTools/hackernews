@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import Common
+import KingfisherDynamic
 import SentrySwiftUI
 
 struct SettingsScreen: View {
@@ -83,6 +84,25 @@ struct SettingsScreen: View {
             action: {
               model.openSafariLink(
                 url: URL(string: "https://www.x.com/heyrikin")!)
+            }
+          )
+
+          SettingsRow(
+            text: "Kingfisher demo",
+            leadingIcon: {
+              KFImage(URL(string: "https://placekitten.com/48/48"))
+                .resizable()
+                .frame(width: 20, height: 20)
+                .clipShape(.rect(cornerRadius: 4))
+            },
+            trailingIcon: {
+              Image(systemName: "arrow.up.right")
+                .font(.system(size: 12))
+                .foregroundStyle(.onBackground)
+            },
+            action: {
+              model.openSafariLink(
+                url: URL(string: "https://github.com/onevcat/Kingfisher")!)
             }
           )
           
