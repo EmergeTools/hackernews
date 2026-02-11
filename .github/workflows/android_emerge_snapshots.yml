@@ -56,7 +56,7 @@ jobs:
       - name: Ruby setup
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.3.10
+          ruby-version: 4.0.1
           bundler-cache: true
 
       - name: Setup gems
