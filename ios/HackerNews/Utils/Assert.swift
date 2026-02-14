@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import Sentry
+import SentrySwift
 
 /// Fails fast in Debug, logs to Sentry in Release.
 /// - Parameters:
