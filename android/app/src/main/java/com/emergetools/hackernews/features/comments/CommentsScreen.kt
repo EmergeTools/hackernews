@@ -42,8 +42,8 @@ fun CommentsScreen(
 ) {
   Box(
     modifier = Modifier
-        .fillMaxSize()
-        .background(color = MaterialTheme.colorScheme.background),
+      .fillMaxSize()
+      .background(color = MaterialTheme.colorScheme.background),
   ) {
     LazyColumn(
       modifier = Modifier.fillMaxSize(),
@@ -54,8 +54,8 @@ fun CommentsScreen(
         CommentsHeader(
           state = state.headerState,
           modifier = Modifier
-              .fillMaxWidth()
-              .wrapContentHeight(),
+            .fillMaxWidth()
+            .wrapContentHeight(),
           onLikeTapped = { item ->
             if (state is CommentsState.Content && state.loggedIn) {
               actions(
@@ -74,23 +74,23 @@ fun CommentsScreen(
       item {
         val lineColor = MaterialTheme.colorScheme.onBackground
         Box(modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp)
-            .height(16.dp)
-            .drawBehind {
-                val lineStart = Offset(0f, size.center.y)
-                val lineEnd = Offset(size.width, size.center.y)
-                drawLine(
-                    start = lineStart,
-                    end = lineEnd,
-                    color = lineColor,
-                    strokeWidth = 4f,
-                    cap = StrokeCap.Round,
-                    pathEffect = PathEffect.dashPathEffect(
-                        intervals = floatArrayOf(10f, 10f)
-                    )
-                )
-            }
+          .fillMaxWidth()
+          .padding(horizontal = 8.dp)
+          .height(16.dp)
+          .drawBehind {
+            val lineStart = Offset(0f, size.center.y)
+            val lineEnd = Offset(size.width, size.center.y)
+            drawLine(
+              start = lineStart,
+              end = lineEnd,
+              color = lineColor,
+              strokeWidth = 4f,
+              cap = StrokeCap.Round,
+              pathEffect = PathEffect.dashPathEffect(
+                intervals = floatArrayOf(10f, 10f)
+              )
+            )
+          }
         )
       }
       items(items = state.comments.filter { it.hidden != HiddenStatus.HiddenByParent }) { comment ->
@@ -171,7 +171,7 @@ private fun CommentsScreenPreview() {
             level = 0,
             author = "rikinm",
             content = "Hello Child",
-            epochSeconds = Instant.now().minusSeconds(60 * 60 * 24 * 2).epochSecond,
+            age = "2024-09-05T17:48:25",
             upvoted = false,
             upvoteUrl = "",
             children = listOf()
@@ -181,7 +181,7 @@ private fun CommentsScreenPreview() {
             level = 1,
             author = "vasantm",
             content = "Hello Parent",
-            epochSeconds = Instant.now().minusSeconds(60 * 60 * 1).epochSecond,
+            age = "2024-09-05T17:48:25",
             upvoted = false,
             upvoteUrl = "",
             children = listOf()
@@ -230,7 +230,7 @@ fun CommentsScreenAppStorePreview() {
             level = 0,
             author = "rikinm",
             content = "My question is: why do an Oral-B app and a Colgate app even exist?",
-            epochSeconds = Instant.now().minusSeconds(60 * 60 * 2).epochSecond,
+            age = "2024-09-05T17:48:25",
             upvoted = false,
             upvoteUrl = "",
             children = listOf()
@@ -240,7 +240,7 @@ fun CommentsScreenAppStorePreview() {
             level = 1,
             author = "telkins",
             content = "The same reason they now have a toothbrush with AI. Because they are in a race to continuously re-invent the toothbrush every year to create new USPs, create new marketing angles and keep sales high.",
-            epochSeconds = Instant.now().minusSeconds(60 * 60 * 2).epochSecond,
+            age = "2024-09-05T17:48:25",
             upvoted = false,
             upvoteUrl = "",
             children = listOf()
@@ -250,7 +250,7 @@ fun CommentsScreenAppStorePreview() {
             level = 2,
             author = "nhinderling",
             content = "I'm surprised that health insurance companies haven't started offering \"good brusher\" discounts the way car insurance companies offer a \"good driver\" discount when you use their car data logging device/app.",
-            epochSeconds = Instant.now().minusSeconds(60 * 60 * 1).epochSecond,
+            age = "2024-09-05T17:48:25",
             upvoted = false,
             upvoteUrl = "",
             children = listOf()
@@ -262,7 +262,7 @@ fun CommentsScreenAppStorePreview() {
             author = "vasantm",
             content = "So it’s all just stupidly big PDFs used as images of the different models?\n" +
               "Not what I was expecting. I was expecting it to be more like the Colgate app mentioned later in thread.",
-            epochSeconds = Instant.now().minusSeconds(60 * 60 * 2).epochSecond,
+            age = "2024-09-05T17:48:25",
             upvoted = false,
             upvoteUrl = "",
             children = listOf()
@@ -272,7 +272,7 @@ fun CommentsScreenAppStorePreview() {
             level = 1,
             author = "itaybre",
             content = "I wonder if they generated the PDFs with a web browser's Print to PDF feature. Chrome's PDFs are massive.",
-            epochSeconds = Instant.now().minusSeconds(60 * 60 * 1).epochSecond,
+            age = "2024-09-05T17:48:25",
             upvoted = false,
             upvoteUrl = "",
             children = listOf()
@@ -282,7 +282,7 @@ fun CommentsScreenAppStorePreview() {
             level = 1,
             author = "chromy",
             content = "That’s insane. They should absolutely, 100% be pulled on demand.",
-            epochSeconds = Instant.now().minusSeconds(60 * 60 * 1).epochSecond,
+            age = "2024-09-05T17:48:25",
             upvoted = false,
             upvoteUrl = "",
             children = listOf()
@@ -293,7 +293,7 @@ fun CommentsScreenAppStorePreview() {
             author = "mptop27",
             content = "I think there’s nothing wrong with shipping the images, why should you need an Internet connection to pair your toothbrush (which of your using the app you must want to do).\n" +
               "But why can’t they be vector images? The pictures in the tweet looks like they could easily be replaced by vectors and the difference would be nearly unnoticeable.",
-            epochSeconds = Instant.now().minusSeconds(60 * 30).epochSecond,
+            age = "2024-09-05T17:48:25",
             upvoted = false,
             upvoteUrl = "",
             children = listOf()
