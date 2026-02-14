@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 - Remove Reaper [#682](https://github.com/EmergeTools/hackernews/pull/682).
+- Fix crash when author is null for job postings
 
 ## 1.0.5 - 2025-11-21
 - Re-release of 1.0.4
