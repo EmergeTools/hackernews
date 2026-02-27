@@ -44,7 +44,7 @@ jobs:
         run: ./gradlew :app:assembleBeta
 
       - name: Upload APK
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           path: ./android/app/build/outputs/apk/beta/app-beta.apk
           name: hackernews-beta-${{github.sha}}.apk

@@ -59,7 +59,7 @@ jobs:
           unzip ${{ runner.temp }}/app-release.apks -d ${{ runner.temp }}/apks
 
       - name: Upload .apk
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           path: ${{ runner.temp }}/apks/universal.apk
           name: hackernews-universal-${{github.sha}}.apk
