@@ -1,0 +1,83 @@
+name: Sentry iOS Upload (Snapshots)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+    paths: [ios/**, .github/workflows/ios*]
+
+jobs:
+  upload_sentry_snapshots:
+    runs-on: macos-26
+
+    defaults:
+      run:
+        working-directory: ./ios
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Generate snapshot images (iPhone)
+        env:
+          EMERGE_DEFAULT_DEVICE_NAME: iPhone 11 Pro Max
+        run: |
+          set -o pipefail && xcodebuild test \
+            -scheme HackerNews \
+            -sdk iphonesimulator \
+            -destination 'platform=iOS Simulator,name=iPhone 11 Pro Max' \
+            -only-testing:HackerNewsTests/HackerNewsSnapshotTest \
+            -resultBundlePath ../SnapshotResults-iphone.xcresult \
+            ONLY_ACTIVE_ARCH=YES \
+            TARGETED_DEVICE_FAMILY=1 \
+            SUPPORTS_MACCATALYST=NO
+        continue-on-error: true
+
+      - name: Generate snapshot images (iPad)
+        env:
+          EMERGE_DEFAULT_DEVICE_NAME: iPhone 11 Pro Max
+        run: |
+          set -o pipefail && xcodebuild test \
+            -scheme HackerNews \
+            -sdk iphonesimulator \
+            -destination 'platform=iOS Simulator,name=iPad Air (5th generation)' \
+            -only-testing:HackerNewsTests/HackerNewsSnapshotTest \
+            -resultBundlePath ../SnapshotResults-ipad.xcresult \
+            ONLY_ACTIVE_ARCH=YES \
+            TARGETED_DEVICE_FAMILY="1,2" \
+            SUPPORTS_MACCATALYST=NO
+        continue-on-error: true
+
+      - name: Extract images (iPhone)
+        run: |
+          xcrun xcresulttool export attachments \
+            --path ../SnapshotResults-iphone.xcresult \
+            --output-path ../snapshots-iphone
+
+      - name: Extract images (iPad)
+        run: |
+          xcrun xcresulttool export attachments \
+            --path ../SnapshotResults-ipad.xcresult \
+            --output-path ../snapshots-ipad
+
+      - name: Merge images
+        run: |
+          mkdir -p ../snapshot-images
+          cp ../snapshots-iphone/*.png ../snapshot-images/ 2>/dev/null || true
+          cp ../snapshots-ipad/*.png ../snapshot-images/ 2>/dev/null || true
+
+      - name: Install sentry-cli
+        run: npm install -g @sentry/cli
+
+      - name: Upload snapshots to Sentry
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+        run: |
+          sentry-cli build snapshots \
+            --org emerge-tools \
+            --project hackernews-ios \
+            --app-id com.emergetools.hackernews \
+            ../snapshot-images
