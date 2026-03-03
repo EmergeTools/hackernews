@@ -69,6 +69,12 @@ jobs:
           cp ../snapshots-iphone/*.png ../snapshot-images/ 2>/dev/null || true
           cp ../snapshots-ipad/*.png ../snapshot-images/ 2>/dev/null || true
 
+      - name: List generated images
+        run: |
+          echo "Generated snapshot images:"
+          ls -1 ../snapshot-images/
+          echo "Total: $(ls -1 ../snapshot-images/ | wc -l | tr -d ' ') images"
+
       - name: Install sentry-cli
         run: npm install -g @sentry/cli
 
