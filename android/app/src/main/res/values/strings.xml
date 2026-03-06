@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Hacker News</string>
+    <string name="app_subtitle">Top Stories from HN</string>
 </resources>
