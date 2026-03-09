@@ -86,3 +86,18 @@ jobs:
             --client-library swift-snapshot-testing \
             --project-root . \
             --debug
+      - name: Install sentry-cli
+        if: ${{ !cancelled() }}
+        run: curl -sL https://sentry.io/get-cli/ | SENTRY_CLI_VERSION=3.2.3 sh
+      - name: Upload snapshots to Sentry
+        if: ${{ !cancelled() }}
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: emerge-tools
+        run: |
+          sentry-cli \
+            build \
+            snapshots \
+            HackerNewsTests/__Snapshots__ \
+            --app-id com.emerge.hn.Hacker-News \
+            --project com.emerge.hn.Hacker-News
