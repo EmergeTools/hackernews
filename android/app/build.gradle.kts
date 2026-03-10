@@ -137,7 +137,7 @@ sentry {
 tasks.named<SentryUploadSnapshotsTask>("sentryUploadSnapshots") {
   snapshotsPath.set(
     tasks.named("recordRoborazziDebug").flatMap {
-      extensions.getByType<RoborazziExtension>().outputDir
+      project.extensions.getByType<RoborazziExtension>().outputDir
     }
   )
 }
