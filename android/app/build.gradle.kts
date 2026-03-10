@@ -116,6 +116,11 @@ sentry {
 
   ignoredVariants.set(listOf("debug"))
 
+  snapshots {
+    appId.set("com.emergetools.hackernews")
+    path.set(layout.buildDirectory.dir("outputs/roborazzi"))
+  }
+
   sizeAnalysis {
     enabled = providers.environmentVariable("GITHUB_ACTIONS").isPresent
   }
