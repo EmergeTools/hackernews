@@ -1,5 +1,6 @@
 <p align="center">
   <img src="https://github.com/user-attachments/assets/61852a1b-4716-4893-8e54-4fd2a4399df1" alt="Cover image"/>
+  <!-- Test change -->
 </p>
 
 <a href="https://www.emergetools.com/app/example/ios/com.emergetools.hackernews/release?utm_campaign=badge-data">
