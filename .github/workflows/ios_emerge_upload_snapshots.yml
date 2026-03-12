@@ -52,6 +52,8 @@ jobs:
           bundler-cache: true
       - name: Install gems
         run: gem install xcpretty emerge
+      - name: Setup gems
+        run: exec ../.github/scripts/ios/setup.sh
       - name: Set up App Store Connect API Key
         run: |
           ABSOLUTE_KEY_PATH="$(pwd)/app_store_key.p8"
@@ -65,7 +67,7 @@ jobs:
           set -o pipefail && xcodebuild test \
             -scheme HackerNews \
             -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator,name=iPhone 16 Pro,OS=26.2' \
+            -destination 'platform=iOS Simulator,name=iPhone 17 Pro,OS=26.2' \
             -only-testing:HackerNewsTests/SwiftSnapshotTest \
             -allowProvisioningUpdates \
             -authenticationKeyPath "$AUTH_KEY_PATH" \
@@ -86,3 +88,7 @@ jobs:
             --client-library swift-snapshot-testing \
             --project-root . \
             --debug
+      - name: Upload snapshots to Sentry
+        env:
+          SENTRY_SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
+        run: bundle exec fastlane ios upload_sentry_snapshots
