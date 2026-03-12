@@ -52,6 +52,8 @@ jobs:
           bundler-cache: true
       - name: Install gems
         run: gem install xcpretty emerge
+      - name: Setup gems
+        run: exec ../.github/scripts/ios/setup.sh
       - name: Set up App Store Connect API Key
         run: |
           ABSOLUTE_KEY_PATH="$(pwd)/app_store_key.p8"
@@ -86,3 +88,7 @@ jobs:
             --client-library swift-snapshot-testing \
             --project-root . \
             --debug
+      - name: Upload snapshots to Sentry
+        env:
+          SENTRY_SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
+        run: bundle exec fastlane ios upload_sentry_snapshots
