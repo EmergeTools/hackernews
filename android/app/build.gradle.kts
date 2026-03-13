@@ -1,3 +1,5 @@
+import io.github.takahirom.roborazzi.RoborazziExtension
+import io.sentry.android.gradle.tasks.SentryUploadSnapshotsTask
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -116,6 +118,10 @@ sentry {
 
   ignoredVariants.set(listOf("debug"))
 
+  snapshots {
+    appId.set("com.emergetools.hackernews")
+  }
+
   sizeAnalysis {
     enabled = providers.environmentVariable("GITHUB_ACTIONS").isPresent
   }
@@ -126,6 +132,13 @@ sentry {
   }
 
   debug = true
+}
+
+tasks.named<SentryUploadSnapshotsTask>("sentryUploadSnapshots") {
+  dependsOn(tasks.named("recordRoborazziDebug"))
+  snapshotsPath.set(
+      project.extensions.getByType<RoborazziExtension>().outputDir
+  )
 }
 
 dependencies {
