@@ -118,10 +118,6 @@ sentry {
 
   ignoredVariants.set(listOf("debug"))
 
-  snapshots {
-    appId.set("com.emergetools.hackernews")
-  }
-
   sizeAnalysis {
     enabled = providers.environmentVariable("GITHUB_ACTIONS").isPresent
   }
@@ -134,11 +130,13 @@ sentry {
   debug = true
 }
 
-tasks.named<SentryUploadSnapshotsTask>("sentryUploadSnapshots") {
-  dependsOn(tasks.named("recordRoborazziDebug"))
-  snapshotsPath.set(
+afterEvaluate {
+  tasks.named<SentryUploadSnapshotsTask>("sentryUploadSnapshotsRelease") {
+    dependsOn(tasks.named("recordRoborazziDebug"))
+    snapshotsPath.set(
       project.extensions.getByType<RoborazziExtension>().outputDir
-  )
+    )
+  }
 }
 
 dependencies {
