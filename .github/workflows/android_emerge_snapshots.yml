@@ -63,7 +63,7 @@ jobs:
         run: gem install emerge
 
       - name: Generate Roborazzi snapshots
-        run: ./gradlew :app:recordRoborazziDebug :app:sentryUploadSnapshots
+        run: ./gradlew :app:recordRoborazziDebug :app:sentryUploadSnapshotsRelease
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
 
