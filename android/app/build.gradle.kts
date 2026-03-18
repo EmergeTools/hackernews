@@ -1,4 +1,5 @@
 import io.sentry.android.gradle.tasks.SentryUploadSnapshotsTask
+import org.gradle.api.tasks.testing.Test
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -132,9 +133,12 @@ sentry {
 }
 
 afterEvaluate {
+  val testTask = tasks.named<Test>("testDebugUnitTest")
   tasks.named<SentryUploadSnapshotsTask>("sentryUploadSnapshotsRelease") {
     dependsOn("recordPaparazziDebug")
-    snapshotsPath.set(file("src/test/snapshots"))
+    snapshotsPath.fileProvider(testTask.map { task ->
+      task.outputs.files.files.first { it.name == "snapshots" }
+    })
   }
 }
 
