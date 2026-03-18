@@ -1,4 +1,3 @@
-import io.github.takahirom.roborazzi.RoborazziExtension
 import io.sentry.android.gradle.tasks.SentryUploadSnapshotsTask
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -10,7 +9,9 @@ plugins {
   alias(libs.plugins.kotlin.ksp)
   alias(libs.plugins.emerge)
   alias(libs.plugins.sentry)
-  alias(libs.plugins.roborazzi)
+  id("io.sentry.android.snapshot")
+  id("app.cash.paparazzi") version "2.0.0-alpha04"
+//  alias(libs.plugins.roborazzi)
   alias(libs.plugins.androidx.room)
 }
 
@@ -132,10 +133,8 @@ sentry {
 
 afterEvaluate {
   tasks.named<SentryUploadSnapshotsTask>("sentryUploadSnapshotsRelease") {
-    dependsOn(tasks.named("recordRoborazziDebug"))
-    snapshotsPath.set(
-      project.extensions.getByType<RoborazziExtension>().outputDir
-    )
+    dependsOn("recordPaparazziDebug")
+    snapshotsPath.set(file("src/test/snapshots"))
   }
 }
 
@@ -171,10 +170,10 @@ dependencies {
   ksp(libs.androidx.room.compiler)
 
   testImplementation(libs.junit)
-  testImplementation(libs.robolectric)
-  testImplementation(libs.roborazzi)
-  testImplementation(libs.roborazzi.compose)
-  testImplementation(libs.roborazzi.rule)
+//  testImplementation(libs.robolectric)
+//  testImplementation(libs.roborazzi)
+//  testImplementation(libs.roborazzi.compose)
+//  testImplementation(libs.roborazzi.rule)
 
   androidTestImplementation(libs.androidx.junit)
   androidTestImplementation(libs.androidx.espresso.core)
