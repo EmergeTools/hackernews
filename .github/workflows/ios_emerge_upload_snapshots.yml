@@ -3,9 +3,6 @@ name: Emerge PR iOS Upload (Snapshots)
 on:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
-    paths: [ios/**, .github/workflows/ios*]
 
 jobs:
   upload_emerge_snapshots:

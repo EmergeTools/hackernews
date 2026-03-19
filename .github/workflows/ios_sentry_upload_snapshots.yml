@@ -23,12 +23,12 @@ jobs:
 
       - name: Generate snapshot images (iPhone)
         env:
-          EMERGE_DEFAULT_DEVICE_NAME: iPhone 11 Pro Max
+          EMERGE_DEFAULT_DEVICE_NAME: iPhone 17 Pro Max
         run: |
           set -o pipefail && xcodebuild test \
             -scheme HackerNews \
             -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator,name=iPhone 11 Pro Max' \
+            -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max' \
             -only-testing:HackerNewsTests/HackerNewsSnapshotTest \
             -resultBundlePath ../SnapshotResults-iphone.xcresult \
             ONLY_ACTIVE_ARCH=YES \
@@ -37,12 +37,12 @@ jobs:
 
       - name: Generate snapshot images (iPad)
         env:
-          EMERGE_DEFAULT_DEVICE_NAME: iPhone 11 Pro Max
+          EMERGE_DEFAULT_DEVICE_NAME: iPhone 17 Pro Max
         run: |
           set -o pipefail && xcodebuild test \
             -scheme HackerNews \
             -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator,name=iPad Air (5th generation)' \
+            -destination 'platform=iOS Simulator,name=iPad Air 11-inch (M3)' \
             -only-testing:HackerNewsTests/HackerNewsSnapshotTest \
             -resultBundlePath ../SnapshotResults-ipad.xcresult \
             ONLY_ACTIVE_ARCH=YES \
