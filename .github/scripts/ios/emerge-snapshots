@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+#
+# TODO: Potentially put this behind a CLI
+#
+#
 # Benefits pulled from Emerge's internal iOS snapshot infrastructure:
 #
 # - Crash report collection: after any xcodebuild failure, captures .ips files from
@@ -215,7 +219,7 @@ emit_summary() {
   printf "%-35s %-8s %-9s\n" "------" "------" "--------"
 
   local devices_json="[]"
-  for entry in "${DEVICE_SUMMARIES[@]}"; do
+  for entry in ${DEVICE_SUMMARIES[@]+"${DEVICE_SUMMARIES[@]}"}; do
     IFS='|' read -r label name count attempts <<< "$entry"
     printf "%-35s %-8s %-9s\n" "$name" "$count" "$attempts"
     if command -v jq &>/dev/null; then
@@ -237,7 +241,7 @@ emit_summary() {
   fi
 
   local crash_json="[]"
-  for cr in "${CAPTURED_CRASH_REPORTS[@]}"; do
+  for cr in ${CAPTURED_CRASH_REPORTS[@]+"${CAPTURED_CRASH_REPORTS[@]}"}; do
     crash_json=$(echo "$crash_json" | jq --arg cr "$cr" '. + [$cr]')
   done
 
