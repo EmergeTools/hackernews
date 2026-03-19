@@ -63,7 +63,10 @@ parse_config() {
 
 config_output=$(parse_config "$CONFIG_FILE")
 eval "$(echo "$config_output" | awk '/^---$/{exit} {print}')"
-mapfile -t DESTINATIONS < <(echo "$config_output" | awk '/^---$/{found=1; next} found{print}')
+DESTINATIONS=()
+while IFS= read -r line; do
+  DESTINATIONS+=("$line")
+done < <(echo "$config_output" | awk '/^---$/{found=1; next} found{print}')
 
 [[ ${#DESTINATIONS[@]} -gt 0 ]] || { echo "No enabled destinations in config"; exit 1; }
 
