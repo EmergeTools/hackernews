@@ -32,7 +32,7 @@ jobs:
           EMERGE_API_TOKEN: ${{ secrets.EMERGE_API_KEY }}
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
 
-  roborazzi:
+  paparazzi:
     runs-on: ubuntu-latest
 
     defaults:
@@ -62,8 +62,8 @@ jobs:
       - name: Setup gems
         run: gem install emerge
 
-      - name: Generate Roborazzi snapshots
-        run: ./gradlew :app:recordRoborazziDebug :app:sentryUploadSnapshotsRelease
+      - name: Generate Paparazzi snapshots
+        run: ./gradlew :app:recordPaparazziDebug :app:sentryUploadSnapshotsRelease
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
 
@@ -72,9 +72,9 @@ jobs:
           EMERGE_API_TOKEN: ${{ secrets.EMERGE_API_KEY }}
         run: |
           emerge upload snapshots \
-            --name "HackerNews Roborazzi" \
-            --id "com.emerge.hackernews.roborazzi" \
+            --name "HackerNews Paparazzi" \
+            --id "com.emerge.hackernews.paparazzi" \
             --repo-name "EmergeTools/hackernews" \
             --debug \
-            --client-library roborazzi \
+            --client-library paparazzi \
             --project-root .
