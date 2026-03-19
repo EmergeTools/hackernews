@@ -33,9 +33,14 @@ jobs:
       - name: Cache Swift Package Manager
         uses: actions/cache@v4
         with:
-          path: ~/Library/Caches/org.swift.swiftpm
+          path: |
+            ~/Library/Caches/org.swift.swiftpm
+            ~/Library/Developer/Xcode/DerivedData/HackerNews-*/SourcePackages
           key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
           restore-keys: ${{ runner.os }}-spm-
+
+      - name: Boot simulator
+        run: xcrun simctl boot "iPhone 17 Pro Max" || true
 
       - name: Generate snapshot images (iPhone)
         env:
@@ -49,7 +54,8 @@ jobs:
             -resultBundlePath ../SnapshotResults-iphone.xcresult \
             ONLY_ACTIVE_ARCH=YES \
             TARGETED_DEVICE_FAMILY=1 \
-            SUPPORTS_MACCATALYST=NO
+            SUPPORTS_MACCATALYST=NO \
+            | xcpretty
 
       # - name: Generate snapshot images (iPad)
       #   env:
@@ -63,7 +69,8 @@ jobs:
       #       -resultBundlePath ../SnapshotResults-ipad.xcresult \
       #       ONLY_ACTIVE_ARCH=YES \
       #       TARGETED_DEVICE_FAMILY="1,2" \
-      #       SUPPORTS_MACCATALYST=NO
+      #       SUPPORTS_MACCATALYST=NO \
+      #       | xcpretty
 
       - name: Extract images (iPhone)
         run: |
