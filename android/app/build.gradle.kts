@@ -137,7 +137,9 @@ afterEvaluate {
   tasks.named<SentryUploadSnapshotsTask>("sentryUploadSnapshotsRelease") {
     dependsOn("recordPaparazziDebug")
     snapshotsPath.fileProvider(testTask.map { task ->
-      task.outputs.files.files.first { it.name == "snapshots" }
+      task.outputs.fileProperties
+        .first { it.propertyName == "paparazzi.snapshots.output.dir" }
+        .files.singleFile
     })
   }
 }
