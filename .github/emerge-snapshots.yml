@@ -1,0 +1,14 @@
+scheme: HackerNews
+test_target: HackerNewsTests/HackerNewsSnapshotTest
+bundle_id: com.emergetools.hackernews
+max_retries: 1
+
+destinations:
+  - name: iPhone 17 Pro Max
+    sdk: iphonesimulator
+    xcode_flags: TARGETED_DEVICE_FAMILY=1
+    enabled: true
+  - name: iPad Air 11-inch (M3)
+    sdk: iphonesimulator
+    xcode_flags: TARGETED_DEVICE_FAMILY=1,2
+    enabled: false

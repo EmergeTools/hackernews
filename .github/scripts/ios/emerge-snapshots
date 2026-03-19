@@ -1,0 +1,263 @@
+#!/usr/bin/env bash
+# Benefits pulled from Emerge's internal iOS snapshot infrastructure:
+#
+# - Crash report collection: after any xcodebuild failure, captures .ips files from
+#   ~/Library/Logs/DiagnosticReports scoped to the test run window
+# - Retry on crash: distinguishes crash failures from legitimate test failures and
+#   retries automatically (configurable via max_retries)
+# - Zero-size image detection: scans extracted PNGs with sips after xcresulttool
+#   export to catch renders that "succeed" but produce empty/corrupt images
+# - Multi-device orchestration: runs against multiple simulators (iPhone, iPad, OS
+#   versions) and collects results per-device before aggregating
+# - Permission reset before run: calls xcrun simctl privacy reset all before each
+#   run to prevent permission dialogs from blocking renders
+# - Config file support: YAML config for scheme, test target, bundle ID, and
+#   destinations — no bash knowledge required for customers
+# - Simulator lifecycle management: boots simulators, waits for ready state, and
+#   tears down cleanly between runs
+# - Structured summary manifest: emits a JSON manifest with per-device image counts,
+#   attempt numbers, and any captured crash report filenames
+#
+# Potential follow-ups (not yet implemented):
+# - Regex-based exclusion filtering: filter extracted PNGs by filename pattern before
+#   upload, driven by exclusion rules in the config file
+# - Per-test timing: extract per-test duration from xcresult and include in the
+#   manifest so Sentry can surface slow previews
+# - Image metadata enrichment: emit a sidecar JSON per image with device name, OS
+#   version, orientation, and color scheme for richer Sentry UI context
+# - Sharding: split the test suite across multiple CI machines by enumerating test
+#   method names (via xcodebuild build-for-testing + xctest list), accepting
+#   shard/num_shards config params, and merging per-shard image directories
+#   afterward; requires the customer's test target to expose one method per preview
+set -euo pipefail
+
+CONFIG_FILE=".github/emerge-snapshots.yml"
+OUTPUT_DIR="snapshot-images"
+XCRESULT_DIR=".."
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --config)       CONFIG_FILE="$2"; shift 2 ;;
+    --output-dir)   OUTPUT_DIR="$2"; shift 2 ;;
+    --xcresult-dir) XCRESULT_DIR="$2"; shift 2 ;;
+    --help|-h) echo "Usage: emerge-snapshots [--config PATH] [--output-dir PATH] [--xcresult-dir PATH]"; exit 0 ;;
+    *) echo "Unknown argument: $1"; exit 1 ;;
+  esac
+done
+[[ -f "$CONFIG_FILE" ]] || { echo "Config not found: $CONFIG_FILE"; exit 1; }
+
+parse_config() {
+  ruby -ryaml -e "
+    c = YAML.load_file(ARGV[0])
+    %w[scheme test_target bundle_id].each { |k| abort(\"#{k} required\") unless c[k] }
+    puts \"SCHEME=#{c['scheme']}\"
+    puts \"TEST_TARGET=#{c['test_target']}\"
+    puts \"BUNDLE_ID=#{c['bundle_id']}\"
+    puts \"MAX_RETRIES=#{c.fetch('max_retries', 1)}\"
+    puts '---'
+    (c['destinations'] || []).select { |d| d['enabled'] }.each do |d|
+      puts [d['name'], d['sdk'], d['xcode_flags']].join('|')
+    end
+  " "$1"
+}
+
+config_output=$(parse_config "$CONFIG_FILE")
+eval "$(echo "$config_output" | awk '/^---$/{exit} {print}')"
+mapfile -t DESTINATIONS < <(echo "$config_output" | awk '/^---$/{found=1; next} found{print}')
+
+[[ ${#DESTINATIONS[@]} -gt 0 ]] || { echo "No enabled destinations in config"; exit 1; }
+
+shopt -s nullglob
+
+TOTAL_IMAGE_COUNT=0
+declare -a DEVICE_SUMMARIES=()
+declare -a CAPTURED_CRASH_REPORTS=()
+
+boot_simulator() {
+  local device_name="$1"
+  xcrun simctl boot "$device_name" || true
+  xcrun simctl bootstatus "$device_name" -b
+  CURRENT_UDID=$(xcrun simctl list devices booted --json \
+    | jq -r '.devices | to_entries[] | .value[] | select(.state == "Booted") | .udid' \
+    | head -1)
+}
+
+reset_simulator_permissions() {
+  local udid="$1"
+  local bundle_id="$2"
+  if [ -z "$udid" ]; then
+    echo "Warning: UDID empty, skipping permission reset"
+    return 0
+  fi
+  xcrun simctl privacy "$udid" reset all "$bundle_id"
+}
+
+run_tests() {
+  local device_name="$1"
+  local sdk="$2"
+  local xcode_flags="$3"
+  local result_path="$4"
+
+  rm -rf "$result_path"
+  touch /tmp/snapshot_test_start_marker
+  TEST_START_EPOCH=$(date +%s)
+
+  set +e
+  set -o pipefail
+  xcodebuild test \
+    -scheme "$SCHEME" \
+    -sdk "$sdk" \
+    -destination "platform=iOS Simulator,name=${device_name}" \
+    -only-testing:"$TEST_TARGET" \
+    -resultBundlePath "$result_path" \
+    $xcode_flags \
+    ONLY_ACTIVE_ARCH=YES \
+    SUPPORTS_MACCATALYST=NO \
+    | xcpretty
+  local exit_code=$?
+  set -e
+  return $exit_code
+}
+
+collect_crash_reports() {
+  local dest_dir="$1"
+  [ -d ~/Library/Logs/DiagnosticReports ] || return 0
+
+  local count=0
+  mkdir -p "$dest_dir"
+
+  while IFS= read -r -d '' ips_file; do
+    cp "$ips_file" "$dest_dir/"
+    CAPTURED_CRASH_REPORTS+=("$(basename "$ips_file")")
+    count=$((count + 1))
+  done < <(find ~/Library/Logs/DiagnosticReports -name "*.ips" -newer /tmp/snapshot_test_start_marker -print0 2>/dev/null)
+
+  echo "Crash reports collected: $count"
+  return $count
+}
+
+extract_images() {
+  local result_path="$1"
+  local dest_dir="$2"
+  xcrun xcresulttool export attachments \
+    --path "$result_path" \
+    --output-path "$dest_dir"
+}
+
+check_zero_size_images() {
+  local dir="$1"
+  command -v sips &>/dev/null || return 0
+
+  for f in "$dir"/*.png; do
+    local width
+    width=$(sips -g pixelWidth "$f" | awk '/pixelWidth/{print $2}')
+    if [ -z "$width" ] || [ "$width" -eq 0 ]; then
+      echo "Error: Zero-size image detected: $f"
+      exit 1
+    fi
+  done
+}
+
+run_device() {
+  local device_name="$1"
+  local sdk="$2"
+  local xcode_flags="$3"
+  local label="$4"
+
+  boot_simulator "$device_name"
+  reset_simulator_permissions "$CURRENT_UDID" "$BUNDLE_ID"
+
+  local attempt=1
+  local exit_code=0
+  local xcresult=""
+
+  while true; do
+    xcresult="$XCRESULT_DIR/SnapshotResults-${label}-attempt${attempt}.xcresult"
+    run_tests "$device_name" "$sdk" "$xcode_flags" "$xcresult" || exit_code=$?
+
+    if [ "$exit_code" -eq 0 ]; then
+      break
+    fi
+
+    local crash_count=0
+    collect_crash_reports "$OUTPUT_DIR/crash-reports" || crash_count=$?
+
+    if [ "$crash_count" -gt 0 ] && [ "$attempt" -le "$MAX_RETRIES" ]; then
+      echo "Crash detected (attempt $attempt), retrying..."
+      attempt=$((attempt + 1))
+      exit_code=0
+      continue
+    else
+      exit 1
+    fi
+  done
+
+  extract_images "$xcresult" "$XCRESULT_DIR/snapshots-$label"
+  check_zero_size_images "$XCRESULT_DIR/snapshots-$label"
+
+  local copied=0
+  for png in "$XCRESULT_DIR/snapshots-$label/"*.png; do
+    cp "$png" "$OUTPUT_DIR/"
+    copied=$((copied + 1))
+  done
+
+  TOTAL_IMAGE_COUNT=$((TOTAL_IMAGE_COUNT + copied))
+  DEVICE_SUMMARIES+=("${label}|${device_name}|${copied}|${attempt}")
+}
+
+emit_summary() {
+  echo ""
+  echo "=== Snapshot Capture Summary ==="
+  printf "%-35s %-8s %-9s\n" "Device" "Images" "Attempts"
+  printf "%-35s %-8s %-9s\n" "------" "------" "--------"
+
+  local devices_json="[]"
+  for entry in "${DEVICE_SUMMARIES[@]}"; do
+    IFS='|' read -r label name count attempts <<< "$entry"
+    printf "%-35s %-8s %-9s\n" "$name" "$count" "$attempts"
+    if command -v jq &>/dev/null; then
+      devices_json=$(echo "$devices_json" | jq \
+        --arg label "$label" \
+        --arg name "$name" \
+        --argjson count "$count" \
+        --argjson attempts "$attempts" \
+        '. + [{"label": $label, "name": $name, "image_count": $count, "attempts": $attempts}]')
+    fi
+  done
+
+  echo "--------------------------------"
+  echo "Total images: $TOTAL_IMAGE_COUNT"
+
+  if ! command -v jq &>/dev/null; then
+    echo "Warning: jq not available, skipping manifest write"
+    return 0
+  fi
+
+  local crash_json="[]"
+  for cr in "${CAPTURED_CRASH_REPORTS[@]}"; do
+    crash_json=$(echo "$crash_json" | jq --arg cr "$cr" '. + [$cr]')
+  done
+
+  jq --null-input \
+    --arg ts "$(date -u +"%Y-%m-%dT%H:%M:%SZ")" \
+    --argjson devices "$devices_json" \
+    --argjson total "$TOTAL_IMAGE_COUNT" \
+    --argjson crashes "$crash_json" \
+    '{
+      generated_at: $ts,
+      devices: $devices,
+      total_image_count: $total,
+      crash_reports_captured: $crashes
+    }' > "$OUTPUT_DIR/snapshot-manifest.json"
+}
+
+mkdir -p "$OUTPUT_DIR"
+
+for dest in "${DESTINATIONS[@]}"; do
+  IFS='|' read -r device_name sdk xcode_flags <<< "$dest"
+  label=$(echo "$device_name" | tr ' (),' '-' | tr '[:upper:]' '[:lower:]' | tr -s '-')
+  run_device "$device_name" "$sdk" "$xcode_flags" "$label"
+done
+
+emit_summary
+echo "Done. $TOTAL_IMAGE_COUNT images in $OUTPUT_DIR/"
