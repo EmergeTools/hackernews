@@ -21,6 +21,22 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Set up Ruby env
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.3.10
+          bundler-cache: true
+
+      - name: Setup gems
+        run: exec ../.github/scripts/ios/setup.sh
+
+      - name: Cache Swift Package Manager
+        uses: actions/cache@v4
+        with:
+          path: ~/Library/Caches/org.swift.swiftpm
+          key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
+          restore-keys: ${{ runner.os }}-spm-
+
       - name: Generate snapshot images (iPhone)
         env:
           EMERGE_DEFAULT_DEVICE_NAME: iPhone 17 Pro Max
@@ -35,53 +51,47 @@ jobs:
             TARGETED_DEVICE_FAMILY=1 \
             SUPPORTS_MACCATALYST=NO
 
-      - name: Generate snapshot images (iPad)
-        env:
-          EMERGE_DEFAULT_DEVICE_NAME: iPhone 17 Pro Max
-        run: |
-          set -o pipefail && xcodebuild test \
-            -scheme HackerNews \
-            -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator,name=iPad Air 11-inch (M3)' \
-            -only-testing:HackerNewsTests/HackerNewsSnapshotTest \
-            -resultBundlePath ../SnapshotResults-ipad.xcresult \
-            ONLY_ACTIVE_ARCH=YES \
-            TARGETED_DEVICE_FAMILY="1,2" \
-            SUPPORTS_MACCATALYST=NO
+      # - name: Generate snapshot images (iPad)
+      #   env:
+      #     EMERGE_DEFAULT_DEVICE_NAME: iPhone 17 Pro Max
+      #   run: |
+      #     set -o pipefail && xcodebuild test \
+      #       -scheme HackerNews \
+      #       -sdk iphonesimulator \
+      #       -destination 'platform=iOS Simulator,name=iPad Air 11-inch (M3)' \
+      #       -only-testing:HackerNewsTests/HackerNewsSnapshotTest \
+      #       -resultBundlePath ../SnapshotResults-ipad.xcresult \
+      #       ONLY_ACTIVE_ARCH=YES \
+      #       TARGETED_DEVICE_FAMILY="1,2" \
+      #       SUPPORTS_MACCATALYST=NO
 
       - name: Extract images (iPhone)
         run: |
           xcrun xcresulttool export attachments \
             --path ../SnapshotResults-iphone.xcresult \
-            --output-path ../snapshots-iphone
+            --output-path ../snapshots-iphone \
+            | grep "Generated manifest"
 
-      - name: Extract images (iPad)
-        run: |
-          xcrun xcresulttool export attachments \
-            --path ../SnapshotResults-ipad.xcresult \
-            --output-path ../snapshots-ipad
+      # - name: Extract images (iPad)
+      #   run: |
+      #     xcrun xcresulttool export attachments \
+      #       --path ../SnapshotResults-ipad.xcresult \
+      #       --output-path ../snapshots-ipad \
+      #       | grep "Generated manifest"
 
       - name: Merge images
         run: |
-          mkdir -p ../snapshot-images
-          cp ../snapshots-iphone/*.png ../snapshot-images/ 2>/dev/null || true
-          cp ../snapshots-ipad/*.png ../snapshot-images/ 2>/dev/null || true
+          mkdir -p snapshot-images
+          cp ../snapshots-iphone/*.png snapshot-images/ 2>/dev/null || true
+          # cp ../snapshots-ipad/*.png snapshot-images/ 2>/dev/null || true
 
       - name: List generated images
         run: |
           echo "Generated snapshot images:"
-          ls -1 ../snapshot-images/
-          echo "Total: $(ls -1 ../snapshot-images/ | wc -l | tr -d ' ') images"
-
-      - name: Install sentry-cli
-        run: npm install -g @sentry/cli
+          ls -1 snapshot-images/
+          echo "Total: $(ls -1 snapshot-images/ | wc -l | tr -d ' ') images"
 
       - name: Upload snapshots to Sentry
         env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-        run: |
-          sentry-cli build snapshots \
-            --org emerge-tools \
-            --project hackernews-ios \
-            --app-id com.emergetools.hackernews \
-            ../snapshot-images
+          SENTRY_SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
+        run: bundle exec fastlane ios upload_sentry_preview_snapshots
