@@ -120,7 +120,7 @@ GEM
       xcpretty-travis-formatter (>= 0.0.3, < 2.0.0)
     fastlane-plugin-emerge (0.10.8)
       faraday (~> 1.1)
-    fastlane-plugin-sentry (2.3.0)
+    fastlane-plugin-sentry (2.5.0)
       os (~> 1.1, >= 1.1.4)
     fastlane-sirp (1.0.0)
       sysrandom (~> 1.0)
@@ -228,6 +228,7 @@ GEM
 
 PLATFORMS
   arm64-darwin-21
+  arm64-darwin-23
   arm64-darwin-24
   arm64-darwin-25
   x86_64-linux
@@ -235,7 +236,7 @@ PLATFORMS
 DEPENDENCIES
   fastlane
   fastlane-plugin-emerge (= 0.10.8)
-  fastlane-plugin-sentry (= 2.3.0)
+  fastlane-plugin-sentry (= 2.5.0)
   xcpretty
 
 BUNDLED WITH
