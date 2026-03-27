@@ -98,6 +98,25 @@ final class SwiftSnapshotTest: XCTestCase {
       )
     }
   }
+
+  @MainActor func testSettingsScreen() {
+    @State var model = AppViewModel(
+      bookmarkStore: FakeBookmarkDataStore(),
+      shouldFetchPosts: false)
+    let view = SettingsScreen(model: $model)
+      .environment(Theme())
+
+    assertSnapshot(
+      of: view.toVC(),
+      as: .image(on: .iPhone13Pro),
+      named: "SettingsScreen-Light"
+    )
+    assertSnapshot(
+      of: view.toVC(),
+      as: .image(on: .iPhone13Pro, traits: .init(userInterfaceStyle: .dark)),
+      named: "SettingsScreen-Dark"
+    )
+  }
 }
 
 extension View {
