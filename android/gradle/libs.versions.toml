@@ -5,8 +5,6 @@ ksp = "2.3.6"
 coreKtx = "1.18.0"
 junit = "4.13.2"
 junitVersion = "1.1.5" # This is to match Compose's version
-robolectric = "4.16.1"
-roborazzi = "1.59.0"
 espressoCore = "3.5.0" # This is to match Compose's version
 lifecycleRuntimeKtx = "2.10.0"
 activityCompose = "1.13.0"
@@ -18,7 +16,7 @@ navigation = "2.9.7"
 browser = "1.9.0"
 emergePlugin = "4.4.0"
 emergeSnapshots = "1.5.1"
-sentry = "6.3.0-alpha.01"
+sentry = "6.4.0-alpha.1"
 shapes = "1.1.0"
 datastore = "1.2.1"
 room = "2.8.4"
@@ -65,10 +63,6 @@ emerge-snapshots = { group = "com.emergetools.snapshots", name = "snapshots", ve
 emerge-snapshots-runtime = { group = "com.emergetools.snapshots", name = "snapshots-runtime", version.ref = "emergeSnapshots" }
 
 junit = { group = "junit", name = "junit", version.ref = "junit" }
-robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
-roborazzi = { group = "io.github.takahirom.roborazzi", name = "roborazzi", version.ref = "roborazzi" }
-roborazzi-compose = { group = "io.github.takahirom.roborazzi", name = "roborazzi-compose", version.ref = "roborazzi" }
-roborazzi-rule = { group = "io.github.takahirom.roborazzi", name = "roborazzi-junit-rule", version.ref = "roborazzi" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-ui-test-junit4-android = { group = "androidx.compose.ui", name = "ui-test-junit4-android", version.ref = "uiTestJunit4Android" }
@@ -82,8 +76,8 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlin-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 emerge = { id = "com.emergetools.android", version.ref = "emergePlugin" }
+paparazzi = { id = "app.cash.paparazzi", version = "2.0.0-alpha04" }
 sentry = { id = "io.sentry.android.gradle", version.ref = "sentry" }
-roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
 androidx-room = { id = "androidx.room", version.ref = "room" }
 android-test = { id = "com.android.test", version.ref = "agp" }
 
