@@ -11,8 +11,7 @@ plugins {
   alias(libs.plugins.emerge)
   alias(libs.plugins.sentry)
   id("io.sentry.android.snapshot")
-  id("app.cash.paparazzi") version "2.0.0-alpha04"
-//  alias(libs.plugins.roborazzi)
+  alias(libs.plugins.paparazzi)
   alias(libs.plugins.androidx.room)
 }
 
@@ -118,7 +117,8 @@ sentry {
   org.set("sentry")
   projectName.set("hackernews-android")
 
-  ignoredVariants.set(listOf("debug"))
+  val variantList = if (providers.environmentVariable("SENTRY_DONT_IGNORE_DEBUG").isPresent) listOf() else listOf("debug")
+  ignoredVariants.set(variantList)
 
   sizeAnalysis {
     enabled = providers.environmentVariable("GITHUB_ACTIONS").isPresent
@@ -130,16 +130,6 @@ sentry {
   }
 
   debug = true
-}
-
-afterEvaluate {
-  val testTask = tasks.named<Test>("testDebugUnitTest")
-  tasks.named<SentryUploadSnapshotsTask>("sentryUploadSnapshotsRelease") {
-    dependsOn("recordPaparazziDebug")
-    snapshotsPath.fileProvider(testTask.map { task ->
-      task.outputs.files.files.first { it.name == "snapshots" }
-    })
-  }
 }
 
 dependencies {
@@ -174,10 +164,6 @@ dependencies {
   ksp(libs.androidx.room.compiler)
 
   testImplementation(libs.junit)
-//  testImplementation(libs.robolectric)
-//  testImplementation(libs.roborazzi)
-//  testImplementation(libs.roborazzi.compose)
-//  testImplementation(libs.roborazzi.rule)
 
   androidTestImplementation(libs.androidx.junit)
   androidTestImplementation(libs.androidx.espresso.core)
