@@ -133,8 +133,12 @@ sentry {
 }
 
 afterEvaluate {
+  val testTask = tasks.named<Test>("testDebugUnitTest")
   tasks.named<SentryUploadSnapshotsTask>("sentryUploadSnapshotsDebug") {
     dependsOn("recordPaparazziDebug")
+    snapshotsPath.fileProvider(testTask.map { task ->
+      task.outputs.files.files.first { it.name == "snapshots" }
+    })
   }
 }
 
