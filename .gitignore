@@ -1,3 +1,9 @@
 .DS_Store
 .idea/
-*.iml
+*.iml# Prevent unoptimized image assets from being committed
+# All drawable assets should use WebP format to minimize APK/AAB install size
+# See issue HACKERNEWS-ANDROID-31: Install size regression
+*.jpeg
+*.jpg
+!android/app/src/main/res/*/*.jpeg
+!android/app/src/main/res/*/*.jpg
