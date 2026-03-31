@@ -178,12 +178,3 @@ struct StoryRow_Preview: PreviewProvider {
     }
   }
 }
-
-struct StoryRowLoadingState_Preview: PreviewProvider {
-  static var previews: some View {
-    PreviewVariants {
-      StoryRowLoadingState()
-        .environment(Theme())
-    }
-  }
-}
