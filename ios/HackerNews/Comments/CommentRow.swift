@@ -146,6 +146,7 @@ struct CommentViewIndentation_Preview: PreviewProvider {
         .previewDisplayName("Indentation \(index)")
       }
     }
+    .background(Color.purple.opacity(0.15))
   }
 }
 
