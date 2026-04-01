@@ -42,7 +42,7 @@ jobs:
 
       - name: Generate snapshot images (iPhone)
         run: |
-          set -o pipefail && TEST_RUNNER_SNAPSHOTS_EXPORT_DIR="snapshot-images/" xcodebuild test \
+          set -o pipefail && TEST_RUNNER_SNAPSHOTS_EXPORT_DIR="$PWD/snapshot-images" xcodebuild test \
             -scheme HackerNews \
             -sdk iphonesimulator \
             -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max' \
