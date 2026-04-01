@@ -1,5 +1,5 @@
 {
-  "originHash" : "cd279061071a9be804a18a197dd9701ac5708de79c458383a585d24b3f0df7d0",
+  "originHash" : "77abd4b0c51c017fe6ce592791015e863646bc679a165e2613e1adb9a21f5e59",
   "pins" : [
     {
       "identity" : "accessibilitysnapshotios26",
@@ -77,8 +77,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/EmergeTools/SnapshotPreviews",
       "state" : {
-        "branch" : "main",
-        "revision" : "1b3bd9bb341de85d927a78ad8874a35d081a8a66"
+        "branch" : "cameroncooke/snapshot-ci",
+        "revision" : "67121902c54afa7c338491d5374232bc48c7eff2"
       }
     },
     {
