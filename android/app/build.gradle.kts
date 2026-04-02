@@ -10,7 +10,6 @@ plugins {
   alias(libs.plugins.kotlin.ksp)
   alias(libs.plugins.emerge)
   alias(libs.plugins.sentry)
-  id("io.sentry.android.snapshot")
   alias(libs.plugins.paparazzi)
   alias(libs.plugins.androidx.room)
 }
@@ -57,6 +56,7 @@ android {
         getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
       )
       signingConfig = signingConfigs.getByName("debug")
+      enableUnitTestCoverage = false
     }
     create("playStoreRelease") {
       initWith(getByName("release"))
@@ -117,8 +117,7 @@ sentry {
   org.set("sentry")
   projectName.set("hackernews-android")
 
-  val variantList = if (providers.environmentVariable("SENTRY_DONT_IGNORE_DEBUG").isPresent) listOf() else listOf("debug")
-  ignoredVariants.set(variantList)
+  ignoredVariants.set(listOf("debug"))
 
   sizeAnalysis {
     enabled = providers.environmentVariable("GITHUB_ACTIONS").isPresent
@@ -129,17 +128,12 @@ sentry {
     updateSdkVariants.add("beta")
   }
 
-  debug = true
-}
-
-afterEvaluate {
-  val testTask = tasks.named<Test>("testDebugUnitTest")
-  tasks.named<SentryUploadSnapshotsTask>("sentryUploadSnapshotsDebug") {
-    dependsOn("recordPaparazziDebug")
-    snapshotsPath.fileProvider(testTask.map { task ->
-      task.outputs.files.files.first { it.name == "snapshots" }
-    })
+  snapshots {
+    enabled = true
+    theme = "android:Theme.Transluscent.NoTitleBar"
   }
+
+  debug = true
 }
 
 dependencies {
@@ -183,5 +177,4 @@ dependencies {
 
   debugImplementation(libs.androidx.ui.tooling)
   debugImplementation(libs.androidx.ui.test.manifest)
-
 }
