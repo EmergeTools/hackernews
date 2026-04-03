@@ -1,0 +1,48 @@
+name: Sentry iOS Upload (Snapshots)
+
+on:
+  push:
+    branches: [main]
+  # pull_request:
+  #   branches: [main]
+  #   paths: [ios/**, .github/workflows/ios*]
+
+jobs:
+  upload_sentry_snapshots:
+    runs-on: macos-26
+
+    defaults:
+      run:
+        working-directory: ./ios
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Set up Ruby env
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.3.10
+          bundler-cache: true
+
+      - name: Setup gems
+        run: exec ../.github/scripts/ios/setup.sh
+
+      - name: Cache Swift Package Manager
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/Library/Caches/org.swift.swiftpm
+            ~/Library/Developer/Xcode/DerivedData/HackerNews-*/SourcePackages
+          key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
+          restore-keys: ${{ runner.os }}-spm-
+
+      - name: Capture snapshots
+        run: ../.github/scripts/ios/emerge-snapshots --config ../.github/emerge-snapshots.yml
+
+      - name: Upload snapshots to Sentry
+        env:
+          SENTRY_SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
+        run: bundle exec fastlane ios upload_sentry_preview_snapshots
