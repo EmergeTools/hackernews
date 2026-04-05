@@ -48,7 +48,8 @@ struct BookmarksScreen: View {
           .containerShape(.rect(cornerRadius: 24, style: .continuous))
 
         Text("bookmarks.title")
-          .font(.ibmPlexMono(.bold, size: 24))
+          .font(.ibmPlexMono(.bold, size: 28))
+          .foregroundStyle(.orange)
           .padding(.horizontal, 16)
       }
       .frame(height: 60)
