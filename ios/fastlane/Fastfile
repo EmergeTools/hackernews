@@ -291,6 +291,17 @@ platform :ios do
     UI.success("Successfully replaced app in XCArchive with thinned build for #{device_type}")
   end
 
+  desc 'Upload SnapshotPreviews snapshots to Sentry'
+  lane :upload_sentry_preview_snapshots do
+    sentry_upload_snapshots(
+      path: 'snapshot-images',
+      app_id: 'com.emergetools.hackernews',
+      auth_token: ENV['SENTRY_SENTRY_AUTH_TOKEN'],
+      org_slug: 'sentry',
+      project_slug: 'hackernews-ios'
+    )
+  end
+
   desc 'Upload swift-snapshot-testing snapshots to Sentry'
   lane :upload_sentry_snapshots do
     sentry_upload_snapshots(
