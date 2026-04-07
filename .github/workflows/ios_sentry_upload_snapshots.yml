@@ -35,24 +35,22 @@ jobs:
       - name: Setup gems
         run: exec ../.github/scripts/ios/setup.sh
 
+      - name: Boot iPhone simulator
+        run: xcrun simctl boot "iPhone 17 Pro Max" || true
+
       - name: Cache Swift Package Manager
         uses: actions/cache@v4
         with:
-          path: |
-            ~/Library/Caches/org.swift.swiftpm
-            ~/Library/Developer/Xcode/DerivedData/HackerNews-*/SourcePackages
+          path: ~/Library/Caches/org.swift.swiftpm
           key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
           restore-keys: ${{ runner.os }}-spm-
 
       - name: Cache DerivedData
         uses: actions/cache@v4
         with:
-          path: ~/Library/Developer/Xcode/DerivedData/HackerNews-*
+          path: ${{ github.workspace }}/ios/build/DerivedData
           key: ${{ runner.os }}-dd-${{ github.head_ref || github.ref_name }}
           restore-keys: ${{ runner.os }}-dd-
-
-      - name: Boot iPhone simulator
-        run: xcrun simctl boot "iPhone 17 Pro Max" || true
 
       - name: Build for testing (iPhone)
         run: |
@@ -60,11 +58,16 @@ jobs:
             -scheme HackerNews \
             -sdk iphonesimulator \
             -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max' \
+            -derivedDataPath build/DerivedData \
             -only-testing:HackerNewsTests/HackerNewsSnapshotTest \
+            -skipPackageUpdates \
             ONLY_ACTIVE_ARCH=YES \
             TARGETED_DEVICE_FAMILY=1 \
             SUPPORTS_MACCATALYST=NO \
             CODE_SIGNING_ALLOWED=NO \
+            COMPILATION_CACHING=YES \
+            EAGER_LINKING=YES \
+            FUSE_BUILD_SCRIPT_PHASES=YES \
             | xcpretty
 
       - name: Generate snapshot images (iPhone)
@@ -73,11 +76,9 @@ jobs:
             -scheme HackerNews \
             -sdk iphonesimulator \
             -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max' \
+            -derivedDataPath build/DerivedData \
             -only-testing:HackerNewsTests/HackerNewsSnapshotTest \
             -resultBundlePath ../SnapshotResults-iphone.xcresult \
-            ONLY_ACTIVE_ARCH=YES \
-            TARGETED_DEVICE_FAMILY=1 \
-            SUPPORTS_MACCATALYST=NO \
             | xcpretty
 
       # - name: Boot iPad simulator
