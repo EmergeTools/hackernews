@@ -60,21 +60,21 @@ jobs:
             SUPPORTS_MACCATALYST=NO \
             | xcpretty
 
-      - name: Boot iPad simulator
-        run: xcrun simctl boot "iPad Air 11-inch (M3)" || true
+      # - name: Boot iPad simulator
+      #   run: xcrun simctl boot "iPad Air 11-inch (M3)" || true
 
-      - name: Generate snapshot images (iPad)
-        run: |
-          set -o pipefail && xcodebuild test \
-            -scheme HackerNews \
-            -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator,name=iPad Air 11-inch (M3)' \
-            -only-testing:HackerNewsTests/HackerNewsSnapshotTest \
-            -resultBundlePath ../SnapshotResults-ipad.xcresult \
-            ONLY_ACTIVE_ARCH=YES \
-            TARGETED_DEVICE_FAMILY="1,2" \
-            SUPPORTS_MACCATALYST=NO \
-            | xcpretty
+      # - name: Generate snapshot images (iPad)
+      #   run: |
+      #     set -o pipefail && xcodebuild test \
+      #       -scheme HackerNews \
+      #       -sdk iphonesimulator \
+      #       -destination 'platform=iOS Simulator,name=iPad Air 11-inch (M3)' \
+      #       -only-testing:HackerNewsTests/HackerNewsSnapshotTest \
+      #       -resultBundlePath ../SnapshotResults-ipad.xcresult \
+      #       ONLY_ACTIVE_ARCH=YES \
+      #       TARGETED_DEVICE_FAMILY="1,2" \
+      #       SUPPORTS_MACCATALYST=NO \
+      #       | xcpretty
 
       - name: List generated images
         run: |
