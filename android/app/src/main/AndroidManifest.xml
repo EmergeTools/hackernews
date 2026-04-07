@@ -18,6 +18,11 @@
 
         <profileable android:shell="true" />
 
+        <!-- Disable auto-init so we can configure beforeSend in HackerNewsApplication -->
+        <meta-data
+            android:name="io.sentry.auto-init"
+            android:value="false" />
+
         <meta-data
             android:name="io.sentry.dsn"
             android:value="https://d381e3d533c65c895caaa6e084940537@o1.ingest.us.sentry.io/4510398352719872" />

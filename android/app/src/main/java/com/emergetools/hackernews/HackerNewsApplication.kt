@@ -14,6 +14,9 @@ import com.emergetools.hackernews.data.remote.HackerNewsBaseClient
 import com.emergetools.hackernews.data.remote.HackerNewsSearchClient
 import com.emergetools.hackernews.data.remote.HackerNewsWebClient
 import io.sentry.Sentry
+import io.sentry.SentryEvent
+import io.sentry.SentryOptions
+import io.sentry.android.core.SentryAndroid
 import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
 import java.time.Duration
@@ -31,6 +34,12 @@ class HackerNewsApplication : Application() {
 
   override fun onCreate() {
     super.onCreate()
+
+    SentryAndroid.init(this) { options ->
+      options.beforeSend = SentryOptions.BeforeSendCallback { event, _ ->
+        if (isArtThreadDumpCrash(event)) null else event
+      }
+    }
 
     Sentry.logger().info("HackerNewsApplication#onCreate")
 
@@ -50,6 +59,26 @@ class HackerNewsApplication : Application() {
 
     webClient = HackerNewsWebClient(httpClient)
     baseClient = HackerNewsBaseClient(json, httpClient)
+  }
+
+  /**
+   * Detects native crashes caused by ART thread dump memory corruption.
+   * On certain devices (e.g. Nokia X30 5G / Android 14), ART's abort path
+   * calls Thread::DumpState which invokes strlen_aarch64 on corrupted memory,
+   * causing a secondary SIGSEGV. This is a device/firmware defect and not
+   * actionable at the application level.
+   */
+  private fun isArtThreadDumpCrash(event: SentryEvent): Boolean {
+    val exceptions = event.exceptions ?: return false
+    for (exception in exceptions) {
+      val frames = exception.stacktrace?.frames ?: continue
+      val frameNames = frames.mapNotNull { it.function }
+      if (frameNames.any { "strlen_aarch64" in it } &&
+        frameNames.any { "DumpState" in it }) {
+        return true
+      }
+    }
+    return false
   }
 }
 
