@@ -44,12 +44,32 @@ jobs:
           key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
           restore-keys: ${{ runner.os }}-spm-
 
+      - name: Cache DerivedData
+        uses: actions/cache@v4
+        with:
+          path: ~/Library/Developer/Xcode/DerivedData/HackerNews-*
+          key: ${{ runner.os }}-dd-${{ github.head_ref || github.ref_name }}
+          restore-keys: ${{ runner.os }}-dd-
+
       - name: Boot iPhone simulator
         run: xcrun simctl boot "iPhone 17 Pro Max" || true
 
+      - name: Build for testing (iPhone)
+        run: |
+          set -o pipefail && xcodebuild build-for-testing \
+            -scheme HackerNews \
+            -sdk iphonesimulator \
+            -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max' \
+            -only-testing:HackerNewsTests/HackerNewsSnapshotTest \
+            ONLY_ACTIVE_ARCH=YES \
+            TARGETED_DEVICE_FAMILY=1 \
+            SUPPORTS_MACCATALYST=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            | xcpretty
+
       - name: Generate snapshot images (iPhone)
         run: |
-          set -o pipefail && xcodebuild test \
+          set -o pipefail && xcodebuild test-without-building \
             -scheme HackerNews \
             -sdk iphonesimulator \
             -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max' \
