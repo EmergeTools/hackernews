@@ -1271,7 +1271,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/EmergeTools/SnapshotPreviews";
 			requirement = {
-				branch = main;
+				branch = "cameroncooke/snapshot-ci";
 				kind = branch;
 			};
 		};
