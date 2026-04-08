@@ -45,14 +45,15 @@ jobs:
           key: ${{ runner.os }}-dd-${{ github.head_ref || github.ref_name }}
           restore-keys: ${{ runner.os }}-dd-
 
-      - name: Build for testing (iPhone)
+      - name: Generate snapshot images (iPhone)
         run: |
-          set -o pipefail && xcodebuild build-for-testing \
+          set -o pipefail && xcodebuild test \
             -scheme HackerNews \
             -sdk iphonesimulator \
             -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max' \
             -derivedDataPath build/DerivedData \
             -only-testing:HackerNewsTests/HackerNewsSnapshotTest \
+            -resultBundlePath ../SnapshotResults-iphone.xcresult \
             -skipPackageUpdates \
             ONLY_ACTIVE_ARCH=YES \
             TARGETED_DEVICE_FAMILY=1 \
@@ -61,17 +62,6 @@ jobs:
             COMPILATION_CACHING=YES \
             EAGER_LINKING=YES \
             FUSE_BUILD_SCRIPT_PHASES=YES \
-            | xcpretty
-
-      - name: Generate snapshot images (iPhone)
-        run: |
-          set -o pipefail && xcodebuild test-without-building \
-            -scheme HackerNews \
-            -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max' \
-            -derivedDataPath build/DerivedData \
-            -only-testing:HackerNewsTests/HackerNewsSnapshotTest \
-            -resultBundlePath ../SnapshotResults-iphone.xcresult \
             | xcpretty
 
       # - name: Boot iPad simulator
