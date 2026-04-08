@@ -8,30 +8,6 @@ on:
     paths: [android/**]
 
 jobs:
-  emerge:
-    runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: ./android
-
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-      - name: Set up JDK 21
-        uses: actions/setup-java@v5
-        with:
-          java-version: "21"
-          distribution: "temurin"
-      - name: Setup Gradle build action
-        uses: gradle/actions/setup-gradle@v6
-      - name: Emerge snapshots
-        run: ./gradlew :app:bundleDebug :app:emergeUploadSnapshotBundleDebug
-        env:
-          EMERGE_API_TOKEN: ${{ secrets.EMERGE_API_KEY }}
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
-
   paparazzi:
     runs-on: ubuntu-latest
 
@@ -74,7 +50,7 @@ jobs:
         run: |
           emerge upload snapshots \
             --name "HackerNews Paparazzi" \
-            --id "com.emerge.hackernews.paparazzi" \
+            --id "com.emergetools.hackernews.debug" \
             --repo-name "EmergeTools/hackernews" \
             --debug \
             --client-library paparazzi \

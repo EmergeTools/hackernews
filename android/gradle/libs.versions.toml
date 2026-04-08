@@ -15,7 +15,6 @@ viewmodel = "2.10.0"
 navigation = "2.9.7"
 browser = "1.9.0"
 emergePlugin = "4.4.0"
-emergeSnapshots = "1.5.1"
 sentry = "6.4.0-alpha.6"
 shapes = "1.1.0"
 datastore = "1.2.1"
@@ -58,9 +57,6 @@ retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = 
 retrofit-kotlinx-serialization = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization", version.ref = "retrofit" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 jsoup = { group = "org.jsoup", name = "jsoup", version.ref = "jsoup" }
-
-emerge-snapshots = { group = "com.emergetools.snapshots", name = "snapshots", version.ref = "emergeSnapshots" }
-emerge-snapshots-runtime = { group = "com.emergetools.snapshots", name = "snapshots-runtime", version.ref = "emergeSnapshots" }
 
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }

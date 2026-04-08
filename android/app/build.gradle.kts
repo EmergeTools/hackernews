@@ -100,10 +100,6 @@ ksp {
 }
 
 emerge {
-  snapshots {
-    tag.set("snapshot")
-  }
-
   vcs {
     gitHub {
       // System.getenv override is for integration tests from the emerge-android repository
@@ -155,7 +151,6 @@ dependencies {
 
   implementation(libs.extendedspans)
 
-  implementation(libs.emerge.snapshots.runtime)
   implementation(libs.okhttp)
   implementation(libs.retrofit)
   implementation(libs.retrofit.kotlinx.serialization)
@@ -173,7 +168,6 @@ dependencies {
   androidTestImplementation(libs.androidx.espresso.core)
   androidTestImplementation(platform(libs.androidx.compose.bom))
   androidTestImplementation(libs.androidx.ui.test.junit4)
-  androidTestImplementation(libs.emerge.snapshots)
 
   debugImplementation(libs.androidx.ui.tooling)
   debugImplementation(libs.androidx.ui.test.manifest)
