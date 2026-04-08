@@ -49,9 +49,10 @@ jobs:
           EMERGE_API_TOKEN: ${{ secrets.EMERGE_API_KEY }}
         run: |
           emerge upload snapshots \
-            --name "HackerNews Paparazzi" \
+            --name "Hacker News" \
             --id "com.emergetools.hackernews.debug" \
             --repo-name "EmergeTools/hackernews" \
+            --tag "snapshot" \
             --debug \
             --client-library paparazzi \
             --project-root .
