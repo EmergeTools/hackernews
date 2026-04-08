@@ -54,7 +54,7 @@ jobs:
             -derivedDataPath build/DerivedData \
             -only-testing:HackerNewsTests/HackerNewsSnapshotTest \
             -resultBundlePath ../SnapshotResults-iphone.xcresult \
-            -skipPackageUpdates \
+            -skipPackagePluginValidation \
             ONLY_ACTIVE_ARCH=YES \
             TARGETED_DEVICE_FAMILY=1 \
             SUPPORTS_MACCATALYST=NO \
