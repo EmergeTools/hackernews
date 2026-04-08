@@ -58,6 +58,8 @@ retrofit-kotlinx-serialization = { group = "com.squareup.retrofit2", name = "con
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 jsoup = { group = "org.jsoup", name = "jsoup", version.ref = "jsoup" }
 
+emerge-snapshots-runtime = { group = "com.emergetools.snapshots", name = "snapshots-runtime", version = "1.5.1" }
+
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
