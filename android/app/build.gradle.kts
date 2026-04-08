@@ -126,6 +126,7 @@ sentry {
 
   snapshots {
     enabled = true
+    includePrivatePreviews = true
     theme = "android:Theme.Transluscent.NoTitleBar"
   }
 
