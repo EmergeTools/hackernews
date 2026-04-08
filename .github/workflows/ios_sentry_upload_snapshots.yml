@@ -38,12 +38,14 @@ jobs:
       - name: Boot iPhone simulator
         run: xcrun simctl boot "iPhone 17 Pro Max" || true
 
-      - name: Cache DerivedData
+      - name: Cache Swift Package Manager
         uses: actions/cache@v4
         with:
-          path: ${{ github.workspace }}/ios/build/DerivedData
-          key: ${{ runner.os }}-dd-${{ github.head_ref || github.ref_name }}
-          restore-keys: ${{ runner.os }}-dd-
+          path: |
+            ~/Library/Caches/org.swift.swiftpm
+            ~/Library/Developer/Xcode/DerivedData/HackerNews-*/SourcePackages
+          key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
+          restore-keys: ${{ runner.os }}-spm-
 
       - name: Generate snapshot images (iPhone)
         run: |
@@ -51,7 +53,6 @@ jobs:
             -scheme HackerNews \
             -sdk iphonesimulator \
             -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max' \
-            -derivedDataPath build/DerivedData \
             -only-testing:HackerNewsTests/HackerNewsSnapshotTest \
             -resultBundlePath ../SnapshotResults-iphone.xcresult \
             -skipPackagePluginValidation \
