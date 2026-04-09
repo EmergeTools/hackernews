@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Hacker News</string>
+    <string name="test_string">Hello from a test PR</string>
 </resources>
