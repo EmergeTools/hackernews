@@ -20,9 +20,7 @@
 		A4BED5C42AD5E083001642B3 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		A4D28AEE2C237E2A007F20D0 /* SnapshotPreferences in Frameworks */ = {isa = PBXBuildFile; productRef = A4D28AED2C237E2A007F20D0 /* SnapshotPreferences */; };
 		A4D28AF02C237E2A007F20D0 /* SnapshottingTests in Frameworks */ = {isa = PBXBuildFile; productRef = A4D28AEF2C237E2A007F20D0 /* SnapshottingTests */; };
-		A9DF68FF511E48048B0A703D /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = 673236B0A4D04137A0D80A76 /* Sentry */; };
 		C3AC6AD92CB6E8F7006BD22D /* SnapshottingTests in Frameworks */ = {isa = PBXBuildFile; productRef = C3AC6AD82CB6E8F7006BD22D /* SnapshottingTests */; };
-		F40E42A02EA80E1600E53876 /* SentrySwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = F40E429F2EA80E1600E53876 /* SentrySwiftUI */; };
 		F45F6EA52D4D1E50003FA9A3 /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = F45F6EA42D4D1E50003FA9A3 /* Common */; };
 		F45F6EA72D4D1E57003FA9A3 /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = F45F6EA62D4D1E57003FA9A3 /* Common */; };
 		F45F6F4A2D4D2185003FA9A3 /* Common in Embed Frameworks */ = {isa = PBXBuildFile; productRef = F45F6EA42D4D1E50003FA9A3 /* Common */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -37,6 +35,7 @@
 		FA3637612EC7AC7D00541313 /* AccessibilitySnapshotCore in Frameworks */ = {isa = PBXBuildFile; productRef = FA3637602EC7AC7D00541313 /* AccessibilitySnapshotCore */; };
 		FA3637642EC7ACAD00541313 /* AccessibilitySnapshotCore in Frameworks */ = {isa = PBXBuildFile; productRef = FA3637632EC7ACAD00541313 /* AccessibilitySnapshotCore */; };
 		FA80C2702EC78D7500A700AB /* AccessibilitySnapshotCore in Frameworks */ = {isa = PBXBuildFile; productRef = FA80C26F2EC78D7500A700AB /* AccessibilitySnapshotCore */; };
+		FA914E352ECE6A4700C54BDD /* SentrySPM in Frameworks */ = {isa = PBXBuildFile; productRef = FA914E342ECE6A4700C54BDD /* SentrySPM */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -193,12 +192,11 @@
 			files = (
 				F45F6EA52D4D1E50003FA9A3 /* Common in Frameworks */,
 				A47309B42AA29D9600201376 /* SwiftSoup in Frameworks */,
+				FA914E352ECE6A4700C54BDD /* SentrySPM in Frameworks */,
 				F48E9ECB2D4D691600FD8B30 /* ETDistribution in Frameworks */,
 				A4D28AEE2C237E2A007F20D0 /* SnapshotPreferences in Frameworks */,
 				F45F703E2D4D2695003FA9A3 /* Fonts in Frameworks */,
-				F40E42A02EA80E1600E53876 /* SentrySwiftUI in Frameworks */,
 				A495B2952BFEA11B00A8A8A9 /* Reaper in Frameworks */,
-				A9DF68FF511E48048B0A703D /* Sentry in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -372,13 +370,12 @@
 			name = HackerNews;
 			packageProductDependencies = (
 				A47309B32AA29D9600201376 /* SwiftSoup */,
-				673236B0A4D04137A0D80A76 /* Sentry */,
 				A495B2942BFEA11B00A8A8A9 /* Reaper */,
 				A4D28AED2C237E2A007F20D0 /* SnapshotPreferences */,
 				F45F6EA42D4D1E50003FA9A3 /* Common */,
 				F45F703D2D4D2695003FA9A3 /* Fonts */,
 				F48E9ECA2D4D691600FD8B30 /* ETDistribution */,
-				F40E429F2EA80E1600E53876 /* SentrySwiftUI */,
+				FA914E342ECE6A4700C54BDD /* SentrySPM */,
 			);
 			productName = HackerNews;
 			productReference = A42705792A4293B10057E439 /* HackerNews.app */;
@@ -1231,8 +1228,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/getsentry/sentry-cocoa/";
 			requirement = {
-				kind = exactVersion;
-				version = "9.0.0-alpha.1";
+				branch = autoTrackAppLaunch;
+				kind = branch;
 			};
 		};
 		A42271692DE78DEF002F03D5 /* XCRemoteSwiftPackageReference "faultordering" */ = {
@@ -1302,11 +1299,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		673236B0A4D04137A0D80A76 /* Sentry */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 995A2BEDEF224F7085D3DB13 /* XCRemoteSwiftPackageReference "sentry-cocoa" */;
-			productName = Sentry;
-		};
 		A422716A2DE78DEF002F03D5 /* FaultOrdering */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = A42271692DE78DEF002F03D5 /* XCRemoteSwiftPackageReference "faultordering" */;
@@ -1346,11 +1338,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A4D28AEC2C237E2A007F20D0 /* XCRemoteSwiftPackageReference "SnapshotPreviews" */;
 			productName = SnapshottingTests;
-		};
-		F40E429F2EA80E1600E53876 /* SentrySwiftUI */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 995A2BEDEF224F7085D3DB13 /* XCRemoteSwiftPackageReference "sentry-cocoa" */;
-			productName = SentrySwiftUI;
 		};
 		F45F6EA42D4D1E50003FA9A3 /* Common */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -1400,6 +1387,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = FA80C26E2EC78D7500A700AB /* XCRemoteSwiftPackageReference "AccessibilitySnapshot" */;
 			productName = AccessibilitySnapshotCore;
+		};
+		FA914E342ECE6A4700C54BDD /* SentrySPM */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 995A2BEDEF224F7085D3DB13 /* XCRemoteSwiftPackageReference "sentry-cocoa" */;
+			productName = SentrySPM;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
