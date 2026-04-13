@@ -1,5 +1,5 @@
-import io.github.takahirom.roborazzi.RoborazziExtension
 import io.sentry.android.gradle.tasks.SentryUploadSnapshotsTask
+import org.gradle.api.tasks.testing.Test
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -10,7 +10,7 @@ plugins {
   alias(libs.plugins.kotlin.ksp)
   alias(libs.plugins.emerge)
   alias(libs.plugins.sentry)
-  alias(libs.plugins.roborazzi)
+  alias(libs.plugins.paparazzi)
   alias(libs.plugins.androidx.room)
 }
 
@@ -56,6 +56,7 @@ android {
         getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
       )
       signingConfig = signingConfigs.getByName("debug")
+      enableUnitTestCoverage = false
     }
     create("playStoreRelease") {
       initWith(getByName("release"))
@@ -99,10 +100,6 @@ ksp {
 }
 
 emerge {
-  snapshots {
-    tag.set("snapshot")
-  }
-
   vcs {
     gitHub {
       // System.getenv override is for integration tests from the emerge-android repository
@@ -127,16 +124,13 @@ sentry {
     updateSdkVariants.add("beta")
   }
 
-  debug = true
-}
-
-afterEvaluate {
-  tasks.named<SentryUploadSnapshotsTask>("sentryUploadSnapshotsRelease") {
-    dependsOn(tasks.named("recordRoborazziDebug"))
-    snapshotsPath.set(
-      project.extensions.getByType<RoborazziExtension>().outputDir
-    )
+  snapshots {
+    enabled = true
+    includePrivatePreviews = true
+    theme = "android:Theme.Transluscent.NoTitleBar"
   }
+
+  debug = true
 }
 
 dependencies {
@@ -171,18 +165,12 @@ dependencies {
   ksp(libs.androidx.room.compiler)
 
   testImplementation(libs.junit)
-  testImplementation(libs.robolectric)
-  testImplementation(libs.roborazzi)
-  testImplementation(libs.roborazzi.compose)
-  testImplementation(libs.roborazzi.rule)
 
   androidTestImplementation(libs.androidx.junit)
   androidTestImplementation(libs.androidx.espresso.core)
   androidTestImplementation(platform(libs.androidx.compose.bom))
   androidTestImplementation(libs.androidx.ui.test.junit4)
-  androidTestImplementation(libs.emerge.snapshots)
 
   debugImplementation(libs.androidx.ui.tooling)
   debugImplementation(libs.androidx.ui.test.manifest)
-
 }
