@@ -42,7 +42,6 @@ jobs:
         run: ./gradlew :app:recordPaparazziDebug :app:sentryUploadSnapshotsDebug
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
-          SENTRY_DONT_IGNORE_DEBUG: true
 
       - name: Upload snapshots
         env:
