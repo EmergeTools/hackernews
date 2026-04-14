@@ -39,7 +39,7 @@ jobs:
         run: gem install emerge
 
       - name: Generate Paparazzi snapshots
-        run: ./gradlew :app:recordPaparazziDebug :app:sentryUploadSnapshotsDebug
+        run: ./gradlew :app:sentryUploadSnapshotsDebug
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
 
