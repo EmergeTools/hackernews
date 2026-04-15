@@ -1,4 +1,4 @@
-name: Sentry iOS Upload (Snapshots)
+name: Sentry iOS Upload (Swift Snapshot Testing)
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
     paths: [ios/**, .github/workflows/ios*]
 
 jobs:
-  upload_sentry_snapshots:
+  upload_sentry_swift_snapshots:
     runs-on: macos-26
 
     defaults:
@@ -17,8 +17,8 @@ jobs:
         working-directory: ./ios
 
     env:
-      TEST_RUNNER_SNAPSHOTS_EXPORT_DIR: "${{ github.workspace }}/ios/snapshot-images"
       XCODE_RUNNING_FOR_PREVIEWS: 1
+      TEST_RUNNER_SNAPSHOT_TESTING_RECORD: all
 
     steps:
       - name: Checkout
@@ -47,14 +47,15 @@ jobs:
           key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
           restore-keys: ${{ runner.os }}-spm-
 
-      - name: Generate snapshot images (iPhone)
+      - name: Generate snapshot images
+        continue-on-error: true
         run: |
           set -o pipefail && xcodebuild test \
             -scheme HackerNews \
             -sdk iphonesimulator \
             -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max,arch=arm64' \
-            -only-testing:HackerNewsTests/HackerNewsSnapshotTest \
-            -resultBundlePath ../SnapshotResults-iphone.xcresult \
+            -only-testing:HackerNewsTests/SwiftSnapshotTest \
+            -resultBundlePath ../SnapshotResults-swift-snapshots.xcresult \
             -skipPackagePluginValidation \
             ONLY_ACTIVE_ARCH=YES \
             TARGETED_DEVICE_FAMILY=1 \
@@ -65,34 +66,13 @@ jobs:
             FUSE_BUILD_SCRIPT_PHASES=YES \
             | xcpretty
 
-      # - name: Boot iPad simulator
-      #   run: xcrun simctl boot "iPad Air 11-inch (M3)" || true
-
-      # - name: Generate snapshot images (iPad)
-      #   run: |
-      #     set -o pipefail && xcodebuild test \
-      #       -scheme HackerNews \
-      #       -sdk iphonesimulator \
-      #       -destination 'platform=iOS Simulator,name=iPad Air 11-inch (M3)' \
-      #       -only-testing:HackerNewsTests/HackerNewsSnapshotTest \
-      #       -resultBundlePath ../SnapshotResults-ipad.xcresult \
-      #       -skipPackagePluginValidation \
-      #       ONLY_ACTIVE_ARCH=YES \
-      #       TARGETED_DEVICE_FAMILY="1,2" \
-      #       SUPPORTS_MACCATALYST=NO \
-      #       CODE_SIGNING_ALLOWED=NO \
-      #       COMPILATION_CACHING=YES \
-      #       EAGER_LINKING=YES \
-      #       FUSE_BUILD_SCRIPT_PHASES=YES \
-      #       | xcpretty
-
       - name: List generated images
         run: |
           echo "Generated snapshot images:"
-          ls -1 snapshot-images/
-          echo "Total: $(ls -1 snapshot-images/ | wc -l | tr -d ' ') images"
+          ls -1 HackerNewsTests/__Snapshots__/SwiftSnapshotTest/ || echo "No snapshots found"
+          echo "Total: $(ls -1 HackerNewsTests/__Snapshots__/SwiftSnapshotTest/ 2>/dev/null | wc -l | tr -d ' ') images"
 
       - name: Upload snapshots to Sentry
         env:
           SENTRY_SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
-        run: bundle exec fastlane ios upload_sentry_preview_snapshots
+        run: bundle exec fastlane ios upload_sentry_snapshots
