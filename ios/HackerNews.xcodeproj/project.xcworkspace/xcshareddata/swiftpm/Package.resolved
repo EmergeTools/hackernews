@@ -77,8 +77,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/EmergeTools/SnapshotPreviews",
       "state" : {
-        "branch" : "cameroncooke/snapshot-ci",
-        "revision" : "c58a343e2aad105ee24eb4d4b954ac26946c35da"
+        "branch" : "main",
+        "revision" : "c04636cedbdbdf3b22181b522ad4025f63b78126"
       }
     },
     {
