@@ -75,4 +75,4 @@ jobs:
       - name: Upload snapshots to Sentry
         env:
           SENTRY_SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
-        run: bundle exec fastlane ios upload_sentry_snapshots
+        run: bundle exec fastlane ios upload_sentry_snapshots_swift_snapshot_testing

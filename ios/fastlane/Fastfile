@@ -209,24 +209,24 @@ platform :ios do
   lane :export_thinned_build do |options|
     xcarchive_path = lane_context[SharedValues::XCODEBUILD_ARCHIVE]
     UI.message("Using archive: #{xcarchive_path}")
-    
+
     # Device type configuration for thinning, default is iPhone 16 Pro
     device_type = options[:device_type] || 'iPhone17,1'
     UI.message("Thinning for device type: #{device_type}")
-    
+
     # Export options for thinning
     export_options = {
       method: 'ad-hoc',
       thinning: device_type,  # This creates a thinned build for the specific device type
       team_id: ENV['APPLE_TEAM_ID']
     }
-    
+
     # Add provisioning profiles if available
     app_identifier = CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)
     bundle_identifier = ENV['BUNDLE_ID'] || app_identifier
     profile_name = 'HackerNews AdHoc Distribution'
     widget_profile_name = 'HackerNews AdHoc HomeWidget'
-    
+
     export_options[:provisioningProfiles] = {
       bundle_identifier => profile_name,
       'com.emergetools.hackernews.HackerNewsHomeWidget' => widget_profile_name
@@ -240,10 +240,10 @@ platform :ios do
       sh("#{xcsafe} -exportArchive -archivePath #{xcarchive_path} -exportOptionsPlist export_options.plist -exportPath ./build")
 
       plist_data = Plist.parse_xml('./build/app-thinning.plist')
-      
+
       # Find the variant matching our device and OS version
       target_ipa_path = nil
-      
+
       if plist_data && plist_data['variants']
         plist_data['variants'].each do |variant|
           path = variant[0]
@@ -256,45 +256,45 @@ platform :ios do
           end
         end
       end
-      
+
       ipa_path = File.join('../', target_ipa_path)
       UI.message("Using IPA: #{ipa_path}")
-      
+
       temp_dir = './build/temp_extraction'
       FileUtils.rm_rf(temp_dir) if Dir.exist?(temp_dir)
       FileUtils.mkdir_p(temp_dir)
-      
+
       # Extract the IPA
       sh("cd #{temp_dir} && unzip -q '#{ipa_path}'")
       payload_dir = File.join(temp_dir, 'Payload')
       app_files = Dir.glob(File.join(payload_dir, '*.app'))
-      
+
       if app_files.empty?
         UI.error("No .app file found in extracted IPA")
         return
       end
-      
+
       thinned_app_path = app_files.first
       # Find the original .app in the XCArchive
       original_app_pattern = File.join(xcarchive_path, 'Products', 'Applications', '*.app')
       original_app_files = Dir.glob(original_app_pattern)
-      
+
       original_app_path = original_app_files.first
-   
+
       FileUtils.rm_rf(original_app_path)
       FileUtils.cp_r(thinned_app_path, original_app_path)
-      
+
       # Clean up temporary directory
       FileUtils.rm_rf(temp_dir)
     end
-    
+
     UI.success("Successfully replaced app in XCArchive with thinned build for #{device_type}")
   end
 
   desc 'Upload SnapshotPreviews snapshots to Sentry'
-  lane :upload_sentry_preview_snapshots do
+  lane :upload_sentry_snapshots do |options|
     sentry_upload_snapshots(
-      path: 'snapshot-images',
+      path: options[:path],
       app_id: 'com.emergetools.hackernews',
       auth_token: ENV['SENTRY_SENTRY_AUTH_TOKEN'],
       org_slug: 'sentry',
@@ -303,7 +303,7 @@ platform :ios do
   end
 
   desc 'Upload swift-snapshot-testing snapshots to Sentry'
-  lane :upload_sentry_snapshots do
+  lane :upload_sentry_snapshots_swift_snapshot_testing do
     sentry_upload_snapshots(
       path: 'HackerNewsTests/__Snapshots__/SwiftSnapshotTest',
       app_id: 'com.emergetools.hackernews',
