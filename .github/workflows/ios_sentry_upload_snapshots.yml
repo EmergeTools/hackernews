@@ -82,7 +82,7 @@ jobs:
           set -o pipefail && xcodebuild test \
             -scheme HackerNews \
             -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator,name=iPad Air 11-inch (M4)' \
+            -destination 'platform=iOS Simulator,name=iPad Air 11-inch (M4),arch=arm64' \
             -only-testing:HackerNewsTests/HackerNewsSnapshotTest \
             -resultBundlePath ../SnapshotResults-ipad.xcresult \
             -skipPackagePluginValidation \
