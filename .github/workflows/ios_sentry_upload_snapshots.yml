@@ -18,6 +18,7 @@ jobs:
 
     env:
       SNAPSHOT_UPLOAD_BASE_DIR: "${{ github.workspace }}/ios/snapshot-images"
+      DERIVED_DATA_PATH: "${{ github.workspace }}/DerivedData-snapshot-upload"
       XCODE_RUNNING_FOR_PREVIEWS: 1
 
     steps:
@@ -43,7 +44,7 @@ jobs:
         with:
           path: |
             ~/Library/Caches/org.swift.swiftpm
-            ~/Library/Developer/Xcode/DerivedData/HackerNews-*/SourcePackages
+            ${{ env.DERIVED_DATA_PATH }}/SourcePackages
           key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
           restore-keys: ${{ runner.os }}-spm-
 
@@ -51,20 +52,20 @@ jobs:
         run: |
           mkdir -p "${SNAPSHOT_UPLOAD_BASE_DIR}/iphone"
           mkdir -p "${SNAPSHOT_UPLOAD_BASE_DIR}/ipad"
+          mkdir -p "${DERIVED_DATA_PATH}"
 
-      - name: Generate snapshot images (iPhone)
-        env:
-          TEST_RUNNER_SNAPSHOTS_EXPORT_DIR: "${{ env.SNAPSHOT_UPLOAD_BASE_DIR }}/iphone"
+      - name: Build snapshot tests
         run: |
-          set -o pipefail && xcodebuild test \
+          set -o pipefail && xcodebuild build-for-testing \
             -scheme HackerNews \
             -sdk iphonesimulator \
             -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max,arch=arm64' \
             -only-testing:HackerNewsTests/HackerNewsSnapshotTest \
-            -resultBundlePath ../SnapshotResults-iphone.xcresult \
+            -resultBundlePath ../SnapshotBuildForTesting.xcresult \
+            -derivedDataPath "${DERIVED_DATA_PATH}" \
             -skipPackagePluginValidation \
             ONLY_ACTIVE_ARCH=YES \
-            TARGETED_DEVICE_FAMILY=1 \
+            TARGETED_DEVICE_FAMILY="1,2" \
             SUPPORTS_MACCATALYST=NO \
             CODE_SIGNING_ALLOWED=NO \
             COMPILATION_CACHING=YES \
@@ -75,24 +76,30 @@ jobs:
       - name: Boot iPad simulator
         run: xcrun simctl boot "iPad Air 11-inch (M4)" || true
 
+      - name: Generate snapshot images (iPhone)
+        env:
+          TEST_RUNNER_SNAPSHOTS_EXPORT_DIR: "${{ env.SNAPSHOT_UPLOAD_BASE_DIR }}/iphone"
+        run: |
+          set -o pipefail && xcodebuild test-without-building \
+            -scheme HackerNews \
+            -sdk iphonesimulator \
+            -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max,arch=arm64' \
+            -only-testing:HackerNewsTests/HackerNewsSnapshotTest \
+            -resultBundlePath ../SnapshotResults-iphone.xcresult \
+            -derivedDataPath "${DERIVED_DATA_PATH}" \
+            | xcpretty
+
       - name: Generate snapshot images (iPad)
         env:
           TEST_RUNNER_SNAPSHOTS_EXPORT_DIR: "${{ env.SNAPSHOT_UPLOAD_BASE_DIR }}/ipad"
         run: |
-          set -o pipefail && xcodebuild test \
+          set -o pipefail && xcodebuild test-without-building \
             -scheme HackerNews \
             -sdk iphonesimulator \
             -destination 'platform=iOS Simulator,name=iPad Air 11-inch (M4),arch=arm64' \
             -only-testing:HackerNewsTests/HackerNewsSnapshotTest \
             -resultBundlePath ../SnapshotResults-ipad.xcresult \
-            -skipPackagePluginValidation \
-            ONLY_ACTIVE_ARCH=YES \
-            TARGETED_DEVICE_FAMILY="1,2" \
-            SUPPORTS_MACCATALYST=NO \
-            CODE_SIGNING_ALLOWED=NO \
-            COMPILATION_CACHING=YES \
-            EAGER_LINKING=YES \
-            FUSE_BUILD_SCRIPT_PHASES=YES \
+            -derivedDataPath "${DERIVED_DATA_PATH}" \
             | xcpretty
 
       - name: List generated snapshot files
