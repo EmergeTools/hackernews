@@ -17,6 +17,7 @@ jobs:
         working-directory: ./ios
 
     env:
+      # Base directory to save snapshot images
       SNAPSHOT_UPLOAD_BASE_DIR: "${{ github.workspace }}/ios/snapshot-images"
       DERIVED_DATA_PATH: "${{ github.workspace }}/DerivedData-snapshot-upload"
       XCODE_RUNNING_FOR_PREVIEWS: 1
@@ -27,6 +28,9 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Select Xcode 26.4
+        run: sudo xcode-select -s /Applications/Xcode_26.4.app
+
       - name: Set up Ruby env
         uses: ruby/setup-ruby@v1
         with:
@@ -36,8 +40,10 @@ jobs:
       - name: Setup gems
         run: exec ../.github/scripts/ios/setup.sh
 
-      - name: Boot iPhone simulator
-        run: xcrun simctl boot "iPhone 17 Pro Max" || true
+      - name: Boot iPhone simulators
+        run: |
+          xcrun simctl boot "iPhone 17 Pro Max" || true
+          xcrun simctl boot "iPhone 17e" || true
 
       - name: Cache Swift Package Manager
         uses: actions/cache@v4
@@ -50,11 +56,13 @@ jobs:
 
       - name: Prepare snapshot export directories
         run: |
-          mkdir -p "${SNAPSHOT_UPLOAD_BASE_DIR}/iphone"
-          mkdir -p "${SNAPSHOT_UPLOAD_BASE_DIR}/ipad"
+          mkdir -p "${SNAPSHOT_UPLOAD_BASE_DIR}/iphone-17-pro-max"
+          mkdir -p "${SNAPSHOT_UPLOAD_BASE_DIR}/iphone-17e"
+          mkdir -p "${SNAPSHOT_UPLOAD_BASE_DIR}/ipad-air-11-inch-m4"
           mkdir -p "${DERIVED_DATA_PATH}"
 
       - name: Build snapshot tests
+        # build test target once so we can run tests on multiple simulators against a single build artifact
         run: |
           set -o pipefail && xcodebuild build-for-testing \
             -scheme HackerNews \
@@ -76,9 +84,10 @@ jobs:
       - name: Boot iPad simulator
         run: xcrun simctl boot "iPad Air 11-inch (M4)" || true
 
-      - name: Generate snapshot images (iPhone)
+      - name: Generate snapshot images (iPhone 17 Pro Max)
         env:
-          TEST_RUNNER_SNAPSHOTS_EXPORT_DIR: "${{ env.SNAPSHOT_UPLOAD_BASE_DIR }}/iphone"
+          # Directory to save snapshot images for iPhone 17 Pro Max
+          TEST_RUNNER_SNAPSHOTS_EXPORT_DIR: "${{ env.SNAPSHOT_UPLOAD_BASE_DIR }}/iphone-17-pro-max"
         run: |
           set -o pipefail && xcodebuild test-without-building \
             -scheme HackerNews \
@@ -89,9 +98,24 @@ jobs:
             -derivedDataPath "${DERIVED_DATA_PATH}" \
             | xcpretty
 
+      - name: Generate snapshot images (iPhone 17e)
+        env:
+          # Directory to save snapshot images for iPhone 17e
+          TEST_RUNNER_SNAPSHOTS_EXPORT_DIR: "${{ env.SNAPSHOT_UPLOAD_BASE_DIR }}/iphone-17e"
+        run: |
+          set -o pipefail && xcodebuild test-without-building \
+            -scheme HackerNews \
+            -sdk iphonesimulator \
+            -destination 'platform=iOS Simulator,name=iPhone 17e,arch=arm64' \
+            -only-testing:HackerNewsTests/HackerNewsSnapshotTest \
+            -resultBundlePath ../SnapshotResults-iphone-17e.xcresult \
+            -derivedDataPath "${DERIVED_DATA_PATH}" \
+            | xcpretty
+
       - name: Generate snapshot images (iPad)
         env:
-          TEST_RUNNER_SNAPSHOTS_EXPORT_DIR: "${{ env.SNAPSHOT_UPLOAD_BASE_DIR }}/ipad"
+          # Directory to save snapshot images for iPad
+          TEST_RUNNER_SNAPSHOTS_EXPORT_DIR: "${{ env.SNAPSHOT_UPLOAD_BASE_DIR }}/ipad-air-11-inch-m4"
         run: |
           set -o pipefail && xcodebuild test-without-building \
             -scheme HackerNews \

@@ -23,49 +23,49 @@ struct PreviewVariants<Content: View>: View {
         .environment(\.colorScheme, .light)
         .preferredColorScheme(.light)
         .navigationBarHidden(true)
-        .previewDevice("iPhone 11 Pro Max")
-        .previewDisplayName("iPhone 11 Pro Max, light mode")
+        .previewDevice("iPhone 17 Pro Max")
+        .previewDisplayName("iPhone 17 Pro Max, light mode")
 
       self.content
         .environment(\.colorScheme, .dark)
         .preferredColorScheme(.dark)
         .navigationBarHidden(true)
-        .previewDevice("iPhone 11 Pro Max")
-        .previewDisplayName("iPhone 11 Pro Max, dark mode")
+        .previewDevice("iPhone 17 Pro Max")
+        .previewDisplayName("iPhone 17 Pro Max, dark mode")
 
       self.content
         .environment(\.colorScheme, .light)
         .preferredColorScheme(.light)
         .navigationBarHidden(true)
-        .previewDevice("iPhone 8")
-        .previewDisplayName("iPhone 8, light mode")
+        .previewDevice("iPhone 17e")
+        .previewDisplayName("iPhone 17e, light mode")
 
       self.content
         .environment(\.colorScheme, .dark)
         .preferredColorScheme(.dark)
         .navigationBarHidden(true)
-        .previewDevice("iPhone 8")
-        .previewDisplayName("iPhone 8, dark mode")
+        .previewDevice("iPhone 17e")
+        .previewDisplayName("iPhone 17e, dark mode")
 
       self.content
         .environment(\.colorScheme, .light)
         .preferredColorScheme(.light)
         .navigationBarHidden(true)
-        .previewDevice("iPad Air (5th generation)")
-        .previewDisplayName("iPad Air, light mode")
+        .previewDevice("iPad Air 11-inch (M4)")
+        .previewDisplayName("iPad Air 11-inch (M4), light mode")
 
       self.content
         .environment(\.colorScheme, .dark)
         .preferredColorScheme(.dark)
         .navigationBarHidden(true)
-        .previewDevice("iPad Air (5th generation)")
-        .previewDisplayName("iPad Air, dark mode")
+        .previewDevice("iPad Air 11-inch (M4)")
+        .previewDisplayName("iPad Air 11-inch (M4), dark mode")
 
       self.content
         .environment(\.colorScheme, .light)
         .preferredColorScheme(.light)
         .navigationBarHidden(true)
-        .previewDevice("iPhone 11 Pro Max")
+        .previewDevice("iPhone 17 Pro Max")
         .previewDisplayName("Accessibility")
         .emergeAccessibility(true)
     }
