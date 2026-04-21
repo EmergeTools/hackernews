@@ -2,10 +2,10 @@ name: Sentry iOS Upload (Snapshots)
 
 on:
   push:
-    branches: [main]
+    branches: [main, cameroncooke/snapshots-ci]
     paths: [ios/**, .github/workflows/ios*]
   pull_request:
-    branches: [main]
+    branches: [main, cameroncooke/snapshots-ci]
     paths: [ios/**, .github/workflows/ios*]
 
 jobs:
