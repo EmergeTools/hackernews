@@ -74,7 +74,7 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlin-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 emerge = { id = "com.emergetools.android", version.ref = "emergePlugin" }
-paparazzi = { id = "app.cash.paparazzi", version = "2.0.0-alpha04" }
+paparazzi = { id = "app.cash.paparazzi", version = "2.0.0-SNAPSHOT" }
 sentry = { id = "io.sentry.android.gradle", version.ref = "sentry" }
 androidx-room = { id = "androidx.room", version.ref = "room" }
 android-test = { id = "com.android.test", version.ref = "agp" }
