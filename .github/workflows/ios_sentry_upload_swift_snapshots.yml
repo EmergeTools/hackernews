@@ -18,6 +18,7 @@ jobs:
 
     env:
       XCODE_RUNNING_FOR_PREVIEWS: 1
+      # Enables recording mode when running Swift Snapshot Testing tests
       TEST_RUNNER_SNAPSHOT_TESTING_RECORD: all
 
     steps:
@@ -48,6 +49,7 @@ jobs:
           restore-keys: ${{ runner.os }}-spm-
 
       - name: Generate snapshot images
+        # continue-on-error is needed because Swift Snapshot Testing treats snapshot recording as test failures
         continue-on-error: true
         run: |
           set -o pipefail && xcodebuild test \
