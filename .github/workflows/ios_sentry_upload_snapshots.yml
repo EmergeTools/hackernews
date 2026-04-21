@@ -69,9 +69,9 @@ jobs:
             FUSE_BUILD_SCRIPT_PHASES=YES \
             | xcpretty
 
-      - name: Archive build products
+      - name: Archive test products
         run: |
-          tar -C "${{ github.workspace }}" -czf "${{ github.workspace }}/snapshot-build-products.tar.gz" "$(basename "${DERIVED_DATA_PATH}")"
+          tar -C "${DERIVED_DATA_PATH}/Build" -czf "${{ github.workspace }}/snapshot-build-products.tar.gz" Products
 
       - name: Upload build products artifact
         uses: actions/upload-artifact@v7
@@ -131,8 +131,10 @@ jobs:
           name: snapshot-build-products
           path: ${{ github.workspace }}
 
-      - name: Extract build products
-        run: tar -C "${{ github.workspace }}" -xzf "${{ github.workspace }}/snapshot-build-products.tar.gz"
+      - name: Extract test products
+        run: |
+          mkdir -p "${DERIVED_DATA_PATH}/Build"
+          tar -C "${DERIVED_DATA_PATH}/Build" -xzf "${{ github.workspace }}/snapshot-build-products.tar.gz"
 
       - name: Boot simulator
         run: xcrun simctl boot "${{ matrix.simulator_name }}" || true
