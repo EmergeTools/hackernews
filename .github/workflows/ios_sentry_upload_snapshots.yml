@@ -9,7 +9,7 @@ on:
     paths: [ios/**, .github/workflows/ios*]
 
 jobs:
-  upload_sentry_snapshots:
+  build_snapshot_tests:
     runs-on: macos-26
 
     defaults:
@@ -17,8 +17,6 @@ jobs:
         working-directory: ./ios
 
     env:
-      # Base directory to save snapshot images
-      SNAPSHOT_UPLOAD_BASE_DIR: "${{ github.workspace }}/ios/snapshot-images"
       DERIVED_DATA_PATH: "${{ github.workspace }}/DerivedData-snapshot-upload"
       XCODE_RUNNING_FOR_PREVIEWS: 1
 
@@ -40,11 +38,6 @@ jobs:
       - name: Setup gems
         run: exec ../.github/scripts/ios/setup.sh
 
-      - name: Boot iPhone simulators
-        run: |
-          xcrun simctl boot "iPhone 17 Pro Max" || true
-          xcrun simctl boot "iPhone 17e" || true
-
       - name: Cache Swift Package Manager
         uses: actions/cache@v4
         with:
@@ -54,15 +47,10 @@ jobs:
           key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
           restore-keys: ${{ runner.os }}-spm-
 
-      - name: Prepare snapshot export directories
-        run: |
-          mkdir -p "${SNAPSHOT_UPLOAD_BASE_DIR}/iphone-17-pro-max"
-          mkdir -p "${SNAPSHOT_UPLOAD_BASE_DIR}/iphone-17e"
-          mkdir -p "${SNAPSHOT_UPLOAD_BASE_DIR}/ipad-air-11-inch-m4"
-          mkdir -p "${DERIVED_DATA_PATH}"
+      - name: Prepare DerivedData directory
+        run: mkdir -p "${DERIVED_DATA_PATH}"
 
-      - name: Build snapshot tests
-        # build test target once so we can run tests on multiple simulators against a single build artifact
+      - name: Build snapshot tests for distribution
         run: |
           set -o pipefail && xcodebuild build-for-testing \
             -scheme HackerNews \
@@ -81,52 +69,149 @@ jobs:
             FUSE_BUILD_SCRIPT_PHASES=YES \
             | xcpretty
 
-      - name: Boot iPad simulator
-        run: xcrun simctl boot "iPad Air 11-inch (M4)" || true
+      - name: Archive build products
+        run: |
+          tar -C "${{ github.workspace }}" -czf "${{ github.workspace }}/snapshot-build-products.tar.gz" "$(basename "${DERIVED_DATA_PATH}")"
 
-      - name: Generate snapshot images (iPhone 17 Pro Max)
+      - name: Upload build products artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: snapshot-build-products
+          path: ${{ github.workspace }}/snapshot-build-products.tar.gz
+          if-no-files-found: error
+
+  generate_sentry_snapshots:
+    runs-on: macos-26
+    needs: build_snapshot_tests
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - artifact_name: snapshot-images-iphone-17-pro-max
+            result_bundle_name: SnapshotResults-iphone-17-pro-max.xcresult
+            simulator_name: iPhone 17 Pro Max
+          - artifact_name: snapshot-images-iphone-17e
+            result_bundle_name: SnapshotResults-iphone-17e.xcresult
+            simulator_name: iPhone 17e
+          - artifact_name: snapshot-images-ipad-air-11-inch-m4
+            result_bundle_name: SnapshotResults-ipad-air-11-inch-m4.xcresult
+            simulator_name: iPad Air 11-inch (M4)
+
+    defaults:
+      run:
+        working-directory: ./ios
+
+    env:
+      DERIVED_DATA_PATH: "${{ github.workspace }}/DerivedData-snapshot-upload"
+      SNAPSHOT_UPLOAD_BASE_DIR: "${{ github.workspace }}/ios/snapshot-images"
+      XCODE_RUNNING_FOR_PREVIEWS: 1
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Select Xcode 26.4
+        run: sudo xcode-select -s /Applications/Xcode_26.4.app
+
+      - name: Set up Ruby env
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.3.10
+          bundler-cache: true
+
+      - name: Setup gems
+        run: exec ../.github/scripts/ios/setup.sh
+
+      - name: Download build products artifact
+        uses: actions/download-artifact@v5
+        with:
+          name: snapshot-build-products
+          path: ${{ github.workspace }}
+
+      - name: Extract build products
+        run: tar -C "${{ github.workspace }}" -xzf "${{ github.workspace }}/snapshot-build-products.tar.gz"
+
+      - name: Boot simulator
+        run: xcrun simctl boot "${{ matrix.simulator_name }}" || true
+
+      - name: Prepare snapshot export directory
         env:
-          # Directory to save snapshot images for iPhone 17 Pro Max
-          TEST_RUNNER_SNAPSHOTS_EXPORT_DIR: "${{ env.SNAPSHOT_UPLOAD_BASE_DIR }}/iphone-17-pro-max"
+          TEST_RUNNER_SNAPSHOTS_EXPORT_DIR: "${{ env.SNAPSHOT_UPLOAD_BASE_DIR }}/${{ matrix.artifact_name }}"
+        run: mkdir -p "${TEST_RUNNER_SNAPSHOTS_EXPORT_DIR}"
+
+      - name: Resolve xctestrun file
+        run: |
+          XCTESTRUN_PATH="$(find "${DERIVED_DATA_PATH}/Build/Products" -name '*.xctestrun' -print -quit)"
+          if [ -z "${XCTESTRUN_PATH}" ]; then
+            echo "No .xctestrun file found under ${DERIVED_DATA_PATH}/Build/Products" >&2
+            exit 1
+          fi
+          echo "Using xctestrun file: ${XCTESTRUN_PATH}"
+          echo "XCTESTRUN_PATH=${XCTESTRUN_PATH}" >> "$GITHUB_ENV"
+
+      - name: Generate snapshot images
+        env:
+          TEST_RUNNER_SNAPSHOTS_EXPORT_DIR: "${{ env.SNAPSHOT_UPLOAD_BASE_DIR }}/${{ matrix.artifact_name }}"
         run: |
           set -o pipefail && xcodebuild test-without-building \
-            -scheme HackerNews \
-            -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max,arch=arm64' \
+            -xctestrun "${XCTESTRUN_PATH}" \
+            -destination 'platform=iOS Simulator,name=${{ matrix.simulator_name }},arch=arm64' \
             -only-testing:HackerNewsTests/HackerNewsSnapshotTest \
-            -resultBundlePath ../SnapshotResults-iphone.xcresult \
-            -derivedDataPath "${DERIVED_DATA_PATH}" \
-            | xcpretty
-
-      - name: Generate snapshot images (iPhone 17e)
-        env:
-          # Directory to save snapshot images for iPhone 17e
-          TEST_RUNNER_SNAPSHOTS_EXPORT_DIR: "${{ env.SNAPSHOT_UPLOAD_BASE_DIR }}/iphone-17e"
-        run: |
-          set -o pipefail && xcodebuild test-without-building \
-            -scheme HackerNews \
-            -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator,name=iPhone 17e,arch=arm64' \
-            -only-testing:HackerNewsTests/HackerNewsSnapshotTest \
-            -resultBundlePath ../SnapshotResults-iphone-17e.xcresult \
-            -derivedDataPath "${DERIVED_DATA_PATH}" \
-            | xcpretty
-
-      - name: Generate snapshot images (iPad)
-        env:
-          # Directory to save snapshot images for iPad
-          TEST_RUNNER_SNAPSHOTS_EXPORT_DIR: "${{ env.SNAPSHOT_UPLOAD_BASE_DIR }}/ipad-air-11-inch-m4"
-        run: |
-          set -o pipefail && xcodebuild test-without-building \
-            -scheme HackerNews \
-            -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator,name=iPad Air 11-inch (M4),arch=arm64' \
-            -only-testing:HackerNewsTests/HackerNewsSnapshotTest \
-            -resultBundlePath ../SnapshotResults-ipad.xcresult \
-            -derivedDataPath "${DERIVED_DATA_PATH}" \
+            -resultBundlePath "../${{ matrix.result_bundle_name }}" \
             | xcpretty
 
       - name: List generated snapshot files
+        env:
+          TEST_RUNNER_SNAPSHOTS_EXPORT_DIR: "${{ env.SNAPSHOT_UPLOAD_BASE_DIR }}/${{ matrix.artifact_name }}"
+        run: |
+          echo "Generated snapshot files for ${{ matrix.simulator_name }}:"
+          find "${TEST_RUNNER_SNAPSHOTS_EXPORT_DIR}" -type f | sort
+          echo
+          echo "Total PNG images: $(find "${TEST_RUNNER_SNAPSHOTS_EXPORT_DIR}" -type f -name '*.png' | wc -l | tr -d ' ')"
+
+      - name: Upload generated snapshots
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ matrix.artifact_name }}
+          path: ${{ env.SNAPSHOT_UPLOAD_BASE_DIR }}/${{ matrix.artifact_name }}
+          if-no-files-found: error
+
+  upload_sentry_snapshots:
+    runs-on: macos-26
+    needs: generate_sentry_snapshots
+
+    defaults:
+      run:
+        working-directory: ./ios
+
+    env:
+      SNAPSHOT_UPLOAD_BASE_DIR: "${{ github.workspace }}/ios/snapshot-images"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Set up Ruby env
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.3.10
+          bundler-cache: true
+
+      - name: Setup gems
+        run: exec ../.github/scripts/ios/setup.sh
+
+      - name: Download generated snapshots
+        uses: actions/download-artifact@v5
+        with:
+          path: ${{ env.SNAPSHOT_UPLOAD_BASE_DIR }}
+          pattern: snapshot-images-*
+
+      - name: List aggregated snapshot files
         run: |
           echo "Generated snapshot files:"
           find "${SNAPSHOT_UPLOAD_BASE_DIR}" -type f | sort
