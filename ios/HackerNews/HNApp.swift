@@ -24,7 +24,7 @@ struct HackerNewsApp: App {
     EMGReaper.sharedInstance().start(
       withAPIKey: "f77fb081-cfc2-4d15-acb5-18bad59c9376")
 
-    if ProcessInfo.processInfo.environment["EMERGE_IS_RUNNING_FOR_SNAPSHOTS"] != "1" {
+    if !AppRuntime.isRunningForSnapshots {
       SentrySDK.start { options in
         options.dsn =
         "https://118cff4b239bd3e0ede8fd74aad9bf8f@o497846.ingest.sentry.io/4506027753668608"
