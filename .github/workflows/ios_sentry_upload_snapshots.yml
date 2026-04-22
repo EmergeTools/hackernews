@@ -8,16 +8,23 @@ on:
     branches: [main, cameroncooke/snapshots-ci]
     paths: [ios/**, .github/workflows/ios*]
 
+defaults:
+  run:
+    working-directory: ./ios
+
+env:
+  DERIVED_DATA_PATH: ${{ github.workspace }}/DerivedData-snapshots
+  SNAPSHOT_UPLOAD_BASE_DIR: ${{ github.workspace }}/snapshot-images
+  BUILD_PRODUCTS_ARCHIVE: ${{ github.workspace }}/snapshot-build-products.tar.gz
+  XCTESTRUN_ARCHIVE_PATH: ${{ github.workspace }}/HackerNewsSnapshotTests.xctestrun
+
 jobs:
-  build_snapshot_tests:
+  # Build the snapshot test bundle once on a single runner, then share the
+  # products with downstream simulator jobs via an artifact.
+  build_for_testing:
     runs-on: macos-26
 
-    defaults:
-      run:
-        working-directory: ./ios
-
     env:
-      DERIVED_DATA_PATH: "${{ github.workspace }}/DerivedData-snapshot-upload"
       XCODE_RUNNING_FOR_PREVIEWS: 1
 
     steps:
@@ -38,6 +45,9 @@ jobs:
       - name: Setup gems
         run: exec ../.github/scripts/ios/setup.sh
 
+      - name: Prepare DerivedData directory
+        run: mkdir -p "${DERIVED_DATA_PATH}"
+
       - name: Cache Swift Package Manager
         uses: actions/cache@v4
         with:
@@ -47,15 +57,12 @@ jobs:
           key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
           restore-keys: ${{ runner.os }}-spm-
 
-      - name: Prepare DerivedData directory
-        run: mkdir -p "${DERIVED_DATA_PATH}"
-
       - name: Build snapshot tests for distribution
         run: |
           set -o pipefail && xcodebuild build-for-testing \
             -scheme HackerNews \
             -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max,arch=arm64' \
+            -destination 'generic/platform=iOS Simulator,arch=arm64' \
             -only-testing:HackerNewsTests/HackerNewsSnapshotTest \
             -resultBundlePath ../SnapshotBuildForTesting.xcresult \
             -derivedDataPath "${DERIVED_DATA_PATH}" \
@@ -69,43 +76,44 @@ jobs:
             FUSE_BUILD_SCRIPT_PHASES=YES \
             | xcpretty
 
-      - name: Archive test products
+      - name: Export xctestrun file
         run: |
-          tar -C "${DERIVED_DATA_PATH}/Build" -czf "${{ github.workspace }}/snapshot-build-products.tar.gz" Products
+          cp "${DERIVED_DATA_PATH}/Build/Products"/*.xctestrun "${XCTESTRUN_ARCHIVE_PATH}"
+
+      - name: Archive test products
+        run: tar -C "${DERIVED_DATA_PATH}/Build" -czf "${BUILD_PRODUCTS_ARCHIVE}" Products
 
       - name: Upload build products artifact
         uses: actions/upload-artifact@v7
         with:
           name: snapshot-build-products
-          path: ${{ github.workspace }}/snapshot-build-products.tar.gz
+          path: ${{ env.BUILD_PRODUCTS_ARCHIVE }}
           if-no-files-found: error
 
-  generate_sentry_snapshots:
+  # One simulator per runner. Each job extracts the shared build products,
+  # runs the snapshot tests, and uploads its PNGs as a per-sim artifact so
+  # the final job can aggregate them.
+  generate_snapshots:
     runs-on: macos-26
-    needs: build_snapshot_tests
+    needs: build_for_testing
 
     strategy:
       fail-fast: false
       matrix:
         include:
-          - artifact_name: snapshot-images-iphone-17-pro-max
-            result_bundle_name: SnapshotResults-iphone-17-pro-max.xcresult
-            simulator_name: iPhone 17 Pro Max
-          - artifact_name: snapshot-images-iphone-17e
-            result_bundle_name: SnapshotResults-iphone-17e.xcresult
-            simulator_name: iPhone 17e
-          - artifact_name: snapshot-images-ipad-air-11-inch-m4
-            result_bundle_name: SnapshotResults-ipad-air-11-inch-m4.xcresult
-            simulator_name: iPad Air 11-inch (M4)
-
-    defaults:
-      run:
-        working-directory: ./ios
+          - simulator_name: iPhone 17 Pro Max
+            slug: iphone-17-pro-max
+          - simulator_name: iPhone 17e
+            slug: iphone-17e
+          - simulator_name: iPad Air 11-inch (M4)
+            slug: ipad-air-11-inch-m4
 
     env:
-      DERIVED_DATA_PATH: "${{ github.workspace }}/DerivedData-snapshot-upload"
-      SNAPSHOT_UPLOAD_BASE_DIR: "${{ github.workspace }}/ios/snapshot-images"
       XCODE_RUNNING_FOR_PREVIEWS: 1
+      # Xcode strips the TEST_RUNNER_ prefix and forwards the rest into the
+      # test runner process, which is how the snapshot tests discover where
+      # to write PNGs.
+      TEST_RUNNER_SNAPSHOTS_EXPORT_DIR: ${{ github.workspace }}/ios/snapshot-images/${{ matrix.slug }}
 
     steps:
       - name: Checkout
@@ -132,42 +140,30 @@ jobs:
           path: ${{ github.workspace }}
 
       - name: Extract test products
+        # Restore the build products back under the same DerivedData path used
+        # during build-for-testing. The exported .xctestrun file references those
+        # product locations directly, so test-without-building does not need an
+        # extra -derivedDataPath flag as long as we recreate the expected layout.
         run: |
           mkdir -p "${DERIVED_DATA_PATH}/Build"
-          tar -C "${DERIVED_DATA_PATH}/Build" -xzf "${{ github.workspace }}/snapshot-build-products.tar.gz"
+          tar -C "${DERIVED_DATA_PATH}/Build" -xzf "${BUILD_PRODUCTS_ARCHIVE}"
 
       - name: Boot simulator
         run: xcrun simctl boot "${{ matrix.simulator_name }}" || true
 
       - name: Prepare snapshot export directory
-        env:
-          TEST_RUNNER_SNAPSHOTS_EXPORT_DIR: "${{ env.SNAPSHOT_UPLOAD_BASE_DIR }}/${{ matrix.artifact_name }}"
         run: mkdir -p "${TEST_RUNNER_SNAPSHOTS_EXPORT_DIR}"
 
-      - name: Resolve xctestrun file
-        run: |
-          XCTESTRUN_PATH="$(find "${DERIVED_DATA_PATH}/Build/Products" -name '*.xctestrun' -print -quit)"
-          if [ -z "${XCTESTRUN_PATH}" ]; then
-            echo "No .xctestrun file found under ${DERIVED_DATA_PATH}/Build/Products" >&2
-            exit 1
-          fi
-          echo "Using xctestrun file: ${XCTESTRUN_PATH}"
-          echo "XCTESTRUN_PATH=${XCTESTRUN_PATH}" >> "$GITHUB_ENV"
-
       - name: Generate snapshot images
-        env:
-          TEST_RUNNER_SNAPSHOTS_EXPORT_DIR: "${{ env.SNAPSHOT_UPLOAD_BASE_DIR }}/${{ matrix.artifact_name }}"
         run: |
           set -o pipefail && xcodebuild test-without-building \
-            -xctestrun "${XCTESTRUN_PATH}" \
+            -xctestrun "${XCTESTRUN_ARCHIVE_PATH}" \
             -destination 'platform=iOS Simulator,name=${{ matrix.simulator_name }},arch=arm64' \
             -only-testing:HackerNewsTests/HackerNewsSnapshotTest \
-            -resultBundlePath "../${{ matrix.result_bundle_name }}" \
+            -resultBundlePath "../SnapshotResults-${{ matrix.slug }}.xcresult" \
             | xcpretty
 
       - name: List generated snapshot files
-        env:
-          TEST_RUNNER_SNAPSHOTS_EXPORT_DIR: "${{ env.SNAPSHOT_UPLOAD_BASE_DIR }}/${{ matrix.artifact_name }}"
         run: |
           echo "Generated snapshot files for ${{ matrix.simulator_name }}:"
           find "${TEST_RUNNER_SNAPSHOTS_EXPORT_DIR}" -type f | sort
@@ -177,20 +173,15 @@ jobs:
       - name: Upload generated snapshots
         uses: actions/upload-artifact@v7
         with:
-          name: ${{ matrix.artifact_name }}
-          path: ${{ env.SNAPSHOT_UPLOAD_BASE_DIR }}/${{ matrix.artifact_name }}
+          name: ${{ matrix.slug }}
+          path: ${{ env.TEST_RUNNER_SNAPSHOTS_EXPORT_DIR }}
           if-no-files-found: error
 
-  upload_sentry_snapshots:
+  # Aggregate every per-sim artifact and upload the combined set to Sentry
+  # in a single fastlane invocation.
+  upload_snapshots:
     runs-on: macos-26
-    needs: generate_sentry_snapshots
-
-    defaults:
-      run:
-        working-directory: ./ios
-
-    env:
-      SNAPSHOT_UPLOAD_BASE_DIR: "${{ github.workspace }}/ios/snapshot-images"
+    needs: generate_snapshots
 
     steps:
       - name: Checkout
@@ -211,7 +202,7 @@ jobs:
         uses: actions/download-artifact@v5
         with:
           path: ${{ env.SNAPSHOT_UPLOAD_BASE_DIR }}
-          pattern: snapshot-images-*
+          pattern: "*"
 
       - name: List aggregated snapshot files
         run: |
