@@ -13,10 +13,9 @@ defaults:
     working-directory: ./ios
 
 env:
-  DERIVED_DATA_PATH: ${{ github.workspace }}/DerivedData-snapshots
-  SNAPSHOT_UPLOAD_BASE_DIR: ${{ github.workspace }}/snapshot-images
+  DERIVED_DATA_PATH: ${{ github.workspace }}/DerivedData-snapshot-upload
+  SNAPSHOT_UPLOAD_BASE_DIR: ${{ github.workspace }}/ios/snapshot-images
   BUILD_PRODUCTS_ARCHIVE: ${{ github.workspace }}/snapshot-build-products.tar.gz
-  XCTESTRUN_ARCHIVE_PATH: ${{ github.workspace }}/HackerNewsSnapshotTests.xctestrun
 
 jobs:
   # Build the snapshot test bundle once on a single runner, then share the
@@ -62,7 +61,7 @@ jobs:
           set -o pipefail && xcodebuild build-for-testing \
             -scheme HackerNews \
             -sdk iphonesimulator \
-            -destination 'generic/platform=iOS Simulator,arch=arm64' \
+            -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max,arch=arm64' \
             -only-testing:HackerNewsTests/HackerNewsSnapshotTest \
             -resultBundlePath ../SnapshotBuildForTesting.xcresult \
             -derivedDataPath "${DERIVED_DATA_PATH}" \
@@ -75,10 +74,6 @@ jobs:
             EAGER_LINKING=YES \
             FUSE_BUILD_SCRIPT_PHASES=YES \
             | xcpretty
-
-      - name: Export xctestrun file
-        run: |
-          cp "${DERIVED_DATA_PATH}/Build/Products"/*.xctestrun "${XCTESTRUN_ARCHIVE_PATH}"
 
       - name: Archive test products
         run: tar -C "${DERIVED_DATA_PATH}/Build" -czf "${BUILD_PRODUCTS_ARCHIVE}" Products
@@ -110,10 +105,6 @@ jobs:
 
     env:
       XCODE_RUNNING_FOR_PREVIEWS: 1
-      # Xcode strips the TEST_RUNNER_ prefix and forwards the rest into the
-      # test runner process, which is how the snapshot tests discover where
-      # to write PNGs.
-      TEST_RUNNER_SNAPSHOTS_EXPORT_DIR: ${{ github.workspace }}/ios/snapshot-images/${{ matrix.slug }}
 
     steps:
       - name: Checkout
@@ -141,12 +132,28 @@ jobs:
 
       - name: Extract test products
         # Restore the build products back under the same DerivedData path used
-        # during build-for-testing. The exported .xctestrun file references those
-        # product locations directly, so test-without-building does not need an
-        # extra -derivedDataPath flag as long as we recreate the expected layout.
+        # during build-for-testing. The generated .xctestrun file references
+        # those product locations directly, so test-without-building does not
+        # need an extra -derivedDataPath flag as long as we recreate the same
+        # layout on each runner.
         run: |
           mkdir -p "${DERIVED_DATA_PATH}/Build"
           tar -C "${DERIVED_DATA_PATH}/Build" -xzf "${BUILD_PRODUCTS_ARCHIVE}"
+
+      - name: Set snapshot export directory
+        # Xcode strips the TEST_RUNNER_ prefix and forwards the rest into the
+        # test runner process, which is how the snapshot tests discover where
+        # to write PNGs.
+        run: echo "TEST_RUNNER_SNAPSHOTS_EXPORT_DIR=${SNAPSHOT_UPLOAD_BASE_DIR}/${{ matrix.slug }}" >> "$GITHUB_ENV"
+
+      - name: Resolve xctestrun file
+        run: |
+          XCTESTRUN_PATH="$(find "${DERIVED_DATA_PATH}/Build/Products" -name '*.xctestrun' -print -quit)"
+          if [ -z "${XCTESTRUN_PATH}" ]; then
+            echo "No .xctestrun file found under ${DERIVED_DATA_PATH}/Build/Products" >&2
+            exit 1
+          fi
+          echo "XCTESTRUN_PATH=${XCTESTRUN_PATH}" >> "$GITHUB_ENV"
 
       - name: Boot simulator
         run: xcrun simctl boot "${{ matrix.simulator_name }}" || true
@@ -157,7 +164,7 @@ jobs:
       - name: Generate snapshot images
         run: |
           set -o pipefail && xcodebuild test-without-building \
-            -xctestrun "${XCTESTRUN_ARCHIVE_PATH}" \
+            -xctestrun "${XCTESTRUN_PATH}" \
             -destination 'platform=iOS Simulator,name=${{ matrix.simulator_name }},arch=arm64' \
             -only-testing:HackerNewsTests/HackerNewsSnapshotTest \
             -resultBundlePath "../SnapshotResults-${{ matrix.slug }}.xcresult" \
