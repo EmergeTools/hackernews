@@ -1,5 +1,3 @@
-import io.sentry.android.gradle.tasks.SentryUploadSnapshotsTask
-import org.gradle.api.tasks.testing.Test
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -16,12 +14,12 @@ plugins {
 
 android {
   namespace = "com.emergetools.hackernews"
-  compileSdk = 36
+  compileSdk = 35
 
   defaultConfig {
     applicationId = "com.emergetools.hackernews"
     minSdk = 30
-    targetSdk = 36
+    targetSdk = 35
     versionCode = 17
     versionName = "1.0.6"
 
