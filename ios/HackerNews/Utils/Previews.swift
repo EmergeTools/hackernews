@@ -23,49 +23,18 @@ struct PreviewVariants<Content: View>: View {
         .environment(\.colorScheme, .light)
         .preferredColorScheme(.light)
         .navigationBarHidden(true)
-        .previewDevice("iPhone 11 Pro Max")
-        .previewDisplayName("iPhone 11 Pro Max, light mode")
+        .previewDisplayName("Light mode")
 
       self.content
         .environment(\.colorScheme, .dark)
         .preferredColorScheme(.dark)
         .navigationBarHidden(true)
-        .previewDevice("iPhone 11 Pro Max")
-        .previewDisplayName("iPhone 11 Pro Max, dark mode")
+        .previewDisplayName("Dark mode")
 
       self.content
         .environment(\.colorScheme, .light)
         .preferredColorScheme(.light)
         .navigationBarHidden(true)
-        .previewDevice("iPhone 8")
-        .previewDisplayName("iPhone 8, light mode")
-
-      self.content
-        .environment(\.colorScheme, .dark)
-        .preferredColorScheme(.dark)
-        .navigationBarHidden(true)
-        .previewDevice("iPhone 8")
-        .previewDisplayName("iPhone 8, dark mode")
-
-      self.content
-        .environment(\.colorScheme, .light)
-        .preferredColorScheme(.light)
-        .navigationBarHidden(true)
-        .previewDevice("iPad Air (5th generation)")
-        .previewDisplayName("iPad Air, light mode")
-
-      self.content
-        .environment(\.colorScheme, .dark)
-        .preferredColorScheme(.dark)
-        .navigationBarHidden(true)
-        .previewDevice("iPad Air (5th generation)")
-        .previewDisplayName("iPad Air, dark mode")
-
-      self.content
-        .environment(\.colorScheme, .light)
-        .preferredColorScheme(.light)
-        .navigationBarHidden(true)
-        .previewDevice("iPhone 11 Pro Max")
         .previewDisplayName("Accessibility")
         .emergeAccessibility(true)
     }
