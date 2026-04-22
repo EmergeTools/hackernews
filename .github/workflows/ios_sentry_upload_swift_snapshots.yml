@@ -1,0 +1,79 @@
+name: Sentry Snapshots Upload (Swift Snapshot Testing)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+    paths: [ios/**, .github/workflows/ios*, .github/scripts/ios/**]
+
+jobs:
+  upload_sentry_swift_snapshots:
+    runs-on: macos-26
+
+    defaults:
+      run:
+        working-directory: ./ios
+
+    env:
+      TEST_RUNNER_XCODE_RUNNING_FOR_PREVIEWS: 1
+      # Enables recording mode when running Swift Snapshot Testing tests
+      TEST_RUNNER_SNAPSHOT_TESTING_RECORD: all
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Set up Ruby env
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.3.10
+          bundler-cache: true
+
+      - name: Setup gems
+        run: exec ../.github/scripts/ios/setup.sh
+
+      - name: Boot iPhone simulator
+        run: xcrun simctl boot "iPhone 17 Pro Max" || true
+
+      - name: Cache Swift Package Manager
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/Library/Caches/org.swift.swiftpm
+            ~/Library/Developer/Xcode/DerivedData/HackerNews-*/SourcePackages
+          key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
+          restore-keys: ${{ runner.os }}-spm-
+
+      - name: Generate snapshot images
+        # continue-on-error is needed because Swift Snapshot Testing treats snapshot recording as test failures
+        continue-on-error: true
+        run: |
+          set -o pipefail && xcodebuild test \
+            -scheme HackerNews \
+            -sdk iphonesimulator \
+            -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max,arch=arm64' \
+            -only-testing:HackerNewsTests/SwiftSnapshotTest \
+            -resultBundlePath ../SnapshotResults-swift-snapshots.xcresult \
+            -skipPackagePluginValidation \
+            ONLY_ACTIVE_ARCH=YES \
+            TARGETED_DEVICE_FAMILY=1 \
+            SUPPORTS_MACCATALYST=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            COMPILATION_CACHING=YES \
+            EAGER_LINKING=YES \
+            FUSE_BUILD_SCRIPT_PHASES=YES \
+            | xcpretty
+
+      - name: List generated images
+        run: |
+          echo "Generated snapshot images:"
+          ls -1 HackerNewsTests/__Snapshots__/SwiftSnapshotTest/ || echo "No snapshots found"
+          echo "Total: $(ls -1 HackerNewsTests/__Snapshots__/SwiftSnapshotTest/ 2>/dev/null | wc -l | tr -d ' ') images"
+
+      - name: Upload snapshots to Sentry
+        env:
+          SENTRY_SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
+        run: bundle exec fastlane ios upload_sentry_snapshots_swift_snapshot_testing

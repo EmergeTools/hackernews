@@ -88,7 +88,3 @@ jobs:
             --client-library swift-snapshot-testing \
             --project-root . \
             --debug
-      - name: Upload snapshots to Sentry
-        env:
-          SENTRY_SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
-        run: bundle exec fastlane ios upload_sentry_snapshots
