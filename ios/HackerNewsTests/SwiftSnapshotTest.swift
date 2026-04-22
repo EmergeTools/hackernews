@@ -14,15 +14,6 @@ import Common
 
 final class SwiftSnapshotTest: XCTestCase {
 
-  override func invokeTest() {
-    // record: .all always records new snapshots and fails every test.
-    // Change to .missing to only record when no reference image exists,
-    // or remove this override entirely to compare against existing snapshots.
-    withSnapshotTesting(record: .all) {
-      super.invokeTest()
-    }
-  }
-
   @MainActor func testPostListScreen() {
     @State var appViewModel = AppViewModel(
       bookmarkStore: FakeBookmarkDataStore(),
