@@ -54,6 +54,20 @@ jobs:
         run: gem install xcpretty emerge
       - name: Setup gems
         run: exec ../.github/scripts/ios/setup.sh
+      - name: Cache SPM packages
+        uses: actions/cache@v4
+        with:
+          path: ~/Library/Caches/org.swift.swiftpm
+          key: ${{ runner.os }}-spm-${{ hashFiles('ios/**/Package.resolved') }}
+          restore-keys: |
+            ${{ runner.os }}-spm-
+      - name: Cache DerivedData
+        uses: actions/cache@v4
+        with:
+          path: ~/Library/Developer/Xcode/DerivedData
+          key: ${{ runner.os }}-deriveddata-snapshot-${{ hashFiles('ios/**/Package.resolved', 'ios/**/*.swift') }}
+          restore-keys: |
+            ${{ runner.os }}-deriveddata-snapshot-
       - name: Set up App Store Connect API Key
         run: |
           ABSOLUTE_KEY_PATH="$(pwd)/app_store_key.p8"

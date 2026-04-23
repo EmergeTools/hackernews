@@ -1,5 +1,5 @@
 //
-//  Story.swift
+//  Story.sssswift
 //  Hacker News
 //
 //  Created by Ryan Brooks on 6/21/23.
@@ -107,7 +107,7 @@ struct StoryRowLoadingState: View {
         .font(theme.themedFont(size: 12, style: .mono, weight: .bold))
         .foregroundColor(.hnOrange)
         .redacted(reason: .placeholder)
-      Text("Some Short Title")
+      Text("Some Short Titleeeee")
         .font(theme.themedFont(size: 16, style: .mono, weight: .bold))
         .redacted(reason: .placeholder)
       HStack(spacing: 16) {
