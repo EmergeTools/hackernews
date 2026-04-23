@@ -1,0 +1,209 @@
+name: Sentry Snapshots Upload
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+    paths: [ios/**, .github/workflows/ios*, .github/scripts/ios/**]
+
+defaults:
+  run:
+    working-directory: ./ios
+
+env:
+  DERIVED_DATA_PATH: ${{ github.workspace }}/DerivedData-snapshot-upload
+  SNAPSHOT_UPLOAD_BASE_DIR: ${{ github.workspace }}/ios/snapshot-images
+  BUILD_PRODUCTS_ARCHIVE: ${{ github.workspace }}/snapshot-build-products.tar.gz
+  XCTESTRUN_FILENAME: HackerNewsSnapshotTests.xctestrun
+
+jobs:
+  # Build the snapshot test bundle once on a single runner, then share the
+  # products with downstream simulator jobs via an artifact.
+  build_for_testing:
+    runs-on: macos-26
+
+    env:
+      TEST_RUNNER_EMERGE_IS_RUNNING_FOR_SNAPSHOTS: 1
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Select Xcode 26.4
+        run: sudo xcode-select -s /Applications/Xcode_26.4.app
+
+      - name: Set up Ruby env
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.3.10
+          bundler-cache: true
+
+      - name: Setup gems
+        run: exec ../.github/scripts/ios/setup.sh
+
+      - name: Prepare DerivedData directory
+        run: mkdir -p "${DERIVED_DATA_PATH}"
+
+      - name: Cache Swift Package Manager
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/Library/Caches/org.swift.swiftpm
+            ${{ env.DERIVED_DATA_PATH }}/SourcePackages
+          key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
+          restore-keys: ${{ runner.os }}-spm-
+
+      - name: Build snapshot tests for distribution
+        run: |
+          set -o pipefail && xcodebuild build-for-testing \
+            -scheme HackerNews \
+            -sdk iphonesimulator \
+            -destination 'platform=iOS Simulator,name=iPhone 17 Pro Max,arch=arm64' \
+            -only-testing:HackerNewsTests/HackerNewsSnapshotTest \
+            -resultBundlePath ../SnapshotBuildForTesting.xcresult \
+            -derivedDataPath "${DERIVED_DATA_PATH}" \
+            -skipPackagePluginValidation \
+            ONLY_ACTIVE_ARCH=YES \
+            TARGETED_DEVICE_FAMILY="1,2" \
+            SUPPORTS_MACCATALYST=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            COMPILATION_CACHING=YES \
+            EAGER_LINKING=YES \
+            FUSE_BUILD_SCRIPT_PHASES=YES \
+            | xcpretty
+
+      - name: Normalize xctestrun path
+        run: |
+          XCTESTRUN_SOURCE="$(find "${DERIVED_DATA_PATH}/Build/Products" -name '*.xctestrun' -print -quit)"
+          if [ -z "${XCTESTRUN_SOURCE}" ]; then
+            echo "No .xctestrun file found under ${DERIVED_DATA_PATH}/Build/Products" >&2
+            exit 1
+          fi
+
+          cp "${XCTESTRUN_SOURCE}" "${DERIVED_DATA_PATH}/Build/Products/${XCTESTRUN_FILENAME}"
+
+      - name: Archive test products
+        run: tar -C "${DERIVED_DATA_PATH}/Build" -czf "${BUILD_PRODUCTS_ARCHIVE}" Products
+
+      - name: Upload build products artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: snapshot-build-products
+          path: ${{ env.BUILD_PRODUCTS_ARCHIVE }}
+          if-no-files-found: error
+
+  # One simulator per runner. Each job extracts the shared build products,
+  # runs the snapshot tests, and uploads its PNGs as a per-sim artifact so
+  # the final job can aggregate them.
+  generate_snapshots:
+    runs-on: macos-26
+    needs: build_for_testing
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - simulator_name: iPhone 17 Pro Max
+            slug: iphone-17-pro-max
+          - simulator_name: iPhone 17e
+            slug: iphone-17e
+          - simulator_name: iPad Air 11-inch (M4)
+            slug: ipad-air-11-inch-m4
+
+    env:
+      TEST_RUNNER_EMERGE_IS_RUNNING_FOR_SNAPSHOTS: 1
+      # Keep this base path in sync with the workflow-level SNAPSHOT_UPLOAD_BASE_DIR.
+      TEST_RUNNER_SNAPSHOTS_EXPORT_DIR: ${{ github.workspace }}/ios/snapshot-images/${{ matrix.slug }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Select Xcode 26.4
+        run: sudo xcode-select -s /Applications/Xcode_26.4.app
+
+      - name: Set up Ruby env
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.3.10
+          bundler-cache: true
+
+      - name: Setup gems
+        run: exec ../.github/scripts/ios/setup.sh
+
+      - name: Download build products artifact
+        uses: actions/download-artifact@v5
+        with:
+          name: snapshot-build-products
+          path: ${{ github.workspace }}
+
+      - name: Extract test products
+        run: |
+          mkdir -p "${DERIVED_DATA_PATH}/Build"
+          tar -C "${DERIVED_DATA_PATH}/Build" -xzf "${BUILD_PRODUCTS_ARCHIVE}"
+
+      - name: Boot simulator
+        run: xcrun simctl boot "${{ matrix.simulator_name }}" || true
+
+      - name: Prepare snapshot export directory
+        run: mkdir -p "${TEST_RUNNER_SNAPSHOTS_EXPORT_DIR}"
+
+      - name: Generate snapshot images
+        run: |
+          set -o pipefail && xcodebuild test-without-building \
+            -xctestrun "${DERIVED_DATA_PATH}/Build/Products/${XCTESTRUN_FILENAME}" \
+            -destination 'platform=iOS Simulator,name=${{ matrix.simulator_name }},arch=arm64' \
+            -only-testing:HackerNewsTests/HackerNewsSnapshotTest \
+            -resultBundlePath "../SnapshotResults-${{ matrix.slug }}.xcresult" \
+            | xcpretty
+
+      - name: Upload snapshots artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: snapshots-${{ matrix.slug }}
+          path: ${{ env.TEST_RUNNER_SNAPSHOTS_EXPORT_DIR }}
+          if-no-files-found: error
+
+  # Aggregate every per-sim artifact and upload the combined set to Sentry
+  # in a single fastlane invocation.
+  upload_snapshots:
+    runs-on: macos-26
+    needs: generate_snapshots
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Set up Ruby env
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.3.10
+          bundler-cache: true
+
+      - name: Setup gems
+        run: exec ../.github/scripts/ios/setup.sh
+
+      - name: Download generated snapshots
+        uses: actions/download-artifact@v5
+        with:
+          path: ${{ env.SNAPSHOT_UPLOAD_BASE_DIR }}
+          pattern: "snapshots-*"
+
+      - name: List aggregated snapshot files
+        run: |
+          echo "Generated snapshot files:"
+          find "${SNAPSHOT_UPLOAD_BASE_DIR}" -type f | sort
+          echo
+          echo "Total PNG images: $(find "${SNAPSHOT_UPLOAD_BASE_DIR}" -type f -name '*.png' | wc -l | tr -d ' ')"
+
+      - name: Upload snapshots to Sentry
+        env:
+          SENTRY_SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
+        run: bundle exec fastlane ios upload_sentry_snapshots path:"${SNAPSHOT_UPLOAD_BASE_DIR}"

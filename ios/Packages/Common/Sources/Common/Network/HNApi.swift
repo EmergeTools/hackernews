@@ -188,7 +188,7 @@ public struct Story: HNItem, Codable, Hashable {
   }
   
   public var displayableDate: String {
-    if ProcessInfo.processInfo.environment["EMERGE_IS_RUNNING_FOR_SNAPSHOTS"] == "1" {
+    if AppRuntime.isRunningForSnapshots {
       return "10 minutes ago"
     }
     let date = Date(timeIntervalSince1970: TimeInterval(time))
@@ -230,7 +230,7 @@ struct Comment: HNItem, Identifiable {
   }
   
   var displayableDate: String {
-    if ProcessInfo.processInfo.environment["EMERGE_IS_RUNNING_FOR_SNAPSHOTS"] == "1" {
+    if AppRuntime.isRunningForSnapshots {
       return "10 minutes ago"
     }
     let date = Date(timeIntervalSince1970: TimeInterval(time))
