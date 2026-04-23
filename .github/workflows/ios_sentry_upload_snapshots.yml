@@ -24,7 +24,7 @@ jobs:
     runs-on: macos-26
 
     env:
-      TEST_RUNNER_XCODE_RUNNING_FOR_PREVIEWS: 1
+      TEST_RUNNER_EMERGE_IS_RUNNING_FOR_SNAPSHOTS: 1
 
     steps:
       - name: Checkout
@@ -114,7 +114,7 @@ jobs:
             slug: ipad-air-11-inch-m4
 
     env:
-      TEST_RUNNER_XCODE_RUNNING_FOR_PREVIEWS: 1
+      TEST_RUNNER_EMERGE_IS_RUNNING_FOR_SNAPSHOTS: 1
       # Keep this base path in sync with the workflow-level SNAPSHOT_UPLOAD_BASE_DIR.
       TEST_RUNNER_SNAPSHOTS_EXPORT_DIR: ${{ github.workspace }}/ios/snapshot-images/${{ matrix.slug }}
 
