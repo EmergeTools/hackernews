@@ -149,6 +149,7 @@ struct StoryScreen_Preview: PreviewProvider {
       PreviewHelpers.withNavigationView {
         CommentsScreen(model: viewModel)
           .environment(Theme())
+          .diffThreshold(0.002)
       }
     }
   }
