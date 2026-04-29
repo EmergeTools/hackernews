@@ -38,7 +38,7 @@ jobs:
       - name: Set up Ruby env
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.3.10
+          ruby-version: 4.0.3
           bundler-cache: true
 
       - name: Setup gems
@@ -130,7 +130,7 @@ jobs:
       - name: Set up Ruby env
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.3.10
+          ruby-version: 4.0.3
           bundler-cache: true
 
       - name: Setup gems
@@ -184,7 +184,7 @@ jobs:
       - name: Set up Ruby env
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.3.10
+          ruby-version: 4.0.3
           bundler-cache: true
 
       - name: Setup gems
