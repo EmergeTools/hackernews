@@ -127,7 +127,9 @@ sentry {
   snapshots {
     enabled = true
 
-    theme = "android:Theme.Transluscent.NoTitleBar"
+    previews {
+      theme = "android:Theme.Transluscent.NoTitleBar"
+    }
   }
 
   debug = true
@@ -153,6 +155,7 @@ dependencies {
   implementation(libs.extendedspans)
 
   implementation(libs.emerge.snapshots.runtime)
+  implementation(libs.sentry.snapshots.runtime)
   implementation(libs.okhttp)
   implementation(libs.retrofit)
   implementation(libs.retrofit.kotlinx.serialization)

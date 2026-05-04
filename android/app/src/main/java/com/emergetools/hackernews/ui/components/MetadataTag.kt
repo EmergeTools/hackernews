@@ -25,6 +25,7 @@ import com.emergetools.hackernews.R
 import com.emergetools.hackernews.ui.theme.HackerBlue
 import com.emergetools.hackernews.ui.theme.HackerGreen
 import com.emergetools.hackernews.ui.theme.HackerNewsTheme
+import io.sentry.snapshots.runtime.SentrySnapshot
 
 @Composable
 fun MetadataTag(
@@ -47,6 +48,7 @@ fun MetadataTag(
   }
 }
 
+@SentrySnapshot(diffThreshold = 0.1f)
 @PreviewLightDark
 @Composable
 fun MetadataTagPreview() {
