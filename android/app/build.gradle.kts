@@ -4,7 +4,6 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
   alias(libs.plugins.android.application)
-  alias(libs.plugins.kotlin.android)
   alias(libs.plugins.compose.compiler)
   alias(libs.plugins.kotlin.serialization)
   alias(libs.plugins.kotlin.ksp)
@@ -97,6 +96,11 @@ kotlin {
 }
 ksp {
   arg("room.generateKotlin", "true")
+}
+
+// https://github.com/cashapp/paparazzi/issues/2111
+tasks.withType<Test>().configureEach {
+  reports.html.required = false
 }
 
 emerge {
