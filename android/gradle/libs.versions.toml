@@ -58,7 +58,7 @@ retrofit-kotlinx-serialization = { group = "com.squareup.retrofit2", name = "con
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 jsoup = { group = "org.jsoup", name = "jsoup", version.ref = "jsoup" }
 
-emerge-snapshots-runtime = { group = "com.emergetools.snapshots", name = "snapshots-runtime", version = "1.5.1" }
+emerge-snapshots-runtime = { group = "com.emergetools.snapshots", name = "snapshots-runtime", version = "1.5.2" }
 sentry-snapshots-runtime = { group = "io.sentry", name = "sentry-snapshots-runtime", version.ref = "sentry" }
 
 junit = { group = "junit", name = "junit", version.ref = "junit" }
