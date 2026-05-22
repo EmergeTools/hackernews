@@ -137,7 +137,7 @@ jobs:
         run: exec ../.github/scripts/ios/setup.sh
 
       - name: Download build products artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           name: snapshot-build-products
           path: ${{ github.workspace }}
@@ -191,7 +191,7 @@ jobs:
         run: exec ../.github/scripts/ios/setup.sh
 
       - name: Download generated snapshots
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           path: ${{ env.SNAPSHOT_UPLOAD_BASE_DIR }}
           pattern: "snapshots-*"
