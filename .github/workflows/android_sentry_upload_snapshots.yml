@@ -1,4 +1,4 @@
-name: Generate Android Snapshots
+name: Sentry Android Snapshots Upload
 
 on:
   push:
@@ -29,29 +29,7 @@ jobs:
       - name: Setup Gradle build action
         uses: gradle/actions/setup-gradle@v6
 
-      - name: Ruby setup
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 3.3.10
-          bundler-cache: true
-
-      - name: Setup gems
-        run: gem install emerge
-
-      - name: Generate Paparazzi snapshots
+      - name: Upload Sentry snapshots
         run: ./gradlew :app:sentryUploadSnapshotsDebug
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
-
-      - name: Upload snapshots
-        env:
-          EMERGE_API_TOKEN: ${{ secrets.EMERGE_API_KEY }}
-        run: |
-          emerge upload snapshots \
-            --name "Hacker News" \
-            --id "com.emergetools.hackernews.debug" \
-            --repo-name "EmergeTools/hackernews" \
-            --tag "snapshot" \
-            --debug \
-            --client-library paparazzi \
-            --project-root .

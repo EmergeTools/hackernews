@@ -1,4 +1,4 @@
-name: Emerge + Sentry Android Size & Distribution
+name: Sentry Android Size Analysis
 
 on:
   push:
@@ -24,8 +24,7 @@ jobs:
           distribution: "temurin"
       - name: Setup Gradle build action
         uses: gradle/actions/setup-gradle@v6
-      - name: Emerge analysis
-        run: ./gradlew :app:bundleRelease :app:emergeUploadReleaseAab
+      - name: Sentry size analysis
+        run: ./gradlew :app:bundleRelease
         env:
-          EMERGE_API_TOKEN: ${{ secrets.EMERGE_API_KEY }}
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}

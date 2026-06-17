@@ -31,6 +31,7 @@ jobs:
         with:
           ruby-version: 3.3.10
           bundler-cache: true
+          working-directory: ios
 
       - name: Setup gems
         run: exec ../.github/scripts/ios/setup.sh
@@ -65,7 +66,7 @@ jobs:
             COMPILATION_CACHING=YES \
             EAGER_LINKING=YES \
             FUSE_BUILD_SCRIPT_PHASES=YES \
-            | xcpretty
+            | bundle exec xcpretty
 
       - name: List generated images
         run: |

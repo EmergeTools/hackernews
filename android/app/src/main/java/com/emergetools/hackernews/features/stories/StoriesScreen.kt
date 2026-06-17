@@ -32,7 +32,6 @@ import com.emergetools.hackernews.ui.components.StoryRow
 import com.emergetools.hackernews.ui.preview.AppStoreSnapshot
 import com.emergetools.hackernews.ui.preview.SnapshotPreview
 import com.emergetools.hackernews.ui.theme.HackerNewsTheme
-import com.emergetools.snapshots.annotations.EmergeAppStoreSnapshot
 import java.time.Instant
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -184,7 +183,6 @@ private fun StoriesScreenPreview(
   }
 }
 
-@OptIn(EmergeAppStoreSnapshot::class)
 @AppStoreSnapshot
 @Composable
 private fun StoriesScreenAppStorePreview() {

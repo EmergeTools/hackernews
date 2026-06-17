@@ -24,7 +24,7 @@ jobs:
     runs-on: macos-26
 
     env:
-      TEST_RUNNER_EMERGE_IS_RUNNING_FOR_SNAPSHOTS: 1
+      TEST_RUNNER_SENTRY_IS_RUNNING_FOR_SNAPSHOTS: 1
 
     steps:
       - name: Checkout
@@ -40,6 +40,7 @@ jobs:
         with:
           ruby-version: 3.3.10
           bundler-cache: true
+          working-directory: ios
 
       - name: Setup gems
         run: exec ../.github/scripts/ios/setup.sh
@@ -73,7 +74,7 @@ jobs:
             COMPILATION_CACHING=YES \
             EAGER_LINKING=YES \
             FUSE_BUILD_SCRIPT_PHASES=YES \
-            | xcpretty
+            | bundle exec xcpretty
 
       - name: Normalize xctestrun path
         run: |
@@ -114,7 +115,7 @@ jobs:
             slug: ipad-air-11-inch-m4
 
     env:
-      TEST_RUNNER_EMERGE_IS_RUNNING_FOR_SNAPSHOTS: 1
+      TEST_RUNNER_SENTRY_IS_RUNNING_FOR_SNAPSHOTS: 1
       # Keep this base path in sync with the workflow-level SNAPSHOT_UPLOAD_BASE_DIR.
       TEST_RUNNER_SNAPSHOTS_EXPORT_DIR: ${{ github.workspace }}/ios/snapshot-images/${{ matrix.slug }}
 
@@ -132,6 +133,7 @@ jobs:
         with:
           ruby-version: 3.3.10
           bundler-cache: true
+          working-directory: ios
 
       - name: Setup gems
         run: exec ../.github/scripts/ios/setup.sh
@@ -160,7 +162,7 @@ jobs:
             -destination 'platform=iOS Simulator,name=${{ matrix.simulator_name }},arch=arm64' \
             -only-testing:HackerNewsTests/HackerNewsSnapshotTest \
             -resultBundlePath "../SnapshotResults-${{ matrix.slug }}.xcresult" \
-            | xcpretty
+            | bundle exec xcpretty
 
       - name: Upload snapshots artifacts
         uses: actions/upload-artifact@v7
@@ -186,6 +188,7 @@ jobs:
         with:
           ruby-version: 3.3.10
           bundler-cache: true
+          working-directory: ios
 
       - name: Setup gems
         run: exec ../.github/scripts/ios/setup.sh

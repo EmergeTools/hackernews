@@ -36,7 +36,7 @@ struct PreviewVariants<Content: View>: View {
         .preferredColorScheme(.light)
         .navigationBarHidden(true)
         .previewDisplayName("Accessibility")
-        .emergeAccessibility(true)
+        .snapshotAccessibility(true)
     }
   }
 }
@@ -84,7 +84,7 @@ struct PreviewHelpers {
       type: .story,
       title: "Test story \(index)",
       text: "Test story body \(index)",
-      url: "https://emergetools.com",
+      url: "https://sentry.io",
       score: 100,
       descendants: descendants,
       kids: kids

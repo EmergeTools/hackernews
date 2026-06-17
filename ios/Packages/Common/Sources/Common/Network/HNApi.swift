@@ -16,10 +16,6 @@ public class HNApi {
   public init() {}
   
   public func fetchStories(feedType: FeedType) async -> [Int64] {
-    NotificationCenter.default.post(name: Notification.Name(rawValue: "EmergeMetricStarted"), object: nil, userInfo: [
-      "metric": "FETCH_STORIES"
-    ])
-    
     let feedUrl = switch feedType {
     case .top:
       "topstories.json"
@@ -43,9 +39,6 @@ public class HNApi {
       
       let storyIds = try decoder.decode([Int64].self, from: data)
       
-      NotificationCenter.default.post(name: Notification.Name(rawValue: "EmergeMetricEnded"), object: nil, userInfo: [
-        "metric": "FETCH_STORIES"
-      ])
       return storyIds
     } catch {
       print("Error fetching post IDs: \(error)")

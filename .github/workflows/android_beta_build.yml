@@ -1,4 +1,4 @@
-name: Android Beta Build
+name: Sentry Android Build Distribution
 
 on:
   push:
@@ -32,13 +32,12 @@ jobs:
           echo $ENCODED_KEYSTORE > keystore_base64.txt
           base64 -d keystore_base64.txt > ${{ runner.temp }}/keystore.jks
 
-      - name: Build Beta APK
+      - name: Build beta APK and upload to Sentry Build Distribution
         env:
           DECODED_KEYSTORE_PATH: ${{ runner.temp }}/keystore.jks
           RELEASE_KEY_ALIAS: ${{ secrets.ANDROID_RELEASE_KEY_ALIAS }}
           RELEASE_KEY_PASSWORD: ${{ secrets.ANDROID_RELEASE_KEY_PASSWORD }}
           RELEASE_STORE_PASSWORD: ${{ secrets.ANDROID_RELEASE_STORE_PASSWORD }}
-          EMERGE_API_TOKEN: ${{ secrets.EMERGE_API_KEY }}
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
           SENTRY_DISTRIBUTION_AUTH_TOKEN: ${{ secrets.SENTRY_DISTRIBUTION_AUTH_TOKEN }}
         run: ./gradlew :app:assembleBeta

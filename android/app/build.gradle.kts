@@ -7,7 +7,6 @@ plugins {
   alias(libs.plugins.compose.compiler)
   alias(libs.plugins.kotlin.serialization)
   alias(libs.plugins.kotlin.ksp)
-  alias(libs.plugins.emerge)
   alias(libs.plugins.sentry)
   alias(libs.plugins.paparazzi)
   alias(libs.plugins.androidx.room)
@@ -98,15 +97,6 @@ ksp {
   arg("room.generateKotlin", "true")
 }
 
-emerge {
-  vcs {
-    gitHub {
-      // System.getenv override is for integration tests from the emerge-android repository
-      repoName.set(System.getenv("INTEGRATION_TEST_REPO_NAME") ?: "hackernews")
-      repoOwner.set("EmergeTools")
-    }
-  }
-}
 
 sentry {
   org.set("sentry")
@@ -127,7 +117,7 @@ sentry {
     enabled = true
 
     previews {
-      theme = "android:Theme.Transluscent.NoTitleBar"
+      theme = "android:Theme.Translucent.NoTitleBar"
     }
   }
 
@@ -153,7 +143,6 @@ dependencies {
 
   implementation(libs.extendedspans)
 
-  implementation(libs.emerge.snapshots.runtime)
   implementation(libs.sentry.snapshots.runtime)
   implementation(libs.okhttp)
   implementation(libs.retrofit)

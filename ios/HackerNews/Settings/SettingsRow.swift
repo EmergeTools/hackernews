@@ -36,7 +36,7 @@ struct SettingsRow<Leading: View, Trailing: View>: View {
 
 #Preview {
   SettingsRow(
-    text: "Follow Emerge",
+    text: "Follow Sentry",
     leadingIcon: {
       Image(systemName: "person.crop.circle")
         .font(.system(size: 12))
