@@ -295,7 +295,7 @@ platform :ios do
   lane :upload_sentry_snapshots_swift_snapshot_testing do
     sentry_upload_snapshots(
       path: 'HackerNewsTests/__Snapshots__/SwiftSnapshotTest',
-      app_id: 'com.emergetools.hackernews',
+      app_id: 'com.emergetools.hackernews.swift-snapshot-testing',
       auth_token: ENV['SENTRY_SENTRY_AUTH_TOKEN'],
       org_slug: 'sentry',
       project_slug: 'hackernews-ios'
