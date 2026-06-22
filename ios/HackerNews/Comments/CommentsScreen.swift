@@ -110,6 +110,9 @@ struct CommentsScreen: View {
       .clipShape(Circle())
       .padding(8)
     }
+    .task {
+      await model.loadInitialPageIfNeeded()
+    }
     .safeAreaInset(edge: .bottom) {
       if model.state.postCommentState != nil {
         CommentComposer(

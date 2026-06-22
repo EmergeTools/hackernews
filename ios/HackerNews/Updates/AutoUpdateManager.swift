@@ -1,33 +1,29 @@
-//
-//  AutoUpdatemanager.swift
-//  HackerNews
-//
-//  Created by Itay Brenner on 31/1/25.
-//
-
 #if ADHOC
-import UIKit
-import Foundation
-import ETDistribution
+import SentryDistribution
 
 struct AutoUpdateManager {
   @MainActor static func checkForUpdates() {
-    let params = CheckForUpdateParams(apiKey: Constants.Distribution.apiKey)
-    ETDistribution.shared.checkForUpdate(params: params) { result in
+    let params = CheckForUpdateParams(
+      accessToken: Constants.Distribution.accessToken,
+      organization: "sentry",
+      project: "hackernews-ios"
+    )
+
+    Updater.checkForUpdate(params: params) { result in
       switch result {
-      case .success(let releaseInfo):
-        if let releaseInfo {
-          print("Update found: \(releaseInfo)")
-          guard let url = ETDistribution.shared.buildUrlForInstall(releaseInfo.downloadUrl) else {
-            return
-          }
-          DispatchQueue.main.async {
-            UIApplication.shared.open(url) { _ in
-              exit(0)
-            }
-          }
-        } else {
+      case .success(let response):
+        guard let update = response.update else {
           print("Already up to date")
+          return
+        }
+
+        print("Update found: \(update)")
+        guard let url = Updater.buildUrlForInstall(update.downloadUrl) else {
+          return
+        }
+
+        Task { @MainActor in
+          Updater.install(url: url)
         }
       case .failure(let error):
         print("Error checking for update: \(error)")

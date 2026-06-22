@@ -6,6 +6,7 @@
 //
 
 import Sentry
+import SnapshotPreferences
 import SwiftUI
 
 struct SendFeedbackScreen: View {
@@ -100,4 +101,5 @@ struct SendFeedbackScreen: View {
 
 #Preview {
   SendFeedbackScreen()
+    .snapshotDiffThreshold(0.001)
 }

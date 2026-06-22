@@ -5,7 +5,6 @@
 //  Created by Trevor Elkins on 6/20/23.
 //
 
-import Reaper
 import Sentry
 import SwiftData
 import SwiftUI
@@ -21,13 +20,10 @@ struct HackerNewsApp: App {
     UINavigationBar.appearance().backgroundColor = .clear
     UICollectionView.appearance().backgroundColor = .clear
 
-    EMGReaper.sharedInstance().start(
-      withAPIKey: "f77fb081-cfc2-4d15-acb5-18bad59c9376")
-
     if !AppRuntime.isRunningForSnapshots {
       SentrySDK.start { options in
         options.dsn =
-        "https://118cff4b239bd3e0ede8fd74aad9bf8f@o497846.ingest.sentry.io/4506027753668608"
+        "https://c726216bd362ec0bf67044f1ad1e8ffc@o1.ingest.us.sentry.io/4510761392078848"
         
         options.configureUserFeedback = { config in
           config.onSubmitSuccess = { data in
@@ -116,7 +112,7 @@ struct HackerNewsApp: App {
         handleDeepLink(url)
       }
 #if ADHOC
-      .onAppear() {
+      .onAppear {
         AutoUpdateManager.checkForUpdates()
       }
 #endif

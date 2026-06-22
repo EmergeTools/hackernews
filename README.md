@@ -9,21 +9,22 @@
   <img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fwww.emergetools.com%2Fapi%2Fv2%2Fpublic_new_build%3FexampleId%3Dcom.emergetools.hackernews%26platform%3Dandroid%26badgeOption%3Dversion_and_max_download_size%26buildType%3Drelease&query=$.badgeMetadata&link=https%3A%2F%2Fwww.emergetools.com%2Fapp%2Fexample%2Fandroid%2Fcom.emergetools.hackernews%2Frelease&label=Hacker%20News&logo=android&color=229D44" />
 </a>
 
-Welcome to the [Emerge Tools](https://www.emergetools.com/) Hacker News repo!
+Welcome to the [Sentry](https://sentry.io/) Hacker News repo!
 
-This repository serves as a practical Android & iOS example project, leveraging Emerge's suite of products for size analysis, snapshot testing, reaper (dead code detection), and performance testing.
+This repository serves as a practical Android & iOS example project, leveraging Sentry's suite of products for size analysis, snapshot testing and distribution.
 
 The iOS app is available on the [App Store](https://apps.apple.com/us/app/hacker-news-by-emerge/id6740922950) and the Android app is available on [Google Play](https://play.google.com/store/apps/details?id=com.emergetools.hackernews).
 
-## Getting Started with Emerge
+## Getting Started
 
-[Full docs](https://docs.emergetools.com/docs/quickstart)
+[Android docs](https://docs.sentry.io/platforms/android/)
+[Apple docs](https://docs.sentry.io/platforms/apple/)
 
-### Example setup ([docs](https://docs.emergetools.com/docs/integrate-into-ci))
+### Example setup
 
-**Android:** The Android project in this repo use the [Emerge Gradle Plugin](https://docs.emergetools.com/docs/gradle-plugin) to upload to Emerge. Check out the [build.gradle.kts](https://github.com/EmergeTools/hackernews/blob/main/android/app/build.gradle.kts) for an example configuration.
+**Android:** The Android project in this repo uses the [Sentry Gradle Plugin](https://docs.sentry.io/platforms/android/configuration/gradle/) to upload to Sentry. Check out the [build.gradle.kts](https://github.com/getsentry/sentry-android-gradle-plugin/blob/main/examples/android-gradle-kts/build.gradle.kts) for an example configuration.
 
-**iOS**: The iOS project in this repo uses _[fastlane](https://docs.emergetools.com/docs/fastlane)_ to upload to Emerge. Check out the [Fastfile](https://github.com/EmergeTools/hackernews/blob/main/ios/fastlane/Fastfile#L137) for an example configuration.
+**iOS**: The iOS project in this repo uses _[fastlane](https://github.com/getsentry/sentry-fastlane-plugin)_ to upload to Sentry. Check out the [Fastfile](ios/fastlane/Fastfile) for an example configuration.
 
 ## Questions
 

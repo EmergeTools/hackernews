@@ -125,13 +125,11 @@ class CommentsViewModel {
       auth: auth
     )
 
-    loadInitalPage()
   }
 
-  private func loadInitalPage() {
-    Task {
-      await fetchPage()
-    }
+  func loadInitialPageIfNeeded() async {
+    guard case .notStarted = state.comments else { return }
+    await fetchPage()
   }
 
   func fetchPage() async {

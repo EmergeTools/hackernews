@@ -31,7 +31,6 @@ import com.emergetools.hackernews.features.comments.components.PostCommentBump
 import com.emergetools.hackernews.ui.preview.AppStoreSnapshot
 import com.emergetools.hackernews.ui.preview.SnapshotPreview
 import com.emergetools.hackernews.ui.theme.HackerNewsTheme
-import com.emergetools.snapshots.annotations.EmergeAppStoreSnapshot
 import java.time.Instant
 
 @Composable
@@ -206,7 +205,6 @@ private fun CommentsScreenLoadingPreview() {
   }
 }
 
-@OptIn(EmergeAppStoreSnapshot::class)
 @AppStoreSnapshot
 @Composable
 fun CommentsScreenAppStorePreview() {

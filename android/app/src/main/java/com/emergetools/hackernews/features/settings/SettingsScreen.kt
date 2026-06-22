@@ -34,7 +34,6 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.emergetools.hackernews.R
-import com.emergetools.hackernews.features.settings.components.BuiltByCard
 import com.emergetools.hackernews.features.settings.components.LoginCard
 import com.emergetools.hackernews.features.settings.components.SettingsCard
 import com.emergetools.hackernews.features.settings.components.SettingsSectionLabel
@@ -44,7 +43,6 @@ import com.emergetools.hackernews.ui.theme.HackerBlue
 import com.emergetools.hackernews.ui.theme.HackerNewsTheme
 import com.emergetools.hackernews.ui.theme.HackerOrange
 import com.emergetools.hackernews.ui.theme.HackerRed
-import com.emergetools.snapshots.annotations.EmergeAppStoreSnapshot
 import io.sentry.Sentry
 import io.sentry.UpdateStatus
 import kotlinx.coroutines.Dispatchers
@@ -95,9 +93,6 @@ fun SettingsScreen(
         Spacer(modifier = Modifier.height(8.dp))
       }
       SettingsSectionLabel("About")
-      BuiltByCard {
-        navigation(SettingsNavigation.GoToSettingsLink("https://www.emergetools.com"))
-      }
       SettingsCard(
         leadingIcon = {
           Icon(
@@ -115,9 +110,9 @@ fun SettingsScreen(
             contentDescription = "Link"
           )
         },
-        label = "Follow Emerge"
+        label = "Follow Sentry"
       ) {
-        navigation(SettingsNavigation.GoToSettingsLink("https://www.twitter.com/emergetools"))
+        navigation(SettingsNavigation.GoToSettingsLink("https://www.twitter.com/getsentry"))
       }
       SettingsCard(
         leadingIcon = {
@@ -180,7 +175,7 @@ fun SettingsScreen(
         },
         label = "Privacy Policy"
       ) {
-        navigation(SettingsNavigation.GoToSettingsLink("https://www.emergetools.com/HackerNewsPrivacyPolicy.html"))
+        navigation(SettingsNavigation.GoToSettingsLink("https://sentry.io/privacy/"))
       }
     }
   }
@@ -233,7 +228,6 @@ private fun VersionCard() {
   }
 }
 
-@OptIn(EmergeAppStoreSnapshot::class)
 @SnapshotPreview
 @AppStoreSnapshot
 @Composable

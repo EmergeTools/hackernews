@@ -31,7 +31,6 @@ import androidx.compose.ui.unit.dp
 import com.emergetools.hackernews.features.stories.StoryItem
 import com.emergetools.hackernews.ui.components.StoryRow
 import com.emergetools.hackernews.ui.theme.HackerNewsTheme
-import com.emergetools.snapshots.annotations.EmergeSnapshotConfig
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.Instant

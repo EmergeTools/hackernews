@@ -1,4 +1,4 @@
-name: Sentry PR iOS Upload (Build Distribution)
+name: Sentry iOS PR Build Distribution
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
     paths: [ios/**]
 
 jobs:
-  build_adhoc:
+  build_distribution:
     runs-on: macos-26
 
     defaults:
@@ -24,6 +24,7 @@ jobs:
         with:
           ruby-version: 3.3.10
           bundler-cache: true
+          working-directory: ios
 
       - name: Setup gems
         run: exec ../.github/scripts/ios/setup.sh
@@ -33,24 +34,25 @@ jobs:
           CERTIFICATE_BASE64: ${{ secrets.IOS_DIST_SIGNING_KEY_BASE64 }}
         run: |
           echo $CERTIFICATE_BASE64 | base64 --decode > signing-cert.p12
-      - name: Replace API key in Constants file
+
+      - name: Build Ad Hoc app and upload build to Sentry
         run: |
-          sed -i '' "s/API_KEY/$ETDISTRIBUTION_API_KEY/g" HackerNews/Utils/Constants.swift
-        env:
-          ETDISTRIBUTION_API_KEY: ${{ secrets.ETDISTRIBUTION_API_KEY_IOS }}
-      - name: Build & upload iOS AdHoc binary to Sentry
-        run: bundle exec fastlane ios build_upload_emerge
+          python3 - <<'PY'
+          import os
+          from pathlib import Path
+          path = Path("HackerNews/Utils/Constants.swift")
+          path.write_text(path.read_text().replace("SENTRY_DISTRIBUTION_AUTH_TOKEN", os.environ["SENTRY_DISTRIBUTION_AUTH_TOKEN"]))
+          PY
+          bundle exec fastlane ios build_upload_sentry_distribution
         env:
           ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
           ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
           ASC_KEY: ${{ secrets.ASC_PRIVATE_KEY }}
           SIGNING_KEY_PASSWORD: ${{ secrets.IOS_DIST_SIGNING_KEY_PASSWORD }}
           SIGNING_KEY_FILE_PATH: signing-cert.p12
-          EMERGE_API_TOKEN: ${{ secrets.EMERGE_API_KEY }}
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
+          SENTRY_SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
+          SENTRY_DISTRIBUTION_AUTH_TOKEN: ${{ secrets.SENTRY_DISTRIBUTION_AUTH_TOKEN }}
           CONFIGURATION: AdHoc
-          EMERGE_BUILD_TYPE: pull-request-adhoc
           PROV_PROFILE_NAME: HackerNews AdHoc Distribution
           WIDGET_PROV_PROFILE_NAME: HackerNews AdHoc HomeWidget
           ADHOC: true
-          APP_ID_SUFFIX: adhoc

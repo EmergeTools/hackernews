@@ -11,7 +11,6 @@
 		A422716D2DE78DEF002F03D5 /* FaultOrderingTests in Frameworks */ = {isa = PBXBuildFile; productRef = A422716C2DE78DEF002F03D5 /* FaultOrderingTests */; };
 		A47309B42AA29D9600201376 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = A47309B32AA29D9600201376 /* SwiftSoup */; };
 		A495A6662CED57BB009A2A6B /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = A495A6652CED57BB009A2A6B /* SnapshotTesting */; };
-		A495B2952BFEA11B00A8A8A9 /* Reaper in Frameworks */ = {isa = PBXBuildFile; productRef = A495B2942BFEA11B00A8A8A9 /* Reaper */; };
 		A49D686D2DE8EB1F00E44A18 /* Linkmap.txt in Resources */ = {isa = PBXBuildFile; fileRef = A49D686C2DE8EB1F00E44A18 /* Linkmap.txt */; };
 		A4B6CF932D49949200077F66 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4B6CF922D49949200077F66 /* WidgetKit.framework */; };
 		A4B6CF952D49949200077F66 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4B6CF942D49949200077F66 /* SwiftUI.framework */; };
@@ -23,6 +22,7 @@
 		A9DF68FF511E48048B0A703D /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = 673236B0A4D04137A0D80A76 /* Sentry */; };
 		C3AC6AD92CB6E8F7006BD22D /* SnapshottingTests in Frameworks */ = {isa = PBXBuildFile; productRef = C3AC6AD82CB6E8F7006BD22D /* SnapshottingTests */; };
 		F40E42A02EA80E1600E53876 /* SentrySwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = F40E429F2EA80E1600E53876 /* SentrySwiftUI */; };
+		F4A0D0012F9C000100000001 /* SentryDistribution in Frameworks */ = {isa = PBXBuildFile; productRef = F4A0D0022F9C000100000002 /* SentryDistribution */; };
 		F45F6EA52D4D1E50003FA9A3 /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = F45F6EA42D4D1E50003FA9A3 /* Common */; };
 		F45F6EA72D4D1E57003FA9A3 /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = F45F6EA62D4D1E57003FA9A3 /* Common */; };
 		F45F6F4A2D4D2185003FA9A3 /* Common in Embed Frameworks */ = {isa = PBXBuildFile; productRef = F45F6EA42D4D1E50003FA9A3 /* Common */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -32,8 +32,6 @@
 		F48E9DA42D4D2A3500FD8B30 /* Common in Embed Frameworks */ = {isa = PBXBuildFile; productRef = F48E9DA22D4D2A3500FD8B30 /* Common */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		F48E9DA72D4D2A3C00FD8B30 /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = F48E9DA62D4D2A3C00FD8B30 /* Common */; };
 		F48E9DA82D4D2A3C00FD8B30 /* Common in Embed Frameworks */ = {isa = PBXBuildFile; productRef = F48E9DA62D4D2A3C00FD8B30 /* Common */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		F48E9ECB2D4D691600FD8B30 /* ETDistribution in Frameworks */ = {isa = PBXBuildFile; productRef = F48E9ECA2D4D691600FD8B30 /* ETDistribution */; };
-		F48E9FDB2D51690400FD8B30 /* ETDistribution in Embed Frameworks */ = {isa = PBXBuildFile; productRef = F48E9ECA2D4D691600FD8B30 /* ETDistribution */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		FA3637612EC7AC7D00541313 /* AccessibilitySnapshotCore in Frameworks */ = {isa = PBXBuildFile; productRef = FA3637602EC7AC7D00541313 /* AccessibilitySnapshotCore */; };
 		FA3637642EC7ACAD00541313 /* AccessibilitySnapshotCore in Frameworks */ = {isa = PBXBuildFile; productRef = FA3637632EC7ACAD00541313 /* AccessibilitySnapshotCore */; };
 		FA80C2702EC78D7500A700AB /* AccessibilitySnapshotCore in Frameworks */ = {isa = PBXBuildFile; productRef = FA80C26F2EC78D7500A700AB /* AccessibilitySnapshotCore */; };
@@ -82,7 +80,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				F45F6F4A2D4D2185003FA9A3 /* Common in Embed Frameworks */,
-				F48E9FDB2D51690400FD8B30 /* ETDistribution in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -193,11 +190,10 @@
 			files = (
 				F45F6EA52D4D1E50003FA9A3 /* Common in Frameworks */,
 				A47309B42AA29D9600201376 /* SwiftSoup in Frameworks */,
-				F48E9ECB2D4D691600FD8B30 /* ETDistribution in Frameworks */,
 				A4D28AEE2C237E2A007F20D0 /* SnapshotPreferences in Frameworks */,
 				F45F703E2D4D2695003FA9A3 /* Fonts in Frameworks */,
 				F40E42A02EA80E1600E53876 /* SentrySwiftUI in Frameworks */,
-				A495B2952BFEA11B00A8A8A9 /* Reaper in Frameworks */,
+				F4A0D0012F9C000100000001 /* SentryDistribution in Frameworks */,
 				A9DF68FF511E48048B0A703D /* Sentry in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -373,12 +369,11 @@
 			packageProductDependencies = (
 				A47309B32AA29D9600201376 /* SwiftSoup */,
 				673236B0A4D04137A0D80A76 /* Sentry */,
-				A495B2942BFEA11B00A8A8A9 /* Reaper */,
 				A4D28AED2C237E2A007F20D0 /* SnapshotPreferences */,
 				F45F6EA42D4D1E50003FA9A3 /* Common */,
 				F45F703D2D4D2695003FA9A3 /* Fonts */,
-				F48E9ECA2D4D691600FD8B30 /* ETDistribution */,
 				F40E429F2EA80E1600E53876 /* SentrySwiftUI */,
+				F4A0D0022F9C000100000002 /* SentryDistribution */,
 			);
 			productName = HackerNews;
 			productReference = A42705792A4293B10057E439 /* HackerNews.app */;
@@ -497,12 +492,10 @@
 			packageReferences = (
 				A47309B22AA29D9600201376 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 				995A2BEDEF224F7085D3DB13 /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
-				A495B2932BFEA11B00A8A8A9 /* XCRemoteSwiftPackageReference "Reaper" */,
 				A4D28AEC2C237E2A007F20D0 /* XCRemoteSwiftPackageReference "SnapshotPreviews" */,
 				A495A6642CED57BB009A2A6B /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
 				F45F6E532D4D1D3E003FA9A3 /* XCLocalSwiftPackageReference "Packages/Common" */,
 				F45F6F4C2D4D2554003FA9A3 /* XCLocalSwiftPackageReference "Packages/Fonts" */,
-				F48E9EC92D4D691600FD8B30 /* XCRemoteSwiftPackageReference "ETDistribution" */,
 				A42271692DE78DEF002F03D5 /* XCRemoteSwiftPackageReference "faultordering" */,
 				FA3637622EC7ACAD00541313 /* XCRemoteSwiftPackageReference "AccessibilitySnapshotios26" */,
 			);
@@ -774,7 +767,6 @@
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				EXCLUDED_SOURCE_FILE_NAMES = "ETDistribution*";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "HackerNews/Hacker-News-Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.news";
@@ -790,7 +782,6 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				LIBRARY_SEARCH_PATHS = "\"$(PROJECT_DIR)/Frameworks/Reaper.xcframework\"";
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 3.10;
 				OTHER_LDFLAGS = "-fprofile-instr-generate";
@@ -819,7 +810,6 @@
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				EXCLUDED_SOURCE_FILE_NAMES = "ETDistribution*";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "HackerNews/Hacker-News-Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.news";
@@ -835,7 +825,6 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				LIBRARY_SEARCH_PATHS = "\"$(PROJECT_DIR)/Frameworks/Reaper.xcframework\"";
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 3.10;
 				PRODUCT_BUNDLE_IDENTIFIER = com.emergetools.hackernews;
@@ -1075,7 +1064,6 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				LIBRARY_SEARCH_PATHS = "\"$(PROJECT_DIR)/Frameworks/Reaper.xcframework\"";
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 3.10;
 				PRODUCT_BUNDLE_IDENTIFIER = com.emergetools.hackernews;
@@ -1259,14 +1247,6 @@
 				minimumVersion = 1.17.6;
 			};
 		};
-		A495B2932BFEA11B00A8A8A9 /* XCRemoteSwiftPackageReference "Reaper" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/EmergeTools/Reaper";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.6.0;
-			};
-		};
 		A4D28AEC2C237E2A007F20D0 /* XCRemoteSwiftPackageReference "SnapshotPreviews" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/EmergeTools/SnapshotPreviews";
@@ -1274,14 +1254,6 @@
 				kind = versionRange;
 				maximumVersion = 1.0.0;
 				minimumVersion = 0.13.0;
-			};
-		};
-		F48E9EC92D4D691600FD8B30 /* XCRemoteSwiftPackageReference "ETDistribution" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/EmergeTools/ETDistribution.git";
-			requirement = {
-				kind = upToNextMinorVersion;
-				minimumVersion = 0.2.1;
 			};
 		};
 		FA3637622EC7ACAD00541313 /* XCRemoteSwiftPackageReference "AccessibilitySnapshotios26" */ = {
@@ -1328,11 +1300,6 @@
 			package = A495A6642CED57BB009A2A6B /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
 			productName = SnapshotTesting;
 		};
-		A495B2942BFEA11B00A8A8A9 /* Reaper */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = A495B2932BFEA11B00A8A8A9 /* XCRemoteSwiftPackageReference "Reaper" */;
-			productName = Reaper;
-		};
 		A4D28AED2C237E2A007F20D0 /* SnapshotPreferences */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = A4D28AEC2C237E2A007F20D0 /* XCRemoteSwiftPackageReference "SnapshotPreviews" */;
@@ -1352,6 +1319,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 995A2BEDEF224F7085D3DB13 /* XCRemoteSwiftPackageReference "sentry-cocoa" */;
 			productName = SentrySwiftUI;
+		};
+		F4A0D0022F9C000100000002 /* SentryDistribution */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 995A2BEDEF224F7085D3DB13 /* XCRemoteSwiftPackageReference "sentry-cocoa" */;
+			productName = SentryDistribution;
 		};
 		F45F6EA42D4D1E50003FA9A3 /* Common */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -1382,11 +1354,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F45F6E532D4D1D3E003FA9A3 /* XCLocalSwiftPackageReference "Packages/Common" */;
 			productName = Common;
-		};
-		F48E9ECA2D4D691600FD8B30 /* ETDistribution */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F48E9EC92D4D691600FD8B30 /* XCRemoteSwiftPackageReference "ETDistribution" */;
-			productName = ETDistribution;
 		};
 		FA3637602EC7AC7D00541313 /* AccessibilitySnapshotCore */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -1,5 +1,5 @@
 {
-  "originHash" : "77abd4b0c51c017fe6ce592791015e863646bc679a165e2613e1adb9a21f5e59",
+  "originHash" : "763e94740321e09137b1903c14e5a532e9325e9212355d7b9dc5e67fa907f662",
   "pins" : [
     {
       "identity" : "accessibilitysnapshotios26",
@@ -8,15 +8,6 @@
       "state" : {
         "branch" : "main",
         "revision" : "2e2ece6a050a240f03c14da4d126a97f04c7b7d4"
-      }
-    },
-    {
-      "identity" : "etdistribution",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/EmergeTools/ETDistribution.git",
-      "state" : {
-        "revision" : "6643aa6332ab3ebc629a3c4fefcfcf2bfe35c672",
-        "version" : "0.2.1"
       }
     },
     {
@@ -47,15 +38,6 @@
       }
     },
     {
-      "identity" : "reaper",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/EmergeTools/Reaper",
-      "state" : {
-        "revision" : "1ee01c300554e83b6698190a1e3496afbd509ec6",
-        "version" : "1.6.0"
-      }
-    },
-    {
       "identity" : "sentry-cocoa",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/getsentry/sentry-cocoa",
@@ -77,8 +59,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/EmergeTools/SnapshotPreviews",
       "state" : {
-        "revision" : "83131a5d354b68b48f57f6866d0b4ef3701e1c43",
-        "version" : "0.13.0"
+        "revision" : "74b9ab9c250adde036d8093771a634a873efdc36",
+        "version" : "0.17.0"
       }
     },
     {
