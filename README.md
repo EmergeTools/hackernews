@@ -22,7 +22,7 @@ The iOS app is available on the [App Store](https://apps.apple.com/us/app/hacker
 
 ### Example setup
 
-**Android:** The Android project in this repo uses the [Sentry Gradle Plugin](https://docs.sentry.io/platforms/android/configuration/gradle/) to upload to Sentry. Check out the [build.gradle.kts](https://github.com/getsentry/sentry-android-gradle-plugin/blob/main/examples/android-gradle-kts/build.gradle.kts) for an example configuration.
+**Android:** The Android project in this repo uses the [Sentry Gradle Plugin](https://docs.sentry.io/platforms/android/configuration/gradle/) to upload to Sentry. Check out the [build.gradle.kts](android/app/build.gradle.kts) for an example configuration.
 
 **iOS**: The iOS project in this repo uses _[fastlane](https://github.com/getsentry/sentry-fastlane-plugin)_ to upload to Sentry. Check out the [Fastfile](ios/fastlane/Fastfile) for an example configuration.
 
