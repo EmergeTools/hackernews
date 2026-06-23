@@ -20,11 +20,23 @@ The iOS app is available on the [App Store](https://apps.apple.com/us/app/hacker
 [Android docs](https://docs.sentry.io/platforms/android/)
 [Apple docs](https://docs.sentry.io/platforms/apple/)
 
-### Example setup
+### Example Setup
 
-**Android:** The Android project in this repo uses the [Sentry Gradle Plugin](https://docs.sentry.io/platforms/android/configuration/gradle/) to upload to Sentry. Check out the [build.gradle.kts](android/app/build.gradle.kts) for an example configuration.
+This project uses the following GitHub actions workflows to upload builds and snapshot images to Sentry:
 
-**iOS**: The iOS project in this repo uses _[fastlane](https://github.com/getsentry/sentry-fastlane-plugin)_ to upload to Sentry. Check out the [Fastfile](ios/fastlane/Fastfile) for an example configuration.
+**Android:**
+- [Snapshots](.github/workflows/android_sentry_upload_snapshots.yml)
+- [Size analysis](.github/workflows/android_sentry_size_analysis.yml)
+- [Distribution](.github/workflows/android_beta_build.yml)
+
+The Android project in this repo uses the [Sentry Gradle Plugin](https://docs.sentry.io/platforms/android/configuration/gradle/) to upload to Sentry. Check out the [build.gradle.kts](android/app/build.gradle.kts) for an example configuration.
+
+**iOS:**
+- [Snapshots](.github/workflows/ios_sentry_upload_snapshots.yml)
+- [Size analysis](.github/workflows/ios_sentry_upload_pr.yml)
+- [Distribution](.github/workflows/ios_sentry_upload_adhoc.yml)
+
+The iOS project in this repo uses _[fastlane](https://github.com/getsentry/sentry-fastlane-plugin)_ to upload to Sentry. Check out the [Fastfile](ios/fastlane/Fastfile) for an example configuration.
 
 ## Questions
 
