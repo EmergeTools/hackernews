@@ -2,7 +2,7 @@
 agp = "9.2.1"
 kotlin = "2.4.0"
 ksp = "2.3.9"
-coreKtx = "1.18.0"
+coreKtx = "1.19.0"
 junit = "4.13.2"
 junitVersion = "1.1.5" # This is to match Compose's version
 espressoCore = "3.7.0" # This is to match Compose's version
