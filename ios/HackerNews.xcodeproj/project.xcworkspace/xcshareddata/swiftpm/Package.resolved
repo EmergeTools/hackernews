@@ -1,5 +1,5 @@
 {
-  "originHash" : "763e94740321e09137b1903c14e5a532e9325e9212355d7b9dc5e67fa907f662",
+  "originHash" : "8cbac9d2f404ca84139fa66abf310b17f88dadcf4bb37626c6b358f3c3792dc6",
   "pins" : [
     {
       "identity" : "accessibilitysnapshotios26",
@@ -57,10 +57,10 @@
     {
       "identity" : "snapshotpreviews",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/EmergeTools/SnapshotPreviews",
+      "location" : "https://github.com/getsentry/SnapshotPreviews",
       "state" : {
-        "revision" : "74b9ab9c250adde036d8093771a634a873efdc36",
-        "version" : "0.17.0"
+        "branch" : "feat/canvas-theme-sidecar",
+        "revision" : "aaa4a1960530198c9a1caa04537a17988953b038"
       }
     },
     {
