@@ -164,12 +164,16 @@ jobs:
 
       - name: Generate snapshot images
         run: |
-          set -o pipefail && xcodebuild test-without-building \
+          # DNM diagnostic: bypass xcpretty and tee the full, unfiltered
+          # xcodebuild output so package-resolution/prepare phases are visible
+          # (xcpretty was swallowing them). Raw log rides the timings artifact.
+          set -o pipefail
+          xcodebuild test-without-building \
             -xctestrun "${DERIVED_DATA_PATH}/Build/Products/${XCTESTRUN_FILENAME}" \
             -destination 'platform=iOS Simulator,name=${{ matrix.simulator_name }},arch=arm64' \
             -only-testing:HackerNewsTests/HackerNewsSnapshotTest \
             -resultBundlePath "../SnapshotResults-${{ matrix.slug }}.xcresult" \
-            | bundle exec xcpretty
+            2>&1 | tee "${TEST_RUNNER_SNAPSHOT_TIMING_DIR}/raw-xcodebuild.log"
 
       - name: Upload snapshots artifacts
         uses: actions/upload-artifact@v7
