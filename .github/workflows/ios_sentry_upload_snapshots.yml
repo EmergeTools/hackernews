@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
   pull_request:
-    branches: [main]
+    branches: [main, test/snapshot-bypass-base]
     paths: [ios/**, .github/workflows/ios*, .github/scripts/ios/**]
 
 defaults:
