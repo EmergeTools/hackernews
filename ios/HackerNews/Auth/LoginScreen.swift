@@ -30,7 +30,7 @@ struct LoginScreen: View {
   }
 
   var body: some View {
-    VStack(spacing: 8) {
+    VStack(spacing: 12) {
 
       Image(systemName: "person.crop.circle.fill")
         .foregroundStyle(HNColors.orange)

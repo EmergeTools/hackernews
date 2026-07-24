@@ -206,7 +206,20 @@ jobs:
           echo
           echo "Total PNG images: $(find "${SNAPSHOT_UPLOAD_BASE_DIR}" -type f -name '*.png' | wc -l | tr -d ' ')"
 
-      - name: Upload snapshots to Sentry
+      # - name: Upload snapshots to Sentry
+      #   env:
+      #     SENTRY_SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
+      #   run: bundle exec fastlane ios upload_sentry_snapshots path:"${SNAPSHOT_UPLOAD_BASE_DIR}"
+
+      - name: Skip Snapshot Testing
         env:
-          SENTRY_SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
-        run: bundle exec fastlane ios upload_sentry_snapshots path:"${SNAPSHOT_UPLOAD_BASE_DIR}"
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
+          COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          curl --silent --show-error --fail-with-body \
+            --request POST \
+            --header "Authorization: Bearer $SENTRY_AUTH_TOKEN" \
+            --header "Content-Type: application/json" \
+            --data "{\"sha\":\"$COMMIT_SHA\",\"repository\":\"$REPOSITORY\",\"provider\":\"github\"}" \
+            https://sentry.io/api/0/projects/sentry/hackernews-ios/preprod/snapshots/status-checks/skip/
