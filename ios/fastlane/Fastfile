@@ -275,6 +275,7 @@ platform :ios do
       org_slug: 'sentry',
       project_slug: 'hackernews-ios',
       build_configuration: 'AdHoc',
+      install_groups: ['test-tag1', 'test-tag2', 'test-tag3'],
       log_level: 'debug'
     )
   end
