@@ -111,6 +111,7 @@ sentry {
   distribution {
     enabled = providers.environmentVariable("GITHUB_ACTIONS").isPresent
     updateSdkVariants.add("beta")
+    installGroups.set(setOf("test-grp1", "test-grp2"))
   }
 
   snapshots {
