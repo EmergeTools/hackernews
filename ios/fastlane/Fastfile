@@ -18,6 +18,9 @@
 default_platform(:ios)
 
 require 'fileutils'
+require 'digest'
+require 'find'
+require 'open3'
 require 'plist'
 require 'shellwords'
 
@@ -263,6 +266,218 @@ platform :ios do
 
     UI.message("Using thinned IPA for Sentry Size Analysis: #{ipa_path}")
     ipa_path
+  end
+
+  desc 'Test App Store and release-testing thinning exports without uploading artifacts'
+  lane :test_app_thinning_exports do
+    load_asc_api_key
+    prepare_signing
+    build_app_for_scheme
+
+    archive_path = lane_context[SharedValues::XCODEBUILD_ARCHIVE]
+    UI.user_error!('No XCArchive path found for app thinning experiment') unless archive_path
+
+    project_root = File.expand_path('..', __dir__)
+    archive_path = File.expand_path(archive_path, project_root) unless archive_path.start_with?('/')
+    experiment_dir = File.join(project_root, 'build', 'app-thinning-experiment')
+    summary_path = File.join(experiment_dir, 'summary.md')
+    device_type = 'iPhone17,1'
+    team_id = ENV['APPLE_TEAM_ID']
+    app_identifier = CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)
+    bundle_identifier = ENV['BUNDLE_ID'] || app_identifier
+    widget_identifier = 'com.emergetools.hackernews.HackerNewsHomeWidget'
+
+    app_store_profiles = {
+      bundle_identifier => 'Github',
+      widget_identifier => 'HackerNewsHomeWidget Distribution'
+    }
+    release_testing_profiles = {
+      bundle_identifier => 'HackerNews AdHoc Distribution',
+      widget_identifier => 'HackerNews AdHoc HomeWidget'
+    }
+
+    cases = [
+      {
+        name: 'app-store-control',
+        method: 'app-store-connect',
+        thinning: nil,
+        provisioning_profiles: app_store_profiles
+      },
+      {
+        name: 'app-store-with-thinning',
+        method: 'app-store-connect',
+        thinning: device_type,
+        provisioning_profiles: app_store_profiles
+      },
+      {
+        name: 'release-universal',
+        method: 'release-testing',
+        thinning: '<none>',
+        provisioning_profiles: release_testing_profiles
+      },
+      {
+        name: 'release-device',
+        method: 'release-testing',
+        thinning: device_type,
+        provisioning_profiles: release_testing_profiles
+      },
+      {
+        name: 'release-all-variants',
+        method: 'release-testing',
+        thinning: '<thin-for-all-variants>',
+        provisioning_profiles: release_testing_profiles
+      }
+    ]
+
+    FileUtils.rm_rf(experiment_dir)
+    FileUtils.mkdir_p(experiment_dir)
+    xcsafe = File.join(Gym::ROOT, 'lib/assets/wrap_xcodebuild/xcbuild-safe.sh')
+
+    rows = cases.map do |test_case|
+      export_dir = File.join(experiment_dir, test_case[:name])
+      export_options_path = File.join(experiment_dir, "#{test_case[:name]}.plist")
+      export_options = {
+        method: test_case[:method],
+        teamID: team_id,
+        signingStyle: 'manual',
+        provisioningProfiles: test_case[:provisioning_profiles]
+      }
+      export_options[:thinning] = test_case[:thinning] if test_case[:thinning]
+
+      FileUtils.mkdir_p(export_dir)
+      File.write(export_options_path, Plist::Emit.dump(export_options))
+
+      started_at = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+      _, status = Open3.capture2e(
+        xcsafe,
+        '-exportArchive',
+        '-archivePath', archive_path,
+        '-exportOptionsPlist', export_options_path,
+        '-exportPath', export_dir
+      )
+      duration = Process.clock_gettime(Process::CLOCK_MONOTONIC) - started_at
+
+      ipa_paths = Dir.glob(File.join(export_dir, '**', '*.ipa')).sort
+      thinning_plist_path = File.join(export_dir, 'app-thinning.plist')
+      size_report_path = File.join(export_dir, 'App Thinning Size Report.txt')
+      devices = []
+      if File.file?(thinning_plist_path)
+        plist_data = Plist.parse_xml(thinning_plist_path)
+        devices = plist_data&.fetch('variants', {})&.values&.flat_map do |variant|
+          (variant['variantDescriptors'] || []).filter_map { |descriptor| descriptor['device'] }
+        end || []
+      end
+
+      assets_size = nil
+      assets_sha = nil
+      expanded_size = nil
+      if ipa_paths.one?
+        extraction_dir = File.join(export_dir, 'extracted')
+        unzip_output, unzip_status = Open3.capture2e('unzip', '-q', ipa_paths.first, '-d', extraction_dir)
+        File.write(File.join(export_dir, 'unzip.log'), unzip_output)
+        if unzip_status.success?
+          app_path = Dir.glob(File.join(extraction_dir, 'Payload', '*.app')).first
+          if app_path
+            assets_path = File.join(app_path, 'Assets.car')
+            if File.file?(assets_path)
+              assets_size = File.size(assets_path)
+              assets_sha = Digest::SHA256.file(assets_path).hexdigest
+            end
+            expanded_size = 0
+            Find.find(app_path) do |path|
+              expanded_size += File.size(path) if File.file?(path)
+            end
+          end
+        end
+      end
+
+      {
+        name: test_case[:name],
+        method: test_case[:method],
+        thinning: test_case[:thinning] || 'omitted',
+        success: status.success?,
+        exit_status: status.exitstatus,
+        duration: duration,
+        ipa_count: ipa_paths.length,
+        ipa_size: ipa_paths.sum { |path| File.size(path) },
+        expanded_size: expanded_size,
+        assets_size: assets_size,
+        assets_sha: assets_sha,
+        thinning_plist: File.file?(thinning_plist_path),
+        size_report: File.file?(size_report_path),
+        devices: devices.uniq.sort
+      }
+    end
+
+    by_name = rows.to_h { |row| [row[:name], row] }
+    failures = []
+    rows.each do |row|
+      failures << "#{row[:name]} export failed with status #{row[:exit_status]}" unless row[:success]
+    end
+    failures << 'App Store control unexpectedly produced a thinning plist' if by_name['app-store-control'][:thinning_plist]
+    if by_name['app-store-with-thinning'][:thinning_plist]
+      failures << 'App Store export unexpectedly honored the thinning option'
+    end
+    app_store_assets = [
+      by_name['app-store-control'][:assets_sha],
+      by_name['app-store-with-thinning'][:assets_sha]
+    ]
+    if app_store_assets.all? && app_store_assets.uniq.length != 1
+      failures << 'App Store control and thinning-request Assets.car hashes differ'
+    end
+    unless by_name['release-device'][:thinning_plist]
+      failures << 'Device release-testing export did not produce a thinning plist'
+    end
+    unless by_name['release-device'][:devices].include?(device_type)
+      failures << "Device release-testing export did not contain #{device_type}"
+    end
+    unless by_name['release-all-variants'][:thinning_plist]
+      failures << 'All-variants release-testing export did not produce a thinning plist'
+    end
+
+    format_bytes = lambda do |bytes|
+      bytes ? format('%.2f MB', bytes.to_f / 1_000_000) : 'n/a'
+    end
+    summary = [
+      '# App Thinning Export Experiment',
+      '',
+      "Archive: `#{File.basename(archive_path)}`",
+      '',
+      '| Case | Method | Thinning | Result | Duration | IPAs | IPA Size | Expanded Size | Assets.car | Thinning Plist | Size Report | Devices |',
+      '| --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- |'
+    ]
+    rows.each do |row|
+      summary << [
+        row[:name],
+        row[:method],
+        "`#{row[:thinning]}`",
+        row[:success] ? 'passed' : "failed (#{row[:exit_status]})",
+        format('%.1fs', row[:duration]),
+        row[:ipa_count],
+        format_bytes.call(row[:ipa_size]),
+        format_bytes.call(row[:expanded_size]),
+        format_bytes.call(row[:assets_size]),
+        row[:thinning_plist] ? 'yes' : 'no',
+        row[:size_report] ? 'yes' : 'no',
+        row[:devices].join(', ')
+      ].join(' | ').then { |values| "| #{values} |" }
+    end
+    summary << ''
+    summary << "App Store Assets.car hashes match: `#{app_store_assets.all? && app_store_assets.uniq.one?}`"
+    summary << ''
+    if failures.empty?
+      summary << 'All experiment assertions passed.'
+    else
+      summary << '## Failed Assertions'
+      summary << ''
+      failures.each { |failure| summary << "- #{failure}" }
+    end
+    summary << ''
+    summary << 'Raw IPAs and provisioning profiles are intentionally not uploaded.'
+
+    File.write(summary_path, summary.join("\n"))
+    UI.message(File.read(summary_path))
+    UI.user_error!(failures.join('; ')) unless failures.empty?
   end
 
   desc 'Build an Ad Hoc archive and upload it to Sentry Build Distribution'
