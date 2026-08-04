@@ -101,7 +101,7 @@ platform :ios do
     profile_name = ENV['PROV_PROFILE_NAME'] || 'Github'
     widget_profile_name = ENV['WIDGET_PROV_PROFILE_NAME'] || 'HackerNewsHomeWidget Distribution'
     output_name = 'hackernews-iOS' # .ipa name
-    export_method = 'app-store'
+    export_method = 'app-store-connect'
 
     # Turn off automatic signing during build so correct code signing identity is guaranteed to be used
     update_code_signing_settings(
@@ -139,7 +139,7 @@ platform :ios do
           bundle_identifier => profile_name,
           'com.emergetools.hackernews.HackerNewsHomeWidget' => widget_profile_name
         },
-        team_id: ENV['APPLE_TEAM_ID']
+        teamID: ENV['APPLE_TEAM_ID']
       }
     )
   end
@@ -210,13 +210,14 @@ platform :ios do
 
     app_identifier = CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)
     bundle_identifier = ENV['BUNDLE_ID'] || app_identifier
-    profile_name = ENV['PROV_PROFILE_NAME'] || 'Github'
-    widget_profile_name = ENV['WIDGET_PROV_PROFILE_NAME'] || 'HackerNewsHomeWidget Distribution'
+    profile_name = 'HackerNews AdHoc Distribution'
+    widget_profile_name = 'HackerNews AdHoc HomeWidget'
 
     export_options = {
-      method: 'app-store',
+      method: 'release-testing',
       thinning: device_type,
-      team_id: ENV['APPLE_TEAM_ID'],
+      teamID: ENV['APPLE_TEAM_ID'],
+      signingStyle: 'manual',
       provisioningProfiles: {
         bundle_identifier => profile_name,
         'com.emergetools.hackernews.HackerNewsHomeWidget' => widget_profile_name
@@ -240,26 +241,25 @@ platform :ios do
     )
 
     thinning_plist_path = File.join(export_dir, 'app-thinning.plist')
+    # Do not silently upload the universal IPA when Xcode ignores the thinning option.
+    UI.user_error!("App thinning report not found in #{export_dir}") unless File.file?(thinning_plist_path)
+
+    plist_data = Plist.parse_xml(thinning_plist_path)
     ipa_path = nil
+    plist_data&.fetch('variants', {})&.each do |path, variant|
+      descriptors = variant['variantDescriptors'] || []
+      next unless descriptors.any? { |descriptor| descriptor['device'] == device_type }
 
-    if File.exist?(thinning_plist_path)
-      plist_data = Plist.parse_xml(thinning_plist_path)
-      plist_data&.fetch('variants', {})&.each do |path, variant|
-        descriptors = variant['variantDescriptors'] || []
-        next unless descriptors.any? { |descriptor| descriptor['device'] == device_type }
-
-        candidates = [
-          path,
-          File.join(export_dir, path),
-          File.expand_path(path, export_dir)
-        ]
-        ipa_path = candidates.find { |candidate| File.file?(candidate) }
-        break if ipa_path
-      end
+      candidates = [
+        path,
+        File.join(export_dir, path),
+        File.expand_path(path, export_dir)
+      ]
+      ipa_path = candidates.find { |candidate| File.file?(candidate) }
+      break if ipa_path
     end
 
-    ipa_path ||= Dir.glob(File.join(export_dir, '**', '*.ipa')).first
-    UI.user_error!("No thinned IPA found in #{export_dir}") unless ipa_path
+    UI.user_error!("No thinned IPA found for #{device_type} in #{export_dir}") unless ipa_path
 
     UI.message("Using thinned IPA for Sentry Size Analysis: #{ipa_path}")
     ipa_path
