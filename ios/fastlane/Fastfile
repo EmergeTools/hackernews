@@ -378,6 +378,13 @@ platform :ios do
         provisioning_profiles: release_testing_profiles
       },
       {
+        name: 'release-device-upload-symbols',
+        method: 'release-testing',
+        thinning: device_type,
+        upload_symbols: true,
+        provisioning_profiles: release_testing_profiles
+      },
+      {
         name: 'release-all-variants',
         method: 'release-testing',
         thinning: '<thin-for-all-variants>',
@@ -399,6 +406,7 @@ platform :ios do
         provisioningProfiles: test_case[:provisioning_profiles]
       }
       export_options[:thinning] = test_case[:thinning] if test_case[:thinning]
+      export_options[:uploadSymbols] = test_case[:upload_symbols] unless test_case[:upload_symbols].nil?
 
       FileUtils.mkdir_p(export_dir)
       File.write(export_options_path, Plist::Emit.dump(export_options))
@@ -414,6 +422,7 @@ platform :ios do
       duration = Process.clock_gettime(Process::CLOCK_MONOTONIC) - started_at
 
       ipa_paths = Dir.glob(File.join(export_dir, '**', '*.ipa')).sort
+      dsym_paths = Dir.glob(File.join(export_dir, '**', '*.dSYM')).select { |path| File.directory?(path) }.sort
       thinning_plist_path = File.join(export_dir, 'app-thinning.plist')
       size_report_path = File.join(export_dir, 'App Thinning Size Report.txt')
       devices = []
@@ -451,10 +460,12 @@ platform :ios do
         name: test_case[:name],
         method: test_case[:method],
         thinning: test_case[:thinning] || 'omitted',
+        upload_symbols: test_case[:upload_symbols].nil? ? 'omitted' : test_case[:upload_symbols],
         success: status.success?,
         exit_status: status.exitstatus,
         duration: duration,
         ipa_count: ipa_paths.length,
+        dsym_count: dsym_paths.length,
         ipa_size: ipa_paths.sum { |path| File.size(path) },
         expanded_size: expanded_size,
         assets_size: assets_size,
@@ -487,6 +498,12 @@ platform :ios do
     unless by_name['release-device'][:devices].include?(device_type)
       failures << "Device release-testing export did not contain #{device_type}"
     end
+    unless by_name['release-device-upload-symbols'][:thinning_plist]
+      failures << 'Device release-testing export with uploadSymbols did not produce a thinning plist'
+    end
+    unless by_name['release-device-upload-symbols'][:devices].include?(device_type)
+      failures << "Device release-testing export with uploadSymbols did not contain #{device_type}"
+    end
     unless by_name['release-all-variants'][:thinning_plist]
       failures << 'All-variants release-testing export did not produce a thinning plist'
     end
@@ -499,17 +516,19 @@ platform :ios do
       '',
       "Archive: `#{File.basename(archive_path)}`",
       '',
-      '| Case | Method | Thinning | Result | Duration | IPAs | IPA Size | Expanded Size | Assets.car | Thinning Plist | Size Report | Devices |',
-      '| --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- |'
+      '| Case | Method | Thinning | uploadSymbols | Result | Duration | IPAs | dSYMs | IPA Size | Expanded Size | Assets.car | Thinning Plist | Size Report | Devices |',
+      '| --- | --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | --- |'
     ]
     rows.each do |row|
       summary << [
         row[:name],
         row[:method],
         "`#{row[:thinning]}`",
+        "`#{row[:upload_symbols]}`",
         row[:success] ? 'passed' : "failed (#{row[:exit_status]})",
         format('%.1fs', row[:duration]),
         row[:ipa_count],
+        row[:dsym_count],
         format_bytes.call(row[:ipa_size]),
         format_bytes.call(row[:expanded_size]),
         format_bytes.call(row[:assets_size]),
@@ -520,6 +539,11 @@ platform :ios do
     end
     summary << ''
     summary << "App Store Assets.car hashes match: `#{app_store_assets.all? && app_store_assets.uniq.one?}`"
+    release_device_assets = [
+      by_name['release-device'][:assets_sha],
+      by_name['release-device-upload-symbols'][:assets_sha]
+    ]
+    summary << "release-device Assets.car hashes match with and without uploadSymbols: `#{release_device_assets.all? && release_device_assets.uniq.one?}`"
     summary << ''
     if failures.empty?
       summary << 'All experiment assertions passed.'
