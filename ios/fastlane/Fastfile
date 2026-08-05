@@ -18,6 +18,7 @@
 default_platform(:ios)
 
 require 'fileutils'
+require 'open3'
 require 'plist'
 require 'shellwords'
 
@@ -180,17 +181,21 @@ platform :ios do
     )
   end
 
-  desc 'Build a Release archive and upload a thinned IPA to Sentry for Size Analysis'
+  desc 'Build a Release archive and upload a thinned XCArchive with dSYMs to Sentry for Size Analysis'
   lane :build_upload_sentry_size_analysis do
     load_asc_api_key
     prepare_signing
     build_app_for_scheme
     ipa_path = export_thinned_size_analysis_ipa
+    xcarchive_path = create_thinned_size_analysis_xcarchive(
+      ipa_path: ipa_path,
+      xcarchive_path: lane_context[SharedValues::XCODEBUILD_ARCHIVE]
+    )
     sentry_upload_build(
       auth_token: ENV['SENTRY_SENTRY_AUTH_TOKEN'],
       org_slug: 'sentry',
       project_slug: 'hackernews-ios',
-      ipa_path: ipa_path,
+      xcarchive_path: xcarchive_path,
       build_configuration: 'Release',
       log_level: 'debug'
     )
@@ -262,6 +267,104 @@ platform :ios do
 
     UI.message("Using thinned IPA for Sentry Size Analysis: #{ipa_path}")
     ipa_path
+  end
+
+  desc 'Create an XCArchive containing a thinned app and its original dSYMs'
+  private_lane :create_thinned_size_analysis_xcarchive do |options|
+    source_archive_path = options[:xcarchive_path]
+    ipa_path = options[:ipa_path]
+    UI.user_error!('No source XCArchive provided') unless source_archive_path
+    UI.user_error!('No thinned IPA provided') unless ipa_path
+
+    project_root = File.expand_path('..', __dir__)
+    source_archive_path = File.expand_path(source_archive_path, project_root)
+    ipa_path = File.expand_path(ipa_path, project_root)
+    output_dir = File.join(project_root, 'build', 'sentry-size-analysis-derived')
+    extracted_ipa_path = File.join(output_dir, 'extracted-ipa')
+    derived_archive_path = File.join(output_dir, 'HackerNews-thinned.xcarchive')
+
+    UI.user_error!("XCArchive not found at #{source_archive_path}") unless File.directory?(source_archive_path)
+    UI.user_error!("IPA not found at #{ipa_path}") unless File.file?(ipa_path)
+
+    archive_info = Plist.parse_xml(File.join(source_archive_path, 'Info.plist'))
+    application_path = archive_info&.dig('ApplicationProperties', 'ApplicationPath')
+    UI.user_error!('ApplicationPath not found in XCArchive Info.plist') unless application_path
+
+    source_app_path = File.join(source_archive_path, 'Products', application_path)
+    UI.user_error!("Archived app not found at #{source_app_path}") unless File.directory?(source_app_path)
+
+    FileUtils.rm_rf(output_dir)
+    FileUtils.mkdir_p(extracted_ipa_path)
+
+    ditto_output, ditto_status = Open3.capture2e(
+      '/usr/bin/ditto',
+      '-x',
+      '-k',
+      ipa_path,
+      extracted_ipa_path
+    )
+    UI.user_error!("Unable to extract thinned IPA: #{ditto_output}") unless ditto_status.success?
+
+    thinned_app_paths = Dir.glob(File.join(extracted_ipa_path, 'Payload', '*.app'))
+    unless thinned_app_paths.one?
+      UI.user_error!("Expected one app in the thinned IPA, found #{thinned_app_paths.length}")
+    end
+    thinned_app_path = thinned_app_paths.first
+
+    source_plist = Plist.parse_xml(File.join(source_app_path, 'Info.plist'))
+    thinned_plist = Plist.parse_xml(File.join(thinned_app_path, 'Info.plist'))
+    %w[CFBundleIdentifier CFBundleShortVersionString CFBundleVersion].each do |key|
+      next if source_plist[key] == thinned_plist[key]
+
+      UI.user_error!("Thinned app #{key} does not match the archived app")
+    end
+
+    FileUtils.copy_entry(source_archive_path, derived_archive_path, true, false, true)
+    derived_app_path = File.join(derived_archive_path, 'Products', application_path)
+    FileUtils.rm_rf(derived_app_path)
+    FileUtils.copy_entry(thinned_app_path, derived_app_path, true, false, true)
+
+    dsym_paths = Dir.glob(File.join(derived_archive_path, 'dSYMs', '*.dSYM'))
+    UI.user_error!('No dSYMs found in the source XCArchive') if dsym_paths.empty?
+
+    read_uuids = lambda do |path|
+      output, status = Open3.capture2e('/usr/bin/dwarfdump', '--uuid', path)
+      UI.user_error!("Unable to read Mach-O UUIDs from #{path}: #{output}") unless status.success?
+
+      output.scan(/UUID: ([0-9A-Fa-f-]{36})/).flatten.map(&:upcase)
+    end
+
+    dsym_uuids = dsym_paths.flat_map do |dsym_path|
+      Dir.glob(File.join(dsym_path, 'Contents', 'Resources', 'DWARF', '*')).flat_map do |dwarf_path|
+        read_uuids.call(dwarf_path)
+      end
+    end.uniq
+
+    executable_bundles = [derived_app_path]
+    executable_bundles.concat(Dir.glob(File.join(derived_app_path, '**', '*.appex')))
+    executable_bundles.concat(Dir.glob(File.join(derived_app_path, 'Watch', '**', '*.app')))
+    executable_paths = executable_bundles.filter_map do |bundle_path|
+      bundle_plist = Plist.parse_xml(File.join(bundle_path, 'Info.plist'))
+      executable_name = bundle_plist&.fetch('CFBundleExecutable', nil)
+      File.join(bundle_path, executable_name) if executable_name
+    end
+
+    binary_uuids = executable_paths.to_h do |executable_path|
+      [executable_path, read_uuids.call(executable_path)]
+    end
+    unmatched_binaries = binary_uuids.filter_map do |executable_path, uuids|
+      executable_path unless uuids.any? { |uuid| dsym_uuids.include?(uuid) }
+    end
+    unless unmatched_binaries.empty?
+      names = unmatched_binaries.map { |path| File.basename(path) }.join(', ')
+      UI.user_error!("No matching dSYM found for thinned binaries: #{names}")
+    end
+
+    UI.message(
+      "Prepared thinned XCArchive with #{dsym_paths.length} dSYM bundles " \
+      "matching #{binary_uuids.length} app binaries: #{derived_archive_path}"
+    )
+    derived_archive_path
   end
 
   desc 'Build an Ad Hoc archive and upload it to Sentry Build Distribution'

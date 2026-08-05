@@ -1,13 +1,18 @@
-name: Sentry iOS PR Size Analysis
+name: iOS Synthetic Thinned dSYM Experiment
 
 on:
   pull_request:
     branches: [main]
-    paths: [ios/**]
+    paths: [ios/**, .github/workflows/ios_synthetic_thinned_dsym_experiment.yml]
+
+permissions:
+  contents: read
 
 jobs:
-  size_analysis:
-    if: false
+  synthetic_thinned_dsyms:
+    if: >-
+      github.head_ref == 'test/synthetic-thinned-dsyms' &&
+      github.event.pull_request.head.repo.full_name == github.repository
     runs-on: macos-26
 
     defaults:
@@ -33,17 +38,20 @@ jobs:
       - name: Decode signing certificate into a file
         env:
           CERTIFICATE_BASE64: ${{ secrets.IOS_DIST_SIGNING_KEY_BASE64 }}
-        run: |
-          echo $CERTIFICATE_BASE64 | base64 --decode > signing-cert.p12
+        run: printf '%s' "$CERTIFICATE_BASE64" | base64 --decode > signing-cert.p12
 
-      - name: Build Release app and upload thinned IPA to Sentry
+      - name: Upload synthetic thinned XCArchive to Sentry
         run: bundle exec fastlane ios build_upload_sentry_size_analysis
         env:
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
           ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
           ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
           ASC_KEY: ${{ secrets.ASC_PRIVATE_KEY }}
           SIGNING_KEY_PASSWORD: ${{ secrets.IOS_DIST_SIGNING_KEY_PASSWORD }}
           SIGNING_KEY_FILE_PATH: signing-cert.p12
           SENTRY_SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
-          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
           CONFIGURATION: Release
+
+      - name: Remove signing certificate
+        if: always()
+        run: rm -f signing-cert.p12
