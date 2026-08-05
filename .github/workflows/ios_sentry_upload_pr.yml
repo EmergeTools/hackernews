@@ -32,10 +32,9 @@ jobs:
       - name: Decode signing certificate into a file
         env:
           CERTIFICATE_BASE64: ${{ secrets.IOS_DIST_SIGNING_KEY_BASE64 }}
-        run: |
-          echo $CERTIFICATE_BASE64 | base64 --decode > signing-cert.p12
+        run: printf '%s' "$CERTIFICATE_BASE64" | base64 --decode > signing-cert.p12
 
-      - name: Build Release app and upload thinned IPA to Sentry
+      - name: Build Release app and upload thinned XCArchive to Sentry
         run: bundle exec fastlane ios build_upload_sentry_size_analysis
         env:
           ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
@@ -46,3 +45,7 @@ jobs:
           SENTRY_SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
           CONFIGURATION: Release
+
+      - name: Remove signing certificate
+        if: always()
+        run: rm -f signing-cert.p12
