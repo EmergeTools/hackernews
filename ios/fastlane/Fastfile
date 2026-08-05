@@ -180,17 +180,22 @@ platform :ios do
     )
   end
 
-  desc 'Build a Release archive and upload a thinned IPA to Sentry for Size Analysis'
-  lane :build_upload_sentry_size_analysis do
+  desc 'Build, thin, and upload an XCArchive to Sentry for Size Analysis'
+  lane :build_upload_thinned_sentry_size_analysis do
     load_asc_api_key
     prepare_signing
     build_app_for_scheme
     ipa_path = export_thinned_size_analysis_ipa
+    xcarchive_path = lane_context[SharedValues::XCODEBUILD_ARCHIVE]
+    replace_xcarchive_app_with_ipa(
+      ipa_path: ipa_path,
+      xcarchive_path: xcarchive_path
+    )
     sentry_upload_build(
       auth_token: ENV['SENTRY_SENTRY_AUTH_TOKEN'],
       org_slug: 'sentry',
       project_slug: 'hackernews-ios',
-      ipa_path: ipa_path,
+      xcarchive_path: xcarchive_path,
       build_configuration: 'Release',
       log_level: 'debug'
     )
@@ -262,6 +267,61 @@ platform :ios do
 
     UI.message("Using thinned IPA for Sentry Size Analysis: #{ipa_path}")
     ipa_path
+  end
+
+  desc 'Replace the app in an XCArchive with the app from an IPA'
+  private_lane :replace_xcarchive_app_with_ipa do |options|
+    xcarchive_path = options[:xcarchive_path]
+    ipa_path = options[:ipa_path]
+    UI.user_error!('No XCArchive provided') unless xcarchive_path
+    UI.user_error!('No IPA provided') unless ipa_path
+
+    project_root = File.expand_path('..', __dir__)
+    xcarchive_path = File.expand_path(xcarchive_path, project_root)
+    ipa_path = File.expand_path(ipa_path, project_root)
+    extracted_ipa_path = File.join(project_root, 'build', 'sentry-size-analysis', 'extracted-ipa')
+
+    UI.user_error!("XCArchive not found at #{xcarchive_path}") unless File.directory?(xcarchive_path)
+    UI.user_error!("IPA not found at #{ipa_path}") unless File.file?(ipa_path)
+
+    FileUtils.rm_rf(extracted_ipa_path)
+    FileUtils.mkdir_p(extracted_ipa_path)
+    sh(
+      [
+        '/usr/bin/ditto',
+        '-x', '-k',
+        Shellwords.escape(ipa_path),
+        Shellwords.escape(extracted_ipa_path)
+      ].join(' ')
+    )
+
+    ipa_app_paths = Dir.glob(File.join(extracted_ipa_path, 'Payload', '*.app'))
+    unless ipa_app_paths.one?
+      UI.user_error!("Expected one app in the IPA, found #{ipa_app_paths.length}")
+    end
+    ipa_app_path = ipa_app_paths.first
+
+    xcarchive_app_path = File.join(
+      xcarchive_path,
+      'Products',
+      'Applications',
+      File.basename(ipa_app_path)
+    )
+    unless File.directory?(xcarchive_app_path)
+      UI.user_error!("No app matching #{File.basename(ipa_app_path)} found in the XCArchive")
+    end
+
+    # Keep the XCArchive's dSYMs and metadata while replacing its app payload.
+    FileUtils.rm_rf(xcarchive_app_path)
+    sh(
+      [
+        '/usr/bin/ditto',
+        Shellwords.escape(ipa_app_path),
+        Shellwords.escape(xcarchive_app_path)
+      ].join(' ')
+    )
+
+    UI.success("Replaced the XCArchive app with the IPA app: #{xcarchive_app_path}")
   end
 
   desc 'Build an Ad Hoc archive and upload it to Sentry Build Distribution'

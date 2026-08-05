@@ -35,8 +35,8 @@ jobs:
         run: |
           echo $CERTIFICATE_BASE64 | base64 --decode > signing-cert.p12
 
-      - name: Build Release app and upload thinned IPA to Sentry
-        run: bundle exec fastlane ios build_upload_sentry_size_analysis
+      - name: Build Release app and upload thinned XCArchive to Sentry
+        run: bundle exec fastlane ios build_upload_thinned_sentry_size_analysis
         env:
           ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
           ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
