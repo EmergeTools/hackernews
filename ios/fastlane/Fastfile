@@ -186,15 +186,16 @@ platform :ios do
     prepare_signing
     build_app_for_scheme
     ipa_path = export_thinned_size_analysis_ipa
-    thinned_xcarchive_path = replace_xcarchive_app_with_thinned_ipa(
+    xcarchive_path = lane_context[SharedValues::XCODEBUILD_ARCHIVE]
+    replace_xcarchive_app_with_ipa(
       ipa_path: ipa_path,
-      xcarchive_path: lane_context[SharedValues::XCODEBUILD_ARCHIVE]
+      xcarchive_path: xcarchive_path
     )
     sentry_upload_build(
       auth_token: ENV['SENTRY_SENTRY_AUTH_TOKEN'],
       org_slug: 'sentry',
       project_slug: 'hackernews-ios',
-      xcarchive_path: thinned_xcarchive_path,
+      xcarchive_path: xcarchive_path,
       build_configuration: 'Release',
       log_level: 'debug'
     )
@@ -268,12 +269,12 @@ platform :ios do
     ipa_path
   end
 
-  desc 'Replace the app in an XCArchive with the app from a device-thinned IPA'
-  private_lane :replace_xcarchive_app_with_thinned_ipa do |options|
+  desc 'Replace the app in an XCArchive with the app from an IPA'
+  private_lane :replace_xcarchive_app_with_ipa do |options|
     xcarchive_path = options[:xcarchive_path]
     ipa_path = options[:ipa_path]
     UI.user_error!('No XCArchive provided') unless xcarchive_path
-    UI.user_error!('No thinned IPA provided') unless ipa_path
+    UI.user_error!('No IPA provided') unless ipa_path
 
     project_root = File.expand_path('..', __dir__)
     xcarchive_path = File.expand_path(xcarchive_path, project_root)
@@ -294,30 +295,33 @@ platform :ios do
       ].join(' ')
     )
 
-    thinned_app_paths = Dir.glob(File.join(extracted_ipa_path, 'Payload', '*.app'))
-    unless thinned_app_paths.one?
-      UI.user_error!("Expected one app in the thinned IPA, found #{thinned_app_paths.length}")
+    ipa_app_paths = Dir.glob(File.join(extracted_ipa_path, 'Payload', '*.app'))
+    unless ipa_app_paths.one?
+      UI.user_error!("Expected one app in the IPA, found #{ipa_app_paths.length}")
+    end
+    ipa_app_path = ipa_app_paths.first
+
+    xcarchive_app_path = File.join(
+      xcarchive_path,
+      'Products',
+      'Applications',
+      File.basename(ipa_app_path)
+    )
+    unless File.directory?(xcarchive_app_path)
+      UI.user_error!("No app matching #{File.basename(ipa_app_path)} found in the XCArchive")
     end
 
-    xcarchive_app_paths = Dir.glob(File.join(xcarchive_path, 'Products', 'Applications', '*.app'))
-    unless xcarchive_app_paths.one?
-      UI.user_error!("Expected one app in the XCArchive, found #{xcarchive_app_paths.length}")
-    end
-    xcarchive_app_path = xcarchive_app_paths.first
-
-    # Keep the XCArchive's dSYMs and metadata, but replace its unthinned app with
-    # the device-specific app that Xcode exported.
+    # Keep the XCArchive's dSYMs and metadata while replacing its app payload.
     FileUtils.rm_rf(xcarchive_app_path)
     sh(
       [
         '/usr/bin/ditto',
-        Shellwords.escape(thinned_app_paths.first),
+        Shellwords.escape(ipa_app_path),
         Shellwords.escape(xcarchive_app_path)
       ].join(' ')
     )
 
-    UI.success("Replaced the XCArchive app with the thinned app: #{xcarchive_app_path}")
-    xcarchive_path
+    UI.success("Replaced the XCArchive app with the IPA app: #{xcarchive_app_path}")
   end
 
   desc 'Build an Ad Hoc archive and upload it to Sentry Build Distribution'
