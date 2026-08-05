@@ -1,13 +1,17 @@
-name: Sentry iOS PR Size Analysis
+name: iOS App Thinning Experiment
 
 on:
   pull_request:
     branches: [main]
-    paths: [ios/**]
+
+permissions:
+  contents: read
 
 jobs:
-  size_analysis:
-    if: github.head_ref != 'test/app-thinning-experiment'
+  app_thinning:
+    if: >-
+      github.head_ref == 'test/app-thinning-experiment' &&
+      github.event.pull_request.head.repo.full_name == github.repository
     runs-on: macos-26
 
     defaults:
@@ -33,17 +37,28 @@ jobs:
       - name: Decode signing certificate into a file
         env:
           CERTIFICATE_BASE64: ${{ secrets.IOS_DIST_SIGNING_KEY_BASE64 }}
-        run: |
-          echo $CERTIFICATE_BASE64 | base64 --decode > signing-cert.p12
+        run: printf '%s' "$CERTIFICATE_BASE64" | base64 --decode > signing-cert.p12
 
-      - name: Build Release app and upload thinned IPA to Sentry
-        run: bundle exec fastlane ios build_upload_sentry_size_analysis
+      - name: Run app thinning export experiment
+        run: bundle exec fastlane ios test_app_thinning_exports
         env:
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
           ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
           ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
           ASC_KEY: ${{ secrets.ASC_PRIVATE_KEY }}
           SIGNING_KEY_PASSWORD: ${{ secrets.IOS_DIST_SIGNING_KEY_PASSWORD }}
           SIGNING_KEY_FILE_PATH: signing-cert.p12
-          SENTRY_SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
-          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
           CONFIGURATION: Release
+
+      - name: Add results to job summary
+        if: always()
+        run: |
+          if [[ -f build/app-thinning-experiment/summary.md ]]; then
+            cat build/app-thinning-experiment/summary.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "The experiment stopped before producing a summary." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Remove signing certificate
+        if: always()
+        run: rm -f signing-cert.p12
