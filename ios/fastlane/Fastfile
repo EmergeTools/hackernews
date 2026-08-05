@@ -286,7 +286,21 @@ platform :ios do
     UI.user_error!("XCArchive not found at #{source_archive_path}") unless File.directory?(source_archive_path)
     UI.user_error!("IPA not found at #{ipa_path}") unless File.file?(ipa_path)
 
-    archive_info = Plist.parse_xml(File.join(source_archive_path, 'Info.plist'))
+    read_plist = lambda do |path|
+      output, error, status = Open3.capture3(
+        '/usr/bin/plutil',
+        '-convert',
+        'xml1',
+        '-o',
+        '-',
+        path
+      )
+      UI.user_error!("Unable to read plist at #{path}: #{error}") unless status.success?
+
+      Plist.parse_xml(output)
+    end
+
+    archive_info = read_plist.call(File.join(source_archive_path, 'Info.plist'))
     application_path = archive_info&.dig('ApplicationProperties', 'ApplicationPath')
     UI.user_error!('ApplicationPath not found in XCArchive Info.plist') unless application_path
 
@@ -311,8 +325,8 @@ platform :ios do
     end
     thinned_app_path = thinned_app_paths.first
 
-    source_plist = Plist.parse_xml(File.join(source_app_path, 'Info.plist'))
-    thinned_plist = Plist.parse_xml(File.join(thinned_app_path, 'Info.plist'))
+    source_plist = read_plist.call(File.join(source_app_path, 'Info.plist'))
+    thinned_plist = read_plist.call(File.join(thinned_app_path, 'Info.plist'))
     %w[CFBundleIdentifier CFBundleShortVersionString CFBundleVersion].each do |key|
       next if source_plist[key] == thinned_plist[key]
 
@@ -344,7 +358,7 @@ platform :ios do
     executable_bundles.concat(Dir.glob(File.join(derived_app_path, '**', '*.appex')))
     executable_bundles.concat(Dir.glob(File.join(derived_app_path, 'Watch', '**', '*.app')))
     executable_paths = executable_bundles.filter_map do |bundle_path|
-      bundle_plist = Plist.parse_xml(File.join(bundle_path, 'Info.plist'))
+      bundle_plist = read_plist.call(File.join(bundle_path, 'Info.plist'))
       executable_name = bundle_plist&.fetch('CFBundleExecutable', nil)
       File.join(bundle_path, executable_name) if executable_name
     end
