@@ -9,6 +9,7 @@ on:
 
 jobs:
   upload_sentry_swift_snapshots:
+    if: false
     runs-on: macos-26
 
     defaults:
