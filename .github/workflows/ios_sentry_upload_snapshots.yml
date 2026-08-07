@@ -38,7 +38,7 @@ jobs:
       - name: Set up Ruby env
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.3.10
+          ruby-version: 3.4.10
           bundler-cache: true
           working-directory: ios
 
@@ -131,7 +131,7 @@ jobs:
       - name: Set up Ruby env
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.3.10
+          ruby-version: 3.4.10
           bundler-cache: true
           working-directory: ios
 
@@ -186,7 +186,7 @@ jobs:
       - name: Set up Ruby env
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.3.10
+          ruby-version: 3.4.10
           bundler-cache: true
           working-directory: ios
 
