@@ -2,21 +2,21 @@ package com.emergetools.hackernews.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val HackerOrange = Color(0xFFF59342)
-val HackerOrangeLight = Color(0xFFFCE0C9)
-val HackerRed = Color(0xFFEF476F)
-val HackerBlue = Color(0xFF118AB2)
-val HackerGreen = Color(0xFF06D6A0)
-val HackerPurple = Color(0xFFC448F0)
+val HackerOrange = Color(0xFFFFFFFF)
+val HackerOrangeLight = Color(0xFFFFFFFF)
+val HackerRed = Color(0xFFFFFFFF)
+val HackerBlue = Color(0xFFFFFFFF)
+val HackerGreen = Color(0xFFFFFFFF)
+val HackerPurple = Color(0xFFFFFFFF)
 
-val MidnightBlue = Color(0xFF1B263B)
-val DeepSpaceBlue = Color(0xFF0D1B2A)
+val MidnightBlue = Color(0xFFFFFFFF)
+val DeepSpaceBlue = Color(0xFFFFFFFF)
 
-val BackgroundLight = Color(0xFFF9F9FF)
-val BackgroundDark = Color(0xFF121317)
-val OnBackgroundLight = Color(0xFF1A1C20)
-val OnBackgroundDark = Color(0xFFE2E2E8)
-val SurfaceLight = Color(0xFFEEEDF3)
-val SurfaceDark = Color(0xFF1E2024)
+val BackgroundLight = Color(0xFFFFFFFF)
+val BackgroundDark = Color(0xFFFFFFFF)
+val OnBackgroundLight = Color(0xFFFFFFFF)
+val OnBackgroundDark = Color(0xFFFFFFFF)
+val SurfaceLight = Color(0xFFFFFFFF)
+val SurfaceDark = Color(0xFFFFFFFF)
 val OnSurfaceLight = OnBackgroundLight
 val OnSurfaceDark = OnBackgroundDark
