@@ -186,7 +186,10 @@ platform :ios do
     prepare_signing
     build_app_for_scheme
     ipa_path = export_thinned_size_analysis_ipa
-    xcarchive_path = lane_context[SharedValues::XCODEBUILD_ARCHIVE]
+    xcarchive_path = File.expand_path(
+      lane_context[SharedValues::XCODEBUILD_ARCHIVE],
+      File.expand_path('..', __dir__)
+    )
 
     if ENV['SENTRY_CLI_PATH']
       dsym_path = File.join(xcarchive_path, 'dSYMs')
