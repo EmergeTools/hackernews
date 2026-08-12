@@ -194,24 +194,18 @@ platform :ios do
     if ENV['SENTRY_CLI_PATH']
       dsym_path = File.join(xcarchive_path, 'dSYMs')
       UI.important(
-        "Testing IPA+dSYM upload with #{ENV.fetch('SENTRY_CLI_PATH')}: " \
+        "Testing IPA+dSYM upload through fastlane-plugin-sentry with #{ENV.fetch('SENTRY_CLI_PATH')}: " \
         "IPA=#{ipa_path}, dSYMs=#{dsym_path}"
       )
-      sh(
-        [
-          ENV.fetch('SENTRY_CLI_PATH'),
-          'build',
-          'upload',
-          ipa_path,
-          '--org',
-          'sentry',
-          '--project',
-          'hackernews-ios',
-          '--dsym',
-          dsym_path,
-          '--build-configuration',
-          'Release-dsym-e2e'
-        ].shelljoin
+      sentry_upload_build(
+        auth_token: ENV['SENTRY_SENTRY_AUTH_TOKEN'],
+        org_slug: 'sentry',
+        project_slug: 'hackernews-ios',
+        ipa_path: ipa_path,
+        dsym_path: dsym_path,
+        sentry_cli_path: ENV.fetch('SENTRY_CLI_PATH'),
+        build_configuration: 'Release-dsym-e2e',
+        log_level: 'debug'
       )
     else
       replace_xcarchive_app_with_ipa(
