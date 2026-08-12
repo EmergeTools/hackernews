@@ -19,6 +19,19 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Checkout sentry-cli test branch
+        uses: actions/checkout@v6
+        with:
+          repository: getsentry/sentry-cli
+          ref: codex/ipa-dsym-upload
+          path: sentry-cli
+
+      - name: Build sentry-cli test branch
+        working-directory: ${{ github.workspace }}/sentry-cli
+        run: |
+          rustup target add aarch64-apple-darwin
+          cargo build --release --locked --target aarch64-apple-darwin
+
       - name: Set up Ruby env
         uses: ruby/setup-ruby@v1
         with:
@@ -43,6 +56,9 @@ jobs:
           ASC_KEY: ${{ secrets.ASC_PRIVATE_KEY }}
           SIGNING_KEY_PASSWORD: ${{ secrets.IOS_DIST_SIGNING_KEY_PASSWORD }}
           SIGNING_KEY_FILE_PATH: signing-cert.p12
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
+          SENTRY_CLI_PATH: ${{ github.workspace }}/sentry-cli/target/aarch64-apple-darwin/release/sentry-cli
+          SENTRY_LOG_LEVEL: debug
           SENTRY_SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
           CONFIGURATION: Release
