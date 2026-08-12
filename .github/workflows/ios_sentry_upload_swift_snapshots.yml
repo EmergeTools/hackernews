@@ -9,6 +9,7 @@ on:
 
 jobs:
   upload_sentry_swift_snapshots:
+    if: github.event_name != 'pull_request' || github.head_ref != 'codex/test-sentry-cli-dsym-e2e'
     runs-on: macos-26
 
     defaults:
