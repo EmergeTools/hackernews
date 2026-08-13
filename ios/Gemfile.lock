@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/getsentry/sentry-fastlane-plugin.git
-  revision: 05c542c880e5fc587771cd075e716b6273826989
+  revision: 0fe84e64455d7f6643976368c04a5496b1a3f263
   branch: codex/ipa-dsym-build-upload
   specs:
     fastlane-plugin-sentry (2.6.2)
