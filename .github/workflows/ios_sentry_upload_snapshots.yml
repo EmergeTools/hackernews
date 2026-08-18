@@ -183,7 +183,23 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Checkout sentry-cli empty selective upload branch
+        if: github.event_name == 'pull_request' && github.head_ref == 'ci/test-empty-selective-snapshots'
+        uses: actions/checkout@v6
+        with:
+          repository: getsentry/sentry-cli
+          ref: fix/allow-empty-selective-snapshots
+          path: sentry-cli
+
+      - name: Build sentry-cli empty selective upload branch
+        if: github.event_name == 'pull_request' && github.head_ref == 'ci/test-empty-selective-snapshots'
+        working-directory: ${{ github.workspace }}/sentry-cli
+        run: |
+          rustup target add aarch64-apple-darwin
+          cargo build --release --locked --target aarch64-apple-darwin
+
       - name: Set up Ruby env
+        if: github.event_name != 'pull_request' || github.head_ref != 'ci/test-empty-selective-snapshots'
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.3.10
@@ -191,6 +207,7 @@ jobs:
           working-directory: ios
 
       - name: Setup gems
+        if: github.event_name != 'pull_request' || github.head_ref != 'ci/test-empty-selective-snapshots'
         run: exec ../.github/scripts/ios/setup.sh
 
       - name: Download generated snapshots
@@ -206,7 +223,56 @@ jobs:
           echo
           echo "Total PNG images: $(find "${SNAPSHOT_UPLOAD_BASE_DIR}" -type f -name '*.png' | wc -l | tr -d ' ')"
 
+      - name: Prepare empty selective snapshot upload
+        if: github.event_name == 'pull_request' && github.head_ref == 'ci/test-empty-selective-snapshots'
+        env:
+          ALL_IMAGE_FILE_NAMES_FILE: ${{ runner.temp }}/all-image-file-names.txt
+          EMPTY_SNAPSHOT_DIR: ${{ runner.temp }}/empty-selected-snapshots
+        run: |
+          mkdir -p "${EMPTY_SNAPSHOT_DIR}"
+          (
+            cd "${SNAPSHOT_UPLOAD_BASE_DIR}"
+            find . -type f -name '*.png' -print | sed 's#^\./##' | LC_ALL=C sort > "${ALL_IMAGE_FILE_NAMES_FILE}"
+          )
+
+          if [ ! -s "${ALL_IMAGE_FILE_NAMES_FILE}" ]; then
+            echo "The complete snapshot filename manifest is empty" >&2
+            exit 1
+          fi
+
+          if find "${EMPTY_SNAPSHOT_DIR}" -type f -name '*.png' -print -quit | grep -q .; then
+            echo "The selective upload directory unexpectedly contains PNG files" >&2
+            exit 1
+          fi
+
+          echo "Complete snapshot names: $(wc -l < "${ALL_IMAGE_FILE_NAMES_FILE}" | tr -d ' ')"
+          echo "Selected snapshot images: 0"
+
+      - name: Test empty selective upload with sentry-cli branch
+        if: github.event_name == 'pull_request' && github.head_ref == 'ci/test-empty-selective-snapshots'
+        env:
+          ALL_IMAGE_FILE_NAMES_FILE: ${{ runner.temp }}/all-image-file-names.txt
+          EMPTY_SNAPSHOT_DIR: ${{ runner.temp }}/empty-selected-snapshots
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
+          SENTRY_LOG_LEVEL: debug
+        run: |
+          "${{ github.workspace }}/sentry-cli/target/aarch64-apple-darwin/release/sentry-cli" snapshots upload \
+            --org sentry \
+            --project hackernews-ios \
+            --app-id com.emergetools.hackernews \
+            --all-image-file-names-file "${ALL_IMAGE_FILE_NAMES_FILE}" \
+            --vcs-provider github \
+            --head-sha "${{ github.event.pull_request.head.sha }}" \
+            --base-sha "${{ github.event.pull_request.base.sha }}" \
+            --head-ref "${{ github.head_ref }}" \
+            --base-ref "${{ github.base_ref }}" \
+            --head-repo-name "${{ github.event.pull_request.head.repo.full_name }}" \
+            --base-repo-name "${{ github.event.pull_request.base.repo.full_name }}" \
+            --pr-number "${{ github.event.pull_request.number }}" \
+            "${EMPTY_SNAPSHOT_DIR}"
+
       - name: Upload snapshots to Sentry
+        if: github.event_name != 'pull_request' || github.head_ref != 'ci/test-empty-selective-snapshots'
         env:
           SENTRY_SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
         run: bundle exec fastlane ios upload_sentry_snapshots path:"${SNAPSHOT_UPLOAD_BASE_DIR}"
