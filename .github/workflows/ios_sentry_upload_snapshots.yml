@@ -21,6 +21,7 @@ jobs:
   # Build the snapshot test bundle once on a single runner, then share the
   # products with downstream simulator jobs via an artifact.
   build_for_testing:
+    if: github.event_name != 'pull_request' || github.head_ref != 'codex/test-sentry-cli-dsym-e2e'
     runs-on: macos-26
 
     env:
