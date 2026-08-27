@@ -19,14 +19,14 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Checkout sentry-cli test branch
+      - name: Checkout sentry-cli
         uses: actions/checkout@v6
         with:
           repository: getsentry/sentry-cli
-          ref: codex/ipa-dsym-upload
+          ref: c596fcddd616867b6c6cdfa11f9853dc889a585a
           path: sentry-cli
 
-      - name: Build sentry-cli test branch
+      - name: Build sentry-cli
         working-directory: ${{ github.workspace }}/sentry-cli
         run: |
           rustup target add aarch64-apple-darwin
