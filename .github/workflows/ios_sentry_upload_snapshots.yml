@@ -183,15 +183,15 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Checkout sentry-cli empty selective upload branch
+      - name: Checkout sentry-cli master
         if: github.event_name == 'pull_request' && github.head_ref == 'ci/test-empty-selective-snapshots'
         uses: actions/checkout@v6
         with:
           repository: getsentry/sentry-cli
-          ref: fix/allow-empty-selective-snapshots
+          ref: master
           path: sentry-cli
 
-      - name: Build sentry-cli empty selective upload branch
+      - name: Build sentry-cli master
         if: github.event_name == 'pull_request' && github.head_ref == 'ci/test-empty-selective-snapshots'
         working-directory: ${{ github.workspace }}/sentry-cli
         run: |
