@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/getsentry/sentry-fastlane-plugin.git
+  revision: 85947a7410f5a31f3e9b2e3670861309d0ca989d
+  branch: codex/ipa-dsym-build-upload-3.7.0
+  specs:
+    fastlane-plugin-sentry (2.6.3)
+      os (~> 1.1, >= 1.1.4)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -123,8 +131,6 @@ GEM
       xcodeproj (>= 1.13.0, < 2.0.0)
       xcpretty (~> 0.4.1)
       xcpretty-travis-formatter (>= 0.0.3, < 2.0.0)
-    fastlane-plugin-sentry (2.5.2)
-      os (~> 1.1, >= 1.1.4)
     fastlane-sirp (1.1.0)
     gh_inspector (1.1.3)
     google-apis-androidpublisher_v3 (0.102.0)
@@ -242,7 +248,7 @@ PLATFORMS
 
 DEPENDENCIES
   fastlane
-  fastlane-plugin-sentry (>= 2.5.1, < 3.0.0)
+  fastlane-plugin-sentry (>= 2.5.1, < 3.0.0)!
   xcpretty
 
 BUNDLED WITH

@@ -186,17 +186,19 @@ platform :ios do
     prepare_signing
     build_app_for_scheme
     ipa_path = export_thinned_size_analysis_ipa
-    xcarchive_path = lane_context[SharedValues::XCODEBUILD_ARCHIVE]
-    replace_xcarchive_app_with_ipa(
-      ipa_path: ipa_path,
-      xcarchive_path: xcarchive_path
+    xcarchive_path = File.expand_path(
+      lane_context[SharedValues::XCODEBUILD_ARCHIVE],
+      File.expand_path('..', __dir__)
     )
+    dsym_path = File.join(xcarchive_path, 'dSYMs')
+    UI.important("Testing IPA+dSYM upload with bundled sentry-cli: IPA=#{ipa_path}, dSYMs=#{dsym_path}")
     sentry_upload_build(
       auth_token: ENV['SENTRY_SENTRY_AUTH_TOKEN'],
       org_slug: 'sentry',
       project_slug: 'hackernews-ios',
-      xcarchive_path: xcarchive_path,
-      build_configuration: 'Release',
+      ipa_path: ipa_path,
+      dsym_path: dsym_path,
+      build_configuration: 'Release-dsym-e2e',
       log_level: 'debug'
     )
   end
