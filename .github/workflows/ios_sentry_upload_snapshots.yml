@@ -208,5 +208,6 @@ jobs:
 
       - name: Upload snapshots to Sentry
         env:
+          SNAPSHOT_APP_ID: ${{ github.event.pull_request.number == 842 && 'com.emergetools.hackernews.snapshot-ci-pr842-3f62449f58a3' || 'com.emergetools.hackernews' }}
           SENTRY_SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
-        run: bundle exec fastlane ios upload_sentry_snapshots path:"${SNAPSHOT_UPLOAD_BASE_DIR}"
+        run: bundle exec fastlane ios upload_sentry_snapshots path:"${SNAPSHOT_UPLOAD_BASE_DIR}" app_id:"${SNAPSHOT_APP_ID}"

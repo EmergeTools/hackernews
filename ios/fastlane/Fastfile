@@ -343,7 +343,7 @@ platform :ios do
   lane :upload_sentry_snapshots do |options|
     sentry_upload_snapshots(
       path: options[:path],
-      app_id: 'com.emergetools.hackernews',
+      app_id: options[:app_id] || 'com.emergetools.hackernews',
       auth_token: ENV['SENTRY_SENTRY_AUTH_TOKEN'],
       org_slug: 'sentry',
       project_slug: 'hackernews-ios'
