@@ -1249,11 +1249,10 @@
 		};
 		A4D28AEC2C237E2A007F20D0 /* XCRemoteSwiftPackageReference "SnapshotPreviews" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/EmergeTools/SnapshotPreviews";
+			repositoryURL = "https://github.com/getsentry/SnapshotPreviews";
 			requirement = {
-				kind = versionRange;
-				maximumVersion = 1.0.0;
-				minimumVersion = 0.13.0;
+				branch = "perf/snapshot-timing";
+				kind = branch;
 			};
 		};
 		FA3637622EC7ACAD00541313 /* XCRemoteSwiftPackageReference "AccessibilitySnapshotios26" */ = {
