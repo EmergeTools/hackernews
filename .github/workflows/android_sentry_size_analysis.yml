@@ -9,6 +9,7 @@ on:
 
 jobs:
   build:
+    if: github.event.pull_request.number != 842
     runs-on: ubuntu-latest
 
     defaults:

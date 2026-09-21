@@ -152,7 +152,7 @@ fun StoryRow(
         )
         Text(
           text = item.title ?: "",
-          color = MaterialTheme.colorScheme.onSurface,
+          color = HackerOrange,
           style = MaterialTheme.typography.titleSmall
         )
         Spacer(modifier = Modifier.height(0.dp))
