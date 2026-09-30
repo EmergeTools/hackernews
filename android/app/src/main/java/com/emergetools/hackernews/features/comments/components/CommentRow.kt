@@ -34,6 +34,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.emergetools.hackernews.R
@@ -44,7 +45,6 @@ import com.emergetools.hackernews.ui.components.MetadataTag
 import com.emergetools.hackernews.ui.theme.HackerGreen
 import com.emergetools.hackernews.ui.theme.HackerNewsTheme
 import com.emergetools.hackernews.ui.util.parseAsHtml
-import java.time.Instant
 
 @Composable
 fun CommentRow(
@@ -79,7 +79,7 @@ fun CommentRow(
             fontWeight = FontWeight.Bold
           )
           MetadataTag(
-            label = relativeTimeStamp(state.epochSeconds),
+            label = relativeTimeStamp(state.age),
           ) {
             Icon(
               modifier = Modifier.size(12.dp),
@@ -240,7 +240,7 @@ fun CommentRowPreview() {
           level = 0,
           author = "rikinm",
           content = "Hello Parent",
-          epochSeconds = Instant.now().minusSeconds(60 * 60 * 2).epochSecond,
+          age = "2024-09-05T17:48:25",
           upvoted = false,
           upvoteUrl = "",
           children = listOf()
@@ -259,6 +259,30 @@ fun CommentRowLoadingPreview() {
     Column {
       CommentRow(
         state = CommentState.Loading(level = 0),
+        onToggleHide = {},
+        onLikeTapped = {}
+      )
+    }
+  }
+}
+
+@Preview
+@Composable
+private fun TestIsoDateTimeParsing() {
+  HackerNewsTheme {
+    Column {
+      val isoDateWithTimeZone = "2024-09-05T17:48:25.000000Z"
+      CommentRow(
+        state = CommentState.Content(
+          id = 1,
+          level = 0,
+          author = "rikinm",
+          content = "Hello Parent",
+          age = isoDateWithTimeZone,
+          upvoted = false,
+          upvoteUrl = "",
+          children = listOf()
+        ),
         onToggleHide = {},
         onLikeTapped = {}
       )
