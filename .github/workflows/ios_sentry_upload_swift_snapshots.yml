@@ -74,7 +74,10 @@ jobs:
           ls -1 HackerNewsTests/__Snapshots__/SwiftSnapshotTest/ || echo "No snapshots found"
           echo "Total: $(ls -1 HackerNewsTests/__Snapshots__/SwiftSnapshotTest/ 2>/dev/null | wc -l | tr -d ' ') images"
 
+      - name: Install Sentry CLI (nightly)
+        run: curl https://cli.sentry.dev/install -fsS | bash -s -- --version nightly
+
       - name: Upload snapshots to Sentry
         env:
-          SENTRY_SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
         run: bundle exec fastlane ios upload_sentry_snapshots_swift_snapshot_testing
