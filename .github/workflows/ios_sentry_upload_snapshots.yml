@@ -206,7 +206,10 @@ jobs:
           echo
           echo "Total PNG images: $(find "${SNAPSHOT_UPLOAD_BASE_DIR}" -type f -name '*.png' | wc -l | tr -d ' ')"
 
+      - name: Install Sentry CLI (nightly)
+        run: curl https://cli.sentry.dev/install -fsS | bash -s -- --version nightly
+
       - name: Upload snapshots to Sentry
         env:
-          SENTRY_SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
         run: bundle exec fastlane ios upload_sentry_snapshots path:"${SNAPSHOT_UPLOAD_BASE_DIR}"
