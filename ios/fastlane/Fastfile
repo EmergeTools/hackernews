@@ -165,19 +165,9 @@ platform :ios do
     generate_build_number
     build_app_for_scheme
     upload_app
-    sentry_debug_files_upload(
-      auth_token: ENV['SENTRY_SENTRY_AUTH_TOKEN'],
-      org_slug: 'sentry',
-      project_slug: 'hackernews-ios',
-      include_sources: true
-    )
-    sentry_upload_build(
-      auth_token: ENV['SENTRY_SENTRY_AUTH_TOKEN'],
-      org_slug: 'sentry',
-      project_slug: 'hackernews-ios',
-      build_configuration: 'Release',
-      log_level: 'debug'
-    )
+    xcarchive_path = project_path(lane_context[SharedValues::XCODEBUILD_ARCHIVE])
+    sentry_cli('debug-files', 'upload', File.join(xcarchive_path, 'dSYMs'), '--include-sources')
+    sentry_cli('build', 'upload', xcarchive_path, '--build-configuration', 'Release', '--log-level', 'debug')
   end
 
   desc 'Build, thin, and upload an IPA to Sentry for Size Analysis'
@@ -186,19 +176,9 @@ platform :ios do
     prepare_signing
     build_app_for_scheme
     ipa_path = export_thinned_size_analysis_ipa
-    xcarchive_path = File.expand_path(
-      lane_context[SharedValues::XCODEBUILD_ARCHIVE],
-      File.expand_path('..', __dir__)
-    )
-    sentry_upload_build(
-      auth_token: ENV['SENTRY_SENTRY_AUTH_TOKEN'],
-      org_slug: 'sentry',
-      project_slug: 'hackernews-ios',
-      ipa_path: ipa_path,
-      dsym_path: File.join(xcarchive_path, 'dSYMs'),
-      build_configuration: 'Release',
-      log_level: 'debug'
-    )
+    xcarchive_path = project_path(lane_context[SharedValues::XCODEBUILD_ARCHIVE])
+    sentry_cli('build', 'upload', ipa_path, '--build-configuration', 'Release', '--log-level', 'debug')
+    sentry_cli('debug-files', 'upload', File.join(xcarchive_path, 'dSYMs'), '--type', 'dsym')
   end
 
   desc 'Export a thinned Release IPA for Sentry Size Analysis'
@@ -274,35 +254,24 @@ platform :ios do
     load_asc_api_key
     prepare_signing
     build_app_for_scheme
-    sentry_upload_build(
-      auth_token: ENV['SENTRY_SENTRY_AUTH_TOKEN'],
-      org_slug: 'sentry',
-      project_slug: 'hackernews-ios',
-      build_configuration: 'AdHoc',
-      log_level: 'debug'
-    )
+    xcarchive_path = project_path(lane_context[SharedValues::XCODEBUILD_ARCHIVE])
+    sentry_cli('build', 'upload', xcarchive_path, '--build-configuration', 'AdHoc', '--log-level', 'debug')
   end
 
 
   desc 'Upload SnapshotPreviews snapshots to Sentry'
   lane :upload_sentry_snapshots do |options|
-    sentry_upload_snapshots(
-      path: options[:path],
-      app_id: 'com.emergetools.hackernews',
-      auth_token: ENV['SENTRY_SENTRY_AUTH_TOKEN'],
-      org_slug: 'sentry',
-      project_slug: 'hackernews-ios'
+    sentry_cli(
+      'snapshots', 'upload', project_path(options[:path]),
+      '--app-id', 'com.emergetools.hackernews'
     )
   end
 
   desc 'Upload swift-snapshot-testing snapshots to Sentry'
   lane :upload_sentry_snapshots_swift_snapshot_testing do
-    sentry_upload_snapshots(
-      path: 'HackerNewsTests/__Snapshots__/SwiftSnapshotTest',
-      app_id: 'com.emergetools.hackernews.swift-snapshot-testing',
-      auth_token: ENV['SENTRY_SENTRY_AUTH_TOKEN'],
-      org_slug: 'sentry',
-      project_slug: 'hackernews-ios'
+    sentry_cli(
+      'snapshots', 'upload', project_path('HackerNewsTests/__Snapshots__/SwiftSnapshotTest'),
+      '--app-id', 'com.emergetools.hackernews.swift-snapshot-testing'
     )
   end
 
@@ -313,4 +282,14 @@ platform :ios do
     generate_build_number
     build_app_for_scheme(build_configuration: ENV['CONFIGURATION'] || 'Release')
   end
+end
+
+# Runs the standalone `sentry` CLI, which reads its auth token from SENTRY_AUTH_TOKEN.
+def sentry_cli(*args)
+  sh('sentry', *args, '--org', 'sentry', '--project', 'hackernews-ios')
+end
+
+# `sh` runs from the fastlane directory, so resolve paths against the iOS project root.
+def project_path(path)
+  File.expand_path(path, File.expand_path('..', __dir__))
 end

@@ -29,6 +29,9 @@ jobs:
       - name: Setup gems
         run: exec ../.github/scripts/ios/setup.sh
 
+      - name: Install Sentry CLI (nightly)
+        run: curl https://cli.sentry.dev/install -fsS | bash -s -- --version nightly
+
       - name: Decode signing certificate into a file
         env:
           CERTIFICATE_BASE64: ${{ secrets.IOS_DIST_SIGNING_KEY_BASE64 }}
@@ -43,6 +46,6 @@ jobs:
           ASC_KEY: ${{ secrets.ASC_PRIVATE_KEY }}
           SIGNING_KEY_PASSWORD: ${{ secrets.IOS_DIST_SIGNING_KEY_PASSWORD }}
           SIGNING_KEY_FILE_PATH: signing-cert.p12
-          SENTRY_SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SENTRY_AUTH_TOKEN }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
           CONFIGURATION: Release
