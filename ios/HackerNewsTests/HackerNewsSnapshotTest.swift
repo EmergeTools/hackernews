@@ -32,30 +32,10 @@ class HackerNewsSnapshotTest: SnapshotTest {
   }
   
 #if canImport(UIKit) && !os(watchOS) && !os(visionOS) && !os(tvOS)
+// DNM diagnostic: a11y snapshotting disabled to isolate preview-count scaling.
+// Returning nil skips the accessibility render path for every preview.
 override open class func setupA11y() -> ((UIViewController, UIWindow, PreviewLayout) -> UIView)? {
-  return { (controller: UIViewController, window: UIWindow, layout: PreviewLayout) in
-    let containerVC = controller.parent
-    let containedView: UIView
-    switch layout {
-    case .device:
-      containedView = containerVC?.view ?? controller.view
-    default:
-      containedView = controller.view
-    }
-    let a11yView = AccessibilitySnapshotView(
-      containedView: containedView,
-      snapshotConfiguration: .init(
-        viewRenderingMode: controller.view.bounds.size.requiresCoreAnimationSnapshot ? .renderLayerInContext : .drawHierarchyInRect,
-        activationPointDisplay: .never,
-        includesInputLabels: .never))
-  
-    a11yView.center = window.center
-    window.addSubview(a11yView)
-
-    _ = try? a11yView.parseAccessibility()
-    a11yView.sizeToFit()
-    return a11yView
-  }
+  return nil
 }
 #endif
 }
