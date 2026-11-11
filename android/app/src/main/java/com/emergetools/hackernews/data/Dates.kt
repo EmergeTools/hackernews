@@ -21,9 +21,15 @@ fun relativeTimeStamp(epochSeconds: Long): String {
   }
 
   val days = hours / HOURS_IN_DAY
-  return "${days.toInt()}d ago"
+  if (days < DAYS_IN_WEEK) {
+    return "${days.toInt()}d ago"
+  }
+
+  val weeks = days / DAYS_IN_WEEK
+  return "${weeks.toInt()}w ago"
 }
 
 private const val SECONDS_IN_MINUTE = 60.0
 private const val MINUTES_IN_HOUR = 60.0
 private const val HOURS_IN_DAY = 24.0
+private const val DAYS_IN_WEEK = 7.0
