@@ -65,4 +65,19 @@ struct BookmarksScreen: View {
   BookmarksScreen(
     model: $model
   )
+  .snapshotCanvasThemeMatchingColorScheme()
+}
+
+private struct SnapshotCanvasThemeMatchesColorScheme: ViewModifier {
+  @Environment(\.colorScheme) private var colorScheme
+
+  func body(content: Content) -> some View {
+    content.snapshotCanvasTheme(colorScheme == .dark ? .dark : .light)
+  }
+}
+
+private extension View {
+  func snapshotCanvasThemeMatchingColorScheme() -> some View {
+    modifier(SnapshotCanvasThemeMatchesColorScheme())
+  }
 }
