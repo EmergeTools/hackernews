@@ -3,6 +3,11 @@ name: Sentry Android Build Distribution
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
+    paths:
+      - android/**
+      - .github/workflows/android_beta_build.yml
 
 jobs:
   build:
