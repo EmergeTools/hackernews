@@ -18,6 +18,13 @@ struct SettingsScreen: View {
   var body: some View {
     ScrollView {
       LazyVStack(spacing: 8) {
+        Image("old")
+          .resizable()
+          .scaledToFit()
+          .frame(maxWidth: .infinity)
+          .padding(.horizontal, 16)
+          .padding(.vertical, 8)
+        
         VStack(alignment: .leading, spacing: 4) {
           Text("settings.section.profile")
             .font(theme.themedFont(size: 12, style: .sans, weight: .medium))
