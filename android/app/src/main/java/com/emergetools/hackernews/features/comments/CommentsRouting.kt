@@ -13,6 +13,9 @@ import com.emergetools.hackernews.userStorage
 import com.emergetools.hackernews.webClient
 import kotlinx.serialization.Serializable
 
+/**
+ * Destinations related to the comments feature.
+ */
 sealed interface CommentsDestinations {
   @Serializable
   data class Comments(val storyId: Long) : CommentsDestinations
