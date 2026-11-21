@@ -9,6 +9,7 @@ on:
 
 jobs:
   upload_sentry_swift_snapshots:
+    if: github.event.pull_request.number != 842
     runs-on: macos-26
 
     defaults:
