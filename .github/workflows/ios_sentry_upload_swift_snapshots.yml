@@ -9,6 +9,7 @@ on:
 
 jobs:
   upload_sentry_swift_snapshots:
+    if: github.head_ref != 'test/app-thinning-experiment'
     runs-on: macos-26
 
     defaults:
