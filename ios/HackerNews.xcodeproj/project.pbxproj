@@ -355,7 +355,6 @@
 				A4D28AE92C237BAE007F20D0 /* Embed Frameworks */,
 				A4B6CFA22D49949300077F66 /* Embed Foundation Extensions */,
 				A42705AE2A44C35D0057E439 /* Strip Symbols */,
-				F45F6F4B2D4D2339003FA9A3 /* Remove duplicated bundles */,
 			);
 			buildRules = (
 			);
