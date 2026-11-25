@@ -269,6 +269,7 @@ platform :ios do
     ipa_path
   end
 
+  # The iOS pull request workflow uses this lane to produce device-installable builds.
   desc 'Build an Ad Hoc archive and upload it to Sentry Build Distribution'
   lane :build_upload_sentry_distribution do
     load_asc_api_key
